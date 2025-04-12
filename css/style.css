@@ -478,4 +478,74 @@ form.newsletter input[type="submit"]:hover {
     margin-top: 40px;
     color: #333;
  }
+ /* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 204, 153, 0.95); /* Nền cam đào nhạt với độ trong suốt */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+ }
  
+ .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none; /* Ngăn tương tác khi ẩn */
+ }
+ 
+ .loading-content {
+    text-align: center;
+    color: #4A2F1A; /* Màu nâu đậm */
+ }
+ 
+ .loading-logo {
+    width: 100px; /* Kích thước logo */
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite ease-in-out; /* Hiệu ứng nhấp nhô */
+ }
+ 
+ .loading-content p {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+ }
+ 
+ .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #4A2F1A; /* Viền nâu đậm */
+    border-top: 4px solid #f7544a; /* Điểm nhấn đỏ */
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* Hiệu ứng xoay */
+    margin: 0 auto;
+ }
+ 
+ /* Hiệu ứng pulse cho logo */
+ @keyframes pulse {
+    0% {
+       transform: scale(1);
+    }
+    50% {
+       transform: scale(1.1);
+    }
+    100% {
+       transform: scale(1);
+    }
+ }
+ 
+ /* Hiệu ứng xoay cho spinner */
+ @keyframes spin {
+    0% {
+       transform: rotate(0deg);
+    }
+    100% {
+       transform: rotate(360deg);
+    }
+ }

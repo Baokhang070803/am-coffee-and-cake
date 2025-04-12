@@ -1,5 +1,3 @@
-up git
-
 git add .
-git commit "lenhcommit"
+git commit -m "Thông điệp commit của bạn ở đây"
 git push
