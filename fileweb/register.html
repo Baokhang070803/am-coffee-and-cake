@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Blur Register</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap" rel="stylesheet">
+      <style>
+         /* CSS Reset */
+         html, body, div, span, applet, object, iframe,
+         h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+         a, abbr, acronym, address, big, cite, code,
+         del, dfn, em, img, ins, kbd, q, s, samp,
+         small, strike, strong, sub, sup, tt, var,
+         b, u, i, center,
+         dl, dt, dd, ol, ul, li,
+         fieldset, form, label, legend,
+         table, caption, tbody, tfoot, thead, tr, th, td,
+         article, aside, canvas, details, embed, 
+         figure, figcaption, footer, header, hgroup, 
+         menu, nav, output, ruby, section, summary,
+         time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+         }
+         article, aside, details, figcaption, figure, 
+         footer, header, hgroup, menu, nav, section {
+            display: block;
+         }
+         body {
+            line-height: 1;
+         }
+         ol, ul {
+            list-style: none;
+         }
+         blockquote, q {
+            quotes: none;
+         }
+         blockquote:before, blockquote:after,
+         q:before, q:after {
+            content: '';
+            content: none;
+         }
+         table {
+            border-collapse: collapse;
+            border-spacing: 0;
+         }
+         * {
+            box-sizing: border-box;
+         }
+         html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Spartan', sans-serif;
+         }
+         body {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+         }
+         .overlay {
+            width: 170%;
+            height: 170%;
+            position: absolute;
+            background-image: url('https://images4.alphacoders.com/134/thumb-1920-1349198.png');
+            z-index: 2;
+            filter: blur(13px);
+            background-repeat: no-repeat;
+            background-size: cover;
+         }
+         .login-container {
+            position: relative;
+            width: 1090px;
+            z-index: 3;
+            height: 580px;
+            background-image: url('https://images4.alphacoders.com/134/thumb-1920-1349198.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: space-between;
+            padding-left: 80px;
+            color: white;
+            font-weight: 300;
+         }
+         .login-container > div:first-child {
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px 0;
+            padding-bottom: 60px;
+         }
+         .logo span {
+            font-family: 'Kaushan Script', cursive;
+            font-size: 23px;
+         }
+         .logo i {
+            color: rgb(255, 255, 255);
+            font-size: 34px;
+         }
+         .register > div:first-child {
+            font-size: 32px;
+            max-width: 280px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+         }
+         .register > p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: rgb(197, 202, 206);
+            margin-bottom: 24px;
+            max-width: 280px;
+            word-wrap: break-word;
+         }
+         .register .social {
+            margin-left: -20px;
+         }
+         .register .social a {
+            margin-left: 20px;
+         }
+         .register .social i {
+            color: white;
+            font-size: 15px;
+         }
+         .register .social a:hover i {
+            color: #FFD9B3; /* Changed from red */
+         }
+         .form-login {
+            width: 45%;
+            max-width: 48%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            background-color: rgba(54, 52, 52, 0.2);
+            padding: 80px 40px;
+         }
+         .form-login .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 30px;
+         }
+         .form-login .form-group.f-term {
+            display: flex;
+            flex-direction: row !important;
+            align-items: center;
+         }
+         .f-term label {
+            margin-top: 10px;
+            margin-left: 7px;
+            font-size: 13px;
+            max-width: 90%;
+            word-wrap: break-word;
+         }
+         .f-term label a {
+            margin-left: 3px;
+            color: rgb(228, 220, 220);
+            font-size: 13px;
+            text-underline-position: under;
+         }
+         .f-term label a:hover {
+            color: #FFD9B3; /* Changed from red */
+         }
+         .form-login .form .form-group input {
+            background-color: transparent;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid rgba(159, 171, 175, 0.534);
+            margin-top: 10px;
+            color: white;
+            font-size: 17px;
+         }
+         .form-login .form .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.658);
+            opacity: 1;
+         }
+         .form-login .form .form-group .form-label {
+            color: rgba(255, 255, 255, 0.658);
+            font-size: 13px;
+         }
+         .form-login .form .heading {
+            font-size: 30px;
+            margin-top: 7px;
+         }
+         .spacer {
+            width: 100%;
+            height: 40px;
+         }
+         .form-login .form .sign-up {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+         }
+         .form-login .form .sign-up > div {
+            position: relative;
+         }
+         .form-login .form .sign-up button {
+            background-color: #FFD9B3; /* Changed from rgb(211, 37, 37) */
+            color: #000000; /* Adjusted for contrast */
+            width: 160px;
+            height: 35px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            padding-left: 25px;
+         }
+         .form-login .form .sign-up button:hover {
+            background-color: #FFC107; /* Changed from rgb(143, 24, 24) */
+            cursor: pointer;
+         }
+         .form-login .form .sign-up > div i {
+            position: absolute;
+            top: 50%;
+            right: 7%;
+            transform: translateY(-50%);
+            font-size: 12px;
+         }
+         .sign-up a {
+            margin-left: 35px;
+            color: rgb(190, 189, 187);
+            font-size: 14px;
+            text-underline-position: under;
+         }
+         .sign-up a:hover {
+            color: #FFD9B3; /* Changed from red */
+         }
+      </style>
+   </head>
+   <body>
+      <div class="overlay"></div>
+      <div class="login-container">
+         <div>
+            <div class="logo">
+               <!-- <i class="fas fa-hat-wizard"></i>
+               <span>Wizard Magazine</span> -->
+            </div>
+            <div class="register">
+               <div>Bạn chưa có tài khoản?</div>
+               <p>Đăng ký để truy cập tất cả các tính năng của dịch vụ của chúng tôi.</p>
+               <div class="social">
+                  <a data-toggle="tooltip" title="Facebook" href=""><i class="fab fa-facebook-f"></i></a>
+                  <a data-toggle="tooltip" title="Google" href=""><i class="fab fa-google"></i></a>
+                  <a data-toggle="tooltip" title="Pinterest" href=""><i class="fab fa-pinterest-p"></i></a>
+                  <a data-toggle="tooltip" title="Github" href=""><i class="fab fa-github"></i></a>
+               </div>
+            </div>
+         </div>
+         <div class="form-login">
+            <form action="" method="POST" class="form" id="form-2">
+               <h3 class="heading">Đăng ký</h3>      
+               <div class="spacer"></div>
+               <div class="form-group">
+                  <label for="email" class="form-label">Email</label>
+                  <input id="email" name="email" type="text" placeholder="VD: email@gmail.com" class="form-control">
+                  <span class="form-message"></span>
+               </div>
+               <div class="form-group">
+                  <label for="password" class="form-label">Mật khẩu</label>
+                  <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
+                  <span class="form-message"></span>
+               </div>
+               <div class="form-group">
+                  <label for="password_confirmation" class="form-label">Nhập Lại Mật khẩu</label>
+                  <input id="password_confirmation" name="password_confirmation" type="password" placeholder="Nhập lại mật khẩu" class="form-control">
+                  <span class="form-message"></span>
+               </div>
+               <div class="form-group f-term">
+                  <input id="agree" name="agree" type="checkbox" class="form-control">
+                  <label for="agree" class="form-label">Tôi đồng ý với tất cả các điều khoản trong <a href="">Điều khoản dịch vụ</a></label>               
+                  <span class="form-message"></span>
+               </div>
+               <div class="sign-up">
+                  <div>
+                     <button class="form-submit">Đăng ký</button>
+                     <i class="fas fa-chevron-right"></i>
+                  </div>
+                  <a href="login.html">Đã có tài khoản?</a>
+               </div>
+            </form>
+         </div>
+      </div>
+      <script>
+         // Validator Object
+         function Validator(options) {
+            function getParent(element, selector) {
+               while (element.parentElement) {
+                  if (element.parentElement.matches(selector)) {
+                     return element.parentElement;
+                  }
+                  element = element.parentElement;
+               }
+            }
+            var selectorRules = {};
+            function validate(inputElement, rule) {
+               var errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
+               var errorMessage;
+               var rules = selectorRules[rule.selector];
+               for (var i = 0; i < rules.length; ++i) {
+                  switch (inputElement.type) {
+                     case 'radio':
+                     case 'checkbox':
+                        errorMessage = rules[i](
+                           document.querySelector(rule.selector + ':checked')
+                        );
+                        break;
+                     default:
+                        errorMessage = rules[i](inputElement.value);
+                  }
+                  if (errorMessage) break;
+               }
+               if (errorMessage) {
+                  errorElement.innerText = errorMessage;
+                  getParent(inputElement, options.formGroupSelector).classList.add('invalid');
+               } else {
+                  errorElement.innerText = '';
+                  getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
+               }
+               return !errorMessage;
+            }
+            var formElement = document.querySelector(options.form);
+            if (formElement) {
+               formElement.onsubmit = function (e) {
+                  e.preventDefault();
+                  var isFormValid = true;
+                  options.rules.forEach(function (rule) {
+                     var inputElement = formElement.querySelector(rule.selector);
+                     var isValid = validate(inputElement, rule);
+                     if (!isValid) {
+                        isFormValid = false;
+                     }
+                  });
+                  if (isFormValid) {
+                     if (typeof options.onSubmit === 'function') {
+                        var enableInputs = formElement.querySelectorAll('[name]');
+                        var formValues = Array.from(enableInputs).reduce(function (values, input) {
+                           switch(input.type) {
+                              case 'radio':
+                                 values[input.name] = formElement.querySelector('input[name="' + input.name + '"]:checked').value;
+                                 break;
+                              case 'checkbox':
+                                 if (!input.matches(':checked')) {
+                                    values[input.name] = '';
+                                    return values;
+                                 }
+                                 if (!Array.isArray(values[input.name])) {
+                                    values[input.name] = [];
+                                 }
+                                 values[input.name].push(input.value);
+                                 break;
+                              case 'file':
+                                 values[input.name] = input.files;
+                                 break;
+                              default:
+                                 values[input.name] = input.value;
+                           }
+                           return values;
+                        }, {});
+                        options.onSubmit(formValues);
+                     } else {
+                        formElement.submit();
+                     }
+                  }
+               }
+               options.rules.forEach(function (rule) {
+                  if (Array.isArray(selectorRules[rule.selector])) {
+                     selectorRules[rule.selector].push(rule.test);
+                  } else {
+                     selectorRules[rule.selector] = [rule.test];
+                  }
+                  var inputElements = formElement.querySelectorAll(rule.selector);
+                  Array.from(inputElements).forEach(function (inputElement) {
+                     inputElement.onblur = function () {
+                        validate(inputElement, rule);
+                     }
+                     inputElement.oninput = function () {
+                        var errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
+                        errorElement.innerText = '';
+                        getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
+                     } 
+                  });
+               });
+            }
+         }
+         Validator.isRequired = function (selector, message) {
+            return {
+               selector: selector,
+               test: function (value) {
+                  return value ? undefined : message || 'Vui lòng nhập trường này'
+               }
+            };
+         }
+         Validator.isEmail = function (selector, message) {
+            return {
+               selector: selector,
+               test: function (value) {
+                  var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                  return regex.test(value) ? undefined : message || 'Trường này phải là email';
+               }
+            };
+         }
+         Validator.minLength = function (selector, min, message) {
+            return {
+               selector: selector,
+               test: function (value) {
+                  return value.length >= min ? undefined : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
+               }
+            };
+         }
+         Validator.isConfirmed = function (selector, getConfirmValue, message) {
+            return {
+               selector: selector,
+               test: function (value) {
+                  return value === getConfirmValue() ? undefined : message || 'Giá trị nhập vào không chính xác';
+               }
+            };
+         }
+         document.addEventListener('DOMContentLoaded', function () {
+            Validator({
+               form: '#form-2',
+               formGroupSelector: '.form-group',
+               errorSelector: '.form-message',
+               rules: [
+                  Validator.isRequired('#email', 'Vui lòng nhập email'),
+                  Validator.isEmail('#email'),
+                  Validator.minLength('#password', 6),
+                  Validator.isConfirmed('#password_confirmation', function () {
+                     return document.querySelector('#form-2 #password').value;
+                  }, 'Mật khẩu nhập lại không chính xác'),
+                  Validator.isRequired('#agree', 'Vui lòng đồng ý với điều khoản')
+               ],
+               onSubmit: function (data) {
+                  console.log(data);
+                  alert('Đăng ký thành công!');
+                  window.location.href = 'login.html';
+               }
+            });
+         });
+      </script>
+   </body>
+</html>
