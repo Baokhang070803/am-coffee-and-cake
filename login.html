@@ -4,7 +4,7 @@
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Blur Register</title>
+      <title>Blur Login</title>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,17 +94,17 @@
             background-size: cover;
             display: flex;
             justify-content: space-between;
-            padding-left: 80px;
+            padding-left: 100px;
             color: white;
             font-weight: 300;
          }
          .login-container > div:first-child {
-            max-width: 350px;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 80px 0;
-            padding-bottom: 60px;
+            padding: 100px 0;
+            padding-bottom: 70px;
          }
          .logo span {
             font-family: 'Kaushan Script', cursive;
@@ -116,18 +116,15 @@
          }
          .register > div:first-child {
             font-size: 32px;
-            max-width: 280px;
+            max-width: 300px;
             line-height: 1.3;
             margin-bottom: 20px;
-            word-wrap: break-word;
          }
          .register > p {
             font-size: 14px;
             line-height: 1.4;
             color: rgb(197, 202, 206);
             margin-bottom: 24px;
-            max-width: 280px;
-            word-wrap: break-word;
          }
          .register .social {
             margin-left: -20px;
@@ -140,7 +137,7 @@
             font-size: 15px;
          }
          .register .social a:hover i {
-            color: #FFD9B3; /* Changed from red */
+            color: #FFD9B3;
          }
          .form-login {
             width: 45%;
@@ -148,13 +145,13 @@
             height: 100%;
             backdrop-filter: blur(8px);
             background-color: rgba(54, 52, 52, 0.2);
-            padding: 80px 40px;
+            padding: 100px 40px;
          }
          .form-login .form-group {
             display: flex;
             flex-direction: column;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 40px;
          }
          .form-login .form-group.f-term {
             display: flex;
@@ -164,9 +161,6 @@
          .f-term label {
             margin-top: 10px;
             margin-left: 7px;
-            font-size: 13px;
-            max-width: 90%;
-            word-wrap: break-word;
          }
          .f-term label a {
             margin-left: 3px;
@@ -175,7 +169,7 @@
             text-underline-position: under;
          }
          .f-term label a:hover {
-            color: #FFD9B3; /* Changed from red */
+            color: #FFD9B3;
          }
          .form-login .form .form-group input {
             background-color: transparent;
@@ -200,10 +194,10 @@
          }
          .spacer {
             width: 100%;
-            height: 40px;
+            height: 50px;
          }
          .form-login .form .sign-up {
-            margin-top: 40px;
+            margin-top: 50px;
             display: flex;
             align-items: center;
          }
@@ -211,8 +205,8 @@
             position: relative;
          }
          .form-login .form .sign-up button {
-            background-color: #FFD9B3; /* Changed from rgb(211, 37, 37) */
-            color: #000000; /* Adjusted for contrast */
+            background-color: #FFD9B3;
+            color: #000000;
             width: 160px;
             height: 35px;
             border: none;
@@ -223,7 +217,7 @@
             padding-left: 25px;
          }
          .form-login .form .sign-up button:hover {
-            background-color: #FFC107; /* Changed from rgb(143, 24, 24) */
+            background-color: #FFC107;
             cursor: pointer;
          }
          .form-login .form .sign-up > div i {
@@ -240,7 +234,156 @@
             text-underline-position: under;
          }
          .sign-up a:hover {
-            color: #FFD9B3; /* Changed from red */
+            color: #FFD9B3;
+         }
+         .forgot-password {
+            margin-top: 12px;
+            text-align: right;
+            position: relative;
+         }
+         .forgot-password a {
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+            font-weight: 400;
+            text-decoration: none;
+            background: linear-gradient(90deg, rgba(255, 217, 179, 0.7), rgba(255, 255, 255, 0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 2px 5px;
+         }
+         .forgot-password a:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, rgba(255, 217, 179, 1), rgba(255, 255, 255, 1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+         }
+         .forgot-password a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #FFD9B3, white);
+            transition: width 0.3s ease;
+         }
+         .forgot-password a:hover::after {
+            width: 100%;
+         }
+         .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+         }
+         .modal-content {
+            background: linear-gradient(135deg, rgba(54, 52, 52, 0.95), rgba(20, 20, 20, 0.95));
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            width: 450px;
+            border-radius: 15px;
+            color: white;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(255, 217, 179, 0.3), 0 0 10px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 217, 179, 0.5);
+            animation: slideIn 0.4s ease;
+         }
+         .modal-content h3 {
+            font-size: 28px;
+            font-weight: 500;
+            background: linear-gradient(90deg, #FFD9B3, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 1px;
+         }
+         .modal-content .form-group {
+            margin-top: 25px;
+         }
+         .modal-content .form-group input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 217, 179, 0.5);
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+         }
+         .modal-content .form-group input:focus {
+            border-color: #FFD9B3;
+            box-shadow: 0 0 8px rgba(255, 217, 179, 0.5);
+         }
+         .modal-content .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+         }
+         .modal-content .form-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+         }
+         .modal-content .form-submit {
+            background: linear-gradient(90deg, #FFD9B3, #FFC107);
+            color: #000000;
+            width: 100%;
+            height: 45px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 30px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+         }
+         .modal-content .form-submit:hover {
+            background: linear-gradient(90deg, #FFC107, #FFD9B3);
+            box-shadow: 0 0 15px rgba(255, 217, 179, 0.6);
+            transform: translateY(-2px);
+         }
+         .modal-content .form-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+         }
+         .modal-content .form-submit:hover::before {
+            left: 100%;
+         }
+         .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+         }
+         .close:hover {
+            color: #FFD9B3;
+            transform: rotate(90deg);
+         }
+         @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+         }
+         @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
          }
       </style>
    </head>
@@ -253,8 +396,8 @@
                <span>Wizard Magazine</span> -->
             </div>
             <div class="register">
-               <div>Bạn chưa có tài khoản?</div>
-               <p>Đăng ký để truy cập tất cả các tính năng của dịch vụ của chúng tôi.</p>
+               <div>Chào mừng bạn trở lại!</div>
+               <p>Đăng nhập để truy cập vào tài khoản của bạn và trải nghiệm các dịch vụ của chúng tôi.</p>
                <div class="social">
                   <a data-toggle="tooltip" title="Facebook" href=""><i class="fab fa-facebook-f"></i></a>
                   <a data-toggle="tooltip" title="Google" href=""><i class="fab fa-google"></i></a>
@@ -265,7 +408,7 @@
          </div>
          <div class="form-login">
             <form action="" method="POST" class="form" id="form-2">
-               <h3 class="heading">Đăng ký</h3>      
+               <h3 class="heading">Đăng nhập</h3>      
                <div class="spacer"></div>
                <div class="form-group">
                   <label for="email" class="form-label">Email</label>
@@ -277,23 +420,36 @@
                   <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
                   <span class="form-message"></span>
                </div>
-               <div class="form-group">
-                  <label for="password_confirmation" class="form-label">Nhập Lại Mật khẩu</label>
-                  <input id="password_confirmation" name="password_confirmation" type="password" placeholder="Nhập lại mật khẩu" class="form-control">
-                  <span class="form-message"></span>
+               <div class="forgot-password">
+                  <a href="#" onclick="showForgotPasswordModal()">Quên mật khẩu?</a>
                </div>
                <div class="form-group f-term">
-                  <input id="agree" name="agree" type="checkbox" class="form-control">
-                  <label for="agree" class="form-label">Tôi đồng ý với tất cả các điều khoản trong <a href="">Điều khoản dịch vụ</a></label>               
+                  <input id="remember" name="remember" type="checkbox" class="form-control">
+                  <label for="remember" class="form-label">Ghi nhớ đăng nhập</label>               
                   <span class="form-message"></span>
                </div>
                <div class="sign-up">
                   <div>
-                     <button class="form-submit">Đăng ký</button>
+                     <button class="form-submit">Đăng nhập</button>
                      <i class="fas fa-chevron-right"></i>
                   </div>
-                  <a href="login.html">Đã có tài khoản?</a>
+                  <a href="register.html">Chưa có tài khoản?</a>
                </div>
+            </form>
+         </div>
+      </div>
+      <!-- Modal Quên mật khẩu -->
+      <div id="forgotPasswordModal" class="modal">
+         <div class="modal-content">
+            <span class="close" onclick="closeForgotPasswordModal()">×</span>
+            <h3>Khôi phục mật khẩu</h3>
+            <form id="forgot-password-form">
+               <div class="form-group">
+                  <label for="forgot-email" class="form-label">Nhập email của bạn</label>
+                  <input id="forgot-email" name="forgot-email" type="text" placeholder="VD: email@gmail.com" class="form-control">
+                  <span class="form-message"></span>
+               </div>
+               <button type="submit" class="form-submit">Gửi liên kết khôi phục</button>
             </form>
          </div>
       </div>
@@ -348,34 +504,13 @@
                      }
                   });
                   if (isFormValid) {
-                     if (typeof options.onSubmit === 'function') {
-                        var enableInputs = formElement.querySelectorAll('[name]');
-                        var formValues = Array.from(enableInputs).reduce(function (values, input) {
-                           switch(input.type) {
-                              case 'radio':
-                                 values[input.name] = formElement.querySelector('input[name="' + input.name + '"]:checked').value;
-                                 break;
-                              case 'checkbox':
-                                 if (!input.matches(':checked')) {
-                                    values[input.name] = '';
-                                    return values;
-                                 }
-                                 if (!Array.isArray(values[input.name])) {
-                                    values[input.name] = [];
-                                 }
-                                 values[input.name].push(input.value);
-                                 break;
-                              case 'file':
-                                 values[input.name] = input.files;
-                                 break;
-                              default:
-                                 values[input.name] = input.value;
-                           }
-                           return values;
-                        }, {});
-                        options.onSubmit(formValues);
+                     var email = formElement.querySelector('#email').value;
+                     var password = formElement.querySelector('#password').value;
+                     // Kiểm tra tài khoản tĩnh
+                     if (email === 'admin@gmail.com' && password === 'admin123') {
+                        window.location.href = 'index.html';
                      } else {
-                        formElement.submit();
+                        alert('Email hoặc mật khẩu không đúng!');
                      }
                   }
                }
@@ -424,15 +559,16 @@
                }
             };
          }
-         Validator.isConfirmed = function (selector, getConfirmValue, message) {
-            return {
-               selector: selector,
-               test: function (value) {
-                  return value === getConfirmValue() ? undefined : message || 'Giá trị nhập vào không chính xác';
-               }
-            };
+         // Hiển thị modal Quên mật khẩu
+         function showForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+         }
+         // Đóng modal Quên mật khẩu
+         function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
          }
          document.addEventListener('DOMContentLoaded', function () {
+            // Xác thực form đăng nhập
             Validator({
                form: '#form-2',
                formGroupSelector: '.form-group',
@@ -440,16 +576,26 @@
                rules: [
                   Validator.isRequired('#email', 'Vui lòng nhập email'),
                   Validator.isEmail('#email'),
+                  Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
                   Validator.minLength('#password', 6),
-                  Validator.isConfirmed('#password_confirmation', function () {
-                     return document.querySelector('#form-2 #password').value;
-                  }, 'Mật khẩu nhập lại không chính xác'),
-                  Validator.isRequired('#agree', 'Vui lòng đồng ý với điều khoản')
                ],
                onSubmit: function (data) {
-                  console.log(data);
-                  alert('Đăng ký thành công!');
-                  window.location.href = 'login.html';
+                  // Logic đã được xử lý trong formElement.onsubmit
+               }
+            });
+            // Xác thực form Quên mật khẩu
+            Validator({
+               form: '#forgot-password-form',
+               formGroupSelector: '.form-group',
+               errorSelector: '.form-message',
+               rules: [
+                  Validator.isRequired('#forgot-email', 'Vui lòng nhập email'),
+                  Validator.isEmail('#forgot-email'),
+               ],
+               onSubmit: function (data) {
+                  console.log('Gửi liên kết khôi phục tới:', data);
+                  alert('Liên kết khôi phục đã được gửi tới email của bạn!');
+                  closeForgotPasswordModal();
                }
             });
          });
