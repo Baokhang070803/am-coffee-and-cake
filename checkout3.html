@@ -258,8 +258,8 @@
                                 <li><a href="#">Cà Phê</a></li>
                                 <li><a href="#">Bánh Ngọt</a></li>
                                 <li><a href="#">Latte</a></li>
-                                <li><a href="#">Cheesecake</a></li>
-                                <li><a href="#">Tiramisu</a></li>
+                                <li><a href="details.html">Cheesecake</a></li>
+                                <li><a href="details.html">Tiramisu</a></li>
                                 <li><a href="#">Mousse Cake</a></li>
                             </ul>
                         </div>
@@ -268,7 +268,7 @@
                                 Đăng Ký 
                                 <strong>Bản Tin</strong>
                             </h3>
-                            <p>Nhận thông tin mới nhất về ưu đãi và sản phẩm từ Đặt Bánh.</p>
+                            <p>Nhận thông tin mới nhất về ưu đãi và sản phẩm từ Ấm.</p>
                             <form>
                                 <input class="email" type="email" name="email" placeholder="Email của bạn...">
                                 <input class="submit" type="submit" value="Gửi">
@@ -281,7 +281,7 @@
                                     <img src="images/fblike.png" alt="Thích trang">
                                 </a>
                             </span>
-                            <p>12k người thích Đặt Bánh - Coffee and Cake.</p>
+                            <p>12k người thích Ấm - Coffee and Cake.</p>
                             <div class="fbplug">
                                 <a href="#">
                                     <span>
@@ -300,64 +300,69 @@
                                         01. Tùy Chọn Thanh Toán
                                     </a>
                                 </li>
-                                <li class="steps active">
+                                <li class="steps">
                                     <a href="checkout2.html" class="step-title">
                                         02. Thông Tin Thanh Toán
                                     </a>
+                                </li>
+                                <li class="steps active">
+                                    <a href="checkout3.html" class="step-title">
+                                        03. Thông Tin Giao Hàng
+                                    </a>
                                     <div class="step-description">
-                                        <form id="billing-form">
+                                        <form id="shipping-form">
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="your-details">
-                                                        <h5>Thông Tin Cá Nhân</h5>
+                                                        <h5>Thông Tin Liên Hệ</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">
-                                                                Họ và Tên 
+                                                                Họ và Tên
                                                                 <strong class="red">*</strong>
                                                             </label>
-                                                            <input type="text" class="input namefild" name="full_name" placeholder="Nhập họ và tên" required>
+                                                            <input type="text" class="input namefild" name="receiver_name"  required>
                                                         </div>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">
                                                                 Số Điện Thoại 
                                                                 <strong class="red">*</strong>
                                                             </label>
-                                                            <input type="text" class="input namefild" name="phone" placeholder="Nhập số điện thoại" required>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <label class="lebel-abs">
-                                                                Email 
-                                                                <strong class="red">*</strong>
-                                                            </label>
-                                                            <input type="email" class="input namefild" name="email" placeholder="Nhập email" required>
+                                                            <input type="text" class="input namefild" name="receiver_phone"  required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="your-details">
-                                                        <h5>Địa Chỉ Thanh Toán</h5>
+                                                        <h5>Địa Chỉ Giao Hàng</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">
                                                                 Địa Chỉ 
                                                                 <strong class="red">*</strong>
                                                             </label>
-                                                            <input type="text" class="input namefild" name="billing_address" placeholder="Nhập địa chỉ thanh toán" required>
+                                                            <input type="text" class="input namefild" name="shipping_address"  required>
                                                         </div>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">
-                                                                Ghi Chú (Tùy Chọn)
+                                                                Ghi Chú Giao Hàng (Nếu có)
                                                             </label>
-                                                            <!-- <textarea class="input namefild" name="billing_note" placeholder="Ghi chú cho đơn hàng (nếu có)"></textarea> -->
+                                                            <textarea class="input namefild" name="shipping_note" ></textarea>
                                                         </div>
                                                         <p class="privacy">
                                                             <span class="input-radio">
                                                                 <input type="radio" name="privacy">
                                                             </span>
                                                             <span class="text">
-                                                                Tôi đã đọc và đồng ý với 
-                                                                <a href="policy.html" class="red">Chính Sách Bảo Mật</a>
+                                                                Thanh toán ghi nhận hàng
                                                             </span>
                                                         </p>
+                                                        <li class="privacy">
+                                                            <span class="input-radio">
+                                                                <input type="radio" name="privacy">
+                                                            </span>
+                                                            <span class="text">
+                                                                thanh toán qua ngân hàng
+                                                            </span>
+                                                        </li>
                                                         <button type="submit">Tiếp Tục</button>
                                                     </div>
                                                 </div>
@@ -365,12 +370,7 @@
                                         </form>
                                     </div>
                                 </li>
-                                <li class="steps">
-                                    <a href="checkout3.html" class="step-title">
-                                        03. Thông Tin Giao Hàng
-                                    </a>
-                                </li>
-                                <li class="steps">
+                                <!-- <li class="steps">
                                     <a href="checkout4.html" class="step-title">
                                         04. Phương Thức Giao Hàng
                                     </a>
@@ -379,9 +379,9 @@
                                     <a href="checkout5.html" class="step-title">
                                         05. Phương Thức Thanh Toán
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="steps">
-                                    <a href="checkout6.html" class="step-title">
+                                    <a href="checkout4.html" class="step-title">
                                         06. Xem Lại Đơn Hàng
                                     </a>
                                 </li>
@@ -395,8 +395,8 @@
                         <strong>Thương Hiệu</strong> Của Chúng Tôi
                     </h3>
                     <div class="control">
-                        <a id="prev_brand" class="prev" href="#"> &lt; </a>
-                        <a id="next_brand" class="next" href="#"> &gt; </a>
+                        <a id="prev_brand" class="prev" href="#"> < </a>
+                        <a id="next_brand" class="next" href="#"> > </a>
                     </div>
                     <ul id="braldLogo">
                         <li>
@@ -495,19 +495,6 @@
          <script defer src="js/jquery.flexslider.js"></script>
          <script type="text/javascript" src="js/script.min.js"></script>
       </body>
-      <body id="home">
-         <!-- Loading Overlay -->
-         <div class="loading-overlay">
-            <div class="loading-content">
-               <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
-               <p>Chờ Ấm Một chút nhé...</p>
-               <div class="loading-spinner"></div>
-            </div>
-         </div>
-         <!-- Nội dung trang hiện tại -->
-         <div class="wrapper">
-            <!-- Phần còn lại của trang -->
-         </div>
-      </body>
+
       
    </html>

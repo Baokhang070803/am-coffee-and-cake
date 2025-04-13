@@ -549,3 +549,19 @@ form.newsletter input[type="submit"]:hover {
        transform: rotate(360deg);
     }
  }
+ .confirmation-message {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+ }
+ .confirmation-message h2 {
+    color: #28a745;
+    font-size: 24px;
+    margin-bottom: 10px;
+ }
+ .confirmation-message p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+ }
