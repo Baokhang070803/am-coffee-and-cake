@@ -565,3 +565,24 @@ form.newsletter input[type="submit"]:hover {
     color: #333;
     margin-bottom: 20px;
  }
+ .shop-table .productname {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4A2F1A; /* Màu nâu đậm */
+}
+
+.shop-table .color-choser .text,
+.shop-table .color-choser .light-red {
+    font-size: 14px;
+    color: #333333;
+}
+
+.shop-table .red {
+    color: #f7544a; /* Màu đỏ */
+    font-weight: 500;
+}
+
+.shop-table .remove-item img {
+    width: 20px;
+    height: 20px;
+}
