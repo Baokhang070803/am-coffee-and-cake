@@ -2,10 +2,10 @@
 <html lang="vi">
 <head>
     <meta charset="utf-8"/>
-    <meta name="description" content="Khuyến mãi đặc biệt tại Ấm - Coffee and Cake! Nhanh tay nhận ưu đãi Mua 1 Tặng 1 và nhiều combo hấp dẫn.">
+    <meta name="description" content="Tin tức và sự kiện mới nhất từ Ấm - Coffee and Cake. Cập nhật các chương trình khuyến mãi, mẹo pha chế, và hoạt động đặc biệt.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="images/favicon.png">
-    <title>Khuyến Mãi Hoành Tráng - Ấm - Coffee and Cake</title>
+    <title>Tin Tức & Sự Kiện - Ấm - Coffee and Cake</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -13,11 +13,11 @@
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
     <style>
-        /* Custom CSS cho trang khuyến mãi */
-        .promo-banner {
+        /* Custom CSS cho trang tin tức */
+        .news-banner {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 400px;
             background: url('https://img.freepik.com/free-photo/coffee-cup-cake-plate_1203-1694.jpg') center/cover no-repeat;
             display: flex;
             align-items: center;
@@ -27,7 +27,7 @@
             margin-bottom: 40px;
             overflow: hidden;
         }
-        .promo-banner::before {
+        .news-banner::before {
             content: '';
             position: absolute;
             top: 0;
@@ -37,124 +37,159 @@
             background: rgba(74, 47, 26, 0.6);
             z-index: 1;
         }
-        .promo-content {
+        .news-banner-content {
             position: relative;
             z-index: 2;
             max-width: 700px;
         }
-        .promo-content h1 {
-            font-size: 48px;
+        .news-banner-content h1 {
+            font-size: 42px;
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 20px;
             animation: fadeInDown 1s ease;
         }
-        .promo-content p {
+        .news-banner-content p {
             font-size: 18px;
-            margin-bottom: 30px;
             animation: fadeInUp 1s ease 0.3s;
             animation-fill-mode: both;
         }
-        .promo-content .btn-promo {
+
+        /* News Content */
+        .news-content {
+            display: flex;
+            gap: 30px;
+        }
+        .news-main {
+            flex: 3;
+        }
+        .news-sidebar {
+            flex: 1;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .news-item {
+            display: flex;
+            margin-bottom: 30px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .news-item img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .news-item-content {
+            padding: 20px;
+            flex: 1;
+        }
+        .news-item-content h3 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin: 0 0 10px;
+        }
+        .news-item-content .date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .news-item-content p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .news-item-content .btn-readmore {
             background: #f7544a;
             color: #fff;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            text-transform: uppercase;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
             transition: all 0.3s ease;
-            animation: fadeInUp 1s ease 0.6s;
-            animation-fill-mode: both;
         }
-        .promo-content .btn-promo:hover {
+        .news-item-content .btn-readmore:hover {
             background: #da2a20;
             transform: scale(1.05);
         }
 
-        /* Countdown Timer */
-        .countdown {
+        /* Pagination */
+        .pagination {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            font-family: 'Roboto', sans-serif;
+            gap: 10px;
+            margin: 40px 0;
         }
-        .countdown div {
-            background: #4A2F1A;
+        .pagination a {
+            padding: 10px 15px;
+            background: #f8f8f8;
+            color: #4A2F1A;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .pagination a:hover, .pagination a.active {
+            background: #f7544a;
             color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 80px;
-        }
-        .countdown span {
-            display: block;
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .countdown p {
-            font-size: 14px;
-            margin: 5px 0 0;
-            text-transform: uppercase;
         }
 
-        /* Products */
-        .promo-products .products {
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .promo-products .products:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .promo-products .offer {
-            background: #f7544a;
-            padding: 8px 15px;
-            font-size: 14px;
-            right: 10px;
-            top: 10px;
-        }
-        .promo-products .productname {
+        /* Sidebar */
+        .news-sidebar h4 {
             font-size: 18px;
-            font-weight: 500;
             color: #4A2F1A;
+            margin-bottom: 20px;
         }
-        .promo-products .price {
-            color: #f7544a;
-            font-size: 22px;
+        .news-sidebar .search-form {
+            display: flex;
+            margin-bottom: 20px;
         }
-        .promo-products .button_group .add-cart {
+        .news-sidebar .search-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+        }
+        .news-sidebar .search-form button {
+            padding: 10px;
             background: #f7544a;
             color: #fff;
             border: none;
-            padding: 12px 25px;
-            transition: all 0.3s ease;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
         }
-        .promo-products .button_group .add-cart:hover {
+        .news-sidebar .search-form button:hover {
             background: #da2a20;
-            transform: scale(1.05);
         }
-
-        /* Combo Section */
-        .combo-section {
-            background: #FFCC99;
-            padding: 40px 0;
-            margin: 40px 0;
+        .news-sidebar .related-news li {
+            display: flex;
+            margin-bottom: 15px;
         }
-        .combo-section .products {
-            background: #fff;
-            border-radius: 15px;
+        .news-sidebar .related-news img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
         }
-        .combo-section .badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #4A2F1A;
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 8px;
+        .news-sidebar .related-news h5 {
             font-size: 14px;
-            font-weight: 500;
+            color: #4A2F1A;
+            margin: 0;
+        }
+        .news-sidebar .categories li {
+            margin-bottom: 10px;
+        }
+        .news-sidebar .categories a {
+            color: #333;
+            text-decoration: none;
+        }
+        .news-sidebar .categories a:hover {
+            color: #f7544a;
         }
 
         /* Modal Popup */
@@ -172,26 +207,34 @@
         }
         .modal-content {
             background: #fff;
-            max-width: 600px;
+            max-width: 800px;
             width: 90%;
             border-radius: 15px;
             padding: 30px;
             position: relative;
             animation: slideIn 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .modal-content h2 {
             font-size: 28px;
             color: #4A2F1A;
             margin-bottom: 20px;
         }
-        .modal-content p {
-            font-size: 16px;
-            color: #333;
+        .modal-content .date {
+            font-size: 14px;
+            color: #888;
             margin-bottom: 20px;
         }
         .modal-content img {
             max-width: 100%;
             border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .modal-content p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
             margin-bottom: 20px;
         }
         .modal-content .btn-close {
@@ -211,19 +254,6 @@
         .modal-content .btn-close:hover {
             background: #da2a20;
         }
-        .modal-content .btn-add {
-            background: #f7544a;
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 10px;
-            border: none;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .modal-content .btn-add:hover {
-            background: #da2a20;
-            transform: scale(1.05);
-        }
 
         /* Animations */
         @keyframes fadeInDown {
@@ -240,45 +270,47 @@
         }
 
         /* Responsive */
+        @media (max-width: 991px) {
+            .news-content {
+                flex-direction: column;
+            }
+            .news-sidebar {
+                margin-top: 30px;
+            }
+            .news-item {
+                flex-direction: column;
+            }
+            .news-item img {
+                width: 100%;
+                height: 200px;
+            }
+        }
         @media (max-width: 767px) {
-            .promo-banner {
+            .news-banner {
                 height: 300px;
             }
-            .promo-content h1 {
+            .news-banner-content h1 {
                 font-size: 32px;
             }
-            .promo-content p {
+            .news-banner-content p {
                 font-size: 16px;
-            }
-            .countdown div {
-                min-width: 60px;
-            }
-            .countdown span {
-                font-size: 18px;
             }
             .modal-content {
                 padding: 20px;
             }
         }
         @media (max-width: 480px) {
-            .promo-banner {
+            .news-banner {
                 height: 250px;
             }
-            .promo-content h1 {
+            .news-banner-content h1 {
                 font-size: 24px;
             }
-            .promo-content p {
+            .news-banner-content p {
                 font-size: 14px;
             }
-            .countdown {
-                gap: 10px;
-            }
-            .countdown div {
-                padding: 10px;
-                min-width: 50px;
-            }
-            .countdown span {
-                font-size: 16px;
+            .news-item img {
+                height: 150px;
             }
         }
     </style>
@@ -316,7 +348,7 @@
                             <ul class="topmenu">
                               
                                <li><a href="contact.html">Liên Hệ</a></li>
-                              
+                               <li><a href="policy.html">Chính Sách</a></li>
                                <li><a href="policy.html">Hỗ Trợ Khác Hàng</a></li>
                                <li><a href="member.html">Thành Viên</a></li>
                             </ul>
@@ -410,9 +442,9 @@
                                   </div> 
                                </div>
                          </li>
-                            <li class="active dropdown"><a href="promotions.html">Khuyến Mãi</a></li>
-                            <li><a href="news.html">Tin Tức</a></li>
-                            <li><a href="event.html">Sự Kiện</a></li>
+                            <li><a href="promotions.html">Khuyến Mãi</a></li>
+                            <li class="active dropdown" ><a href="news.html">Tin Tức</a></li>
+                            <li  ><a href="event.html">Sự Kiện</a></li>
                             <li><a href="about.html">Về Chúng Tôi</a></li>
                          </ul>
                       </div>
@@ -478,84 +510,100 @@
        </div>
         <div class="clearfix"></div>
 
-        <!-- Nội dung khuyến mãi hoành tráng -->
+        <!-- Nội dung trang tin tức -->
         <div class="container_fullwidth">
             <div class="container">
-                <!-- Banner khuyến mãi -->
-                <div class="promo-banner">
-                    <div class="promo-content">
-                        <h1>Mua 1 Tặng 1 - Chỉ 3 Ngày!</h1>
-                        <p>Nhanh tay nhận ưu đãi đặc biệt cho tất cả đồ uống và bánh ngọt từ ngày 15-17/04/2025.</p>
-                        <a href="#promo-details" class="btn-promo">Khám Phá Ngay</a>
+                <!-- Banner tin tức -->
+                <div class="news-banner">
+                    <div class="news-banner-content">
+                        <h1>Tin Tức</h1>
+                        <p>Cập nhật những câu chuyện mới nhất từ Ấm - Coffee and Cake, từ chương trình khuyến mãi đến mẹo pha chế độc đáo!</p>
                     </div>
                 </div>
 
-                <!-- Countdown Timer -->
-                <div class="countdown" id="countdown">
-                    <div><span id="days">00</span><p>Ngày</p></div>
-                    <div><span id="hours">00</span><p>Giờ</p></div>
-                    <div><span id="minutes">00</span><p>Phút</p></div>
-                    <div><span id="seconds">00</span><p>Giây</p></div>
-                </div>
-
-                <!-- Sản phẩm khuyến mãi -->
-                <div class="promo-products hot-products">
-                    <h3 class="title"><strong>Ưu Đãi</strong> Nổi Bật</h3>
-                    <div class="control"><a id="prev_hot" class="prev" href="#"><</a><a id="next_hot" class="next" href="#">></a></div>
-                    <ul id="hot">
-                        <li>
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal1">
-                                        <div class="offer">Mua 1 Tặng 1</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg" alt="Cà Phê Đen Đá"></a></div>
-                                        <div class="productname">Cà Phê Đen Đá</div>
-                                        <h4 class="price">35.000 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal2">
-                                        <div class="offer">Giảm 30%</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg" alt="Cappuccino"></a></div>
-                                        <div class="productname">Cappuccino</div>
-                                        <h4 class="price">31.500 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal3">
-                                        <div class="offer">Mua 2 Tặng 1</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg" alt="Cupcake"></a></div>
-                                        <div class="productname">Cupcake</div>
-                                        <h4 class="price">25.000 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal4">
-                                        <div class="offer">New</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg" alt="Tiramisu"></a></div>
-                                        <div class="productname">Tiramisu</div>
-                                        <h4 class="price">55.250 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
+                <!-- Nội dung tin tức -->
+                <div class="news-content">
+                    <!-- Danh sách bài viết -->
+                    <div class="news-main">
+                        <div class="news-item" data-modal="modal1">
+                            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi tháng 4">
+                            <div class="news-item-content">
+                                <h3>Khuyến Mãi Tháng 4: Mua 1 Tặng 1 Đồ Uống</h3>
+                                <div class="date">15/04/2025</div>
+                                <p>Chào đón tháng 4 với chương trình đặc biệt: Mua 1 tặng 1 tất cả đồ uống tại Ấm - Coffee and Cake. Nhanh tay đến quán từ 15-17/04!</p>
+                                <a href="#" class="btn-readmore">Đọc Thêm</a>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                        <div class="news-item" data-modal="modal2">
+                            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
+                            <div class="news-item-content">
+                                <h3>Ra Mắt Bánh Cheesecake Sakura Mới</h3>
+                                <div class="date">10/04/2025</div>
+                                <p>Thưởng thức hương vị độc đáo của Cheesecake Sakura, lấy cảm hứng từ mùa hoa anh đào. Có mặt tại tất cả chi nhánh từ 10/04!</p>
+                                <a href="#" class="btn-readmore">Đọc Thêm</a>
+                            </div>
+                        </div>
+                        <div class="news-item" data-modal="modal3">
+                            <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
+                            <div class="news-item-content">
+                                <h3>Mẹo Pha Chế Latte Art Tại Nhà</h3>
+                                <div class="date">05/04/2025</div>
+                                <p>Học cách tạo hình latte art đẹp mắt với hướng dẫn chi tiết từ các barista của Ấm. Chỉ cần vài bước đơn giản, bạn sẽ có ly cà phê nghệ thuật!</p>
+                                <a href="#" class="btn-readmore">Đọc Thêm</a>
+                            </div>
+                        </div>
+                        <div class="news-item" data-modal="modal4">
+                            <img src="https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg" alt="Sự kiện cộng đồng">
+                            <div class="news-item-content">
+                                <h3>Sự Kiện Cộng Đồng: Ngày Cà Phê Miễn Phí</h3>
+                                <div class="date">01/04/2025</div>
+                                <p>Tham gia Ngày Cà Phê Miễn Phí tại Ấm để giao lưu, thưởng thức cà phê miễn phí và nhận quà tặng độc quyền. Đừng bỏ lỡ!</p>
+                                <a href="#" class="btn-readmore">Đọc Thêm</a>
+                            </div>
+                        </div>
+
+                        <!-- Phân trang -->
+                        <div class="pagination">
+                            <a href="#" class="active">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">></a>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="news-sidebar">
+                        <h4>Tìm Kiếm</h4>
+                        <form class="search-form">
+                            <input type="text" placeholder="Tìm bài viết...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+
+                        <h4>Bài Viết Nổi Bật</h4>
+                        <ul class="related-news">
+                            <li>
+                                <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi">
+                                <h5>Khuyến Mãi Tháng 4: Mua 1 Tặng 1</h5>
+                            </li>
+                            <li>
+                                <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
+                                <h5>Cheesecake Sakura Mới</h5>
+                            </li>
+                            <li>
+                                <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
+                                <h5>Mẹo Pha Chế Latte Art</h5>
+                            </li>
+                        </ul>
+
+                        <h4>Danh Mục</h4>
+                        <ul class="categories">
+                            <li><a href="#">Khuyến Mãi</a></li>
+                            <li><a href="#">Sản Phẩm Mới</a></li>
+                            <li><a href="#">Mẹo Pha Chế</a></li>
+                            <li><a href="#">Sự Kiện</a></li>
+                            <li><a href="#">Cộng Đồng</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="our-brand">
@@ -593,41 +641,6 @@
                      </li>
                   </ul>
                </div>
-                <!-- Combo khuyến mãi -->
-                <!-- <div class="combo-section featured-products">
-                    <h3 class="title"><strong>Combo</strong> Siêu Tiết Kiệm</h3>
-                    <div class="control"><a id="prev_featured" class="prev" href="#"><</a><a id="next_featured" class="next" href="#">></a></div>
-                    <ul id="featured">
-                        <li>
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal5">
-                                        <div class="badge">Tiết kiệm 20%</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Combo Latte"></a></div>
-                                        <div class="productname">Combo Latte + Bánh Bông Lan</div>
-                                        <h4 class="price">65.000 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="products" data-modal="modal6">
-                                        <div class="badge">Tiết kiệm 25%</div>
-                                        <div class="thumbnail"><a href="#"><img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Combo Cheesecake"></a></div>
-                                        <div class="productname">Combo Cappuccino + Cheesecake</div>
-                                        <h4 class="price">95.000 VND</h4>
-                                        <div class="button_group">
-                                            <button class="button add-cart" type="button">Thêm Vào Giỏ</button>
-                                            <button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div> -->
             </div>
         </div>
         <div class="clearfix"></div>
@@ -689,55 +702,43 @@
     <div class="modal" id="modal1">
         <div class="modal-content">
             <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg" alt="Cà Phê Đen Đá">
-            <h2>Cà Phê Đen Đá - Mua 1 Tặng 1</h2>
-            <p>Hương vị đậm đà, mạnh mẽ của cà phê đen đá nguyên chất. Nhanh tay nhận ưu đãi Mua 1 Tặng 1, chỉ từ ngày 15-17/04/2025!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
+            <h2>Khuyến Mãi Tháng 4: Mua 1 Tặng 1 Đồ Uống</h2>
+            <div class="date">15/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi tháng 4">
+            <p>Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt: Mua 1 tặng 1 tất cả đồ uống trong menu! Từ cà phê đen đá đậm đà đến latte nghệ thuật, bạn đều có thể thưởng thức cùng bạn bè mà không lo về giá.</p>
+            <p>Thời gian: 15-17/04/2025<br>Địa điểm: Tất cả chi nhánh Ấm - Coffee and Cake<br>Lưu ý: Áp dụng cho đơn hàng tại chỗ và mang về.</p>
+            <p>Hãy đến ngay để không bỏ lỡ cơ hội này!</p>
         </div>
     </div>
     <div class="modal" id="modal2">
         <div class="modal-content">
             <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg" alt="Cappuccino">
-            <h2>Cappuccino - Giảm 30%</h2>
-            <p>Lớp bọt sữa mịn màng kết hợp cùng cà phê espresso thơm lừng. Chỉ còn 31.500 VND trong chương trình khuyến mãi!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
+            <h2>Ra Mắt Bánh Cheesecake Sakura Mới</h2>
+            <div class="date">10/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
+            <p>Lấy cảm hứng từ mùa hoa anh đào Nhật Bản, Cheesecake Sakura của Ấm mang đến hương vị thanh nhẹ, ngọt ngào với lớp kem phô mai mịn màng và chút sắc hồng phấn. Đây là món bánh hoàn hảo cho những buổi chiều thư giãn bên ly cà phê yêu thích.</p>
+            <p>Giá: 65.000 VND/lát<br>Có mặt từ: 10/04/2025<br>Đặt hàng ngay để trải nghiệm!</p>
         </div>
     </div>
     <div class="modal" id="modal3">
         <div class="modal-content">
             <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg" alt="Cupcake">
-            <h2>Cupcake - Mua 2 Tặng 1</h2>
-            <p>Thơm ngon, mềm mại với nhiều hương vị. Mua 2 tặng 1, đừng bỏ lỡ cơ hội thưởng thức!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
+            <h2>Mẹo Pha Chế Latte Art Tại Nhà</h2>
+            <div class="date">05/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
+            <p>Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà! Các barista của Ấm chia sẻ 5 bước đơn giản:</p>
+            <p>1. Chọn cà phê espresso chất lượng.<br>2. Đánh sữa tạo bọt mịn bằng máy hoặc bình French press.<br>3. Đổ sữa từ độ cao 5-10cm để tạo lớp nền.<br>4. Dùng tăm hoặc que khuấy để vẽ hình trái tim, lá cây.<br>5. Thực hành đều đặn để thành thạo!</p>
+            <p>Thử ngay và chia sẻ thành quả của bạn với chúng tôi nhé!</p>
         </div>
     </div>
     <div class="modal" id="modal4">
         <div class="modal-content">
             <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg" alt="Tiramisu">
-            <h2>Tiramisu - Giảm 15%</h2>
-            <p>Lớp kem mascarpone béo ngậy hòa quyện cùng cà phê đậm đà. Chỉ còn 55.250 VND!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
-        </div>
-    </div>
-    <div class="modal" id="modal5">
-        <div class="modal-content">
-            <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Combo Latte">
-            <h2>Combo Latte + Bánh Bông Lan</h2>
-            <p>Thưởng thức Latte thơm lừng cùng bánh bông lan mềm mịn, tiết kiệm 20% chỉ với 65.000 VND!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
-        </div>
-    </div>
-    <div class="modal" id="modal6">
-        <div class="modal-content">
-            <button class="btn-close">×</button>
-            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Combo Cheesecake">
-            <h2>Combo Cappuccino + Cheesecake</h2>
-            <p>Combo hoàn hảo cho buổi chiều thư giãn, tiết kiệm 25% chỉ với 95.000 VND!</p>
-            <button class="btn-add">Thêm Vào Giỏ</button>
+            <h2>Sự Kiện Cộng Đồng: Ngày Cà Phê Miễn Phí</h2>
+            <div class="date">01/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg" alt="Sự kiện cộng đồng">
+            <p>Để tri ân khách hàng, Ấm - Coffee and Cake tổ chức Ngày Cà Phê Miễn Phí vào 01/04/2025. Tham gia để thưởng thức cà phê miễn phí, giao lưu với các barista, và nhận quà tặng độc quyền như túi vải, ly tái chế.</p>
+            <p>Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!</p>
         </div>
     </div>
 
@@ -752,35 +753,10 @@
 
     <!-- JavaScript -->
     <script>
-        // Countdown Timer
-        function startCountdown() {
-            const endDate = new Date('2025-04-17T23:59:59').getTime();
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = endDate - now;
-
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById('countdown').innerHTML = '<p>Khuyến mãi đã kết thúc!</p>';
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById('days').textContent = days.toString().padStart(2, '0');
-                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            }, 1000);
-        }
-
         // Modal Popup
-        document.querySelectorAll('.products').forEach(product => {
-            product.addEventListener('click', () => {
-                const modalId = product.getAttribute('data-modal');
+        document.querySelectorAll('.news-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const modalId = item.getAttribute('data-modal');
                 const modal = document.getElementById(modalId);
                 modal.style.display = 'flex';
             });
@@ -809,13 +785,10 @@
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.products, .promo-banner, .countdown').forEach(el => {
+        document.querySelectorAll('.news-item, .news-banner').forEach(el => {
             el.classList.add('animate-hidden');
             observer.observe(el);
         });
-
-        // Start Countdown
-        window.onload = startCountdown;
     </script>
 
     <!-- Bootstrap core JavaScript -->

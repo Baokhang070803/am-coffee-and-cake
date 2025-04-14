@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Ấm - Coffee and Cake, nơi mang đến những ly cà phê thơm ngon và bánh ngọt tinh tế trong không gian ấm cúng.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* Custom CSS cho trang chủ mới */
+        .about-section {
+            padding: 60px 0;
+            background: #f8f8f8;
+            text-align: center;
+        }
+        .about-section h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .about-section p {
+            font-size: 18px;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .about-section .btn-about {
+            background: #f7544a;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .about-section .btn-about:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        .news-highlight {
+            padding: 60px 0;
+        }
+        .news-highlight h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .news-item {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .news-item-content {
+            padding: 20px;
+        }
+        .news-item-content h3 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin: 0 0 10px;
+        }
+        .news-item-content .date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .news-item-content p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .news-item-content .btn-readmore {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .news-item-content .btn-readmore:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        .testimonial-section {
+            padding: 60px 0;
+            background: url('https://img.freepik.com/free-photo/coffee-cup-cake-plate_1203-1694.jpg') center/cover no-repeat;
+            position: relative;
+            color: #fff;
+        }
+        .testimonial-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 47, 26, 0.7);
+            z-index: 1;
+        }
+        .testimonial-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        .testimonial-section h2 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .testimonial-slider {
+            position: relative;
+        }
+        .testimonial-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .testimonial-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+        }
+        .testimonial-item p {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .testimonial-item h4 {
+            font-size: 16px;
+            color: #f7544a;
+        }
+        .testimonial-control {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .testimonial-control a {
+            background: #f7544a;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .testimonial-control a:hover {
+            background: #da2a20;
+        }
+
+        .gallery-section {
+            padding: 60px 0;
+        }
+        .gallery-section h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .gallery-item .overlay i {
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .cta-section {
+            padding: 80px 0;
+            background: url('https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg') center/cover no-repeat;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 47, 26, 0.7);
+            z-index: 1;
+        }
+        .cta-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .cta-section .btn-cta {
+            background: #f7544a;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .cta-section .btn-cta:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        /* Modal cho Gallery */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-modal-content img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-modal-content .btn-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-modal-content .btn-close:hover {
+            background: #da2a20;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 767px) {
+            .about-section h2, .news-highlight h2, .testimonial-section h2, .gallery-section h2, .cta-section h2 {
+                font-size: 28px;
+            }
+            .about-section p, .cta-section p {
+                font-size: 16px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-item img {
+                height: 150px;
+            }
+        }
+        @media (max-width: 480px) {
+            .about-section, .news-highlight, .testimonial-section, .gallery-section, .cta-section {
+                padding: 40px 0;
+            }
+            .testimonial-item p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body id="home">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+            <p>Chờ Ấm Một chút nhé...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Header -->
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <ul class="option_nav">
+                                        <li class="dropdown">
+                                            <a href="#">VIE</a>
+                                            <ul class="subnav">
+                                                <li><a href="#">VIE</a></li>
+                                                <li><a href="#">ENG</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#">VND</a>
+                                            <ul class="subnav">
+                                                <li><a href="#">VND</a></li>
+                                                <li><a href="#">USD</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="topmenu">
+                                        <li><a href="contact.html">Liên Hệ</a></li>
+                                        <li><a href="policy.html">Hỗ Trợ Khách Hàng</a></li>
+                                        <li><a href="member.html">Thành Viên</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <ul class="usermenu">
+                                        <li><a href="login.html" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li><a href="register.html" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                                    <ul class="option-cart-item">
+                                        <li>
+                                            <div class="cart-item">
+                                                <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                                <div class="item-description">
+                                                    <p class="name">Cappuccino</p>
+                                                    <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="price">45.000 VND</p>
+                                                    <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="cart-item">
+                                                <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                                <div class="item-description">
+                                                    <p class="name">Bánh Red Velvet</p>
+                                                    <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="price">55.000 VND</p>
+                                                    <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="index.html">Trang Chủ</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                                        <div class="dropdown-menu mega-menu">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Thức Uống</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html">Cà phê đen đá</a></li>
+                                                        <li><a href="menu.html">Cappuccino</a></li>
+                                                        <li><a href="menu.html">Latte</a></li>
+                                                        <li><a href="menu.html">Espresso</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Bánh</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                                        <li><a href="menu.html">Cheesecake</a></li>
+                                                        <li><a href="menu.html">Bánh Mì</a></li>
+                                                        <li><a href="menu.html">Tiramisu</a></li>
+                                                        <li><a href="menu.html">Mousse Cake</a></li>
+                                                        <li><a href="menu.html">Cupcake</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Gọi Thêm</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html">Phô Mai</a></li>
+                                                        <li><a href="menu.html">Socola</a></li>
+                                                        <li><a href="menu.html">Mật Ong</a></li>
+                                                        <li><a href="menu.html">Kem</a></li>
+                                                        <li><a href="menu.html">Trái Cây</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li><a href="promotions.html">Khuyến Mãi</a></li>
+                                    <li><a href="news.html">Tin Tức</a></li>
+                                    <li><a href="event.html">Sự Kiện</a></li>
+                                    <li><a href="about.html">Về Chúng Tôi</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <!-- Slider -->
+            <div class="hom-slider">
+                <div class="container">
+                    <div id="sequence">
+                        <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                        <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                        <ul class="sequence-canvas">
+                            <li class="animate-in">
+                                <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                                <div class="flat-caption caption2 formLeft delay400 text-center">
+                                    <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                                </div>
+                                <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                                <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                            </li>
+                            <li>
+                                <div class="flat-caption caption2 formLeft delay400">
+                                    <h1>Khuyến Mãi Đặc Biệt</h1>
+                                </div>
+                                <div class="flat-caption caption3 formLeft delay500">
+                                    <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                                </div>
+                                <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                                <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                            </li>
+                            <li>
+                                <div class="flat-caption caption2 formLeft delay400 text-center">
+                                    <h1>Bánh Ngọt Tươi Mới</h1>
+                                </div>
+                                <div class="flat-caption caption3 formLeft delay500 text-center">
+                                    <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                                </div>
+                                <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                                <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="promotion-banner">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="promo-box"><a href="menu-drinks.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="promo-box"><a href="menu-cakes.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="promo-box"><a href="promotions.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <!-- Nội dung chính -->
+            <div class="container_fullwidth">
+                <div class="container">
+                    <!-- About Section -->
+                    <div class="about-section">
+                        <h2>Về Ấm - Coffee and Cake</h2>
+                        <p>Ấm - Coffee and Cake không chỉ là nơi thưởng thức cà phê và bánh ngọt, mà còn là không gian để bạn tìm thấy sự thư giãn và kết nối. Mỗi ly cà phê, mỗi chiếc bánh đều được làm từ tâm huyết, mang đến hương vị đậm đà và yêu thương.</p>
+                        <a href="about.html" class="btn-about">Khám Phá Thêm</a>
+                    </div>
+
+                    <!-- Hot Products -->
+                    <div class="hot-products">
+                        <h3 class="title"><strong>Đồ Uống</strong> Nổi Bật</h3>
+                        <div class="control"><a id="prev_hot" class="prev" href="#"><</a><a id="next_hot" class="next" href="#">></a></div>
+                        <ul id="hot">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="offer">Hot</div>
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"></a></div>
+                                            <div class="productname">Cà Phê Đen Đá</div>
+                                            <h4 class="price">35.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"></a></div>
+                                            <div class="productname">Cappuccino</div>
+                                            <h4 class="price">45.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Latte"></a></div>
+                                            <div class="productname">Latte</div>
+                                            <h4 class="price">45.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="offer">Hot</div>
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Espresso"></a></div>
+                                            <div class="productname">Espresso</div>
+                                            <h4 class="price">40.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Featured Products -->
+                    <div class="featured-products">
+                        <h3 class="title"><strong>Bánh Ngọt</strong> Đặc Biệt</h3>
+                        <div class="control"><a id="prev_featured" class="prev" href="#"><</a><a id="next_featured" class="next" href="#">></a></div>
+                        <ul id="featured">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Bánh Bông Lan"></a></div>
+                                            <div class="productname">Bánh Bông Lan</div>
+                                            <h4 class="price">30.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cheesecake"></a></div>
+                                            <div class="productname">Cheesecake</div>
+                                            <h4 class="price">60.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380" alt="Bánh Mì"></a></div>
+                                            <div class="productname">Bánh Mì</div>
+                                            <h4 class="price">25.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="offer">New</div>
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"></a></div>
+                                            <div class="productname">Tiramisu</div>
+                                            <h4 class="price">65.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mousse Cake"></a></div>
+                                            <div class="productname">Mousse Cake</div>
+                                            <h4 class="price">60.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="products">
+                                            <div class="thumbnail"><a href="details.html"><img src="https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cupcake"></a></div>
+                                            <div class="productname">Cupcake</div>
+                                            <h4 class="price">25.000 VND</h4>
+                                            <div class="button_group"><button class="button add-cart" type="button">Thêm Vào Giỏ</button><button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- News Highlight -->
+                    <div class="news-highlight">
+                        <h2>Tin Tức Nổi Bật</h2>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="news-item">
+                                    <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi">
+                                    <div class="news-item-content">
+                                        <h3>Khuyến Mãi Tháng 4: Mua 1 Tặng 1</h3>
+                                        <div class="date">15/04/2025</div>
+                                        <p>Chào đón tháng 4 với chương trình đặc biệt: Mua 1 tặng 1 tất cả đồ uống tại Ấm!</p>
+                                        <a href="news.html" class="btn-readmore">Đọc Thêm</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="news-item">
+                                    <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
+                                    <div class="news-item-content">
+                                        <h3>Ra Mắt Bánh Cheesecake Sakura</h3>
+                                        <div class="date">10/04/2025</div>
+                                        <p>Thưởng thức hương vị độc đáo của Cheesecake Sakura, có mặt từ 10/04!</p>
+                                        <a href="news.html" class="btn-readmore">Đọc Thêm</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="news-item">
+                                    <img src="https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg" alt="Sự kiện">
+                                    <div class="news-item-content">
+                                        <h3>Ngày Cà Phê Miễn Phí</h3>
+                                        <div class="date">01/04/2025</div>
+                                        <p>Tham gia sự kiện giao lưu và nhận cà phê miễn phí tại Ấm!</p>
+                                        <a href="news.html" class="btn-readmore">Đọc Thêm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Section -->
+                    <div class="testimonial-section">
+                        <h2>Khách Hàng Nói Gì</h2>
+                        <div class="testimonial-slider">
+                            <div class="testimonial-item">
+                                <img src="https://img.freepik.com/free-photo/portrait-smiling-young-woman_23-2148723607.jpg" alt="Khách hàng">
+                                <p>"Không gian tại Ấm thật sự ấm cúng, cà phê thì thơm ngon, đặc biệt là bánh Tiramisu – tuyệt vời!"</p>
+                                <h4>Anh Thư</h4>
+                            </div>
+                            <div class="testimonial-item">
+                                <img src="https://img.freepik.com/free-photo/portrait-happy-young-man_23-2148723611.jpg" alt="Khách hàng">
+                                <p>"Tôi thích cách Ấm chăm chút từng ly cà phê. Latte art ở đây đúng là nghệ thuật!"</p>
+                                <h4>Minh Tuấn</h4>
+                            </div>
+                            <div class="testimonial-item">
+                                <img src="https://img.freepik.com/free-photo/portrait-smiling-woman_23-2148723609.jpg" alt="Khách hàng">
+                                <p>"Mỗi lần đến Ấm, tôi đều cảm thấy thư giãn. Cheesecake Sakura là món yêu thích của tôi!"</p>
+                                <h4>Hồng Nhung</h4>
+                            </div>
+                            <div class="testimonial-control">
+                                <a href="#" id="prev_testimonial"><i class="fa fa-angle-left"></i></a>
+                                <a href="#" id="next_testimonial"><i class="fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Section -->
+                    <div class="gallery-section">
+                        <h2>Khám Phá Không Gian Ấm</h2>
+                        <div class="gallery-grid">
+                            <div class="gallery-item" data-img="https://img.freepik.com/free-photo/coffee-shop-interior_23-2148482757.jpg">
+                                <img src="https://img.freepik.com/free-photo/coffee-shop-interior_23-2148482757.jpg" alt="Không gian">
+                                <div class="overlay"><i class="fa fa-search"></i></div>
+                            </div>
+                            <div class="gallery-item" data-img="https://img.freepik.com/free-photo/coffee-cup-table_23-2148482765.jpg">
+                                <img src="https://img.freepik.com/free-photo/coffee-cup-table_23-2148482765.jpg" alt="Cà phê">
+                                <div class="overlay"><i class="fa fa-search"></i></div>
+                            </div>
+                            <div class="gallery-item" data-img="https://img.freepik.com/free-photo/delicious-cake_23-2148482761.jpg">
+                                <img src="https://img.freepik.com/free-photo/delicious-cake_23-2148482761.jpg" alt="Bánh ngọt">
+                                <div class="overlay"><i class="fa fa-search"></i></div>
+                            </div>
+                            <div class="gallery-item" data-img="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg">
+                                <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Barista">
+                                <div class="overlay"><i class="fa fa-search"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Section -->
+                    <div class="cta-section">
+                        <h2>Thưởng Thức Hương Vị Cùng Ấm</h2>
+                        <p>Đặt hàng ngay hôm nay để trải nghiệm cà phê thơm ngon và bánh ngọt tinh tế!</p>
+                        <a href="menu.html" class="btn-cta">Đặt Hàng Ngay</a>
+                    </div>
+
+                    <!-- Our Brand -->
+                    <div class="our-brand">
+                        <h3 class="title"><strong>Đối Tác</strong> Của Chúng Tôi</h3>
+                        <ul id="braldLogo">
+                            <li>
+                                <ul class="brand_item">
+                                    <li>
+                                        <a href="#">
+                                            <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                                <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                                <p>Hotline: (028) 1234 5678</p>
+                                <p>Email: contact@amcoffee.vn</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                                <ul class="support">
+                                    <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                    <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                    <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                    <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                                <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                                <form class="newsletter">
+                                    <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                    <input type="submit" value="Đăng Ký" class="button">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="social-icon2">
+                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Modal -->
+        <div class="gallery-modal" id="gallery-modal">
+            <div class="gallery-modal-content">
+                <button class="btn-close">×</button>
+                <img src="" alt="Gallery Image">
+            </div>
+        </div>
+
+        <!-- JavaScript -->
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+        <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script defer src="js/jquery.flexslider.js"></script>
+        <script type="text/javascript" src="js/script.min.js"></script>
+        <script>
+            // Testimonial Slider
+            $(document).ready(function() {
+                var currentTestimonial = 0;
+                var testimonials = $('.testimonial-item');
+                var totalTestimonials = testimonials.length;
+
+                function showTestimonial(index) {
+                    testimonials.hide();
+                    testimonials.eq(index).fadeIn();
+                }
+
+                showTestimonial(currentTestimonial);
+
+                $('#next_testimonial').click(function(e) {
+                    e.preventDefault();
+                    currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+                    showTestimonial(currentTestimonial);
+                });
+
+                $('#prev_testimonial').click(function(e) {
+                    e.preventDefault();
+                    currentTestimonial = (currentTestimonial - 1 + totalTestimonials) % totalTestimonials;
+                    showTestimonial(currentTestimonial);
+                });
+            });
+
+            // Gallery Modal
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.getAttribute('data-img');
+                    const modal = document.getElementById('gallery-modal');
+                    const modalImg = modal.querySelector('img');
+                    modalImg.src = imgSrc;
+                    modal.style.display = 'flex';
+                });
+            });
+
+            document.querySelector('.gallery-modal .btn-close').addEventListener('click', () => {
+                document.getElementById('gallery-modal').style.display = 'none';
+            });
+
+            document.getElementById('gallery-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('gallery-modal')) {
+                    document.getElementById('gallery-modal').style.display = 'none';
+                }
+            });
+
+            // Scroll Animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('.about-section, .news-item, .testimonial-section, .gallery-section, .cta-section').forEach(el => {
+                el.classList.add('animate-hidden');
+                observer.observe(el);
+            });
+        </script>
+    </body>
+</html>
