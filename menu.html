@@ -2,27 +2,25 @@
 <html lang="vi">
 <head>
     <meta charset="utf-8"/>
-    <meta name="description" content="Tham gia chương trình hội viên của Ấm - Coffee and Cake để nhận ưu đãi độc quyền và tích lũy điểm thưởng!"/>
+    <meta name="description" content="Khám phá thực đơn đa dạng của Ấm - Coffee and Cake với các món thức uống, bánh ngọt và topping hấp dẫn!"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="images/favicon.png"/>
-    <title>Thành Viên - Ấm - Coffee and Cake</title>
+    <title>Thực Đơn - Ấm - Coffee and Cake</title>
     <link href="css/bootstrap.css" rel="stylesheet"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'/>
     <link href="css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet"/>
-    <!-- Chart.js cho biểu đồ -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Custom styles cho trang Membership */
-        .membership-section {
+        /* Custom styles cho trang Menu */
+        .menu-section {
             padding: 60px 0;
             background: #FFFFFF;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
-        .membership-title {
+        .menu-title {
             font-size: 36px;
             color: #4A2F1A;
             font-weight: 600;
@@ -31,7 +29,7 @@
             position: relative;
             animation: slideIn 0.8s ease;
         }
-        .membership-title::after {
+        .menu-title::after {
             content: '';
             display: block;
             width: 80px;
@@ -39,7 +37,7 @@
             background: #f7544a;
             margin: 10px auto;
         }
-        .membership-subtitle {
+        .menu-subtitle {
             font-size: 18px;
             color: #666666;
             text-align: center;
@@ -47,169 +45,15 @@
             margin: 0 auto 40px;
             line-height: 1.6;
         }
-        .membership-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
+        .menu-category {
             margin-bottom: 40px;
-        }
-        .membership-info, .membership-program {
-            flex: 1;
-            min-width: 300px;
-            background: #FFFFFF;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-        .membership-info:hover, .membership-program:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .membership-info h3, .membership-program h3 {
-            font-size: 24px;
-            color: #4A2F1A;
-            margin-bottom: 15px;
-        }
-        .avatar-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f7544a;
-            transition: transform 0.3s ease;
-        }
-        .avatar:hover {
-            transform: scale(1.05);
-        }
-        .membership-info form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .membership-info label {
-            font-size: 16px;
-            color: #4A2F1A;
-        }
-        .membership-info input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .membership-info button {
-            background: #f7544a;
-            color: #FFFFFF;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .membership-info button:hover {
-            background: #d63c32;
-        }
-        .membership-program .tier {
-            background: #FFCC99;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .membership-program .tier h4 {
-            font-size: 20px;
-            color: #4A2F1A;
-            margin-bottom: 10px;
-        }
-        .membership-program .tier p {
-            font-size: 16px;
-            color: #333333;
-            margin: 5px 0;
-        }
-        .progress-bar {
-            background: #f0f0f0;
-            height: 10px;
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-        .progress {
-            background: #f7544a;
-            height: 100%;
-            width: 50%;
-            transition: width 0.5s ease;
-        }
-        .membership-program .conditions {
-            font-size: 16px;
-            color: #333333;
-            line-height: 1.6;
-        }
-        .membership-program .conditions ul {
-            list-style: disc;
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-        /* Biểu đồ điểm */
-        .points-chart {
-            background: #FFFFFF;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 40px;
-        }
-        .points-chart h3 {
-            font-size: 24px;
-            color: #4A2F1A;
-            margin-bottom: 20px;
-        }
-        canvas#pointsChart {
-            max-height: 300px;
-        }
-        /* Lịch sử giao dịch */
-        .transaction-history {
-            background: #FFFFFF;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 40px;
-        }
-        .transaction-history h3 {
-            font-size: 24px;
-            color: #4A2F1A;
-            margin-bottom: 20px;
-        }
-        .transaction-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .transaction-table th, .transaction-table td {
-            padding: 10px;
-            text-align: left;
-            font-size: 16px;
-            border-bottom: 1px solid #ddd;
-        }
-        .transaction-table th {
-            background: #FFCC99;
-            color: #4A2F1A;
-        }
-        .transaction-table td {
-            color: #333333;
-        }
-        /* Đổi điểm */
-        .redeem-points {
             background: linear-gradient(135deg, #FFCC99 0%, #FFFFFF 100%);
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
             position: relative;
+            overflow: visible;
         }
-        .redeem-points::before {
+        .menu-category::before {
             content: '';
             position: absolute;
             top: 0;
@@ -220,31 +64,41 @@
             opacity: 0.1;
             z-index: 0;
         }
-        .redeem-points h3 {
+        .menu-category h3 {
             font-size: 24px;
             color: #4A2F1A;
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
-        .redeem-item {
-            display: flex;
-            align-items: center;
-            background: #FFFFFF;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            height: 100px;
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
             position: relative;
             z-index: 1;
-            overflow: hidden;
         }
-        .redeem-item:hover {
+        .menu-item {
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: visible;
+            z-index: 2;
+        }
+        .menu-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            z-index: 3;
         }
-        .redeem-item::after {
+        .menu-item::after {
             content: '✨';
             position: absolute;
             top: 10px;
@@ -253,32 +107,27 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .redeem-item:hover::after {
+        .menu-item:hover::after {
             opacity: 1;
         }
-        .redeem-item img {
-            width: 80px;
-            height: 80px;
+        .menu-item img {
+            width: 100%;
+            height: 120px;
             object-fit: cover;
             border-radius: 5px;
-            margin-right: 15px;
+            margin-bottom: 10px;
         }
-        .redeem-item h4 {
+        .menu-item h4 {
             font-size: 18px;
             color: #4A2F1A;
             margin: 0;
-            flex-grow: 1;
         }
-        .redeem-item p {
+        .menu-item p {
             font-size: 16px;
             color: #333333;
-            margin: 0;
+            margin: 5px 0;
         }
-        .redeem-item .actions {
-            display: flex;
-            gap: 10px;
-        }
-        .redeem-item button {
+        .menu-item button {
             background: #f7544a;
             color: #FFFFFF;
             padding: 8px 15px;
@@ -288,101 +137,155 @@
             cursor: pointer;
             transition: background 0.3s ease;
         }
-        .redeem-item button:hover {
+        .menu-item button:hover {
             background: #d63c32;
         }
-        .redeem-item .share-buttons {
-            display: flex;
-            gap: 5px;
+        /* Bảng giới thiệu món */
+        .menu-item-tooltip {
+            position: absolute;
+            top: -220px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: #FFFFFF;
+            border: 2px solid #f7544a;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            display: none;
+            z-index: 1000;
+            animation: popUp 0.4s ease-in-out;
         }
-        .redeem-item .share-button {
-            background: #4A2F1A;
-            color: #FFFFFF;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .menu-item:hover .menu-item-tooltip {
+            display: block;
+        }
+        .menu-item-tooltip img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .menu-item-tooltip h5 {
+            font-size: 18px;
+            color: #4A2F1A;
+            margin: 0 0 10px;
+        }
+        .menu-item-tooltip p {
+            font-size: 14px;
+            color: #333333;
+            margin: 0 0 10px;
+            line-height: 1.5;
+        }
+        .menu-item-tooltip .price {
             font-size: 16px;
-            transition: transform 0.3s ease;
+            color: #f7544a;
+            font-weight: 500;
         }
-        .redeem-item .share-button:hover {
-            transform: scale(1.2);
+        /* Điều chỉnh lưới cho danh mục */
+        .menu-items.drinks, .menu-items.cakes {
+            grid-template-columns: repeat(4, 1fr);
         }
-        /* Animation */
+        .menu-items.toppings {
+            grid-template-columns: repeat(5, 1fr);
+        }
+        /* Animation
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes popUp {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(10px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0) scale(1); 
+            }
+        } */
         /* Responsive */
+        @media (max-width: 991px) {
+            .menu-items.drinks, .menu-items.cakes {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .menu-items.toppings {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .menu-item-tooltip {
+                top: 100%;
+                width: 250px;
+            }
+        }
         @media (max-width: 767px) {
-            .membership-title {
+            .menu-title {
                 font-size: 28px;
             }
-            .membership-subtitle {
+            .menu-subtitle {
                 font-size: 16px;
             }
-            .membership-container {
-                flex-direction: column;
+            .menu-items.drinks, .menu-items.cakes, .menu-items.toppings {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .membership-info, .membership-program {
-                min-width: 100%;
+            .menu-item {
+                height: 220px;
             }
-            .avatar {
-                width: 100px;
+            .menu-item img {
                 height: 100px;
             }
-            .transaction-table th, .transaction-table td {
-                font-size: 14px;
-                padding: 8px;
-            }
-            .redeem-item {
-                height: auto;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
-            }
-            .redeem-item img {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 10px;
-            }
-            .redeem-item h4, .redeem-item p {
+            .menu-item h4, .menu-item p {
                 font-size: 14px;
             }
-            .redeem-item button, .redeem-item .share-button {
+            .menu-item button {
                 padding: 6px 12px;
                 font-size: 12px;
             }
-            canvas#pointsChart {
-                max-height: 200px;
+            .menu-item-tooltip {
+                width: 90%;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px;
+            }
+            .menu-item-tooltip img {
+                width: 80px;
+                height: 80px;
+            }
+            .menu-item-tooltip h5 {
+                font-size: 16px;
+            }
+            .menu-item-tooltip p {
+                font-size: 12px;
+            }
+            .menu-item-tooltip .price {
+                font-size: 14px;
             }
         }
         @media (max-width: 480px) {
-            .membership-title {
+            .menu-title {
                 font-size: 24px;
             }
-            .membership-info h3, .membership-program h3, .points-chart h3, .transaction-history h3, .redeem-points h3 {
+            .menu-category h3 {
                 font-size: 20px;
             }
-            .membership-program .tier h4, .redeem-item h4 {
-                font-size: 16px;
+            .menu-item {
+                height: 200px;
             }
-            .membership-program .tier p, .redeem-item p {
-                font-size: 14px;
+            .menu-item img {
+                height: 80px;
             }
-            .transaction-table {
-                font-size: 12px;
+            .menu-item-tooltip {
+                width: 95%;
+                top: 100%;
             }
         }
         /* Hiệu ứng cuộn */
-        .membership-info, .membership-program, .points-chart, .transaction-history, .redeem-points {
+        .menu-category {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
         }
-        .membership-info.visible, .membership-program.visible, .points-chart.visible, .transaction-history.visible, .redeem-points.visible {
+        .menu-category.visible {
             opacity: 1;
             transform: translateY(0);
         }
@@ -423,7 +326,7 @@
                                <li><a href="contact.html">Liên Hệ</a></li>
                                <li><a href="policy.html">Chính Sách</a></li>
                                <li><a href="policy.html">Hỗ Trợ Khác Hàng</a></li>
-                               <li class="active dropdown" ><a href="member.html">Thành Viên</a></li>
+                               <li><a href="member.html">Thành Viên</a></li>
                             </ul>
                          </div>
                          <div class="col-md-3">
@@ -476,11 +379,11 @@
                       <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
                       <div class="navbar-collapse collapse">
                          <ul class="nav navbar-nav">
-                            <li >
+                            <li>
                                <a href="index.html">Trang Chủ</a>
                             </li>
-                            <li class="dropdown">
-                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                            <li class="active dropdown" class="dropdown" >
+                               <a  href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
                                <div class="dropdown-menu mega-menu">
                                   <div class="row">
                                      <div class="col-md-6 col-sm-6">
@@ -584,136 +487,203 @@
             <div class="clearfix"></div>
             <div class="container_fullwidth">
                 <div class="container">
-                    <div class="membership-section">
-                        <h2 class="membership-title">Chương Trình Hội Viên</h2>
-                        <p class="membership-subtitle">Tham gia chương trình hội viên của Ấm - Coffee and Cake để tận hưởng những ưu đãi độc quyền và tích lũy điểm thưởng!</p>
-                        <div class="membership-container">
-                            <!-- Thông tin thành viên -->
-                            <div class="membership-info">
-                                <h3>Thông Tin Thành Viên</h3>
-                                <div class="avatar-container">
-                                    <img src="https://img.freepik.com/free-photo/portrait-smiling-young-woman-looking-camera_23-2148276937.jpg" alt="Avatar" class="avatar"/>
-                                </div>
-                                <form>
-                                    <label for="name">Họ và Tên</label>
-                                    <input type="text" id="name" value="Võ Trần Hoàng Bảo Khang" required/>
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" value="baokhang.tran@example.com" required/>
-                                    <label for="phone">Số Điện Thoại</label>
-                                    <input type="tel" id="phone" value="0795858581" required/>
-                                    <button type="submit">Cập Nhật Thông Tin</button>
-                                </form>
-                            </div>
-                            <!-- Chương trình hội viên -->
-                            <div class="membership-program">
-                                <h3>Chương Trình Hội Viên</h3>
-                                <div class="tier">
-                                    <h4>Hạng Hiện Tại: Đồng</h4>
-                                    <p>Điểm tích lũy hiện tại: 12.500 điểm</p>
-                                    <div class="progress-bar">
-                                        <div class="progress"></div>
+                    <div class="menu-section">
+                        <h2 class="menu-title">Thực Đơn Của Ấm</h2>
+                        <p class="menu-subtitle">Khám phá những món thức uống thơm ngon, bánh ngọt tinh tế và topping độc đáo tại Ấm - Coffee and Cake!</p>
+                        <!-- Thức Uống -->
+                        <div class="menu-category" id="drinks">
+                            <h3>Thức Uống</h3>
+                            <div class="menu-items drinks">
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"/>
+                                    <h4>Cà Phê Đen Đá</h4>
+                                    <p>35.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"/>
+                                        <h5>Cà Phê Đen Đá</h5>
+                                        <p>Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.</p>
+                                        <p class="price">35.000 VND</p>
                                     </div>
-                                    <p>Cần thêm 1.500 điểm để lên hạng Bạc</p>
                                 </div>
-                                <div class="tier">
-                                    <h4>Quyền Lợi</h4>
-                                    <p>- Tích lũy <strong>1%</strong> trên mỗi hóa đơn.</p>
-                                    <p>- Nhận <strong>40.000 điểm</strong> khi đủ điều kiện lên hạng Vàng trong lần xét điểm tiếp theo.</p>
-                                    <p>- Tỷ lệ quy đổi: <strong>1.000 VND = 1.000 điểm</strong>.</p>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"/>
+                                    <h4>Cappuccino</h4>
+                                    <p>45.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"/>
+                                        <h5>Cappuccino</h5>
+                                        <p>Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.</p>
+                                        <p class="price">45.000 VND</p>
+                                    </div>
                                 </div>
-                                <div class="conditions">
-                                    <h4>Điều Kiện Chung</h4>
-                                    <ul>
-                                        <li>Điểm tích lũy sẽ hết hạn sau <strong>12 tháng</strong> nếu không sử dụng.</li>
-                                        <li>Cần đạt đủ số điểm để nâng hạng hoặc mua sản phẩm áp dụng mức điểm tích lũy.</li>
-                                    </ul>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Latte"/>
+                                    <h4>Latte</h4>
+                                    <p>50.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Latte"/>
+                                        <h5>Latte</h5>
+                                        <p>Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.</p>
+                                        <p class="price">50.000 VND</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- Biểu đồ điểm -->
-                        <div class="points-chart">
-                            <h3>Tiến Trình Điểm Tích Lũy</h3>
-                            <canvas id="pointsChart"></canvas>
-                        </div>
-                        <!-- Lịch sử giao dịch -->
-                        <div class="transaction-history">
-                            <h3>Lịch Sử Giao Dịch</h3>
-                            <table class="transaction-table">
-                                <thead>
-                                    <tr>
-                                        <th>Ngày</th>
-                                        <th>Sản Phẩm</th>
-                                        <th>Giá</th>
-                                        <th>Điểm Tích Lũy</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>01/04/2025</td>
-                                        <td>Cappuccino (Nhỏ) x2</td>
-                                        <td>90.000 VND</td>
-                                        <td>+900 điểm</td>
-                                    </tr>
-                                    <tr>
-                                        <td>15/03/2025</td>
-                                        <td>Bánh Red Velvet (Lát) x1</td>
-                                        <td>55.000 VND</td>
-                                        <td>+550 điểm</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/03/2025</td>
-                                        <td>Latte (Lớn) x1</td>
-                                        <td>60.000 VND</td>
-                                        <td>+600 điểm</td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td>20/02/2025</td>
-                                        <td>Trà Đào Cam Sả x1</td>
-                                        <td>45.000 VND</td>
-                                        <td>+450 điểm</td>
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- Đổi điểm -->
-                        <div class="redeem-points">
-                            <h3>Đổi Điểm Thưởng</h3>
-                            <div class="redeem-item">
-                                <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"/>
-                                <h4>Cà Phê Đen Đá (Nhỏ)</h4>
-                                <p>5.000 điểm</p>
-                                <div class="actions">
-                                    <button onclick="alert('Đã đổi Cà Phê Đen Đá!')">Đổi Ngay</button>
-                                    <div class="share-buttons">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://amcoffee.vn/redeem/coffee" class="share-button"><i class="fa fa-facebook"></i></a>
-                                        <a href="https://www.instagram.com/?url=https://amcoffee.vn/redeem/coffee" class="share-button"><i class="fa fa-instagram"></i></a>
-                                        <a href="https://zalo.me/share?url=https://amcoffee.vn/redeem/coffee" class="share-button">Z</a>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Espresso"/>
+                                    <h4>Espresso</h4>
+                                    <p>40.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Espresso"/>
+                                        <h5>Espresso</h5>
+                                        <p>Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.</p>
+                                        <p class="price">40.000 VND</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="redeem-item">
-                                <img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt="Bánh Red Velvet"/>
-                                <h4>Bánh Red Velvet (Lát)</h4>
-                                <p>7.500 điểm</p>
-                                <div class="actions">
-                                    <button onclick="alert('Đã đổi Bánh Red Velvet!')">Đổi Ngay</button>
-                                    <div class="share-buttons">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://amcoffee.vn/redeem/cake" class="share-button"><i class="fa fa-facebook"></i></a>
-                                        <a href="https://www.instagram.com/?url=https://amcoffee.vn/redeem/cake" class="share-button"><i class="fa fa-instagram"></i></a>
-                                        <a href="https://zalo.me/share?url=https://amcoffee.vn/redeem/cake" class="share-button">Z</a>
+                        </div>
+                        <!-- Bánh -->
+                        <div class="menu-category" id="cakes">
+                            <h3>Bánh</h3>
+                            <div class="menu-items cakes">
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Bánh Bông Lan"/>
+                                    <h4>Bánh Bông Lan</h4>
+                                    <p>30.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Bánh Bông Lan"/>
+                                        <h5>Bánh Bông Lan</h5>
+                                        <p>Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.</p>
+                                        <p class="price">30.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cheesecake"/>
+                                    <h4>Cheesecake</h4>
+                                    <p>55.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cheesecake"/>
+                                        <h5>Cheesecake</h5>
+                                        <p>Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.</p>
+                                        <p class="price">55.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380" alt="Bánh Mì"/>
+                                    <h4>Bánh Mì</h4>
+                                    <p>25.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380" alt="Bánh Mì"/>
+                                        <h5>Bánh Mì</h5>
+                                        <p>Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.</p>
+                                        <p class="price">25.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"/>
+                                    <h4>Tiramisu</h4>
+                                    <p>60.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"/>
+                                        <h5>Tiramisu</h5>
+                                        <p>Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.</p>
+                                        <p class="price">60.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mousse Cake"/>
+                                    <h4>Mousse Cake</h4>
+                                    <p>50.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mousse Cake"/>
+                                        <h5>Mousse Cake</h5>
+                                        <p>Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.</p>
+                                        <p class="price">50.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cupcake"/>
+                                    <h4>Cupcake</h4>
+                                    <p>35.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cupcake"/>
+                                        <h5>Cupcake</h5>
+                                        <p>Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.</p>
+                                        <p class="price">35.000 VND</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="redeem-item">
-                                <img src="https://img.freepik.com/premium-photo/twenty-percent-white-space-isolated-3d-illustration_356060-946.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Voucher 50.000 VND"/>
-                                <h4>Voucher giảm 20%</h4>
-                                <p>10.000 điểm</p>
-                                <div class="actions">
-                                    <button onclick="alert('Đã đổi Voucher 50.000 VND!')">Đổi Ngay</button>
-                                    <div class="share-buttons">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://amcoffee.vn/redeem/voucher" class="share-button"><i class="fa fa-facebook"></i></a>
-                                        <a href="https://www.instagram.com/?url=https://amcoffee.vn/redeem/voucher" class="share-button"><i class="fa fa-instagram"></i></a>
-                                        <a href="https://zalo.me/share?url=https://amcoffee.vn/redeem/voucher" class="share-button">Z</a>
+                        </div>
+                        <!-- Gọi Thêm -->
+                        <div class="menu-category" id="toppings">
+                            <h3>Gọi Thêm</h3>
+                            <div class="menu-items toppings">
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Phô Mai"/>
+                                    <h4>Phô Mai</h4>
+                                    <p>10.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Phô Mai"/>
+                                        <h5>Phô Mai</h5>
+                                        <p>Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.</p>
+                                        <p class="price">10.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Socola"/>
+                                    <h4>Socola</h4>
+                                    <p>10.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Socola"/>
+                                        <h5>Socola</h5>
+                                        <p>Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.</p>
+                                        <p class="price">10.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mật Ong"/>
+                                    <h4>Mật Ong</h4>
+                                    <p>8.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mật Ong"/>
+                                        <h5>Mật Ong</h5>
+                                        <p>Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.</p>
+                                        <p class="price">8.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Kem"/>
+                                    <h4>Kem</h4>
+                                    <p>12.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Kem"/>
+                                        <h5>Kem</h5>
+                                        <p>Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.</p>
+                                        <p class="price">12.000 VND</p>
+                                    </div>
+                                </div>
+                                <div class="menu-item">
+                                    <img src="https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Trái Cây"/>
+                                    <h4>Trái Cây</h4>
+                                    <p>15.000 VND</p>
+                                    <button onclick="alert('Đã thêm vào giỏ!')">Thêm vào giỏ</button>
+                                    <div class="menu-item-tooltip">
+                                        <img src="https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Trái Cây"/>
+                                        <h5>Trái Cây</h5>
+                                        <p>Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.</p>
+                                        <p class="price">15.000 VND</p>
                                     </div>
                                 </div>
                             </div>
@@ -827,7 +797,7 @@
             });
 
             // Hiệu ứng cuộn
-            const elements = document.querySelectorAll('.membership-info, .membership-program, .points-chart, .transaction-history, .redeem-points');
+            const elements = document.querySelectorAll('.menu-category');
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -842,42 +812,20 @@
                 });
             }, observerOptions);
             elements.forEach(el => observer.observe(el));
-
-            // Biểu đồ điểm
-            const ctx = document.getElementById('pointsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Thg 11/2024', 'Thg 12/2024', 'Thg 1/2025', 'Thg 2/2025', 'Thg 3/2025', 'Thg 4/2025'],
-                    datasets: [{
-                        label: 'Điểm Tích Lũy',
-                        data: [2000, 4500, 7000, 9000, 11000, 12500],
-                        borderColor: '#f7544a',
-                        backgroundColor: 'rgba(247, 84, 74, 0.2)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'Điểm' }
-                        },
-                        x: {
-                            title: { display: true, text: 'Tháng' }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutBounce'
-                    }
-                }
-            });
         </script>
     </body>
+    <body id="home">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay">
+           <div class="loading-content">
+              <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+              <p>Chờ Ấm Một chút nhé...</p>
+              <div class="loading-spinner"></div>
+           </div>
+        </div>
+        <!-- Nội dung trang hiện tại -->
+        <div class="wrapper">
+           <!-- Phần còn lại của trang -->
+        </div>
+     </body>
 </html>
