@@ -1,0 +1,45 @@
+name: Generate posts.json
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Generate posts.json
+        run: |
+          echo '[' > posts.json
+          first=true
+          for f in posts/*.md; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo ',' >> posts.json
+            fi
+            echo "  \"$(basename "$f")\"" >> posts.json
+          done
+          echo ']' >> posts.json
+
+      - name: Debug
+        run: |
+          git remote -v
+          echo "Repository: ${{ github.repository }}"
+          echo "Token exists: ${{ secrets.GH_TOKEN != '' }}"
+
+      - name: Commit and push posts.json
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add posts.json
+          git commit -m "Add generated posts.json" || echo "No changes to commit"
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/nguyenquocan300503/simple-blog.git
+          git push origin main
