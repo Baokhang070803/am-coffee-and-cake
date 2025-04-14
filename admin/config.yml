@@ -1,17 +1,26 @@
 backend:
   name: git-gateway
-  branch: main # hoặc 'master' nếu repo bạn dùng branch đó
+  branch: main
 
-media_folder: "images/uploads" # nơi lưu ảnh trên GitHub
-public_folder: "/images/uploads" # đường dẫn ảnh hiển thị trên web
+publish_mode: editorial_workflow
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
-  - name: "posts"
-    label: "Bài viết"
+  - name: "news"
+    label: "Tin Tức"
     folder: "posts"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "news#{{slug}}"
     fields:
-      - { label: "Tiêu đề", name: "title", widget: "string" }
-      - { label: "Ngày đăng", name: "date", widget: "datetime" }
-      - { label: "Nội dung", name: "body", widget: "markdown" }
+      - { label: "Tiêu đề", name: "title", widget: "string", required: true }
+      - { label: "Ngày đăng", name: "date", widget: "datetime", required: true }
+      - { label: "Ảnh đại diện", name: "thumbnail", widget: "image", required: false }
+      - { label: "Tóm tắt", name: "excerpt", widget: "text", required: false }
+      - { label: "Nội dung", name: "body", widget: "markdown", required: true }
+      - { label: "Danh mục", name: "category", widget: "select", options: ["Khuyến Mãi", "Sản Phẩm Mới", "Mẹo Pha Chế", "Sự Kiện", "Cộng Đồng"], required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Tác giả", name: "author", widget: "string", required: false }
+      - { label: "Trạng thái", name: "status", widget: "select", options: ["Nháp", "Công khai"], default: "Nháp", required: true }
