@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Tham gia chương trình hội viên của Ấm - Coffee and Cake để nhận ưu đãi độc quyền và tích lũy điểm thưởng!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Thành Viên - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* Custom styles cho trang Membership */
+        .membership-section {
+            padding: 60px 0;
+            background: #FFFFFF;
+        }
+        .membership-title {
+            font-size: 36px;
+            color: #4A2F1A;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .membership-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #f7544a;
+            margin: 10px auto;
+        }
+        .membership-subtitle {
+            font-size: 18px;
+            color: #666666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .membership-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .membership-info, .membership-program {
+            flex: 1;
+            min-width: 300px;
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .membership-info:hover, .membership-program:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .membership-info h3, .membership-program h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 15px;
+        }
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f7544a;
+            transition: transform 0.3s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        .avatar-upload {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #4A2F1A;
+            cursor: pointer;
+        }
+        .membership-info form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .membership-info label {
+            font-size: 16px;
+            color: #4A2F1A;
+        }
+        .membership-info input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .membership-info button {
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .membership-info button:hover {
+            background: #d63c32;
+        }
+        .membership-program .tier {
+            background: #FFCC99;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .membership-program .tier h4 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .membership-program .tier p {
+            font-size: 16px;
+            color: #333333;
+            margin: 5px 0;
+        }
+        .progress-bar {
+            background: #f0f0f0;
+            height: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress {
+            background: #f7544a;
+            height: 100%;
+            width: 30%; /* Giả sử 30% tiến độ */
+            transition: width 0.5s ease;
+        }
+        .membership-program .conditions {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .membership-program .conditions ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        /* Lịch sử giao dịch */
+        .transaction-history {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .transaction-history h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transaction-table th, .transaction-table td {
+            padding: 10px;
+            text-align: left;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+        .transaction-table th {
+            background: #FFCC99;
+            color: #4A2F1A;
+        }
+        .transaction-table td {
+            color: #333333;
+        }
+        /* Đổi điểm */
+        .redeem-points {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .redeem-points h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .redeem-item {
+            display: flex;
+            align-items: center;
+            background: #FFCC99;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            height: 100px; /* Đảm bảo ô bằng nhau */
+        }
+        .redeem-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .redeem-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        .redeem-item h4 {
+            font-size: 18px;
+            color: #4A2F1A;
+            margin: 0;
+            flex-grow: 1;
+        }
+        .redeem-item p {
+            font-size: 16px;
+            color: #333333;
+            margin: 0;
+        }
+        .redeem-item button {
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .redeem-item button:hover {
+            background: #d63c32;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .membership-title {
+                font-size: 28px;
+            }
+            .membership-subtitle {
+                font-size: 16px;
+            }
+            .membership-container {
+                flex-direction: column;
+            }
+            .membership-info, .membership-program {
+                min-width: 100%;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .transaction-table th, .transaction-table td {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .redeem-item {
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+            .redeem-item img {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 10px;
+            }
+            .redeem-item h4, .redeem-item p {
+                font-size: 14px;
+            }
+            .redeem-item button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .membership-title {
+                font-size: 24px;
+            }
+            .membership-info h3, .membership-program h3, .transaction-history h3, .redeem-points h3 {
+                font-size: 20px;
+            }
+            .membership-program .tier h4, .redeem-item h4 {
+                font-size: 16px;
+            }
+            .membership-program .tier p, .redeem-item p {
+                font-size: 14px;
+            }
+            .transaction-table {
+                font-size: 12px;
+            }
+        }
+
+        /* Hiệu ứng cuộn */
+        .membership-info, .membership-program, .transaction-history, .redeem-points {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .membership-info.visible, .membership-program.visible, .transaction-history.visible, .redeem-points.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body id="home">
+    <div class="wrapper">
+       <div class="header">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-2 col-sm-2">
+                   <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                   <div class="header_top">
+                      <div class="row">
+                         <div class="col-md-3">
+                            <ul class="option_nav">
+                               <li class="dropdown">
+                                  <a href="#">VIE</a>
+                                  <ul class="subnav">
+                                     <li><a href="#">VIE</a></li>
+                                     <li><a href="#">ENG</a></li>
+                                  </ul>
+                               </li>
+                               <li class="dropdown">
+                                  <a href="#">VND</a>
+                                  <ul class="subnav">
+                                     <li><a href="#">VND</a></li>
+                                     <li><a href="#">USD</a></li>
+                                  </ul>
+                               </li>
+                            </ul>
+                         </div>
+                         <div class="col-md-6">
+                            <ul class="topmenu">
+                               <li><a href="about.html">Về Chúng Tôi</a></li>
+                               <li><a href="contact.html">Liên Hệ</a></li>
+                               <li><a href="policy.html">Chính Sách</a></li>
+                               <li><a href="policy.html">Hỗ Trợ Khác Hàng</a></li>
+                            </ul>
+                         </div>
+                         <div class="col-md-3">
+                            <ul class="usermenu">
+                               <li><a href="login.html" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                               <li><a href="register.html" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                            </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="header_bottom">
+                      <ul class="option">
+                         <li id="search" class="search">
+                            <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                         </li>
+                         <li class="option-cart">
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <ul class="option-cart-item">
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Cappuccino</p>
+                                        <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">45.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Bánh Red Velvet</p>
+                                        <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">55.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                            </ul>
+                         </li>
+                      </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                      <div class="navbar-collapse collapse">
+                         <ul class="nav navbar-nav">
+                            <li class="active dropdown">
+                               <a href="index.html">Trang Chủ</a>
+                            </li>
+                            <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                               <div class="dropdown-menu mega-menu">
+                                  <div class="row">
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Thức Uống</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu-drinks.html#tra-trai-cay">Cà phê đen đá</a></li>
+                                              <li><a href="menu-drinks.html#tra-sua">Cappuccino</a></li>
+                                              <li><a href="menu-drinks.html#kem-silky">Latte</a></li>
+                                              <li><a href="menu-drinks.html#ca-phe">Espresso</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Bánh</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu-cakes.html#banh-lanh">Bánh Bông Lan</a></li>
+                                              <li><a href="menu-cakes.html#cookies-croissant">Cheesecake</a></li>
+                                              <li><a href="menu-cakes.html#banh-mi">Bánh Mì</a></li>
+                                              <li><a href="menu-cakes.html#banh-bong-lan">Tiramisu</a></li>
+                                              <li><a href="menu-cakes.html#mousse-cake">Mousse Cake</a></li>
+                                              <li><a href="menu-cakes.html#cupcake">Cupcake</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Gọi Thêm</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu-cakes.html#pho-mai">Phô Mai</a></li>
+                                     <li><a href="menu-cakes.html#socola">Socola</a></li>
+                                     <li><a href="menu-cakes.html#mat-ong">Mật Ong</a></li>
+                                     <li><a href="menu-cakes.html#kem">Kem</a></li>
+                                     <li><a href="menu-cakes.html#trai-cay">Trái Cây</a></li>
+                                        </ul>
+                                  </div> 
+                               </div>
+                         </li>
+                            <li><a href="promotions.html">Khuyến Mãi</a></li>
+                            <li><a href="contact.html">Thành Viên</a></li>
+                            <li><a href="contact.html">Tin Tức</a></li>
+                            <li><a href="contact.html">Sự Kiện</a></li>
+                         </ul>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="hom-slider">
+          <div class="container">
+             <div id="sequence">
+                <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                <ul class="sequence-canvas">
+                   <li class="animate-in">
+                      <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                      </div>
+                      
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400">
+                         <h1>Khuyến Mãi Đặc Biệt</h1>
+                      </div>   
+                      <div class="flat-caption caption3 formLeft delay500">
+                         <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                      </div>
+                      <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Bánh Ngọt Tươi Mới</h1>
+                      </div>
+                      <div class="flat-caption caption3 formLeft delay500 text-center">
+                         <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                   </li>
+                </ul>
+             </div>
+          </div>
+          <div class="promotion-banner">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="menu-drinks.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                   </div>
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="menu-cakes.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                   </div>
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="promotions.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+            <div class="clearfix"></div>
+            <div class="container_fullwidth">
+                <div class="container">
+                    <div class="membership-section">
+                        <h2 class="membership-title">Chương Trình Hội Viên</h2>
+                        <p class="membership-subtitle">Tham gia chương trình hội viên của Ấm - Coffee and Cake để tận hưởng những ưu đãi độc quyền và tích lũy điểm thưởng!</p>
+                        <div class="membership-container">
+                            <!-- Thông tin thành viên -->
+                            <div class="membership-info">
+                                <h3>Thông Tin Thành Viên</h3>
+                                <div class="avatar-container">
+                                    <img src="images/member.jpg" alt="Avatar" class="avatar">
+                                    <!-- <input type="file" id="avatar-upload" accept="image/*" class="avatar-upload">
+                                    <label for="avatar-upload" class="avatar-upload">Tải ảnh đại diện</label> -->
+                                </div>
+                                <form>
+                                    <label for="name">Họ và Tên</label>
+                                    <input type="text" id="name" value="Nguyễn Đặng Hải Đăng" required>
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" value="haidang.tran@example.com" required>
+                                    <label for="phone">Số Điện Thoại</label>
+                                    <input type="tel" id="phone" value="0935123456" required>
+                                    <button type="submit">Cập Nhật Thông Tin</button>
+                                </form>
+                            </div>
+                            <!-- Chương trình hội viên -->
+                            <div class="membership-program">
+                                <h3>Chương Trình Hội Viên</h3>
+                                <div class="tier">
+                                    <h4>Hạng Hiện Tại: Đồng</h4>
+                                    <p>Điểm tích lũy hiện tại: 12.500 điểm</p>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 50%;"></div>
+                                    </div>
+                                    <p>Cần thêm 12.500 điểm để lên hạng Bạc</p>
+                                </div>
+                                <div class="tier">
+                                    <h4>Quyền Lợi</h4>
+                                    <p>- Tích lũy <strong>1%</strong> trên mỗi hóa đơn.</p>
+                                    <p>- Nhận <strong>40.000 điểm</strong> khi đủ điều kiện lên hạng Vàng trong lần xét điểm tiếp theo.</p>
+                                    <p>- Tỷ lệ quy đổi: <strong>1.000 VND = 1.000 điểm</strong>.</p>
+                                </div>
+                                <div class="conditions">
+                                    <h4>Điều Kiện Chung</h4>
+                                    <ul>
+                                        <li>Điểm tích lũy sẽ hết hạn sau <strong>12 tháng</strong> nếu không sử dụng.</li>
+                                        <li>Cần đạt đủ số điểm để nâng hạng hoặc mua sản phẩm áp dụng mức điểm tích lũy.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lịch sử giao dịch -->
+                        <div class="transaction-history">
+                            <h3>Lịch Sử Giao Dịch</h3>
+                            <table class="transaction-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Sản Phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Điểm Tích Lũy</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>01/04/2025</td>
+                                        <td>Cappuccino (Nhỏ) x2</td>
+                                        <td>90.000 VND</td>
+                                        <td>+900 điểm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15/03/2025</td>
+                                        <td>Bánh Red Velvet (Lát) x1</td>
+                                        <td>55.000 VND</td>
+                                        <td>+550 điểm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/03/2025</td>
+                                        <td>Latte (Lớn) x1</td>
+                                        <td>60.000 VND</td>
+                                        <td>+600 điểm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>20/02/2025</td>
+                                        <td>Trà Đào Cam Sả x1</td>
+                                        <td>45.000 VND</td>
+                                        <td>+450 điểm</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Đổi điểm -->
+                        <div class="redeem-points">
+                            <h3>Đổi Điểm Thưởng</h3>
+                            <div class="redeem-item">
+                                <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá">
+                                <h4>Cappuccino (Nhỏ)</h4>
+                                <p>5.000 điểm</p>
+                                <button onclick="alert('Đã đổi Cà Phê Đen Đá!')">Đổi Ngay</button>
+                            </div>
+                            <div class="redeem-item">
+                                <img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt="Bánh Red Velvet">
+                                <h4>Bánh Red Velvet (Lát)</h4>
+                                <p>7.500 điểm</p>
+                                <button onclick="alert('Đã đổi Bánh Red Velvet!')">Đổi Ngay</button>
+                            </div>
+                            <!-- <div class="redeem-item">
+                                <img src="https://img.freepik.com/free-photo/glass-tea-with-lemon_144627-40298.jpg" alt="Trà Đào Cam Sả">
+                                <h4>Trà Đào Cam Sả</h4>
+                                <p>6.000 điểm</p>
+                                <button onclick="alert('Đã đổi Trà Đào Cam Sả!')">Đổi Ngay</button>
+                            </div> -->
+                            <div class="redeem-item">
+                                <img src="https://img.freepik.com/premium-photo/3d-rendering-icon-symbols-coupon-20-off-perspective-view-yellow-color-background_607106-86.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Voucher 50.000 VND">
+                                <h4>Voucher 20%</h4>
+                                <p>10.000 điểm</p>
+                                <button onclick="alert('Đã đổi Voucher 50.000 VND!')">Đổi Ngay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="footer">
+                <div class="footer-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                                <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                                <p>Hotline: (028) 1234 5678</p>
+                                <p>Email: contact@amcoffee.vn</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                                <ul class="support">
+                                    <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                    <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                    <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                    <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                    <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                                <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                                <form class="newsletter">
+                                    <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                    <input type="submit" value="Đăng Ký" class="button">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="social-icon2">
+                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+        <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script defer src="js/jquery.flexslider.js"></script>
+        <script type="text/javascript" src="js/script.min.js"></script>
+        <script>
+            // Ẩn loading overlay sau khi trang tải xong
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.querySelector('.loading-overlay').classList.add('hidden');
+                }, 1000);
+            });
+
+            // Hiệu ứng cuộn
+            const elements = document.querySelectorAll('.membership-info, .membership-program, .transaction-history, .redeem-points');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            elements.forEach(el => observer.observe(el));
+
+            // Xem trước ảnh đại diện
+            document.getElementById('avatar-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.querySelector('.avatar').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        </script>
+    </body>
+</html>

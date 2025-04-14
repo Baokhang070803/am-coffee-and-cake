@@ -586,3 +586,186 @@ form.newsletter input[type="submit"]:hover {
     width: 20px;
     height: 20px;
 }
+/* Custom styles cho phần Thông Tin Liên Hệ */
+.contact-infoormation {
+    background: #FFFFFF;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+.contact-infoormation:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.contact-infoormation h5 {
+    font-size: 28px;
+    color: #4A2F1A;
+    font-weight: 600;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 10px;
+}
+.contact-infoormation h5::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background: #f7544a;
+}
+.contact-infoormation ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333333;
+}
+.contact-infoormation .icon {
+    width: 50px;
+    height: 50px;
+    background: #FFCC99;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+}
+.contact-infoormation .icon i {
+    font-size: 24px;
+    color: #4A2F1A;
+}
+.contact-infoormation .icon:hover {
+    background: #f7544a;
+    transform: scale(1.1);
+}
+.contact-infoormation .icon:hover i {
+    color: #FFFFFF;
+}
+.contact-infoormation p {
+    margin: 0;
+    line-height: 1.6;
+}
+.contact-infoormation p strong {
+    color: #4A2F1A;
+    font-weight: 500;
+}
+.contact-social {
+    margin-top: 30px;
+}
+.contact-social h6 {
+    font-size: 18px;
+    color: #4A2F1A;
+    margin-bottom: 15px;
+}
+.contact-social ul {
+    display: flex;
+    gap: 15px;
+}
+.contact-social ul li a {
+    width: 40px;
+    height: 40px;
+    background: #FFCC99;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.contact-social ul li a i {
+    font-size: 20px;
+    color: #4A2F1A;
+}
+.contact-social ul li a:hover {
+    background: #f7544a;
+    transform: scale(1.15);
+}
+.contact-social ul li a:hover i {
+    color: #FFFFFF;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .contact-infoormation {
+        padding: 30px;
+    }
+    .contact-infoormation h5 {
+        font-size: 24px;
+    }
+    .contact-infoormation ul li {
+        font-size: 14px;
+    }
+    .contact-infoormation .icon {
+        width: 40px;
+        height: 40px;
+    }
+    .contact-infoormation .icon i {
+        font-size: 20px;
+    }
+    .contact-social ul {
+        gap: 10px;
+    }
+    .contact-social ul li a {
+        width: 35px;
+        height: 35px;
+    }
+    .contact-social ul li a i {
+        font-size: 18px;
+    }
+}
+@media (max-width: 480px) {
+    .contact-infoormation {
+        padding: 20px;
+    }
+    .contact-infoormation h5 {
+        font-size: 20px;
+    }
+    .contact-infoormation .icon {
+        width: 35px;
+        height: 35px;
+    }
+    .contact-infoormation .icon i {
+        font-size: 18px;
+    }
+}
+/* Hiệu ứng rung */
+.shake {
+    animation: shake 0.5s;
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Tooltip */
+.contact-infoormation .icon {
+    position: relative;
+}
+.contact-infoormation .icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4A2F1A;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+.contact-infoormation .icon:hover::after {
+    opacity: 1;
+    visibility: visible;
+    top: -50px;
+}
