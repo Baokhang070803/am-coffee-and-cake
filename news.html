@@ -741,7 +741,7 @@
             <p>Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!</p>
         </div>
     </div>
-
+    <div id="posts"></div>
     <!-- Loading Overlay -->
     <div class="loading-overlay">
         <div class="loading-content">
@@ -799,5 +799,45 @@
     <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
+    <script>
+        async function loadPosts() {
+          try {
+            // Lấy danh sách bài viết từ file posts.json
+            const response = await fetch('/posts.json');
+            if (!response.ok) throw new Error('Không thể tải posts.json');
+            const posts = await response.json();  // Chuyển đổi thành mảng các file .md
+    
+            const converter = new showdown.Converter();  // Khởi tạo Showdown để chuyển Markdown thành HTML
+            const postsContainer = document.getElementById('posts');  // Container để hiển thị bài viết
+    
+            // Duyệt qua danh sách bài viết
+            for (const postFile of posts) {
+              try {
+                // Lấy nội dung bài viết từ các file .md trong thư mục 'posts/'
+                const postResponse = await fetch(`/posts/${postFile}`);
+                const markdown = await postResponse.text();
+    
+                // Chuyển từ Markdown sang HTML
+                const html = converter.makeHtml(markdown);
+    
+                // Tạo phần tử để hiển thị bài viết
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = html;
+    
+                // Thêm bài viết vào container
+                postsContainer.appendChild(postElement);
+              } catch (error) {
+                console.error(`Lỗi khi tải bài viết: ${postFile}`, error);
+              }
+            }
+          } catch (error) {
+            console.error("Lỗi tải posts.json:", error);
+          }
+        }
+    
+        // Tải các bài viết khi trang được load
+        loadPosts();
+      </script>
 </body>
 </html>
