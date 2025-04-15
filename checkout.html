@@ -81,8 +81,8 @@
                              </li>
                              <li class="option-cart">
                                 <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
-                                <ul class="option-cart-item">
-                                   <li>
+                                <!-- <ul class="option-cart-item">
+                                    <li>
                                       <div class="cart-item">
                                          <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
                                          <div class="item-description">
@@ -108,7 +108,7 @@
                                          </div>
                                       </div>
                                    </li>
-                                   <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                                   <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li> -->
                                 </ul>
                              </li>
                           </ul>
@@ -440,52 +440,32 @@
                                    </li>
                     
                                    <!-- Bước 4: Xem lại đơn hàng -->
-                                   <li class="steps disabled" id="step-4">
-                                      <a href="javascript:void(0);" class="step-title" onclick="toggleStep(4)">04. Xem Lại Đơn Hàng</a>
-                                      <div class="step-description">
-                                         <div class="order-review">
-                                            <h5>Xem Lại Đơn Hàng</h5>
-                                            <div id="orderDetails">
-                                               <h6>Sản Phẩm</h6>
-                                               <table class="table table-bordered">
-                                                  <thead>
-                                                     <tr>
-                                                        <th>Sản Phẩm</th>
-                                                        <th>Kích Cỡ</th>
-                                                        <th>Số Lượng</th>
-                                                        <th>Giá</th>
-                                                        <th>Tổng</th>
-                                                     </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                     <tr>
-                                                        <td>Cappuccino</td>
-                                                        <td>Nhỏ</td>
-                                                        <td>1</td>
-                                                        <td>45.000 VND</td>
-                                                        <td>45.000 VND</td>
-                                                     </tr>
-                                                     <tr>
-                                                        <td>Bánh Red Velvet</td>
-                                                        <td>Lát</td>
-                                                        <td>1</td>
-                                                        <td>55.000 VND</td>
-                                                        <td>55.000 VND</td>
-                                                     </tr>
-                                                  </tbody>
-                                               </table>
-                                            </div>
-                                            <div class="confirmation-message" id="confirmationMessage">
-                                               <h6>Xác Nhận Đơn Hàng</h6>
-                                               <p>Đơn hàng của bạn đã được xác nhận thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
-                                            </div>
-                                            <div class="order-actions">
-                                               <a href="#" class="btn btn-default">Chỉnh Sửa</a>
-                                               <button type="button" class="btn btn-primary" onclick="showConfirmation()">Xác Nhận Đơn Hàng</button>
-                                            </div>
-                                         </div>
-                                      </div>
-                                   </li>
+                                    <li class="steps disabled" id="step-4">
+                                       <a href="javascript:void(0);" class="step-title" onclick="toggleStep(4)">04. Xem Lại Đơn Hàng</a>
+                                       <div class="step-description">
+                                          <div id="orderDetails">
+                                             <h6>Sản Phẩm</h6>
+                                             <table class="table table-bordered" id="order-items">
+                                                   <thead>
+                                                      <tr>
+                                                         <th>Sản Phẩm</th>
+                                                         <th>Số Lượng</th>
+                                                         <th>Giá</th>
+                                                         <th>Tổng</th>
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody id="order-items-body">
+                                                      <!-- Products will be dynamically added here -->
+                                                   </tbody>
+                                             </table>
+                                          </div>
+                                          <div class="confirmation-message" id="confirmationMessage">
+                                             <h6>Xác Nhận Đơn Hàng</h6>
+                                             <p>Đơn hàng của bạn đã được xác nhận thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
+                                          </div>
+                                          <button type="button" class="btn btn-primary" onclick="showConfirmation()">Xác Nhận Đơn Hàng</button>
+                                       </div>
+                                 </li>
                                 </ol>
                              </div>
                           </div>
@@ -497,9 +477,9 @@
                     <div class="our-brand">
                         <h3 class="title">
                         <strong>
-                            Our 
+                            Đối Tác 
                         </strong>
-                        Brands
+                        Của Chúng Tôi
                         </h3>
                         <div class="control">
                         <a id="prev_brand" class="prev" href="#">
@@ -539,45 +519,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <ul class="brand_item">
-                            <li>
-                                <a href="#">
-                                <div class="brand-logo">
-                                    <img src="images/envato.png" alt="">
-                                </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                <div class="brand-logo">
-                                    <img src="images/themeforest.png" alt="">
-                                </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                <div class="brand-logo">
-                                    <img src="images/photodune.png" alt="">
-                                </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                <div class="brand-logo">
-                                    <img src="images/activeden.png" alt="">
-                                </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                <div class="brand-logo">
-                                    <img src="images/envato.png" alt="">
-                                </div>
-                                </a>
-                            </li>
-                            </ul>
-                        </li>
+                       
                         </ul>
                     </div>
                     </div>
@@ -744,6 +686,102 @@
                   alert("Vui lòng chọn phương thức thanh toán!");
                }
             });
+
+
+
+            function toggleStep(step) {
+            // Get all steps
+            const steps = document.querySelectorAll('.steps');
+            
+            // Remove active class from all steps
+            steps.forEach(s => s.classList.remove('active'));
+            
+            // Add active class to clicked step
+            const stepEl = document.getElementById('step-' + step);
+            stepEl.classList.add('active');
+
+            // Enable steps up to the current step
+            for (let i = 1; i <= step; i++) {
+                const stepToEnable = document.getElementById('step-' + i);
+                stepToEnable.classList.remove('disabled');
+            }
+
+            // Fill information if step >= 2
+            if (step >= 2) {
+                // Assuming these are static user details
+                const fullName = "Võ Trần Hoàng Bảo Khang";
+                const phone = "0795858581";
+                const email = "baokhangml99@gmail.com";
+                const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
+
+                document.getElementById('full_name').value = fullName;
+                document.getElementById('phone').value = phone;
+                document.getElementById('email').value = email;
+                document.getElementById('billing_address').value = address;
+            }
+        }
+
+        function nextStep() {
+            const currentStep = document.querySelector('.steps.active');
+            const currentStepId = parseInt(currentStep.id.split('-')[1]);
+
+            if (currentStepId < 4) {
+                currentStep.classList.remove('active');
+                const nextStep = document.getElementById(`step-${currentStepId + 1}`);
+                nextStep.classList.remove('disabled');
+                nextStep.classList.add('active');
+            }
+        }
+
+        function showConfirmation() {
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.style.display = 'block';
+        }
+
+        function updateOrderDetails() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderItemsBody = document.getElementById('order-items-body');
+            orderItemsBody.innerHTML = ''; // Clear existing order items
+
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price.toLocaleString()} VND</td>
+                    <td>${(item.price * item.quantity).toLocaleString()} VND</td>
+                `;
+                orderItemsBody.appendChild(row);
+            });
+
+            // Update total price
+            updateOrderTotal();
+        }
+
+        function updateOrderTotal() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            document.getElementById('grandtotal').textContent = totalPrice.toLocaleString() + ' VND';
+        }
+
+        // On page load, display the cart items
+        window.addEventListener('load', function() {
+            updateOrderDetails(); // Display cart items on the checkout page
+        });
          </script>
+   </body>
+   <body id="home">
+      <!-- Loading Overlay -->
+      <div class="loading-overlay">
+         <div class="loading-content">
+            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+            <p>Chờ Ấm Một chút nhé...</p>
+            <div class="loading-spinner"></div>
+         </div>
+      </div>
+      <!-- Nội dung trang hiện tại -->
+      <div class="wrapper">
+         <!-- Phần còn lại của trang -->
+      </div>
    </body>
 </html>

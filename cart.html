@@ -12,6 +12,8 @@
       <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
       <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
       <link href="css/style.css" rel="stylesheet">
+      <script src="path/to/cart.js"></script>
+
       </head>
       <body id="home">
          <div class="wrapper">
@@ -67,8 +69,8 @@
                               </li>
                               <li class="option-cart">
                                  <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
-                                 <ul class="option-cart-item">
-                                    <li>
+                                 <!-- <ul class="option-cart-item">
+                                     <li>
                                        <div class="cart-item">
                                           <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
                                           <div class="item-description">
@@ -93,9 +95,9 @@
                                              <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
                                           </div>
                                        </div>
-                                    </li>
-                                    <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
-                                 </ul>
+                                    </li> -->
+                                    <!-- <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li> -->
+                                 </ul> 
                               </li>
                            </ul>
                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
@@ -208,158 +210,87 @@
             </div>
             <div class="clearfix"></div>
             <div class="container_fullwidth">
-               <div class="container">
-                  
-                <div class="container_fullwidth">
-                    <div class="container shopping-cart">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="title">Giỏ hàng</h3>
-                                <div class="clearfix"></div>
-                                <table class="shop-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Hình ảnh</th>
-                                            <th>Thông tin sản phẩm</th>
-                                            <th>Giá</th>
-                                            <th>Số lượng</th>
-                                            <th>Tổng</th>
-                                            <th>Xóa</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="cart-items">
-                                        <!-- Sản phẩm 1: Cappuccino -->
-                                        <tr>
-                                            <td>
-                                                <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino">
-                                            </td>
-                                            <td>
-                                                <div class="shop-details">
-                                                    <div class="productname">Cappuccino</div>
-                                                    <p>
-                                                        <img alt="" src="images/star.png">
-                                                        <a class="review_num" href="#">4 Đánh giá</a>
-                                                    </p>
-                                                    <div class="color-choser">
-                                                        <span class="text">Kích cỡ: </span>
-                                                        <span class="light-red">Nhỏ</span>
-                                                    </div>
-                                                    <p>
-                                                        Mã sản phẩm: <strong class="pcode">CF002</strong>
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5>45,000 VND</h5>
-                                            </td>
-                                            <td>
-                                                <input type="number" min="1" value="1" class="quantity-input">
-                                            </td>
-                                            <td>
-                                                <h5><strong class="red">45,000 VND</strong></h5>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="remove-item"><img src="images/remove.png" alt="Xóa"></a>
-                                            </td>
-                                        </tr>
-                                        <!-- Sản phẩm 2: Bánh Red Velvet -->
-                                        <tr>
-                                            <td>
-                                                <img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt="Bánh Red Velvet">
-                                            </td>
-                                            <td>
-                                                <div class="shop-details">
-                                                    <div class="productname">Bánh Red Velvet</div>
-                                                    <p>
-                                                        <img alt="" src="images/star.png">
-                                                        <a class="review_num" href="#">5 Đánh giá</a>
-                                                    </p>
-                                                    <div class="color-choser">
-                                                        <span class="text">Kích cỡ: </span>
-                                                        <span class="light-red">Lát</span>
-                                                    </div>
-                                                    <p>
-                                                        Mã sản phẩm: <strong class="pcode">CA001</strong>
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5>55,000 VND</h5>
-                                            </td>
-                                            <td>
-                                                <input type="number" min="1" value="1" class="quantity-input">
-                                            </td>
-                                            <td>
-                                                <h5><strong class="red">55,000 VND</strong></h5>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="remove-item"><img src="images/remove.png" alt="Xóa"></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="6">
-                                                <button class="pull-left" onclick="window.location.href='index.html'">Tiếp tục mua sắm</button>
-                                                <button class="pull-right" id="update-cart">Cập nhật giỏ hàng</button>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <div class="clearfix"></div>
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="shippingbox">
-                                            <h5>Ước tính phí vận chuyển</h5>
-                                            <form>
-                                                <label>Chọn tỉnh/thành *</label>
-                                                <select>
-                                                    <option value="HCM">TP. Hồ Chí Minh</option>
-                                                    <option value="HN">Hà Nội</option>
-                                                    <option value="DN">Đà Nẵng</option>
-                                                </select>
-                                                <label>Quận/Huyện *</label>
-                                                <select>
-                                                    <option value="Q1">Quận 1</option>
-                                                    <option value="Q3">Quận 3</option>
-                                                    <option value="Q7">Quận 7</option>
-                                                </select>
-                                                <label>Mã bưu điện *</label>
-                                                <input type="text" name="zipcode" placeholder="Nhập mã bưu điện">
-                                                <div class="clearfix"></div>
-                                                <button type="submit">Tính phí</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="shippingbox">
-                                            <h5>Mã giảm giá</h5>
-                                            <form>
-                                                <label>Nhập mã giảm giá nếu có</label>
-                                                <input type="text" name="coupon" placeholder="Nhập mã giảm giá">
-                                                <div class="clearfix"></div>
-                                                <button type="submit">Áp dụng</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="shippingbox">
-                                            <div class="subtotal">
-                                                <h5>Tạm tính</h5>
-                                                <span id="subtotal">100,000 VND</span>
-                                            </div>
-                                            <div class="grandtotal">
-                                                <h5>TỔNG CỘNG</h5>
-                                                <span id="grandtotal">100,000 VND</span>
-                                            </div>
-                                            <button onclick="window.location.href='checkout.html'">Tiến hành thanh toán</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               <div class="container shopping-cart">
+                   <div class="row">
+                       <div class="col-md-12">
+                           <h3 class="title">Giỏ hàng</h3>
+                           <div class="clearfix"></div>
+                           <table class="shop-table">
+                               <thead>
+                                   <tr>
+                                       <th>Hình ảnh</th>
+                                       <th>Thông tin sản phẩm</th>
+                                       <th>Giá</th>
+                                       <th>Số lượng</th>
+                                       <th>Tổng</th>
+                                       <th>Xóa</th>
+                                   </tr>
+                               </thead>
+                               <tbody id="cart-items">
+                                   <!-- Sản phẩm sẽ được thêm vào đây bằng JavaScript -->
+                               </tbody>
+                               <tfoot>
+                                   <tr>
+                                       <td colspan="6">
+                                           <button class="pull-left" onclick="window.location.href='index.html'">Tiếp tục mua sắm</button>
+                                           <button class="pull-right" id="update-cart">Cập nhật giỏ hàng</button>
+                                       </td>
+                                   </tr>
+                               </tfoot>
+                           </table>
+                           <div class="clearfix"></div>
+                           <div class="row">
+                               <div class="col-md-4 col-sm-6">
+                                   <div class="shippingbox">
+                                       <h5>Ước tính phí vận chuyển</h5>
+                                       <form>
+                                           <label>Chọn tỉnh/thành *</label>
+                                           <select>
+                                               <option value="HCM">TP. Hồ Chí Minh</option>
+                                               <option value="HN">Hà Nội</option>
+                                               <option value="DN">Đà Nẵng</option>
+                                           </select>
+                                           <label>Quận/Huyện *</label>
+                                           <select>
+                                               <option value="Q1">Quận 1</option>
+                                               <option value="Q3">Quận 3</option>
+                                               <option value="Q7">Quận 7</option>
+                                           </select>
+                                           <label>Mã bưu điện *</label>
+                                           <input type="text" name="zipcode" placeholder="Nhập mã bưu điện">
+                                           <div class="clearfix"></div>
+                                           <button type="submit">Tính phí</button>
+                                       </form>
+                                   </div>
+                               </div>
+                               <div class="col-md-4 col-sm-6">
+                                   <div class="shippingbox">
+                                       <h5>Mã giảm giá</h5>
+                                       <form>
+                                           <label>Nhập mã giảm giá nếu có</label>
+                                           <input type="text" name="coupon" placeholder="Nhập mã giảm giá">
+                                           <div class="clearfix"></div>
+                                           <button type="submit">Áp dụng</button>
+                                       </form>
+                                   </div>
+                               </div>
+                               <div class="col-md-4 col-sm-6">
+                                   <div class="shippingbox">
+                                       <div class="subtotal">
+                                           <h5>Tạm tính</h5>
+                                           <span id="subtotal">100,000 VND</span>
+                                       </div>
+                                       <div class="grandtotal">
+                                           <h5>TỔNG CỘNG</h5>
+                                           <span id="grandtotal">100,000 VND</span>
+                                       </div>
+                                       <button onclick="window.location.href='checkout.html'">Tiến hành thanh toán</button>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+            
 
                 <div class="clearfix"></div>
                    <div class="our-brand">
@@ -399,81 +330,156 @@
                   </div>
                </div>
             </div>
-            <div class="clearfix"></div>
-            <div class="footer">
-               <div class="footer-info">
-                  <div class="container">
-                     <div class="row">
+            <!-- Footer -->
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
                         <div class="col-md-3">
-                           <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
                         </div>
                         <div class="col-md-3 col-sm-6">
-                           <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
-                           <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
-                           <p>Hotline: (028) 1234 5678</p>
-                           <p>Email: contact@amcoffee.vn</p>
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
                         </div>
                         <div class="col-md-3 col-sm-6">
-                           <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
-                           <ul class="support">
-                              <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
-                              <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
-                              <li><a href="policy.html#delivery">Giao Hàng</a></li>
-                              <li><a href="policy.html#returns">Đổi Trả</a></li>
-                           </ul>
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                            </ul>
                         </div>
                         <div class="col-md-3">
-                           <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
-                           <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
-                           <form class="newsletter">
-                              <input type="email" name="email" placeholder="Nhập email của bạn...">
-                              <input type="submit" value="Đăng Ký" class="button">
-                           </form>
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                <input type="submit" value="Đăng Ký" class="button">
+                            </form>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="copyright-info">
-                  <div class="container">
-                     <div class="row">
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
                         <div class="col-md-6">
-                              <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
                         </div>
                         <div class="col-md-6">
-                              <ul class="social-icon2">
-                                 <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
-                                 <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
-                                 <!-- <li><a href="#" class="tiktok"><i class="fa fa-tiktok"></i></a></li> -->
-                                 <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
-                              </ul>
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
                         </div>
-                     </div>
-                  </div>
+                    </div>
+                </div>
             </div>
-            </div>
-         </div>
-         <!-- Bootstrap core JavaScript -->
-         <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-         <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-         <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
-         <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
-         <script defer src="js/jquery.flexslider.js"></script>
-         <script type="text/javascript" src="js/script.min.js"></script>
-      </body>
-      <body id="home">
-         <!-- Loading Overlay -->
-         <div class="loading-overlay">
-            <div class="loading-content">
-               <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
-               <p>Chờ Ấm Một chút nhé...</p>
-               <div class="loading-spinner"></div>
-            </div>
-         </div>
-         <!-- Nội dung trang hiện tại -->
-         <div class="wrapper">
-            <!-- Phần còn lại của trang -->
-         </div>
-      </body>
-      
-   </html>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    
+    <script>
+        // Hàm hiển thị giỏ hàng từ localStorage
+        function displayCartItems() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItems = document.getElementById('cart-items');
+
+            // Nếu giỏ hàng trống
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<tr><td colspan="6" class="text-center">Giỏ hàng trống</td></tr>';
+                return;
+            }
+
+            // Xóa tất cả sản phẩm hiện có trong giỏ hàng
+            cartItems.innerHTML = '';
+
+            // Thêm lại tất cả các sản phẩm vào giỏ hàng
+            cart.forEach(item => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${item.imageUrl}" alt="${item.name}" style="width: 60px;"></td>
+                    <td>
+                        <div class="shop-details">
+                            <div class="productname">${item.name}</div>
+                            <p><strong>Kích cỡ:</strong> ${item.size || 'Nhỏ'}</p>
+                            <p>Mã sản phẩm: <strong class="pcode">CF002</strong></p>
+                        </div>
+                    </td>
+                    <td><h5>${item.price.toLocaleString()} VND</h5></td>
+                    <td>
+                        <input type="number" min="1" value="${item.quantity}" class="quantity-input" onchange="updateQuantity('${item.name}', this.value)">
+                    </td>
+                    <td><h5><strong class="red">${(item.price * item.quantity).toLocaleString()} VND</strong></h5></td>
+                    <td><a href="#" class="remove-item" onclick="removeItem('${item.name}')"><img src="images/remove.png" alt="Xóa"></a></td>
+                `;
+                cartItems.appendChild(row);
+            });
+
+            // Cập nhật tổng tiền giỏ hàng
+            updateCartTotal();
+        }
+
+        // Hàm cập nhật số lượng sản phẩm
+        function updateQuantity(productName, quantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let product = cart.find(item => item.name === productName);
+            
+            if (product) {
+                product.quantity = parseInt(quantity);
+                localStorage.setItem('cart', JSON.stringify(cart)); // Lưu lại vào localStorage
+                displayCartItems(); // Hiển thị lại giỏ hàng
+            }
+        }
+
+        // Hàm xóa sản phẩm khỏi giỏ
+        function removeItem(productName) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.name !== productName); // Xóa sản phẩm khỏi giỏ
+
+            localStorage.setItem('cart', JSON.stringify(cart)); // Lưu lại giỏ hàng
+            displayCartItems(); // Hiển thị lại giỏ hàng
+        }
+
+        // Hàm cập nhật tổng tiền giỏ hàng
+        function updateCartTotal() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+            let totalElement = document.querySelector('#grandtotal');
+            totalElement.textContent = totalPrice.toLocaleString() + ' VND';
+        }
+
+        // Gọi hàm khi trang được tải để hiển thị giỏ hàng
+        window.addEventListener('load', displayCartItems);
+    </script>
+</body>
+ <body id="home">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay">
+           <div class="loading-content">
+              <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+              <p>Chờ Ấm Một chút nhé...</p>
+              <div class="loading-spinner"></div>
+           </div>
+        </div>
+        <!-- Nội dung trang hiện tại -->
+        <div class="wrapper">
+           <!-- Phần còn lại của trang -->
+        </div>
+     </body>
+</html>  
