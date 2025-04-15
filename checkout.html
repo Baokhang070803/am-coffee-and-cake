@@ -12,7 +12,21 @@
       <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
       <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
       <link href="css/style.css" rel="stylesheet">
-      </head>
+      <style>
+         /* Initially hide all steps */
+         .step-description {
+            display: none;
+         }
+
+         /* Style for active steps */
+         .steps.active .step-description {
+            display: block;
+         }
+         #confirmationMessage {
+            display: none;
+         }  
+      </style>
+   </head>
       <body id="home">
         <div class="wrapper">
            <div class="header">
@@ -308,97 +322,177 @@
                         </div>
             
                         <div class="col-md-9">
-                            <!-- Quy trình thanh toán -->
                             <div class="checkout-page">
                                 <ol class="checkout-steps">
-                                    <li class="steps active">
-                                        <a href="checkout.html" class="step-title">
-                                            01. Tùy Chọn Thanh Toán
-                                        </a>
-                                        <div class="step-description">
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="new-customer">
-                                                        <h5>Khách Hàng Mới</h5>
-                                                        <label>
-                                                            <span class="input-radio">
-                                                                <input type="radio" name="user">
-                                                            </span>
-                                                            <span class="text">
-                                                                Tôi muốn đăng ký nhận bản tin từ Đặt Bánh.
-                                                            </span>
-                                                        </label>
-                                                        <label>
-                                                            <span class="input-radio">
-                                                                <input type="radio" name="user">
-                                                            </span>
-                                                            <span class="text">
-                                                                Địa chỉ giao hàng và thanh toán của tôi giống nhau.
-                                                            </span>
-                                                        </label>
-                                                        <p class="requir">
-                                                            Tạo tài khoản để đặt hàng nhanh hơn, theo dõi trạng thái đơn hàng và xem lịch sử mua sắm.
-                                                        </p>
-                                                        <button>Tiếp Tục</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="run-customer">
-                                                        <h5>Khách Hàng Hiện Tại</h5>
-                                                        <form>
-                                                            <div class="form-row">
-                                                                <label class="lebel-abs">
-                                                                    Email 
-                                                                    <strong class="red">*</strong>
-                                                                </label>
-                                                                <input type="email" class="input namefild" name="email">
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <label class="lebel-abs">
-                                                                    Mật Khẩu 
-                                                                    <strong class="red">*</strong>
-                                                                </label>
-                                                                <input type="password" class="input namefild" name="password">
-                                                            </div>
-                                                            <p class="forgoten">
-                                                                <a href="#">Quên mật khẩu?</a>
-                                                            </p>
-                                                            <button>Đăng Nhập</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                   <!-- Step 1: Đăng nhập -->
+                                   <li class="steps active" id="step-1">
+                                      <a href="javascript:void(0);" class="step-title" onclick="toggleStep(1)">01. Đăng Nhập</a>
+                                      <div class="step-description">
+                                         <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                               <div class="new-customer">
+                                                  <h5>Khách Hàng Đã Đăng Nhập</h5>
+                                                  <p><strong>Họ và Tên:</strong> Võ Trần Hoàng Bảo Khang</p>
+                                                  <p><strong>Ngày Sinh:</strong> 07/08/2003</p>
+                                                  <p><strong>Giới tính:</strong> Nam</p>
+                                                  <p><strong>Địa Chỉ:</strong> 645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long</p>
+                                                  <p><strong>Thành Viên:</strong> Thành viên hạng đồng</p>
+                                                  <p><strong>Số Điện Thoại:</strong> 0795858581</p>
+                                                  <p><strong>Email:</strong> baokhangml99@gmail.com</p>
+                                                  <button type="button" onclick="nextStep()">Tiếp Tục</button>
+                                               </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="steps">
-                                        <a href="checkout2.html" class="step-title">
-                                            02. Thông Tin Thanh Toán
-                                        </a>
-                                    </li>
-                                    <li class="steps">
-                                        <a href="checkout2.html" class="step-title">
-                                            03. Thông Tin Giao Hàng
-                                        </a>
-                                    </li>
-                                    <!-- <li class="steps">
-                                        <a href="#" class="step-title">
-                                            04. Phương Thức Giao Hàng
-                                        </a>
-                                    </li>
-                                    <li class="steps">
-                                        <a href="#" class="step-title">
-                                            05. Phương Thức Thanh Toán
-                                        </a>
-                                    </li> -->
-                                    <li class="steps">
-                                        <a href="#" class="step-title">
-                                            06. Xem Lại Đơn Hàng
-                                        </a>
-                                    </li>
+                                         </div>
+                                      </div>
+                                   </li>
+                                   
+                                   <!-- Step 2: Thông tin thanh toán -->
+                                   <li class="steps disabled" id="step-2">
+                                      <a href="javascript:void(0);" class="step-title" onclick="toggleStep(2)">02. Thông Tin Thanh Toán</a>
+                                      <div class="step-description">
+                                         <form id="billing-form">
+                                            <div class="row">
+                                               <div class="col-md-6 col-sm-6">
+                                                  <div class="your-details">
+                                                     <h5>Thông Tin Cá Nhân</h5>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="full_name" disabled>
+                                                     </div>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="phone" disabled>
+                                                     </div>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Email <strong class="red">*</strong></label>
+                                                        <input type="email" class="input namefild" id="email" disabled>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                               <div class="col-md-6 col-sm-6">
+                                                  <div class="your-details">
+                                                     <h5>Địa Chỉ Thanh Toán</h5>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="billing_address" disabled>
+                                                     </div>
+                                                     <p class="privacy">
+                                                        <span class="input-radio">
+                                                           <input type="radio" name="privacy" required>
+                                                        </span>
+                                                        <span class="text">
+                                                           Tôi đã đọc và đồng ý với 
+                                                           <a href="policy.html" class="red">Chính Sách Bảo Mật</a>
+                                                        </span>
+                                                     </p>
+                                                     <button type="submit">Tiếp Tục</button>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </form>
+                                      </div>
+                                   </li>
+                    
+                                   <!-- Bước 3: Thông Tin Giao Hàng -->
+                                   <li class="steps disabled" id="step-3">
+                                      <a href="javascript:void(0);" class="step-title" onclick="toggleStep(3)">03. Thông Tin Giao Hàng</a>
+                                      <div class="step-description">
+                                         <form id="shipping-form">
+                                            <div class="row">
+                                               <div class="col-md-6 col-sm-6">
+                                                  <div class="your-details">
+                                                     <h5>Thông Tin Liên Hệ</h5>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="receiver_name" disabled>
+                                                     </div>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="receiver_phone" disabled>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                               <div class="col-md-6 col-sm-6">
+                                                  <div class="your-details">
+                                                     <h5>Địa Chỉ Giao Hàng</h5>
+                                                     <div class="form-row">
+                                                        <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                        <input type="text" class="input namefild" id="shipping_address" disabled>
+                                                     </div>
+                                                     <p class="privacy">
+                                                        <span class="input-radio">
+                                                           <input type="radio" name="payment_method" value="cod" required>
+                                                        </span>
+                                                        <span class="text">Thanh toán khi nhận hàng</span>
+                                                     </p>
+                                                     <p class="privacy">
+                                                        <span class="input-radio">
+                                                           <input type="radio" name="payment_method" value="bank" required>
+                                                        </span>
+                                                        <span class="text">Thanh toán qua ngân hàng</span>
+                                                     </p>
+                                                     <button type="submit">Tiếp Tục</button>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </form>
+                                      </div>
+                                   </li>
+                    
+                                   <!-- Bước 4: Xem lại đơn hàng -->
+                                   <li class="steps disabled" id="step-4">
+                                      <a href="javascript:void(0);" class="step-title" onclick="toggleStep(4)">04. Xem Lại Đơn Hàng</a>
+                                      <div class="step-description">
+                                         <div class="order-review">
+                                            <h5>Xem Lại Đơn Hàng</h5>
+                                            <div id="orderDetails">
+                                               <h6>Sản Phẩm</h6>
+                                               <table class="table table-bordered">
+                                                  <thead>
+                                                     <tr>
+                                                        <th>Sản Phẩm</th>
+                                                        <th>Kích Cỡ</th>
+                                                        <th>Số Lượng</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng</th>
+                                                     </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                     <tr>
+                                                        <td>Cappuccino</td>
+                                                        <td>Nhỏ</td>
+                                                        <td>1</td>
+                                                        <td>45.000 VND</td>
+                                                        <td>45.000 VND</td>
+                                                     </tr>
+                                                     <tr>
+                                                        <td>Bánh Red Velvet</td>
+                                                        <td>Lát</td>
+                                                        <td>1</td>
+                                                        <td>55.000 VND</td>
+                                                        <td>55.000 VND</td>
+                                                     </tr>
+                                                  </tbody>
+                                               </table>
+                                            </div>
+                                            <div class="confirmation-message" id="confirmationMessage">
+                                               <h6>Xác Nhận Đơn Hàng</h6>
+                                               <p>Đơn hàng của bạn đã được xác nhận thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
+                                            </div>
+                                            <div class="order-actions">
+                                               <a href="#" class="btn btn-default">Chỉnh Sửa</a>
+                                               <button type="button" class="btn btn-primary" onclick="showConfirmation()">Xác Nhận Đơn Hàng</button>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </li>
                                 </ol>
-                            </div>
-                        </div>
-                    </div>
+                             </div>
+                          </div>
+                           </div>
+                                
+                            
+                        
                     <div class="clearfix"></div>
                     <div class="our-brand">
                         <h3 class="title">
@@ -555,20 +649,101 @@
          <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
          <script defer src="js/jquery.flexslider.js"></script>
          <script type="text/javascript" src="js/script.min.js"></script>
-      </body>
-      <body id="home">
-         <!-- Loading Overlay -->
-         <div class="loading-overlay">
-            <div class="loading-content">
-               <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
-               <p>Chờ Ấm Một chút nhé...</p>
-               <div class="loading-spinner"></div>
-            </div>
-         </div>
-         <!-- Nội dung trang hiện tại -->
-         <div class="wrapper">
-            <!-- Phần còn lại của trang -->
-         </div>
-      </body>
-      
-   </html>
+         <script>
+            function toggleStep(step) {
+               // Lấy tất cả các bước
+               const steps = document.querySelectorAll('.steps');
+               
+               // Xóa lớp active khỏi tất cả các bước
+               steps.forEach(s => s.classList.remove('active'));
+
+               // Thêm lớp active vào bước được chọn
+               const stepEl = document.getElementById('step-' + step);
+               stepEl.classList.add('active');
+
+               // Bỏ lớp disabled cho các bước từ 1 đến bước hiện tại
+               for (let i = 1; i <= step; i++) {
+                  const stepToEnable = document.getElementById('step-' + i);
+                  stepToEnable.classList.remove('disabled');
+               }
+
+               // Điền thông tin nếu bước >= 2
+               if (step >= 2) {
+                  const fullName = "Võ Trần Hoàng Bảo Khang";
+                  const phone = "0795858581";
+                  const email = "baokhangml99@gmail.com";
+                  const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
+
+                  // Điền thông tin cho bước 2
+                  document.getElementById('full_name').value = fullName;
+                  document.getElementById('phone').value = phone;
+                  document.getElementById('email').value = email;
+                  document.getElementById('billing_address').value = address;
+
+                  // Điền thông tin cho bước 3
+                  document.getElementById('receiver_name').value = fullName;
+                  document.getElementById('receiver_phone').value = phone;
+                  document.getElementById('shipping_address').value = address;
+               }
+            }
+
+            function nextStep() {
+               const currentStep = document.querySelector('.steps.active');
+               const currentStepId = parseInt(currentStep.id.split('-')[1]);
+
+               if (currentStepId < 4) {
+                  // Xóa active khỏi bước hiện tại
+                  currentStep.classList.remove('active');
+
+                  // Kích hoạt bước tiếp theo
+                  const nextStep = document.getElementById(`step-${currentStepId + 1}`);
+                  nextStep.classList.remove('disabled');
+                  nextStep.classList.add('active');
+
+                  // Điền thông tin khi chuyển từ bước 1 sang bước 2
+                  if (currentStepId === 1) {
+                     const fullName = "Võ Trần Hoàng Bảo Khang";
+                     const phone = "0795858581";
+                     const email = "baokhangml99@gmail.com";
+                     const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
+
+                     document.getElementById('full_name').value = fullName;
+                     document.getElementById('phone').value = phone;
+                     document.getElementById('email').value = email;
+                     document.getElementById('billing_address').value = address;
+
+                     document.getElementById('receiver_name').value = fullName;
+                     document.getElementById('receiver_phone').value = phone;
+                     document.getElementById('shipping_address').value = address;
+                  }
+               }
+            }
+
+            function showConfirmation() {
+               const confirmationMessage = document.getElementById('confirmationMessage');
+               confirmationMessage.style.display = 'block';
+            }
+
+            // Xử lý form ở bước 2
+            document.getElementById('billing-form').addEventListener('submit', function(event) {
+               event.preventDefault();
+               if (document.querySelector('input[name="privacy"]').checked) {
+                  nextStep();
+               } else {
+                  alert("Vui lòng đồng ý với Chính Sách Bảo Mật!");
+               }
+            });
+
+            // Xử lý form ở bước 3
+            document.getElementById('shipping-form').addEventListener('submit', function(event) {
+               event.preventDefault();
+               const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+               if (paymentMethod) {
+                  nextStep();
+               } else {
+                  alert("Vui lòng chọn phương thức thanh toán!");
+               }
+            });
+         </script>
+   </body>
+</html>
