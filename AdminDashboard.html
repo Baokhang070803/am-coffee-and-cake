@@ -698,11 +698,14 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script>
         // Dữ liệu mẫu
-        let users = JSON.parse(localStorage.getItem('users')) || [
-            { id: 1, name: 'Nguyễn Văn A', email: 'a@example.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-03-01', visits: 5, rating: 4.5 },
-            { id: 2, name: 'Trần Thị B', email: 'b@example.com', role: 'mod', status: 'active', password: '123456', createdDate: '2025-04-01', visits: 2, rating: 4.0 },
-            { id: 3, name: 'Lê Văn C', email: 'c@example.com', role: 'admin', status: 'active', password: '123456', createdDate: '2025-04-15', visits: 10, rating: 5.0 }
-        ];
+        let users = [
+            { id: 1, name: 'Đỗ Minh Tiến', email: 'tien@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-01', visits: 3, rating: 4.2 },
+            { id: 2, name: 'Nguyễn Anh Kiệt', email: 'kiet@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-02', visits: 2, rating: 3.8 },
+            { id: 3, name: 'Nguyễn Đăng Hải Đăng', email: 'haidang@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-03', visits: 4, rating: 4.0 },
+            { id: 4, name: 'Phạm Hồng Quân', email: 'quan@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-04', visits: 1, rating: 3.5 },
+            { id: 5, name: 'Võ Trần Hoàng Bảo Khang', email: 'admin@gmail.com', role: 'admin', status: 'active', password: 'admin123', createdDate: '2025-04-05', visits: 5, rating: 4.7 },
+            { id: 6, name: 'Vương Hữu Phúc', email: 'phuc@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-06', visits: 2, rating: 4.1 }
+            ];
         let products = JSON.parse(localStorage.getItem('products')) || [
             { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg', attributes: '', sales: 100 },
             { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg', attributes: '', sales: 80 },
@@ -726,11 +729,15 @@
             { id: 3, userId: 2, amount: 45000, date: '2025-04-01', status: 'completed', productId: 3 },
             { id: 4, userId: 3, amount: 200000, date: '2025-04-16', status: 'completed', productId: 4 }
         ];
-        let employees = JSON.parse(localStorage.getItem('employees')) || [
-            { id: 1, name: 'Nguyễn Văn D', position: 'Phục Vụ', shift: 'Sáng', performance: 85 },
-            { id: 2, name: 'Trần Thị E', position: 'Pha Chế', shift: 'Chiều', performance: 90 },
-            { id: 3, name: 'Lê Văn F', position: 'Quản Lý', shift: 'Cả ngày', performance: 95 }
+        let employees = [
+            { id: 1, name: 'Đỗ Minh Tiến', position: 'Phục Vụ', shift: 'Sáng', performance: 85 },
+            { id: 2, name: 'Nguyễn Anh Kiệt', position: 'Pha Chế', shift: 'Chiều', performance: 88 },
+            { id: 3, name: 'Nguyễn Đăng Hải Đăng', position: 'Phục Vụ', shift: 'Tối', performance: 90 },
+            { id: 4, name: 'Phạm Hồng Quân', position: 'Thu Ngân', shift: 'Cả ngày', performance: 87 },
+            { id: 5, name: 'Võ Trần Hoàng Bảo Khang', position: 'Quản Lý', shift: 'Cả ngày', performance: 95 },
+            { id: 6, name: 'Vương Hữu Phúc', position: 'Pha Chế', shift: 'Sáng', performance: 89 }
         ];
+
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [
             { id: 1, name: 'Bột Mì', quantity: 50, unit: 'kg', threshold: 10 },
             { id: 2, name: 'Cà Phê', quantity: 20, unit: 'kg', threshold: 5 },
@@ -1020,52 +1027,54 @@
 
         // Transactions Management
         function renderTransactions() {
-            const tbody = document.getElementById('transactionTableBody');
-            tbody.innerHTML = '';
-            const dateFilter = document.getElementById('transactionDateFilter').value;
-            let filteredTransactions = transactions;
-            if (dateFilter) {
-                filteredTransactions = transactions.filter(t => t.date === dateFilter);
-            }
-            filteredTransactions.forEach(t => {
-                const user = users.find(u => u.id === t.userId);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${t.id}</td>
-                    <td>${user ? user.name : 'Unknown'}</td>
-                    <td>${t.amount.toLocaleString('vi-VN')}</td>
-                    <td>${t.date}</td>
-                    <td>${t.status}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewTransaction(${t.id})">Xem</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-            updateDashboard();
-        }
+    const tbody = document.getElementById('transactionTableBody');
+    tbody.innerHTML = '';
+    const dateFilter = document.getElementById('transactionDateFilter').value;
+    let filteredTransactions = transactions;
+    if (dateFilter) {
+        filteredTransactions = transactions.filter(t => t.date === dateFilter);
+    }
+    filteredTransactions.forEach(t => {
+        const user = users.find(u => u.id === t.userId);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.customerName || (user ? user.name : 'Unknown')}</td>
+            <td>${t.amount.toLocaleString('vi-VN')}</td>
+            <td>${t.date}</td>
+            <td>${t.status}</td>
+            <td>
+                <button class="btn btn-info btn-sm" onclick="viewTransaction(${t.id})">Xem</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    updateDashboard();
+}
 
         document.getElementById('transactionDateFilter').addEventListener('change', renderTransactions);
 
         function viewTransaction(id) {
-            const t = transactions.find(t => t.id === id);
-            if (t) {
-                const user = users.find(u => u.id === t.userId);
-                const product = products.find(p => p.id === t.productId);
-                Swal.fire({
-                    title: 'Chi Tiết Giao Dịch',
-                    html: `
-                        <p>ID: ${t.id}</p>
-                        <p>Người Dùng: ${user ? user.name : 'Unknown'}</p>
-                        <p>Sản Phẩm: ${product ? product.name : 'Unknown'}</p>
-                        <p>Số Tiền: ${t.amount.toLocaleString('vi-VN')} VND</p>
-                        <p>Ngày: ${t.date}</p>
-                        <p>Trạng Thái: ${t.status}</p>
-                    `,
-                    confirmButtonText: 'Đóng'
-                });
-            }
-        }
+    const t = transactions.find(t => t.id === id);
+    if (t) {
+        const user = users.find(u => u.id === t.userId);
+        const product = products.find(p => p.id === t.productId);
+        Swal.fire({
+            title: 'Chi Tiết Giao Dịch',
+            html: `
+                <p>ID: ${t.id}</p>
+                <p>Khách Hàng: ${t.customerName || (user ? user.name : 'Unknown')}</p>
+                <p>Sản Phẩm: ${product ? product.name : 'Unknown'}</p>
+                <p>Số Tiền: ${t.amount.toLocaleString('vi-VN')} VND</p>
+                <p>Ngày: ${t.date}</p>
+                <p>Trạng Thái: ${t.status}</p>
+                <p>Địa Chỉ Thanh Toán: ${t.billingAddress || 'Chưa có'}</p>
+                <p>Phương Thức Thanh Toán: ${t.paymentMethod || 'Chưa chọn'}</p>
+            `,
+            confirmButtonText: 'Đóng'
+        });
+    }
+}
 
         // Employees Management
         function renderEmployees() {

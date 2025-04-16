@@ -402,18 +402,9 @@ function initCart() {
 
 // Hiển thị giỏ hàng
 function displayCartItems() {
-    let cart = [];
-    try {
-        cart = JSON.parse(localStorage.getItem('cart')) || [];
-    } catch (error) {
-        console.error('Lỗi khi phân tích giỏ hàng:', error);
-    }
-
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let cartItems = document.getElementById('cart-items');
-    if (!cartItems) {
-        console.error('Không tìm thấy phần tử #cart-items');
-        return;
-    }
+    let products = JSON.parse(localStorage.getItem('products')) || [];
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<tr><td colspan="6" class="text-center">Giỏ hàng trống</td></tr>';
@@ -425,27 +416,25 @@ function displayCartItems() {
 
     cartItems.innerHTML = '';
     cart.forEach(item => {
-        if (!item.id || !item.name || !item.price || !item.quantity || !item.image) {
-            console.warn('Dữ liệu sản phẩm không hợp lệ:', item);
-            return;
-        }
+        let product = products.find(p => p.id === item.productId);
+        if (!product) return;
 
         let row = document.createElement('tr');
         row.innerHTML = `
-            <td><img src="${item.image}" alt="${item.name}" style="width: 60px;"></td>
+            <td><img src="${product.image}" alt="${product.name}" style="width: 60px;"></td>
             <td>
                 <div class="shop-details">
-                    <div class="productname">${item.name}</div>
-                    <p><strong>Danh mục:</strong> ${item.category || 'Không xác định'}</p>
-                    <p>Mã sản phẩm: <strong class="pcode">${item.id}</strong></p>
+                    <div class="productname">${product.name}</div>
+                    <p><strong>Danh mục:</strong> ${product.category}</p>
+                    <p>Mã sản phẩm: <strong class="pcode">${product.id}</strong></p>
                 </div>
             </td>
-            <td><h5>${item.price.toLocaleString('vi-VN')} VND</h5></td>
+            <td><h5>${product.price.toLocaleString('vi-VN')} VND</h5></td>
             <td>
-                <input type="number" min="1" value="${item.quantity}" class="quantity-input" onchange="updateQuantity(${item.id}, this.value)">
+                <input type="number" min="1" value="${item.quantity}" class="quantity-input" onchange="updateQuantity(${product.id}, this.value)">
             </td>
-            <td><h5><strong class="red">${(item.price * item.quantity).toLocaleString('vi-VN')} VND</strong></h5></td>
-            <td><a href="#" class="remove-item" onclick="removeItem(${item.id})"><img src="images/remove.png" alt="Xóa"></a></td>
+            <td><h5><strong class="red">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</strong></h5></td>
+            <td><a href="#" class="remove-item" onclick="removeItem(${product.id}); return false;"><img src="images/remove.png" alt="Xóa"></a></td>
         `;
         cartItems.appendChild(row);
     });
@@ -458,28 +447,46 @@ function displayCartItems() {
 // Cập nhật số lượng sản phẩm
 function updateQuantity(productId, quantity) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let product = cart.find(item => item.id === productId);
+    let item = cart.find(item => item.productId === productId);
 
-    if (product) {
-        product.quantity = parseInt(quantity) || 1;
+    if (item) {
+        item.quantity = parseInt(quantity) || 1;
         localStorage.setItem('cart', JSON.stringify(cart));
         displayCartItems();
+        Swal.fire({
+            icon: 'success',
+            title: 'Cập nhật thành công!',
+            text: 'Số lượng sản phẩm đã được cập nhật.',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 }
 
 // Xóa sản phẩm khỏi giỏ
 function removeItem(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => item.id !== productId);
+    let product = JSON.parse(localStorage.getItem('products')).find(p => p.id === productId);
+    cart = cart.filter(item => item.productId !== productId);
     localStorage.setItem('cart', JSON.stringify(cart));
     displayCartItems();
+    Swal.fire({
+        icon: 'success',
+        title: 'Đã xóa!',
+        text: `${product.name} đã được xóa khỏi giỏ hàng.`,
+        showConfirmButton: false,
+        timer: 1500
+    });
 }
 
 // Cập nhật số lượng giỏ hàng trên biểu tượng
 function updateCartCount() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    document.querySelector('.cart_no').textContent = totalItems;
+    let cartNo = document.querySelector('.cart_no');
+    if (cartNo) {
+        cartNo.textContent = totalItems;
+    }
 }
 
 // Cập nhật dropdown giỏ hàng
@@ -488,6 +495,7 @@ function updateCartDropdown() {
     dropdown.innerHTML = '';
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let products = JSON.parse(localStorage.getItem('products')) || [];
 
     if (cart.length === 0) {
         dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
@@ -495,25 +503,31 @@ function updateCartDropdown() {
     }
 
     cart.forEach(item => {
-        let cartItem = document.createElement('li');
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-            <div class="cart-item">
-                <div class="image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-description">
-                    <p class="name">${item.name}</p>
-                    <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+        let product = products.find(p => p.id === item.productId);
+        if (product) {
+            let cartItem = document.createElement('li');
+            cartItem.classList.add('cart-item');
+            cartItem.innerHTML = `
+                <div class="cart-item">
+                    <div class="image"><img src="${product.image}" alt="${product.name}"></div>
+                    <div class="item-description">
+                        <p class="name">${product.name}</p>
+                        <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                    </div>
+                    <div class="right">
+                        <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                        <a href="#" class="remove" onclick="removeItem(${product.id}); return false;"><img src="images/remove.png" alt="Xóa"></a>
+                    </div>
                 </div>
-                <div class="right">
-                    <p class="price">${(item.price * item.quantity).toLocaleString('vi-VN')} VND</p>
-                    <a href="#" class="remove" onclick="removeItem(${item.id})"><img src="images/remove.png" alt="Xóa"></a>
-                </div>
-            </div>
-        `;
-        dropdown.appendChild(cartItem);
+            `;
+            dropdown.appendChild(cartItem);
+        }
     });
 
-    let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    let totalPrice = cart.reduce((total, item) => {
+        let product = products.find(p => p.id === item.productId);
+        return total + (product ? product.price * item.quantity : 0);
+    }, 0);
     let totalLi = document.createElement('li');
     totalLi.innerHTML = `<span class="total">Tổng <strong>${totalPrice.toLocaleString('vi-VN')} VND</strong></span><button class="checkout" onclick="location.href='checkout.html'">Thanh Toán</button>`;
     dropdown.appendChild(totalLi);
@@ -522,25 +536,27 @@ function updateCartDropdown() {
 // Cập nhật tổng tiền
 function updateCartTotals() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    
-    const subtotalElement = document.getElementById('subtotal');
-    const grandtotalElement = document.getElementById('grandtotal');
-    
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    let total = cart.reduce((sum, item) => {
+        let product = products.find(p => p.id === item.productId);
+        return sum + (product ? product.price * item.quantity : 0);
+    }, 0);
+
+    let subtotalElement = document.getElementById('subtotal');
+    let grandtotalElement = document.getElementById('grandtotal');
+
     if (subtotalElement && grandtotalElement) {
         subtotalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
         grandtotalElement.textContent = total.toLocaleString('vi-VN') + ' VND';
-    } else {
-        console.error('Không tìm thấy phần tử #subtotal hoặc #grandtotal');
     }
 }
 
 // Load dropdown menu items
 function loadDropdownMenu() {
-    const products = JSON.parse(localStorage.getItem('products')) || [];
-    const dropdownDrinks = document.getElementById('dropdown-drinks');
-    const dropdownCakes = document.getElementById('dropdown-cakes');
-    const dropdownToppings = document.getElementById('dropdown-toppings');
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    let dropdownDrinks = document.getElementById('dropdown-drinks');
+    let dropdownCakes = document.getElementById('dropdown-cakes');
+    let dropdownToppings = document.getElementById('dropdown-toppings');
 
     if (dropdownDrinks && dropdownCakes && dropdownToppings) {
         dropdownDrinks.innerHTML = '';
@@ -548,7 +564,7 @@ function loadDropdownMenu() {
         dropdownToppings.innerHTML = '';
 
         products.forEach(product => {
-            const dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
+            let dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
             if (product.category === 'Thức Uống') {
                 dropdownDrinks.innerHTML += dropdownItem;
             } else if (product.category === 'Bánh') {
@@ -563,7 +579,7 @@ function loadDropdownMenu() {
 // Ẩn loading overlay
 window.addEventListener('load', function() {
     setTimeout(function() {
-        const loadingOverlay = document.querySelector('.loading-overlay');
+        let loadingOverlay = document.querySelector('.loading-overlay');
         if (loadingOverlay) {
             loadingOverlay.classList.add('hidden');
         }
@@ -576,6 +592,13 @@ document.addEventListener('DOMContentLoaded', initCart);
 // Cập nhật giỏ hàng khi nhấn nút "Cập nhật giỏ hàng"
 document.getElementById('update-cart').addEventListener('click', function() {
     displayCartItems();
+    Swal.fire({
+        icon: 'success',
+        title: 'Cập nhật thành công!',
+        text: 'Giỏ hàng đã được cập nhật.',
+        showConfirmButton: false,
+        timer: 1500
+    });
 });
     </script>
 </body>
