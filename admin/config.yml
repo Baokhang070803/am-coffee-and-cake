@@ -19,6 +19,3 @@ collections:
       - { label: "Mô Tả", name: "description", widget: "text" }
       - { label: "Giá", name: "price", widget: "number" }
       - { label: "Hình Ảnh", name: "image", widget: "image" }
-
-admin:
-  url: "https://amcoffeeandcake.netlify.app/admin"  # Đảm bảo URL đúng với trang quản trị của bạn trên Netlify
