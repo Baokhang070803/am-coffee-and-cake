@@ -1,5 +1,16 @@
+backend:
+  name: 'github'
+  repo: 'Baokhang070803/am-coffee-and-cake'
+  branch: 'main'
+  auth_type: 'oauth'
+  client_id: 'Ov23lis28jTmt3hUqeBx'
+  client_secret: '42793935b499ce650455a386168580d22ea2ca4a'
+
+media_folder: 'static/uploads'
+public_folder: '/uploads'
+
 collections:
-  - name: 'blog'  # Tên collection 1
+  - name: 'blog'  # Tên collection duy nhất
     label: 'Blog'
     folder: 'content/blog'
     create: true
@@ -9,7 +20,7 @@ collections:
       - { label: 'Date', name: 'date', widget: 'datetime' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
 
-  - name: 'products'  # Tên collection 2
+  - name: 'products'  # Tên collection khác
     label: 'Products'
     folder: 'content/products'
     create: true
@@ -18,3 +29,5 @@ collections:
       - { label: 'Product Name', name: 'product_name', widget: 'string' }
       - { label: 'Price', name: 'price', widget: 'string' }
       - { label: 'Description', name: 'description', widget: 'text' }
+
+  # Bạn có thể thêm các collection khác nữa miễn là mỗi tên là duy nhất
