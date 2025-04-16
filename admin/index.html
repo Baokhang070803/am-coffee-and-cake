@@ -6,37 +6,42 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.css">
 </head>
 <body>
-  <script>
-    CMS.init({
-      config: {
-        backend: {
-          name: 'github',
-          repo: 'Baokhang070803/am-coffee-and-cake', // Tên repo của bạn trên GitHub
-          branch: 'main', // Nhánh bạn đang sử dụng
-          auth_type: 'oauth', // Sử dụng OAuth để đăng nhập
-          client_id: '<your-client-id>', // Thêm Client ID ở đây
-          client_secret: '<your-client-secret>', // Thêm Client Secret ở đây
-        },
-        media_folder: 'static/uploads', // Thư mục chứa hình ảnh tải lên
-        public_folder: '/uploads', // Đường dẫn công khai cho hình ảnh
-        collections: [
-          {
-            name: 'blog',
-            label: 'Blog',
-            folder: 'content/blog',
-            create: true,
-            slug: '{{slug}}',
-            fields: [
-              { label: 'Title', name: 'title', widget: 'string' },
-              { label: 'Date', name: 'date', widget: 'datetime' },
-              { label: 'Body', name: 'body', widget: 'markdown' },
-            ],
-          },
-          // Thêm các collection khác nếu cần
-        ],
-      },
-    });
-  </script>
+  <!-- Nội dung trang quản trị -->
   
+  <!-- Đảm bảo tệp CMS được tải trước khi gọi CMS.init() -->
+  <script src="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.js"></script>
+  <script>
+    // Đảm bảo CMS được khởi tạo sau khi tệp đã được tải hoàn toàn
+    window.onload = function() {
+      CMS.init({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'Baokhang070803/am-coffee-and-cake', // Tên repo GitHub
+            branch: 'main',
+            auth_type: 'oauth',
+            client_id: 'Ov23lis28jTmt3hUqeBx',
+            client_secret: '42793935b499ce650455a386168580d22ea2ca4a',
+          },
+          media_folder: 'static/uploads',
+          public_folder: '/uploads',
+          collections: [
+            {
+              name: 'blog',
+              label: 'Blog',
+              folder: 'content/blog',
+              create: true,
+              slug: '{{slug}}',
+              fields: [
+                { label: 'Title', name: 'title', widget: 'string' },
+                { label: 'Date', name: 'date', widget: 'datetime' },
+                { label: 'Body', name: 'body', widget: 'markdown' },
+              ],
+            },
+          ],
+        },
+      });
+    }
+  </script>
 </body>
 </html>
