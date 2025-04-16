@@ -1,17 +1,16 @@
 backend:
   name: git-gateway
-  branch: main # hoặc 'master' nếu repo bạn dùng branch đó
+  branch: main  # Hoặc nhánh bạn đang sử dụng trên GitHub
 
-media_folder: "images/uploads" # nơi lưu ảnh trên GitHub
-public_folder: "/images/uploads" # đường dẫn ảnh hiển thị trên web
+media_folder: "images/uploads"  # Thư mục lưu trữ hình ảnh (có thể chỉnh sửa)
+public_folder: "/uploads"  # Đường dẫn công khai cho hình ảnh
 
 collections:
-  - name: "posts"
-    label: "Bài viết"
-    folder: "posts"
-    create: true
-    slug: "{{slug}}"
+  - name: 'menu_pages'  # Tên collection
+    label: 'Menu Pages'  # Tiêu đề hiển thị trong giao diện quản trị CMS
+    folder: 'content/menu'  # Thư mục chứa tệp markdown của menu
+    create: true  # Cho phép tạo mới tệp
+    slug: '{{slug}}'  # Định dạng URL từ tên tệp
     fields:
-      - { label: "Tiêu đề", name: "title", widget: "string" }
-      - { label: "Ngày đăng", name: "date", widget: "datetime" }
-      - { label: "Nội dung", name: "body", widget: "markdown" }
+      - { label: 'Title', name: 'title', widget: 'string' }  # Tiêu đề menu
+      - { label: 'Menu Content', name: 'content', widget: 'markdown' }  # Nội dung menu, sử dụng markdown

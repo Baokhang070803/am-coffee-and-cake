@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Netlify CMS</title>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Khám phá thực đơn đa dạng của Ấm - Coffee and Cake với các món thức uống, bánh ngọt và topping hấp dẫn!"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <title>Thực Đơn - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <div class="container">
+        <h1>Thực Đơn Của Ấm</h1>
+        <!-- Nội dung thực đơn sẽ được cập nhật từ CMS -->
+        <div class="menu-content">
+            {{ content }}
+        </div>
+    </div>
 </body>
 </html>
