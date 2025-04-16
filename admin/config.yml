@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: Baokhang070803/am-coffee-and-cake  # Thay bằng tên repository GitHub của bạn
+  branch: main  # Hoặc nhánh mà bạn đang sử dụng
+  client_id: lv23liiAlfpFNzovZ3S3a  # Client ID mà bạn đã nhận
+  client_secret: 9e94fefa128f5c2dd5b0081a1569440fb27999be  # Client Secret mà bạn vừa tạo
+
+media_folder: "images"  # Thư mục chứa hình ảnh tải lên
+public_folder: "/images"  # Đường dẫn công khai cho hình ảnh
+
+collections:
+  - name: "products"
+    label: "Sản Phẩm"
+    folder: "images/products"  # Thư mục chứa sản phẩm
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Tên Sản Phẩm", name: "title", widget: "string" }
+      - { label: "Mô Tả", name: "description", widget: "text" }
+      - { label: "Giá", name: "price", widget: "number" }
+      - { label: "Hình Ảnh", name: "image", widget: "image" }
