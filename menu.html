@@ -329,7 +329,7 @@
                             <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
                          </li>
                          <li class="option-cart">
-                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">0</span></a>
                             <ul class="option-cart-item"></ul>
                          </li>
                       </ul>
@@ -557,6 +557,28 @@
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
     <script>
+        // Dữ liệu ảo cho sản phẩm
+        const initialProducts = [
+            // Thức Uống
+            { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg', attributes: 'Cà phê đen đậm đà, thêm đá mát lạnh.' },
+            { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg', attributes: 'Cà phê Ý với lớp bọt sữa mềm mại.' },
+            { id: 3, name: 'Trà Sữa Trân Châu', price: 40000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/bubble-tea-with-straw_144627-5198.jpg', attributes: 'Trà sữa thơm ngon với trân châu dai giòn.' },
+            { id: 4, name: 'Sinh Tố Xoài', price: 50000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/mango-smoothie-glass_74190-1567.jpg', attributes: 'Sinh tố xoài tươi mát, giàu vitamin.' },
+            // Bánh
+            { id: 5, name: 'Cheesecake Chanh Dây', price: 55000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg', attributes: 'Bánh cheesecake chanh dây chua ngọt.' },
+            { id: 6, name: 'Tiramisu', price: 60000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/tiramisu-cake-slice_74190-1565.jpg', attributes: 'Bánh tiramisu Ý với hương cà phê đặc trưng.' },
+            { id: 7, name: 'Bánh Mousse Socola', price: 65000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/chocolate-mousse-cake_74190-1566.jpg', attributes: 'Bánh mousse socola mềm mịn, ngọt ngào.' },
+            // Gọi Thêm
+            { id: 8, name: 'Phô Mai', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg', attributes: 'Phô mai béo ngậy, thêm vào đồ uống.' },
+            { id: 9, name: 'Trân Châu Đen', price: 8000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/black-pearls-bubble-tea_74190-1568.jpg', attributes: 'Trân châu đen dai giòn, ngọt nhẹ.' },
+            { id: 10, name: 'Kem Tươi', price: 12000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/whipped-cream-bowl_74190-1569.jpg', attributes: 'Kem tươi béo ngậy, thêm lên bánh hoặc đồ uống.' }
+        ];
+
+        // Lưu dữ liệu ảo vào localStorage nếu chưa có
+        if (!localStorage.getItem('products')) {
+            localStorage.setItem('products', JSON.stringify(initialProducts));
+        }
+
         // Ẩn loading overlay
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -640,12 +662,12 @@
             if (!product) return;
 
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existingProduct = cart.find(item => item.id === productId);
+            let existingProduct = cart.find(item => item.productId === productId);
 
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
-                cart.push({ ...product, quantity: 1 });
+                cart.push({ productId: product.id, quantity: 1 });
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -675,6 +697,7 @@
             dropdown.innerHTML = '';
 
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
 
             if (cart.length === 0) {
                 dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
@@ -682,22 +705,25 @@
             }
 
             cart.forEach(item => {
-                let cartItem = document.createElement('li');
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `
-                    <div class="cart-item">
-                        <div class="image"><img src="${item.image}" alt="${item.name}"></div>
-                        <div class="item-description">
-                            <p class="name">${item.name}</p>
-                            <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                const product = products.find(p => p.id === item.productId);
+                if (product) {
+                    let cartItem = document.createElement('li');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <div class="cart-item">
+                            <div class="image"><img src="${product.image}" alt="${product.name}"></div>
+                            <div class="item-description">
+                                <p class="name">${product.name}</p>
+                                <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                            </div>
+                            <div class="right">
+                                <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                                <a href="#" class="remove" onclick="removeItem(${item.productId}); return false;">Xóa</a>
+                            </div>
                         </div>
-                        <div class="right">
-                            <p class="price">${(item.price * item.quantity).toLocaleString('vi-VN')} VND</p>
-                            <a href="#" class="remove" onclick="removeItem(${item.id})">Xóa</a>
-                        </div>
-                    </div>
-                `;
-                dropdown.appendChild(cartItem);
+                    `;
+                    dropdown.appendChild(cartItem);
+                }
             });
 
             updateCartTotal();
@@ -706,16 +732,28 @@
         // Hàm xóa sản phẩm khỏi giỏ
         function removeItem(productId) {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart = cart.filter(item => item.id !== productId);
+            cart = cart.filter(item => item.productId !== productId);
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             updateCartDropdown();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Đã xóa!',
+                text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
 
         // Hàm cập nhật tổng tiền giỏ hàng
         function updateCartTotal() {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let totalPrice = cart.reduce((total, item) => {
+                const product = products.find(p => p.id === item.productId);
+                return total + (product ? product.price * item.quantity : 0);
+            }, 0);
             let totalElement = document.querySelector('.total strong') || document.createElement('strong');
             totalElement.textContent = totalPrice.toLocaleString('vi-VN') + ' VND';
             if (!document.querySelector('.total strong')) {
