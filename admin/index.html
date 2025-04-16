@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Netlify CMS</title>
-  <!-- Link đến stylesheet của Netlify CMS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Netlify CMS</title>
 </head>
 <body>
-  <!-- Nội dung quản trị sẽ được tải ở đây -->
-  
-  <!-- Link đến tệp JavaScript của Netlify CMS -->
-  <script src="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.js"></script>
-  
-  <script>
-    window.onload = function() {
-      CMS.init({
-        config: {
-          backend: {
-            name: 'github',  // Chế độ xác thực thông qua GitHub
-            repo: 'Baokhang070803/am-coffee-and-cake',  // Tên repo GitHub của bạn
-            branch: 'main',  // Nhánh chính mà bạn sử dụng
-            auth_type: 'oauth',  // Xác thực OAuth
-            client_id: 'Ov23lis28jTmt3hUqeBx',  // Client ID từ GitHub
-            client_secret: '42793935b499ce650455a386168580d22ea2ca4a',  // Client Secret từ GitHub
-          },
-          media_folder: 'static/uploads',  // Thư mục lưu trữ hình ảnh
-          public_folder: '/uploads',  // Đường dẫn công khai cho hình ảnh
-          collections: [
-            {
-              name: 'blog',  // Tên collection
-              label: 'Blog',  // Tên hiển thị của collection
-              folder: 'content/blog',  // Thư mục chứa nội dung
-              create: true,  // Cho phép tạo bài viết mới
-              slug: '{{slug}}',  // Sử dụng slug từ tiêu đề
-              fields: [
-                { label: 'Title', name: 'title', widget: 'string' },
-                { label: 'Date', name: 'date', widget: 'datetime' },
-                { label: 'Body', name: 'body', widget: 'markdown' },
-              ],
-            },
-            // Bạn có thể thêm các collection khác nếu cần
-          ],
-        },
-      });
-    }
-  </script>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </body>
+<script>
+  window.onload = function() {
+    CMS.init({
+      config: {
+        backend: {
+          name: 'github',  // Chế độ xác thực thông qua GitHub
+          repo: 'Baokhang070803/am-coffee-and-cake',  // Tên repo GitHub của bạn
+          branch: 'main',  // Nhánh chính mà bạn sử dụng
+          auth_type: 'oauth',  // Xác thực OAuth
+          client_id: 'Ov23lis28jTmt3hUqeBx',  // Client ID từ GitHub
+          client_secret: '42793935b499ce650455a386168580d22ea2ca4a',  // Client Secret từ GitHub
+        },
+        media_folder: 'static/uploads',  // Thư mục lưu trữ hình ảnh
+        public_folder: '/uploads',  // Đường dẫn công khai cho hình ảnh
+        collections: [
+          {
+            name: 'blog',  // Tên collection
+            label: 'Blog',  // Tên hiển thị của collection
+            folder: 'content/blog',  // Thư mục chứa nội dung
+            create: true,  // Cho phép tạo bài viết mới
+            slug: '{{slug}}',  // Sử dụng slug từ tiêu đề
+            fields: [
+              { label: 'Title', name: 'title', widget: 'string' },
+              { label: 'Date', name: 'date', widget: 'datetime' },
+              { label: 'Body', name: 'body', widget: 'markdown' },
+            ],
+          },
+          // Bạn có thể thêm các collection khác nếu cần
+        ],
+      },
+    });
+  }
+</script>
 </html>
