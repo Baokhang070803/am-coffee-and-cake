@@ -10,24 +10,12 @@ media_folder: 'static/uploads'
 public_folder: '/uploads'
 
 collections:
-  - name: 'blog'  # Tên collection duy nhất
-    label: 'Blog'
-    folder: 'content/blog'  # Thư mục cần phải tồn tại và không bị trùng
+  - name: "posts"
+    label: "Bài viết"
+    folder: "posts"
     create: true
-    slug: '{{slug}}'
+    slug: "{{slug}}"
     fields:
-      - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Date', name: 'date', widget: 'datetime' }
-      - { label: 'Body', name: 'body', widget: 'markdown' }
-
-  - name: 'products'  # Tên collection khác
-    label: 'Products'
-    folder: 'content/products'  # Thư mục cần phải tồn tại và không bị trùng
-    create: true
-    slug: '{{slug}}'
-    fields:
-      - { label: 'Product Name', name: 'product_name', widget: 'string' }
-      - { label: 'Price', name: 'price', widget: 'string' }
-      - { label: 'Description', name: 'description', widget: 'text' }
-
-  # Bạn có thể thêm các collection khác nếu cần, đảm bảo mỗi tên là duy nhất
+      - { label: "Tiêu đề", name: "title", widget: "string" }
+      - { label: "Ngày đăng", name: "date", widget: "datetime" }
+      - { label: "Nội dung", name: "body", widget: "markdown" }
