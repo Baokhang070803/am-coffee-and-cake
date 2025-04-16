@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Quản Lý Website</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-cms@2.0.0/dist/netlify-cms.css" />
+  <meta charset="UTF-8">
+  <title>Netlify CMS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.css">
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/netlify-cms@2.0.0/dist/netlify-cms.js"></script>
+  <script>
+    CMS.init({
+      config: {
+        backend: {
+          name: 'github',
+          repo: 'Baokhang070803/am-coffee-and-cake', // Tên repo của bạn trên GitHub
+          branch: 'main', // Nhánh bạn đang sử dụng
+          auth_type: 'oauth', // Sử dụng OAuth để đăng nhập
+          client_id: '<your-client-id>', // Thêm Client ID ở đây
+          client_secret: '<your-client-secret>', // Thêm Client Secret ở đây
+        },
+        media_folder: 'static/uploads', // Thư mục chứa hình ảnh tải lên
+        public_folder: '/uploads', // Đường dẫn công khai cho hình ảnh
+        collections: [
+          {
+            name: 'blog',
+            label: 'Blog',
+            folder: 'content/blog',
+            create: true,
+            slug: '{{slug}}',
+            fields: [
+              { label: 'Title', name: 'title', widget: 'string' },
+              { label: 'Date', name: 'date', widget: 'datetime' },
+              { label: 'Body', name: 'body', widget: 'markdown' },
+            ],
+          },
+          // Thêm các collection khác nếu cần
+        ],
+      },
+    });
+  </script>
+  
 </body>
 </html>
