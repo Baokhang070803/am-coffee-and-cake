@@ -189,21 +189,6 @@
         .menu-items.toppings {
             grid-template-columns: repeat(5, 1fr);
         }
-        /* Animation
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popUp {
-            from { 
-                opacity: 0; 
-                transform: translateX(-50%) translateY(10px) scale(0.95); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateX(-50%) translateY(0) scale(1); 
-            }
-        } */
         /* Responsive */
         @media (max-width: 991px) {
             .menu-items.drinks, .menu-items.cakes {
@@ -322,10 +307,8 @@
                          </div>
                          <div class="col-md-6">
                             <ul class="topmenu">
-                              
                                <li><a href="contact.html">Liên Hệ</a></li>
-                               <!-- <li><a href="policy.html">Chính Sách</a></li> -->
-                               <li><a href="policy.html">Hỗ Trợ Khác Hàng</a></li>
+                               <li><a href="policy.html">Hỗ Trợ Khách Hàng</a></li>
                                <li><a href="member.html">Thành Viên</a></li>
                             </ul>
                          </div>
@@ -345,8 +328,7 @@
                          </li>
                          <li class="option-cart">
                             <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
-                           
-                            
+                            <ul class="option-cart-item"></ul>
                          </li>
                       </ul>
                       <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
@@ -355,42 +337,31 @@
                             <li>
                                <a href="index.html">Trang Chủ</a>
                             </li>
-                            <li class="active dropdown" class="dropdown" >
-                               <a  href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                            <li class="active dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
                                <div class="dropdown-menu mega-menu">
                                   <div class="row">
                                      <div class="col-md-6 col-sm-6">
-                                           <h4 class="menu-title">Thức Uống</h4>
-                                           <ul class="mega-menu-links">
-                                              <li><a href="menu.html">Cà phê đen đá</a></li>
-                                              <li><a href="menu.html">Cappuccino</a></li>
-                                              <li><a href="menu.html">Latte</a></li>
-                                              <li><a href="menu.html">Espresso</a></li>
-                                           </ul>
+                                        <h4 class="menu-title">Thức Uống</h4>
+                                        <ul class="mega-menu-links" id="dropdown-drinks">
+                                           <!-- Được cập nhật động bởi JavaScript -->
+                                        </ul>
                                      </div>
                                      <div class="col-md-6 col-sm-6">
-                                           <h4 class="menu-title">Bánh</h4>
-                                           <ul class="mega-menu-links">
-                                              <li><a href="menu.html">Bánh Bông Lan</a></li>
-                                              <li><a href="menu.html">Cheesecake</a></li>
-                                              <li><a href="menu.html">Bánh Mì</a></li>
-                                              <li><a href="menu.html">Tiramisu</a></li>
-                                              <li><a href="menu.html">Mousse Cake</a></li>
-                                              <li><a href="menu.html">Cupcake</a></li>
-                                           </ul>
+                                        <h4 class="menu-title">Bánh</h4>
+                                        <ul class="mega-menu-links" id="dropdown-cakes">
+                                           <!-- Được cập nhật động bởi JavaScript -->
+                                        </ul>
                                      </div>
                                      <div class="col-md-6 col-sm-6">
                                         <h4 class="menu-title">Gọi Thêm</h4>
-                                        <ul class="mega-menu-links">
-                                           <li><a href="menu.html"#pho-mai">Phô Mai</a></li>
-                                     <li><a href="menu.html">Socola</a></li>
-                                     <li><a href="menu.html">Mật Ong</a></li>
-                                     <li><a href="menu.html">Kem</a></li>
-                                     <li><a href="menu.html">Trái Cây</a></li>
+                                        <ul class="mega-menu-links" id="dropdown-toppings">
+                                           <!-- Được cập nhật động bởi JavaScript -->
                                         </ul>
-                                  </div> 
+                                     </div> 
+                                  </div>
                                </div>
-                         </li>
+                            </li>
                             <li><a href="promotions.html">Khuyến Mãi</a></li>
                             <li><a href="news.html">Tin Tức</a></li>
                             <li><a href="event.html">Sự Kiện</a></li>
@@ -414,8 +385,7 @@
                       <div class="flat-caption caption2 formLeft delay400 text-center">
                          <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
                       </div>
-                      
-                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu.html">Xem Menu</a></div>
                       <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
                    </li>
                    <li>
@@ -435,7 +405,7 @@
                       <div class="flat-caption caption3 formLeft delay500 text-center">
                          <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
                       </div>
-                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu.html">Thử Ngay</a></div>
                       <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
                    </li>
                 </ul>
@@ -445,10 +415,10 @@
              <div class="container">
                 <div class="row">
                    <div class="col-md-4 col-sm-4 col-xs-4">
-                      <div class="promo-box"><a href="menu-drinks.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                      <div class="promo-box"><a href="menu.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
                    </div>
                    <div class="col-md-4 col-sm-4 col-xs-4">
-                      <div class="promo-box"><a href="menu-cakes.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                      <div class="promo-box"><a href="menu.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
                    </div>
                    <div class="col-md-4 col-sm-4 col-xs-4">
                       <div class="promo-box"><a href="promotions.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
@@ -457,459 +427,300 @@
              </div>
           </div>
        </div>
-            <div class="clearfix"></div>
-            <div class="container_fullwidth">
-                <div class="container">
-                    <div class="menu-section">
-                        <h2 class="menu-title">Thực Đơn Của Ấm</h2>
-                        <p class="menu-subtitle">Khám phá những món thức uống thơm ngon, bánh ngọt tinh tế và topping độc đáo tại Ấm - Coffee and Cake!</p>
-                       <!-- Thức Uống -->
-<div class="menu-category" id="drinks">
-    <h3>Thức Uống</h3>
-    <div class="menu-items drinks">
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"/>
-            <h4>Cà Phê Đen Đá</h4>
-            <p>35.000 VND</p>
-            <button onclick="addToCart('Cà Phê Đen Đá', 35000, 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cà Phê Đen Đá"/>
-                <h5>Cà Phê Đen Đá</h5>
-                <p>Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.</p>
-                <p class="price">35.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"/>
-            <h4>Cappuccino</h4>
-            <p>45.000 VND</p>
-            <button onclick="addToCart('Cappuccino', 45000, 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"/>
-                <h5>Cappuccino</h5>
-                <p>Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.</p>
-                <p class="price">45.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Latte"/>
-            <h4>Latte</h4>
-            <p>50.000 VND</p>
-            <button onclick="addToCart('Latte', 50000, 'https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Latte"/>
-                <h5>Latte</h5>
-                <p>Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.</p>
-                <p class="price">50.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Espresso"/>
-            <h4>Espresso</h4>
-            <p>40.000 VND</p>
-            <button onclick="addToCart('Espresso', 40000, 'https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Espresso"/>
-                <h5>Espresso</h5>
-                <p>Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.</p>
-                <p class="price">40.000 VND</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Bánh -->
-<div class="menu-category" id="cakes">
-    <h3>Bánh</h3>
-    <div class="menu-items cakes">
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Bánh Bông Lan"/>
-            <h4>Bánh Bông Lan</h4>
-            <p>30.000 VND</p>
-            <button onclick="addToCart('Bánh Bông Lan', 30000, 'https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Bánh Bông Lan"/>
-                <h5>Bánh Bông Lan</h5>
-                <p>Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.</p>
-                <p class="price">30.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cheesecake"/>
-            <h4>Cheesecake</h4>
-            <p>55.000 VND</p>
-            <button onclick="addToCart('Cheesecake', 55000, 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cheesecake"/>
-                <h5>Cheesecake</h5>
-                <p>Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.</p>
-                <p class="price">55.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380" alt="Bánh Mì"/>
-            <h4>Bánh Mì</h4>
-            <p>25.000 VND</p>
-            <button onclick="addToCart('Bánh Mì', 25000, 'https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380" alt="Bánh Mì"/>
-                <h5>Bánh Mì</h5>
-                <p>Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.</p>
-                <p class="price">25.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"/>
-            <h4>Tiramisu</h4>
-            <p>60.000 VND</p>
-            <button onclick="addToCart('Tiramisu', 60000, 'https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"/>
-                <h5>Tiramisu</h5>
-                <p>Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.</p>
-                <p class="price">60.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mousse Cake"/>
-            <h4>Mousse Cake</h4>
-            <p>50.000 VND</p>
-            <button onclick="addToCart('Mousse Cake', 50000, 'https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mousse Cake"/>
-                <h5>Mousse Cake</h5>
-                <p>Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.</p>
-                <p class="price">50.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cupcake"/>
-            <h4>Cupcake</h4>
-            <p>35.000 VND</p>
-            <button onclick="addToCart('Cupcake', 35000, 'https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cupcake"/>
-                <h5>Cupcake</h5>
-                <p>Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.</p>
-                <p class="price">35.000 VND</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Gọi Thêm -->
-<div class="menu-category" id="toppings">
-    <h3>Gọi Thêm</h3>
-    <div class="menu-items toppings">
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Phô Mai"/>
-            <h4>Phô Mai</h4>
-            <p>10.000 VND</p>
-            <button onclick="addToCart('Phô Mai', 10000, 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Phô Mai"/>
-                <h5>Phô Mai</h5>
-                <p>Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.</p>
-                <p class="price">10.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Socola"/>
-            <h4>Socola</h4>
-            <p>10.000 VND</p>
-            <button onclick="addToCart('Socola', 10000, 'https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Socola"/>
-                <h5>Socola</h5>
-                <p>Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.</p>
-                <p class="price">10.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mật Ong"/>
-            <h4>Mật Ong</h4>
-            <p>8.000 VND</p>
-            <button onclick="addToCart('Mật Ong', 8000, 'https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Mật Ong"/>
-                <h5>Mật Ong</h5>
-                <p>Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.</p>
-                <p class="price">8.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Kem"/>
-            <h4>Kem</h4>
-            <p>12.000 VND</p>
-            <button onclick="addToCart('Kem', 12000, 'https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Kem"/>
-                <h5>Kem</h5>
-                <p>Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.</p>
-                <p class="price">12.000 VND</p>
-            </div>
-        </div>
-        <div class="menu-item">
-            <img src="https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Trái Cây"/>
-            <h4>Trái Cây</h4>
-            <p>15.000 VND</p>
-            <button onclick="addToCart('Trái Cây', 15000, 'https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740')">Thêm vào giỏ</button>
-            <div class="menu-item-tooltip">
-                <img src="https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Trái Cây"/>
-                <h5>Trái Cây</h5>
-                <p>Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.</p>
-                <p class="price">15.000 VND</p>
-            </div>
-        </div>
-    </div>
-</div>
-                    <div class="clearfix"></div>
-                   <div class="our-brand">
-                     <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
-                     <!-- <div class="control"><a id="prev_brand" class="prev" href="#">&lt;</a><a id="next_brand" class="next" href="#">&gt;</a></div> -->
-                     <ul id="braldLogo">
-                        <li>
-                           <ul class="brand_item">
-                              <li>
-                                 <a href="#">
-                                    <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
-                                 </a>
-                              </li>
-                              <li>
-                                 <a href="#">
-                                    <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
-                                 </a>
-                              </li>
-                              <li>
-                                 <a href="#">
-                                    <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
-                                 </a>
-                              </li>
-                              <li>
-                                 <a href="#">
-                                    <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
-                                 </a>
-                              </li>
-                              <li>
-                                 <a href="#">
-                                    <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
-                                 </a>
-                              </li>
-                           </ul>
-                        </li>
-                     </ul>
-                  </div>
+       <div class="clearfix"></div>
+       <div class="container_fullwidth">
+          <div class="container">
+             <div class="menu-section">
+                <h2 class="menu-title">Thực Đơn Của Ấm</h2>
+                <p class="menu-subtitle">Khám phá những món thức uống thơm ngon, bánh ngọt tinh tế và topping độc đáo tại Ấm - Coffee and Cake!</p>
+                <!-- Thức Uống -->
+                <div class="menu-category" id="drinks">
+                   <h3>Thức Uống</h3>
+                   <div class="menu-items drinks" id="drinks-list"></div>
                 </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="footer">
-                <div class="footer-info">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"/></a></div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
-                                <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
-                                <p>Hotline: (028) 1234 5678</p>
-                                <p>Email: contact@amcoffee.vn</p>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
-                                <ul class="support">
-                                    <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
-                                    <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
-                                    <li><a href="policy.html#delivery">Giao Hàng</a></li>
-                                    <li><a href="policy.html#returns">Đổi Trả</a></li>
-                                    <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
-                                <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
-                                <form class="newsletter">
-                                    <input type="email" name="email" placeholder="Nhập email của bạn..."/>
-                                    <input type="submit" value="Đăng Ký" class="button"/>
-                                </form>
-                            </div>
+                <!-- Bánh -->
+                <div class="menu-category" id="cakes">
+                   <h3>Bánh</h3>
+                   <div class="menu-items cakes" id="cakes-list"></div>
+                </div>
+                <!-- Gọi Thêm -->
+                <div class="menu-category" id="toppings">
+                   <h3>Gọi Thêm</h3>
+                   <div class="menu-items toppings" id="toppings-list"></div>
+                </div>
+             </div>
+             <div class="our-brand">
+                <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
+                <ul id="braldLogo">
+                   <li>
+                      <ul class="brand_item">
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                            </a>
+                         </li>
+                      </ul>
+                   </li>
+                </ul>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="footer">
+          <div class="footer-info">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-3">
+                      <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"/></a></div>
+                   </div>
+                   <div class="col-md-3 col-sm-6">
+                      <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                      <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                      <p>Hotline: (028) 1234 5678</p>
+                      <p>Email: contact@amcoffee.vn</p>
+                   </div>
+                   <div class="col-md-3 col-sm-6">
+                      <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                      <ul class="support">
+                         <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                         <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                         <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                         <li><a href="policy.html#returns">Đổi Trả</a></li>
+                         <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                      </ul>
+                   </div>
+                   <div class="col-md-3">
+                      <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                      <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                      <form class="newsletter">
+                         <input type="email" name="email" placeholder="Nhập email của bạn..."/>
+                         <input type="submit" value="Đăng Ký" class="button"/>
+                      </form>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="copyright-info">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-6">
+                      <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                   </div>
+                   <div class="col-md-6">
+                      <ul class="social-icon2">
+                         <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                         <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                         <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+       <div class="loading-content">
+          <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+          <p>Chờ Ấm Một chút nhé...</p>
+          <div class="loading-spinner"></div>
+       </div>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script>
+        // Ẩn loading overlay
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loading-overlay').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Hiệu ứng cuộn
+        const elements = document.querySelectorAll('.menu-category');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        elements.forEach(el => observer.observe(el));
+
+        // Load products from localStorage
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const drinksList = document.getElementById('drinks-list');
+            const cakesList = document.getElementById('cakes-list');
+            const toppingsList = document.getElementById('toppings-list');
+            const dropdownDrinks = document.getElementById('dropdown-drinks');
+            const dropdownCakes = document.getElementById('dropdown-cakes');
+            const dropdownToppings = document.getElementById('dropdown-toppings');
+
+            drinksList.innerHTML = '';
+            cakesList.innerHTML = '';
+            toppingsList.innerHTML = '';
+            dropdownDrinks.innerHTML = '';
+            dropdownCakes.innerHTML = '';
+            dropdownToppings.innerHTML = '';
+
+            products.forEach(product => {
+                const itemHtml = `
+                    <div class="menu-item">
+                        <img src="${product.image}" alt="${product.name}"/>
+                        <h4>${product.name}</h4>
+                        <p>${product.price.toLocaleString('vi-VN')} VND</p>
+                        <button onclick="addToCart(${product.id})">Thêm vào giỏ</button>
+                        <div class="menu-item-tooltip">
+                            <img src="${product.image}" alt="${product.name}"/>
+                            <h5>${product.name}</h5>
+                            <p>${product.attributes || 'Món ngon từ Ấm Coffee & Cake'}</p>
+                            <p class="price">${product.price.toLocaleString('vi-VN')} VND</p>
                         </div>
                     </div>
-                </div>
-                <div class="copyright-info">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="social-icon2">
-                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
-                                    <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bootstrap core JavaScript -->
-        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
-        <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
-        <script defer src="js/jquery.flexslider.js"></script>
-        <script type="text/javascript" src="js/script.min.js"></script>
-        <script>
-            // Ẩn loading overlay
-            window.addEventListener('load', function() {
-                setTimeout(function() {
-                    document.querySelector('.loading-overlay').classList.add('hidden');
-                }, 1000);
+                `;
+                const dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
+
+                if (product.category === 'Thức Uống') {
+                    drinksList.innerHTML += itemHtml;
+                    dropdownDrinks.innerHTML += dropdownItem;
+                } else if (product.category === 'Bánh') {
+                    cakesList.innerHTML += itemHtml;
+                    dropdownCakes.innerHTML += dropdownItem;
+                } else if (product.category === 'Gọi Thêm') {
+                    toppingsList.innerHTML += itemHtml;
+                    dropdownToppings.innerHTML += dropdownItem;
+                }
             });
 
-            // Hiệu ứng cuộn
-            const elements = document.querySelectorAll('.menu-category');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            elements.forEach(el => observer.observe(el));
+            // Nếu danh sách rỗng, hiển thị thông báo
+            if (!drinksList.innerHTML) drinksList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+            if (!cakesList.innerHTML) cakesList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+            if (!toppingsList.innerHTML) toppingsList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+        }
 
-           // Hàm thêm sản phẩm vào giỏ và cập nhật dropdown
-function addToCart(productName, price, imageUrl) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        // Hàm thêm sản phẩm vào giỏ và cập nhật dropdown
+        function addToCart(productId) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products.find(item => item.id === productId);
+            if (!product) return;
 
-    // Kiểm tra sản phẩm đã có trong giỏ chưa
-    let existingProduct = cart.find(item => item.name === productName);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let existingProduct = cart.find(item => item.id === productId);
 
-    if (existingProduct) {
-        // Nếu sản phẩm đã có, tăng số lượng lên
-        existingProduct.quantity += 1;
-    } else {
-        // Nếu chưa có, thêm sản phẩm mới vào giỏ
-        cart.push({ name: productName, price: price, quantity: 1, imageUrl: imageUrl });
-    }
+            if (existingProduct) {
+                existingProduct.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
 
-    // Lưu giỏ hàng vào localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+        }
 
-    // Cập nhật số lượng sản phẩm trên biểu tượng giỏ hàng
-    updateCartCount();
+        // Hàm cập nhật số lượng giỏ hàng trên biểu tượng
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.querySelector('.cart_no').textContent = totalItems;
+        }
 
-    // Thêm sản phẩm vào dropdown giỏ hàng
-    updateCartDropdown();
-}
+        // Hàm cập nhật dropdown giỏ hàng
+        function updateCartDropdown() {
+            let dropdown = document.querySelector('.option-cart-item');
+            dropdown.innerHTML = '';
 
-// Hàm cập nhật số lượng giỏ hàng trên biểu tượng
-function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    document.querySelector('.cart_no').textContent = totalItems; // Cập nhật số lượng giỏ hàng trên icon
-}
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Hàm cập nhật dropdown giỏ hàng, chỉ thêm sản phẩm mới vào phần khoanh đỏ
-function updateCartDropdown() {
-    let dropdown = document.querySelector('.option-cart-item');
-    dropdown.innerHTML = '';  // Xóa tất cả sản phẩm trong dropdown
+            if (cart.length === 0) {
+                dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
+                return;
+            }
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.forEach(item => {
+                let cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <div class="cart-item">
+                        <div class="image"><img src="${item.image}" alt="${item.name}"></div>
+                        <div class="item-description">
+                            <p class="name">${item.name}</p>
+                            <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                        </div>
+                        <div class="right">
+                            <p class="price">${(item.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                            <a href="#" class="remove" onclick="removeItem(${item.id})">Xóa</a>
+                        </div>
+                    </div>
+                `;
+                dropdown.appendChild(cartItem);
+            });
 
-    if (cart.length === 0) {
-        dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
-        return;
-    }
+            updateCartTotal();
+        }
 
-    cart.forEach(item => {
-        let cartItem = document.createElement('li');
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-            <div class="cart-item">
-                <div class="image"><img src="${item.imageUrl}" alt="${item.name}"></div>
-                <div class="item-description">
-                    <p class="name">${item.name}</p>
-                    <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
-                </div>
-                <div class="right">
-                    <p class="price">${item.price * item.quantity} VND</p>
-                    <a href="#" class="remove" onclick="removeItem('${item.name}')">Xóa</a>
-                </div>
-            </div>
-        `;
-        dropdown.appendChild(cartItem);
-    });
+        // Hàm xóa sản phẩm khỏi giỏ
+        function removeItem(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+        }
 
-    // Cập nhật tổng tiền giỏ hàng
-    updateCartTotal();
-}
+        // Hàm cập nhật tổng tiền giỏ hàng
+        function updateCartTotal() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            let totalElement = document.querySelector('.total strong') || document.createElement('strong');
+            totalElement.textContent = totalPrice.toLocaleString('vi-VN') + ' VND';
+            if (!document.querySelector('.total strong')) {
+                let totalDiv = document.createElement('div');
+                totalDiv.className = 'total';
+                totalDiv.appendChild(totalElement);
+                document.querySelector('.option-cart-item').appendChild(totalDiv);
+            }
+        }
 
-// Hàm xóa sản phẩm khỏi giỏ
-function removeItem(productName) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Tìm và xóa sản phẩm khỏi giỏ hàng
-    cart = cart.filter(item => item.name !== productName);
-
-    // Lưu giỏ hàng đã cập nhật lại vào localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    // Cập nhật lại số lượng sản phẩm trên biểu tượng giỏ hàng
-    updateCartCount();
-
-    // Cập nhật lại dropdown giỏ hàng
-    updateCartDropdown();
-}
-
-// Hàm cập nhật tổng tiền giỏ hàng
-function updateCartTotal() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    // Hiển thị tổng tiền giỏ hàng trong dropdown
-    let totalElement = document.querySelector('.total strong');
-    totalElement.textContent = totalPrice;
-}
-
-// Khi trang được tải, cập nhật giỏ hàng
-window.addEventListener('load', function() {
-    updateCartCount();  // Cập nhật số lượng giỏ hàng trên biểu tượng
-    updateCartDropdown();  // Cập nhật dropdown giỏ hàng
-});
-
-// Ví dụ về nút "Thêm vào giỏ" từ sản phẩm
-document.querySelector('#add-to-cart-btn').addEventListener('click', function() {
-    const product = {
-        name: 'Cappuccino',
-        price: 45000,
-        imageUrl: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg'
-    };
-    addToCart(product.name, product.price, product.imageUrl);
-});
-
-
-        </script>
-    </body>
-    <body id="home">
-        <!-- Loading Overlay -->
-        <div class="loading-overlay">
-           <div class="loading-content">
-              <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
-              <p>Chờ Ấm Một chút nhé...</p>
-              <div class="loading-spinner"></div>
-           </div>
-        </div>
-        <!-- Nội dung trang hiện tại -->
-        <div class="wrapper">
-           <!-- Phần còn lại của trang -->
-        </div>
-     </body>
+        // Khởi tạo khi trang tải
+        window.addEventListener('load', function() {
+            loadProducts();
+            updateCartCount();
+            updateCartDropdown();
+        });
+    </script>
+</body>
 </html>

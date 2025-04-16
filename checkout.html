@@ -592,123 +592,81 @@
          <script defer src="js/jquery.flexslider.js"></script>
          <script type="text/javascript" src="js/script.min.js"></script>
          <script>
-            function toggleStep(step) {
-               // Lấy tất cả các bước
-               const steps = document.querySelectorAll('.steps');
-               
-               // Xóa lớp active khỏi tất cả các bước
-               steps.forEach(s => s.classList.remove('active'));
+          // Ẩn loading overlay
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            document.querySelector('.loading-overlay').classList.add('hidden');
+        }, 1000);
+    });
 
-               // Thêm lớp active vào bước được chọn
-               const stepEl = document.getElementById('step-' + step);
-               stepEl.classList.add('active');
+    // Load dropdown menu items
+    function loadDropdownMenu() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        const dropdownDrinks = document.getElementById('dropdown-drinks');
+        const dropdownCakes = document.getElementById('dropdown-cakes');
+        const dropdownToppings = document.getElementById('dropdown-toppings');
 
-               // Bỏ lớp disabled cho các bước từ 1 đến bước hiện tại
-               for (let i = 1; i <= step; i++) {
-                  const stepToEnable = document.getElementById('step-' + i);
-                  stepToEnable.classList.remove('disabled');
-               }
+        dropdownDrinks.innerHTML = '';
+        dropdownCakes.innerHTML = '';
+        dropdownToppings.innerHTML = '';
 
-               // Điền thông tin nếu bước >= 2
-               if (step >= 2) {
-                  const fullName = "Võ Trần Hoàng Bảo Khang";
-                  const phone = "0795858581";
-                  const email = "baokhangml99@gmail.com";
-                  const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
-
-                  // Điền thông tin cho bước 2
-                  document.getElementById('full_name').value = fullName;
-                  document.getElementById('phone').value = phone;
-                  document.getElementById('email').value = email;
-                  document.getElementById('billing_address').value = address;
-
-                  // Điền thông tin cho bước 3
-                  document.getElementById('receiver_name').value = fullName;
-                  document.getElementById('receiver_phone').value = phone;
-                  document.getElementById('shipping_address').value = address;
-               }
+        products.forEach(product => {
+            const dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
+            if (product.category === 'Thức Uống') {
+                dropdownDrinks.innerHTML += dropdownItem;
+            } else if (product.category === 'Bánh') {
+                dropdownCakes.innerHTML += dropdownItem;
+            } else if (product.category === 'Gọi Thêm') {
+                dropdownToppings.innerHTML += dropdownItem;
             }
+        });
+    }
 
-            function nextStep() {
-               const currentStep = document.querySelector('.steps.active');
-               const currentStepId = parseInt(currentStep.id.split('-')[1]);
+    function toggleStep(step) {
+        const steps = document.querySelectorAll('.steps');
+        
+        steps.forEach(s => s.classList.remove('active'));
+        
+        const stepEl = document.getElementById('step-' + step);
+        stepEl.classList.add('active');
 
-               if (currentStepId < 4) {
-                  // Xóa active khỏi bước hiện tại
-                  currentStep.classList.remove('active');
+        for (let i = 1; i <= step; i++) {
+            const stepToEnable = document.getElementById('step-' + i);
+            stepToEnable.classList.remove('disabled');
+        }
 
-                  // Kích hoạt bước tiếp theo
-                  const nextStep = document.getElementById(`step-${currentStepId + 1}`);
-                  nextStep.classList.remove('disabled');
-                  nextStep.classList.add('active');
+        if (step >= 2) {
+            const fullName = "Võ Trần Hoàng Bảo Khang";
+            const phone = "0795858581";
+            const email = "baokhangml99@gmail.com";
+            const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
 
-                  // Điền thông tin khi chuyển từ bước 1 sang bước 2
-                  if (currentStepId === 1) {
-                     const fullName = "Võ Trần Hoàng Bảo Khang";
-                     const phone = "0795858581";
-                     const email = "baokhangml99@gmail.com";
-                     const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
+            document.getElementById('full_name').value = fullName;
+            document.getElementById('phone').value = phone;
+            document.getElementById('email').value = email;
+            document.getElementById('billing_address').value = address;
 
-                     document.getElementById('full_name').value = fullName;
-                     document.getElementById('phone').value = phone;
-                     document.getElementById('email').value = email;
-                     document.getElementById('billing_address').value = address;
+            document.getElementById('receiver_name').value = fullName;
+            document.getElementById('receiver_phone').value = phone;
+            document.getElementById('shipping_address').value = address;
+        }
 
-                     document.getElementById('receiver_name').value = fullName;
-                     document.getElementById('receiver_phone').value = phone;
-                     document.getElementById('shipping_address').value = address;
-                  }
-               }
-            }
+        if (step === 4) {
+            updateOrderDetails();
+        }
+    }
 
-            function showConfirmation() {
-               const confirmationMessage = document.getElementById('confirmationMessage');
-               confirmationMessage.style.display = 'block';
-            }
+    function nextStep() {
+        const currentStep = document.querySelector('.steps.active');
+        const currentStepId = parseInt(currentStep.id.split('-')[1]);
 
-            // Xử lý form ở bước 2
-            document.getElementById('billing-form').addEventListener('submit', function(event) {
-               event.preventDefault();
-               if (document.querySelector('input[name="privacy"]').checked) {
-                  nextStep();
-               } else {
-                  alert("Vui lòng đồng ý với Chính Sách Bảo Mật!");
-               }
-            });
+        if (currentStepId < 4) {
+            currentStep.classList.remove('active');
+            const nextStep = document.getElementById(`step-${currentStepId + 1}`);
+            nextStep.classList.remove('disabled');
+            nextStep.classList.add('active');
 
-            // Xử lý form ở bước 3
-            document.getElementById('shipping-form').addEventListener('submit', function(event) {
-               event.preventDefault();
-               const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
-               if (paymentMethod) {
-                  nextStep();
-               } else {
-                  alert("Vui lòng chọn phương thức thanh toán!");
-               }
-            });
-
-
-
-            function toggleStep(step) {
-            // Get all steps
-            const steps = document.querySelectorAll('.steps');
-            
-            // Remove active class from all steps
-            steps.forEach(s => s.classList.remove('active'));
-            
-            // Add active class to clicked step
-            const stepEl = document.getElementById('step-' + step);
-            stepEl.classList.add('active');
-
-            // Enable steps up to the current step
-            for (let i = 1; i <= step; i++) {
-                const stepToEnable = document.getElementById('step-' + i);
-                stepToEnable.classList.remove('disabled');
-            }
-
-            // Fill information if step >= 2
-            if (step >= 2) {
-                // Assuming these are static user details
+            if (nextStep.id === 'step-2') {
                 const fullName = "Võ Trần Hoàng Bảo Khang";
                 const phone = "0795858581";
                 const email = "baokhangml99@gmail.com";
@@ -718,56 +676,187 @@
                 document.getElementById('phone').value = phone;
                 document.getElementById('email').value = email;
                 document.getElementById('billing_address').value = address;
+
+                document.getElementById('receiver_name').value = fullName;
+                document.getElementById('receiver_phone').value = phone;
+                document.getElementById('shipping_address').value = address;
+            }
+
+            if (nextStep.id === 'step-4') {
+                updateOrderDetails();
             }
         }
+    }
 
-        function nextStep() {
-            const currentStep = document.querySelector('.steps.active');
-            const currentStepId = parseInt(currentStep.id.split('-')[1]);
+    function showConfirmation() {
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        confirmationMessage.style.display = 'block';
+    }
 
-            if (currentStepId < 4) {
-                currentStep.classList.remove('active');
-                const nextStep = document.getElementById(`step-${currentStepId + 1}`);
-                nextStep.classList.remove('disabled');
-                nextStep.classList.add('active');
-            }
+    // Xử lý form ở bước 2
+    document.getElementById('billing-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (document.querySelector('input[name="privacy"]').checked) {
+            nextStep();
+        } else {
+            alert("Vui lòng đồng ý với Chính Sách Bảo Mật!");
         }
+    });
 
-        function showConfirmation() {
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            confirmationMessage.style.display = 'block';
+    // Xử lý form ở bước 3
+    document.getElementById('shipping-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+        if (paymentMethod) {
+            nextStep();
+        } else {
+            alert("Vui lòng chọn phương thức thanh toán!");
         }
+    });
 
-        function updateOrderDetails() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const orderItemsBody = document.getElementById('order-items-body');
-            orderItemsBody.innerHTML = ''; // Clear existing order items
+    function updateOrderDetails() {
+        const orderDetails = document.getElementById('orderDetails');
+        orderDetails.innerHTML = ''; // Clear existing content
 
-            cart.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.price.toLocaleString()} VND</td>
-                    <td>${(item.price * item.quantity).toLocaleString()} VND</td>
-                `;
-                orderItemsBody.appendChild(row);
-            });
+        // Thông tin từ Bước 1: Đăng Nhập
+        const fullName = "Võ Trần Hoàng Bảo Khang";
+        const dateOfBirth = "07/08/2003";
+        const gender = "Nam";
+        const address = "645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long";
+        const phone = "0795858581";
+        const email = "baokhangml99@gmail.com";
+        const membership = "Thành viên hạng đồng";
 
-            // Update total price
-            updateOrderTotal();
-        }
+        orderDetails.innerHTML += `
+            <h6>Thông Tin Khách Hàng</h6>
+            <p><strong>Họ và Tên:</strong> ${fullName}</p>
+            <p><strong>Ngày Sinh:</strong> ${dateOfBirth}</p>
+            <p><strong>Giới Tính:</strong> ${gender}</p>
+            <p><strong>Địa Chỉ:</strong> ${address}</p>
+            <p><strong>Số Điện Thoại:</strong> ${phone}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Thành Viên:</strong> ${membership}</p>
+        `;
 
-        function updateOrderTotal() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-            document.getElementById('grandtotal').textContent = totalPrice.toLocaleString() + ' VND';
-        }
+        // Thông tin từ Bước 2: Thông Tin Thanh Toán
+        const billingAddress = document.getElementById('billing_address').value;
+        orderDetails.innerHTML += `
+            <h6>Thông Tin Thanh Toán</h6>
+            <p><strong>Địa Chỉ Thanh Toán:</strong> ${billingAddress}</p>
+        `;
 
-        // On page load, display the cart items
-        window.addEventListener('load', function() {
-            updateOrderDetails(); // Display cart items on the checkout page
+        // Thông tin từ Bước 3: Thông Tin Giao Hàng
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.nextElementSibling?.textContent || "Chưa chọn";
+        orderDetails.innerHTML += `
+            <h6>Thông Tin Giao Hàng</h6>
+            <p><strong>Phương Thức Thanh Toán:</strong> ${paymentMethod}</p>
+        `;
+
+        // Thông tin sản phẩm từ giỏ hàng
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        orderDetails.innerHTML += `
+            <h6>Sản Phẩm</h6>
+            <table class="table table-bordered" id="order-items">
+                <thead>
+                    <tr>
+                        <th>Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Tổng</th>
+                    </tr>
+                </thead>
+                <tbody id="order-items-body">
+                </tbody>
+            </table>
+        `;
+
+        const orderItemsBody = document.getElementById('order-items-body');
+        orderItemsBody.innerHTML = ''; // Clear existing order items
+
+        cart.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price.toLocaleString('vi-VN')} VND</td>
+                <td>${(item.price * item.quantity).toLocaleString('vi-VN')} VND</td>
+            `;
+            orderItemsBody.appendChild(row);
         });
+
+        // Tính và hiển thị tổng số tiền
+        let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        orderDetails.innerHTML += `
+            <p><strong>Tổng Số Tiền:</strong> ${totalPrice.toLocaleString('vi-VN')} VND</p>
+        `;
+    }
+
+    // Hàm cập nhật số lượng giỏ hàng trên biểu tượng
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        document.querySelector('.cart_no').textContent = totalItems;
+    }
+
+    // Hàm cập nhật dropdown giỏ hàng
+    function updateCartDropdown() {
+        let dropdown = document.querySelector('.option-cart-item');
+        dropdown.innerHTML = '';
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        if (cart.length === 0) {
+            dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
+            return;
+        }
+
+        cart.forEach(item => {
+            let cartItem = document.createElement('li');
+            cartItem.classList.add('cart-item');
+            cartItem.innerHTML = `
+                <div class="cart-item">
+                    <div class="image"><img src="${item.image}" alt="${item.name}"></div>
+                    <div class="item-description">
+                        <p class="name">${item.name}</p>
+                        <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                    </div>
+                    <div class="right">
+                        <p class="price">${(item.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                        <a href="#" class="remove" onclick="removeItem(${item.id})"><img src="images/remove.png" alt="Xóa"></a>
+                    </div>
+                </div>
+            `;
+            dropdown.appendChild(cartItem);
+        });
+
+        let totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        let totalLi = document.createElement('li');
+        totalLi.innerHTML = `<span class="total">Tổng <strong>${totalPrice.toLocaleString('vi-VN')} VND</strong></span><button class="checkout" onclick="location.href='checkout.html'">Thanh Toán</button>`;
+        dropdown.appendChild(totalLi);
+    }
+
+    // Hàm xóa sản phẩm khỏi giỏ
+    function removeItem(productId) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart = cart.filter(item => item.id !== productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartDropdown();
+        updateCartCount();
+        if (document.getElementById('step-4').classList.contains('active')) {
+            updateOrderDetails();
+        }
+    }
+
+    // On page load, initialize the page
+    window.addEventListener('load', function() {
+        loadDropdownMenu();
+        updateCartCount();
+        updateCartDropdown();
+        // Only call updateOrderDetails if step 4 is active
+        if (document.getElementById('step-4').classList.contains('active')) {
+            updateOrderDetails();
+        }
+    });
          </script>
    </body>
    <body id="home">
