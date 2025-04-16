@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet"/>
+    <!-- Thêm SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Custom styles cho trang Menu */
         .menu-section {
@@ -631,7 +633,7 @@
             if (!toppingsList.innerHTML) toppingsList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
         }
 
-        // Hàm thêm sản phẩm vào giỏ và cập nhật dropdown
+        // Hàm thêm sản phẩm vào giỏ và hiển thị thông báo
         function addToCart(productId) {
             const products = JSON.parse(localStorage.getItem('products')) || [];
             const product = products.find(item => item.id === productId);
@@ -649,6 +651,15 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             updateCartDropdown();
+
+            // Thêm thông báo bằng SweetAlert2
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: `${product.name} đã được thêm vào giỏ hàng.`,
+                showConfirmButton: false,
+                timer: 1500 // Tự động đóng sau 1.5 giây
+            });
         }
 
         // Hàm cập nhật số lượng giỏ hàng trên biểu tượng
