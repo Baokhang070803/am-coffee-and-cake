@@ -1,13 +1,9 @@
 backend:
-  name: 'github'
-  repo: 'Baokhang070803/am-coffee-and-cake'  # Đảm bảo repo chính xác
-  branch: 'main'
-  auth_type: 'oauth'
-  client_id: 'Ov23lis28jTmt3hUqeBx'
-  client_secret: '42793935b499ce650455a386168580d22ea2ca4a'
+  name: git-gateway
+  branch: main # hoặc 'master' nếu repo bạn dùng branch đó
 
-media_folder: 'static/uploads'
-public_folder: '/uploads'
+media_folder: "images/uploads" # nơi lưu ảnh trên GitHub
+public_folder: "/images/uploads" # đường dẫn ảnh hiển thị trên web
 
 collections:
   - name: "posts"
