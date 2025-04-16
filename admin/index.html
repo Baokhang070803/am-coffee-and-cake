@@ -3,41 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Netlify CMS</title>
+  <!-- Link đến stylesheet của Netlify CMS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.css">
 </head>
 <body>
-  <!-- Nội dung trang quản trị -->
+  <!-- Nội dung quản trị sẽ được tải ở đây -->
   
-  <!-- Đảm bảo tệp CMS được tải trước khi gọi CMS.init() -->
+  <!-- Link đến tệp JavaScript của Netlify CMS -->
   <script src="https://cdn.jsdelivr.net/npm/netlify-cms@2.15.0/dist/cms.min.js"></script>
+  
   <script>
-    // Đảm bảo CMS được khởi tạo sau khi tệp đã được tải hoàn toàn
     window.onload = function() {
       CMS.init({
         config: {
           backend: {
-            name: 'github',
-            repo: 'Baokhang070803/am-coffee-and-cake', // Tên repo GitHub
-            branch: 'main',
-            auth_type: 'oauth',
-            client_id: 'Ov23lis28jTmt3hUqeBx',
-            client_secret: '42793935b499ce650455a386168580d22ea2ca4a',
+            name: 'github',  // Chế độ xác thực thông qua GitHub
+            repo: 'Baokhang070803/am-coffee-and-cake',  // Tên repo GitHub của bạn
+            branch: 'main',  // Nhánh chính mà bạn sử dụng
+            auth_type: 'oauth',  // Xác thực OAuth
+            client_id: 'Ov23lis28jTmt3hUqeBx',  // Client ID từ GitHub
+            client_secret: '42793935b499ce650455a386168580d22ea2ca4a',  // Client Secret từ GitHub
           },
-          media_folder: 'static/uploads',
-          public_folder: '/uploads',
+          media_folder: 'static/uploads',  // Thư mục lưu trữ hình ảnh
+          public_folder: '/uploads',  // Đường dẫn công khai cho hình ảnh
           collections: [
             {
-              name: 'blog',
-              label: 'Blog',
-              folder: 'content/blog',
-              create: true,
-              slug: '{{slug}}',
+              name: 'blog',  // Tên collection
+              label: 'Blog',  // Tên hiển thị của collection
+              folder: 'content/blog',  // Thư mục chứa nội dung
+              create: true,  // Cho phép tạo bài viết mới
+              slug: '{{slug}}',  // Sử dụng slug từ tiêu đề
               fields: [
                 { label: 'Title', name: 'title', widget: 'string' },
                 { label: 'Date', name: 'date', widget: 'datetime' },
                 { label: 'Body', name: 'body', widget: 'markdown' },
               ],
             },
+            // Bạn có thể thêm các collection khác nếu cần
           ],
         },
       });
