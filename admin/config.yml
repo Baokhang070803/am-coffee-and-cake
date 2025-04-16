@@ -1,0 +1,23 @@
+backend:
+  name: 'github'
+  repo: 'Baokhang070803/am-coffee-and-cake' # Tên repo của bạn trên GitHub
+  branch: 'main' # Nhánh bạn đang sử dụng
+  auth_type: 'oauth'
+  client_id: 'Ov23lis28jTmt3hUqeBx' # Client ID của bạn từ GitHub
+  client_secret: '42793935b499ce650455a386168580d22ea2ca4a' # Client Secret của bạn từ GitHub
+
+media_folder: 'static/uploads'  # Thư mục chứa hình ảnh tải lên
+public_folder: '/uploads'      # Đường dẫn công khai cho hình ảnh
+
+collections:
+  - name: 'blog'  # Tên collection
+    label: 'Blog'
+    folder: 'content/blog'  # Thư mục chứa các bài viết blog
+    create: true  # Cho phép tạo bài viết mới
+    slug: '{{slug}}'  # Sử dụng slug từ tiêu đề
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Date', name: 'date', widget: 'datetime' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+
+  # Thêm các collection khác nếu cần (ví dụ: sản phẩm, trang, ...)
