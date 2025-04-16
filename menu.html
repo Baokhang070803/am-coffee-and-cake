@@ -559,20 +559,25 @@
     <script>
         // Dữ liệu ảo cho sản phẩm
         const initialProducts = [
-            // Thức Uống
-            { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg', attributes: 'Cà phê đen đậm đà, thêm đá mát lạnh.' },
-            { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg', attributes: 'Cà phê Ý với lớp bọt sữa mềm mại.' },
-            { id: 3, name: 'Trà Sữa Trân Châu', price: 40000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/bubble-tea-with-straw_144627-5198.jpg', attributes: 'Trà sữa thơm ngon với trân châu dai giòn.' },
-            { id: 4, name: 'Sinh Tố Xoài', price: 50000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/mango-smoothie-glass_74190-1567.jpg', attributes: 'Sinh tố xoài tươi mát, giàu vitamin.' },
-            // Bánh
-            { id: 5, name: 'Cheesecake Chanh Dây', price: 55000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg', attributes: 'Bánh cheesecake chanh dây chua ngọt.' },
-            { id: 6, name: 'Tiramisu', price: 60000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/tiramisu-cake-slice_74190-1565.jpg', attributes: 'Bánh tiramisu Ý với hương cà phê đặc trưng.' },
-            { id: 7, name: 'Bánh Mousse Socola', price: 65000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/chocolate-mousse-cake_74190-1566.jpg', attributes: 'Bánh mousse socola mềm mịn, ngọt ngào.' },
-            // Gọi Thêm
-            { id: 8, name: 'Phô Mai', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg', attributes: 'Phô mai béo ngậy, thêm vào đồ uống.' },
-            { id: 9, name: 'Trân Châu Đen', price: 8000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/black-pearls-bubble-tea_74190-1568.jpg', attributes: 'Trân châu đen dai giòn, ngọt nhẹ.' },
-            { id: 10, name: 'Kem Tươi', price: 12000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/whipped-cream-bowl_74190-1569.jpg', attributes: 'Kem tươi béo ngậy, thêm lên bánh hoặc đồ uống.' }
-        ];
+    // Thức Uống
+    { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.' },
+    { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.' },
+    { id: 3, name: 'Latte', price: 50000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.' },
+    { id: 4, name: 'Espresso', price: 40000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.' },
+    // Bánh
+    { id: 5, name: 'Bánh Bông Lan', price: 30000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.' },
+    { id: 6, name: 'Cheesecake', price: 55000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.' },
+    { id: 7, name: 'Bánh Mì', price: 25000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380', attributes: 'Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.' },
+    { id: 8, name: 'Tiramisu', price: 60000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.' },
+    { id: 9, name: 'Mousse Cake', price: 50000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.' },
+    { id: 10, name: 'Cupcake', price: 35000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.' },
+    // Gọi Thêm
+    { id: 11, name: 'Phô Mai', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.' },
+    { id: 12, name: 'Socola', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.' },
+    { id: 13, name: 'Mật Ong', price: 8000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.' },
+    { id: 14, name: 'Kem', price: 12000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.' },
+    { id: 15, name: 'Trái Cây', price: 15000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.' }
+];
 
         // Lưu dữ liệu ảo vào localStorage nếu chưa có
         if (!localStorage.getItem('products')) {
