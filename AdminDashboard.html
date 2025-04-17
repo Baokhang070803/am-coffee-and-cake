@@ -29,6 +29,7 @@
             font-weight: 500;
             font-size: 20px;
             margin-bottom: 30px;
+            text-align: center;
         }
         .sidebar a {
             color: #adb5bd;
@@ -113,13 +114,6 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
-        .btn-success {
-            background-color: #28a745;
-            border: none;
-        }
-        .btn-success:hover {
-            background-color: #218838;
-        }
         .btn-warning {
             background-color: #ffc107;
             border: none;
@@ -134,13 +128,6 @@
         }
         .btn-danger:hover {
             background-color: #c82333;
-        }
-        canvas {
-            max-width: 100%;
-            border-radius: 10px;
-            background-color: #fff;
-            padding: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
         section {
             display: none;
@@ -174,33 +161,6 @@
             border-color: #007bff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         }
-        .stat-card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .stat-card h5 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #1a252f;
-        }
-        .stat-card p {
-            font-size: 24px;
-            font-weight: 500;
-            color: #007bff;
-            margin: 0;
-        }
-        .progress {
-            height: 25px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            background-color: #28a745;
-        }
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -218,213 +178,24 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <h3 class="text-center">Admin Dashboard</h3>
-        <a href="#dashboard" class="nav-link active"><i class="fa fa-home"></i> Bảng Điều Khiển</a>
-        <a href="#users" class="nav-link"><i class="fa fa-users"></i> Quản Lý Người Dùng</a>
-        <a href="#products" class="nav-link"><i class="fa fa-cutlery"></i> Quản Lý Sản Phẩm</a>
-        <a href="#transactions" class="nav-link"><i class="fa fa-money"></i> Quản Lý Giao Dịch</a>
-        <a href="#employees" class="nav-link"><i class="fa fa-id-badge"></i> Quản Lý Nhân Viên</a>
-        <a href="#reports" class="nav-link"><i class="fa fa-bar-chart"></i> Báo Cáo</a>
+        <h3>Admin Dashboard</h3>
+        <a href="#products" class="nav-link active"><i class="fa fa-cutlery"></i> Quản Lý Sản Phẩm</a>
+        <a href="#transactions" class="nav-link"><i class="fa fa-shopping-cart"></i> Quản Lý Giao Dịch</a>
         <a href="#settings" class="nav-link"><i class="fa fa-cog"></i> Cài Đặt</a>
-        <a href="#" class="nav-link" onclick="returnToUserPage()"><i class="fa fa-arrow-left"></i> Quay về Trang Người Dùng</a>
-        <a href="#" class="nav-link" onclick="logout()"><i class="fa fa-sign-out"></i> Đăng Xuất</a>
+        <a href="index.html" class="nav-link" id="returnToUserPage"><i class="fa fa-arrow-left"></i> Quay về Trang Người Dùng</a>
+        <a href="#" class="nav-link" id="logout"><i class="fa fa-sign-out"></i> Đăng Xuất</a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="active-section">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Tổng Quan Doanh Thu</h4>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Doanh Thu Ngày</h5>
-                                <p id="dailyRevenue">0 VND</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Doanh Thu Tuần</h5>
-                                <p id="weeklyRevenue">0 VND</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Doanh Thu Tháng</h5>
-                                <p id="monthlyRevenue">0 VND</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h5>Doanh Thu So Với Mục Tiêu</h5>
-                    <div class="progress">
-                        <div class="progress-bar" id="revenueProgress" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                    </div>
-                    <h5 class="mt-4">Doanh Thu Theo Sản Phẩm</h5>
-                    <canvas id="productRevenueChart"></canvas>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Tổng Quan Khách Hàng</h4>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Số Khách Hàng Ngày</h5>
-                                <p id="dailyCustomers">0</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Khách Hàng Trung Thành</h5>
-                                <p id="loyalCustomers">0</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Đánh Giá Trung Bình</h5>
-                                <p id="averageRating">0/5</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Tình Trạng Đơn Hàng</h4>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Đơn Hàng Trong Ngày</h5>
-                                <p id="dailyOrders">0</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Đơn Hàng Đang Chờ</h5>
-                                <p id="pendingOrders">0</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Đơn Hàng Hoàn Thành</h5>
-                                <p id="completedOrders">0</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Sản Phẩm Bán Chạy</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Top Sản Phẩm Bán Chạy</h5>
-                            <ul id="topProducts" class="list-group"></ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Sản Phẩm Ít Bán</h5>
-                            <ul id="lowProducts" class="list-group"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Chi Phí và Lợi Nhuận</h4>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Chi Phí Nguyên Liệu</h5>
-                                <p id="materialCost">0 VND</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Chi Phí Hoạt Động</h5>
-                                <p id="operationalCost">0 VND</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5>Lợi Nhuận Ròng</h5>
-                                <p id="netProfit">0 VND</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Khuyến Mãi và Ưu Đãi</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Chương Trình Khuyến Mãi</h5>
-                            <ul id="promotions" class="list-group"></ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Hiệu Quả Khuyến Mãi</h5>
-                            <p id="promotionEffectiveness">0 khách tham gia</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Quản Lý Tồn Kho</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Tình Trạng Tồn Kho</h5>
-                            <ul id="inventoryStatus" class="list-group"></ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Cảnh Báo Hết Hàng</h5>
-                            <ul id="lowInventoryAlerts" class="list-group"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Users Section -->
-        <section id="users">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Quản Lý Người Dùng</h2>
-                    <div class="d-flex align-items-center mb-3">
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addUserModal">Thêm Người Dùng</button>
-                        <button class="btn btn-success" onclick="loadUsers()">Load Dữ Liệu</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên</th>
-                                    <th>Email</th>
-                                    <th>Vai Trò</th>
-                                    <th>Trạng Thái</th>
-                                    <th>Hành Động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="userTableBody">
-                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Products Section -->
-        <section id="products">
+        <section id="products" class="active-section">
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Quản Lý Sản Phẩm</h2>
                     <div class="d-flex align-items-center mb-3">
                         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Thêm Sản Phẩm</button>
-                        <button class="btn btn-success" onclick="loadProducts()">Load Dữ Liệu</button>
+                        <button class="btn btn-success" id="refreshData">Làm Mới Dữ Liệu</button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
@@ -453,19 +224,17 @@
                 <div class="card-body">
                     <h2 class="card-title">Quản Lý Giao Dịch</h2>
                     <div class="d-flex align-items-center mb-3">
-                        <div class="me-2">
-                            <label for="transactionDateFilter" class="form-label">Lọc Theo Ngày</label>
-                            <input type="date" class="form-control w-100" id="transactionDateFilter">
-                        </div>
-                        <button class="btn btn-success mb-3" onclick="loadTransactions()">Load Dữ Liệu</button>
+                        <button class="btn btn-success" id="refreshTransactions">Làm Mới Dữ Liệu</button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Người Dùng</th>
-                                    <th>Số Tiền</th>
+                                    <th>Khách Hàng</th>
+                                    <th>Sản Phẩm</th>
+                                    <th>Số Lượng</th>
+                                    <th>Tổng Tiền</th>
                                     <th>Ngày</th>
                                     <th>Trạng Thái</th>
                                     <th>Hành Động</th>
@@ -480,55 +249,6 @@
             </div>
         </section>
 
-        <!-- Employees Section -->
-        <section id="employees">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Quản Lý Nhân Viên</h2>
-                    <div class="d-flex align-items-center mb-3">
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Thêm Nhân Viên</button>
-                        <button class="btn btn-success" onclick="loadEmployees()">Load Dữ Liệu</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên</th>
-                                    <th>Vị Trí</th>
-                                    <th>Ca Làm Việc</th>
-                                    <th>Hiệu Suất</th>
-                                    <th>Hành Động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="employeeTableBody">
-                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Reports Section -->
-        <section id="reports">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Báo Cáo & Thống Kê</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Doanh Thu Theo Tháng</h4>
-                            <canvas id="monthlyRevenueChart"></canvas>
-                        </div>
-                        <div class="col-md-6">
-                            <h4>Người Dùng Đăng Ký Mới</h4>
-                            <canvas id="newUsersChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Settings Section -->
         <section id="settings">
             <div class="card">
@@ -537,43 +257,6 @@
                 </div>
             </div>
         </section>
-    </div>
-
-    <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Thêm Người Dùng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addUserForm">
-                        <div class="mb-3">
-                            <label for="userName" class="form-label">Tên</label>
-                            <input type="text" class="form-control" id="userName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="userEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userRole" class="form-label">Vai Trò</label>
-                            <select class="form-control" id="userRole" required>
-                                <option value="user">Người Dùng</option>
-                                <option value="mod">Moderator</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userPassword" class="form-label">Mật Khẩu</label>
-                            <input type="password" class="form-control" id="userPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Thêm</button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Add Product Modal -->
@@ -592,7 +275,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="productPrice" class="form-label">Giá (VND)</label>
-                            <input type="number" class="form-control" id="productPrice" required>
+                            <input type="number" class="form-control" id="productPrice" required min="0">
                         </div>
                         <div class="mb-3">
                             <label for="productCategory" class="form-label">Danh Mục</label>
@@ -604,11 +287,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="productImage" class="form-label">URL Hình Ảnh</label>
-                            <input type="text" class="form-control" id="productImage" required>
+                            <input type="url" class="form-control" id="productImage" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productAttributes" class="form-label">Thuộc Tính (màu, size...)</label>
-                            <input type="text" class="form-control" id="productAttributes" placeholder="VD: Đen, Nhỏ">
+                            <label for="productAttributes" class="form-label">Mô Tả</label>
+                            <input type="text" class="form-control" id="productAttributes" placeholder="VD: Cà phê đậm đà, phục vụ lạnh">
                         </div>
                         <button type="submit" class="btn btn-primary">Thêm</button>
                     </form>
@@ -634,7 +317,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="editProductPrice" class="form-label">Giá (VND)</label>
-                            <input type="number" class="form-control" id="editProductPrice" required>
+                            <input type="number" class="form-control" id="editProductPrice" required min="0">
                         </div>
                         <div class="mb-3">
                             <label for="editProductCategory" class="form-label">Danh Mục</label>
@@ -646,10 +329,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="editProductImage" class="form-label">URL Hình Ảnh</label>
-                            <input type="text" class="form-control" id="editProductImage" required>
+                            <input type="url" class="form-control" id="editProductImage" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editProductAttributes" class="form-label">Thuộc Tính</label>
+                            <label for="editProductAttributes" class="form-label">Mô Tả</label>
                             <input type="text" class="form-control" id="editProductAttributes">
                         </div>
                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
@@ -659,781 +342,542 @@
         </div>
     </div>
 
-    <!-- Add Employee Modal -->
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <!-- Edit Transaction Modal -->
+    <div class="modal fade" id="editTransactionModal" tabindex="-1" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addEmployeeModalLabel">Thêm Nhân Viên</h5>
+                    <h5 class="modal-title" id="editTransactionModalLabel">Cập Nhật Trạng Thái Giao Dịch</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addEmployeeForm">
+                    <form id="editTransactionForm">
+                        <input type="hidden" id="editTransactionId">
                         <div class="mb-3">
-                            <label for="employeeName" class="form-label">Tên</label>
-                            <input type="text" class="form-control" id="employeeName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="employeePosition" class="form-label">Vị Trí</label>
-                            <select class="form-control" id="employeePosition" required>
-                                <option value="Phục Vụ">Phục Vụ</option>
-                                <option value="Pha Chế">Pha Chế</option>
-                                <option value="Quản Lý">Quản Lý</option>
+                            <label for="editTransactionStatus" class="form-label">Trạng Thái</label>
+                            <select class="form-control" id="editTransactionStatus" required>
+                                <option value="pending">Đang chờ</option>
+                                <option value="confirmed">Đã xác nhận</option>
+                                <option value="shipped">Đang giao</option>
+                                <option value="delivered">Đã giao</option>
+                                <option value="cancelled">Đã hủy</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="employeeShift" class="form-label">Ca Làm Việc</label>
-                            <input type="text" class="form-control" id="employeeShift" placeholder="VD: Sáng, Chiều" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Thêm</button>
+                        <button type="submit" class="btn btn-primary">Cập Nhật</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script>
-        // Dữ liệu mẫu
-        let users = [
-            { id: 1, name: 'Đỗ Minh Tiến', email: 'tien@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-01', visits: 3, rating: 4.2 },
-            { id: 2, name: 'Nguyễn Anh Kiệt', email: 'kiet@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-02', visits: 2, rating: 3.8 },
-            { id: 3, name: 'Nguyễn Đăng Hải Đăng', email: 'haidang@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-03', visits: 4, rating: 4.0 },
-            { id: 4, name: 'Phạm Hồng Quân', email: 'quan@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-04', visits: 1, rating: 3.5 },
-            { id: 5, name: 'Võ Trần Hoàng Bảo Khang', email: 'admin@gmail.com', role: 'admin', status: 'active', password: 'admin123', createdDate: '2025-04-05', visits: 5, rating: 4.7 },
-            { id: 6, name: 'Vương Hữu Phúc', email: 'phuc@gmail.com', role: 'user', status: 'active', password: '123456', createdDate: '2025-04-06', visits: 2, rating: 4.1 }
-            ];
-        let products = JSON.parse(localStorage.getItem('products')) || [
-            { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg', attributes: '', sales: 100 },
-            { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg', attributes: '', sales: 80 },
-            { id: 3, name: 'Latte', price: 50000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg', attributes: '', sales: 60 },
-            { id: 4, name: 'Espresso', price: 40000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg', attributes: '', sales: 50 },
-            { id: 5, name: 'Bánh Bông Lan', price: 30000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg', attributes: '', sales: 40 },
-            { id: 6, name: 'Cheesecake', price: 55000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg', attributes: '', sales: 30 },
-            { id: 7, name: 'Bánh Mì', price: 25000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg', attributes: '', sales: 20 },
-            { id: 8, name: 'Tiramisu', price: 60000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg', attributes: '', sales: 15 },
-            { id: 9, name: 'Mousse Cake', price: 50000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg', attributes: '', sales: 10 },
-            { id: 10, name: 'Cupcake', price: 35000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg', attributes: '', sales: 5 },
-            { id: 11, name: 'Phô Mai', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg', attributes: '', sales: 25 },
-            { id: 12, name: 'Socola', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg', attributes: '', sales: 20 },
-            { id: 13, name: 'Mật Ong', price: 8000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg', attributes: '', sales: 15 },
-            { id: 14, name: 'Kem', price: 12000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/view-delicious ice-cream_23-2149022011.jpg', attributes: '', sales: 10 },
-            { id: 15, name: 'Trái Cây', price: 15000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg', attributes: '', sales: 5 }
-        ];
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [
-            { id: 1, userId: 1, amount: 35000, date: '2025-04-16', status: 'completed', productId: 1 },
-            { id: 2, userId: 1, amount: 150000, date: '2025-04-15', status: 'pending', productId: 2 },
-            { id: 3, userId: 2, amount: 45000, date: '2025-04-01', status: 'completed', productId: 3 },
-            { id: 4, userId: 3, amount: 200000, date: '2025-04-16', status: 'completed', productId: 4 }
-        ];
-        let employees = [
-            { id: 1, name: 'Đỗ Minh Tiến', position: 'Phục Vụ', shift: 'Sáng', performance: 85 },
-            { id: 2, name: 'Nguyễn Anh Kiệt', position: 'Pha Chế', shift: 'Chiều', performance: 88 },
-            { id: 3, name: 'Nguyễn Đăng Hải Đăng', position: 'Phục Vụ', shift: 'Tối', performance: 90 },
-            { id: 4, name: 'Phạm Hồng Quân', position: 'Thu Ngân', shift: 'Cả ngày', performance: 87 },
-            { id: 5, name: 'Võ Trần Hoàng Bảo Khang', position: 'Quản Lý', shift: 'Cả ngày', performance: 95 },
-            { id: 6, name: 'Vương Hữu Phúc', position: 'Pha Chế', shift: 'Sáng', performance: 89 }
-        ];
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, get, set, update, remove, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-        let inventory = JSON.parse(localStorage.getItem('inventory')) || [
-            { id: 1, name: 'Bột Mì', quantity: 50, unit: 'kg', threshold: 10 },
-            { id: 2, name: 'Cà Phê', quantity: 20, unit: 'kg', threshold: 5 },
-            { id: 3, name: 'Sữa', quantity: 100, unit: 'lít', threshold: 20 }
-        ];
-        let promotions = JSON.parse(localStorage.getItem('promotions')) || [
-            { id: 1, name: 'Giảm 20% Cà Phê', startDate: '2025-04-01', endDate: '2025-04-30', participants: 50 },
-            { id: 2, name: 'Mua 1 Tặng 1 Bánh', startDate: '2025-04-10', endDate: '2025-04-20', participants: 30 }
-        ];
-        let costs = JSON.parse(localStorage.getItem('costs')) || {
-            material: 5000000,
-            operational: 10000000
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.firebasestorage.app",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
         };
 
-        // Lưu dữ liệu mẫu vào localStorage nếu chưa có
-        function saveData(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
+        // Initialize Firebase
+        let app, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Error initializing Firebase:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể khởi tạo Firebase. Vui lòng kiểm tra cấu hình.',
+                showConfirmButton: true
+            });
         }
-        if (!localStorage.getItem('users')) saveData('users', users);
-        if (!localStorage.getItem('products')) saveData('products', products);
-        if (!localStorage.getItem('transactions')) saveData('transactions', transactions);
-        if (!localStorage.getItem('employees')) saveData('employees', employees);
-        if (!localStorage.getItem('inventory')) saveData('inventory', inventory);
-        if (!localStorage.getItem('promotions')) saveData('promotions', promotions);
-        if (!localStorage.getItem('costs')) saveData('costs', costs);
 
-        // Section Navigation
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('section');
-
-        navLinks.forEach(link => {
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    const targetId = href.substring(1);
-                    const targetSection = document.getElementById(targetId);
+                e.preventDefault();
+                if (this.id === 'logout') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng xuất thành công!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = 'index.html';
+                    });
+                    return;
+                }
+                if (this.id === 'returnToUserPage') {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
+                this.classList.add('active');
+                const sectionId = this.getAttribute('href').substring(1);
+                document.getElementById(sectionId).classList.add('active-section');
+            });
+        });
 
-                    sections.forEach(section => section.classList.remove('active-section'));
-                    navLinks.forEach(nav => nav.classList.remove('active'));
-
-                    targetSection.classList.add('active-section');
-                    this.classList.add('active');
-
-                    if (targetId === 'dashboard') {
-                        setTimeout(() => {
-                            updateRevenueChart();
-                            updateDashboard();
-                        }, 100);
-                    } else if (targetId === 'reports') {
-                        setTimeout(() => {
-                            updateMonthlyRevenueChart();
-                            updateNewUsersChart();
-                        }, 100);
+        // Load Products
+        async function loadProducts() {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            const categories = ['drinks', 'cakes', 'toppings'];
+            let products = [];
+            try {
+                for (const category of categories) {
+                    const snapshot = await get(ref(db, `products/${category}`));
+                    if (snapshot.exists()) {
+                        const items = snapshot.val();
+                        Object.keys(items).forEach(itemId => {
+                            products.push({
+                                id: `${category}-${itemId.replace('item', '')}`,
+                                firebaseId: itemId,
+                                name: items[itemId].name,
+                                price: items[itemId].price,
+                                category: category === 'drinks' ? 'Thức Uống' : category === 'cakes' ? 'Bánh' : 'Gọi Thêm',
+                                image: items[itemId].image || 'https://via.placeholder.com/120',
+                                attributes: items[itemId].attributes || ''
+                            });
+                        });
                     }
                 }
-            });
-        });
-
-        // Load Functions
-        function loadUsers() {
-            users = JSON.parse(localStorage.getItem('users')) || users;
-            renderUsers();
-            Swal.fire('Thành công!', 'Dữ liệu người dùng đã được làm mới.', 'success');
-        }
-
-        function loadProducts() {
-            products = JSON.parse(localStorage.getItem('products')) || products;
-            renderProducts();
-            Swal.fire('Thành công!', 'Dữ liệu sản phẩm đã được làm mới.', 'success');
-        }
-
-        function loadTransactions() {
-            transactions = JSON.parse(localStorage.getItem('transactions')) || transactions;
-            renderTransactions();
-            setTimeout(updateRevenueChart, 100);
-            Swal.fire('Thành công!', 'Dữ liệu giao dịch đã được làm mới.', 'success');
-        }
-
-        function loadEmployees() {
-            employees = JSON.parse(localStorage.getItem('employees')) || employees;
-            renderEmployees();
-            Swal.fire('Thành công!', 'Dữ liệu nhân viên đã được làm mới.', 'success');
-        }
-
-        // Users Management
-        function renderUsers() {
-            const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = '';
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>${user.role}</td>
-                    <td>${user.status}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editUser(${user.id})">Sửa</button>
-                        <button class="btn btn-danger btn-sm me-1" onclick="deleteUser(${user.id})">Xóa</button>
-                        <button class="btn btn-${user.status === 'active' ? 'secondary' : 'success'} btn-sm" onclick="toggleUserStatus(${user.id})">${user.status === 'active' ? 'Khóa' : 'Kích hoạt'}</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-            setTimeout(updateNewUsersChart, 100);
-            updateDashboard();
-        }
-
-        document.getElementById('addUserForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newUser = {
-                id: users.length ? Math.max(...users.map(u => u.id)) + 1 : 1,
-                name: document.getElementById('userName').value,
-                email: document.getElementById('userEmail').value,
-                role: document.getElementById('userRole').value,
-                password: document.getElementById('userPassword').value,
-                status: 'active',
-                createdDate: new Date().toISOString().split('T')[0],
-                visits: 0,
-                rating: 0
-            };
-            users.push(newUser);
-            saveData('users', users);
-            renderUsers();
-            bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
-            Swal.fire('Thành công!', 'Người dùng đã được thêm.', 'success');
-            document.getElementById('addUserForm').reset();
-        });
-
-        function editUser(id) {
-            const user = users.find(u => u.id === id);
-            if (user) {
+                renderProducts(products);
                 Swal.fire({
-                    title: 'Sửa Người Dùng',
-                    html: `
-                        <input id="editUserName" class="swal2-input" value="${user.name}" placeholder="Tên">
-                        <input id="editUserEmail" class="swal2-input" value="${user.email}" placeholder="Email">
-                        <select id="editUserRole" class="swal2-input">
-                            <option value="user" ${user.role === 'user' ? 'selected' : ''}>Người Dùng</option>
-                            <option value="mod" ${user.role === 'mod' ? 'selected' : ''}>Moderator</option>
-                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                        </select>
-                    `,
-                    confirmButtonText: 'Cập Nhật',
-                    preConfirm: () => {
-                        const name = document.getElementById('editUserName').value;
-                        const email = document.getElementById('editUserEmail').value;
-                        const role = document.getElementById('editUserRole').value;
-                        if (!name || !email) {
-                            Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
-                        }
-                        return { name, email, role };
-                    }
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        const index = users.findIndex(u => u.id === id);
-                        users[index] = { ...users[index], name: result.value.name, email: result.value.email, role: result.value.role };
-                        saveData('users', users);
-                        renderUsers();
-                        Swal.fire('Thành công!', 'Người dùng đã được cập nhật.', 'success');
-                    }
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Dữ liệu sản phẩm đã được làm mới.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể tải danh sách sản phẩm: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    showConfirmButton: true
                 });
             }
         }
 
-        function deleteUser(id) {
-            Swal.fire({
-                title: 'Bạn có chắc?',
-                text: 'Người dùng sẽ bị xóa!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Xóa',
-                cancelButtonText: 'Hủy'
-            }).then(result => {
-                if (result.isConfirmed) {
-                    users = users.filter(u => u.id !== id);
-                    saveData('users', users);
-                    renderUsers();
-                    Swal.fire('Đã xóa!', 'Người dùng đã được xóa.', 'success');
-                }
-            });
-        }
-
-        function toggleUserStatus(id) {
-            const user = users.find(u => u.id === id);
-            if (user) {
-                user.status = user.status === 'active' ? 'locked' : 'active';
-                saveData('users', users);
-                renderUsers();
-                Swal.fire('Thành công!', `Tài khoản đã được ${user.status === 'active' ? 'kích hoạt' : 'khóa'}.`, 'success');
-            }
-        }
-
-        // Products Management
-        function renderProducts() {
+        // Render Products
+        function renderProducts(products) {
             const tbody = document.getElementById('productTableBody');
+            if (!tbody) {
+                console.error('Product table body not found');
+                return;
+            }
             tbody.innerHTML = '';
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có sản phẩm nào.</td></tr>';
+                return;
+            }
             products.forEach(product => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.id}</td>
                     <td>${product.name}</td>
-                    <td>${product.price.toLocaleString('vi-VN')}</td>
+                    <td>${product.price.toLocaleString('vi-VN')} VND</td>
                     <td>${product.category}</td>
-                    <td><img src="${product.image}" alt="${product.name}" style="width: 50px;"></td>
+                    <td><img src="${product.image}" alt="${product.name}" style="width: 50px; border-radius: 5px;" onerror="this.src='https://via.placeholder.com/120'"></td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editProduct(${product.id})">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})">Xóa</button>
+                        <button class="btn btn-warning btn-sm me-1" onclick="editProduct('${product.id}')">Sửa</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')">Xóa</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
-            updateDashboard();
         }
 
-        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+        // Add Product
+        document.getElementById('addProductForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const newProduct = {
-                id: products.length ? Math.max(...products.map(p => p.id)) + 1 : 1,
-                name: document.getElementById('productName').value,
-                price: parseInt(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value,
-                image: document.getElementById('productImage').value,
-                attributes: document.getElementById('productAttributes').value,
-                sales: 0
-            };
-            products.push(newProduct);
-            saveData('products', products);
-            renderProducts();
-            bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
-            Swal.fire('Thành công!', 'Sản phẩm đã được thêm.', 'success');
-            document.getElementById('addProductForm').reset();
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            const category = document.getElementById('productCategory').value;
+            const firebaseCategory = category === 'Thức Uống' ? 'drinks' : category === 'Bánh' ? 'cakes' : 'toppings';
+            try {
+                const snapshot = await get(ref(db, `products/${firebaseCategory}`));
+                const items = snapshot.exists() ? snapshot.val() : {};
+                const newIndex = Object.keys(items).length + 1;
+
+                const newProduct = {
+                    name: document.getElementById('productName').value,
+                    price: parseInt(document.getElementById('productPrice').value),
+                    image: document.getElementById('productImage').value || 'https://via.placeholder.com/120',
+                    attributes: document.getElementById('productAttributes').value || ''
+                };
+
+                await set(ref(db, `products/${firebaseCategory}/item${newIndex}`), newProduct);
+                await loadProducts();
+                bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Sản phẩm đã được thêm.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                document.getElementById('addProductForm').reset();
+            } catch (error) {
+                console.error('Error adding product:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể thêm sản phẩm: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    showConfirmButton: true
+                });
+            }
         });
 
-        function editProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (product) {
-                document.getElementById('editProductId').value = product.id;
-                document.getElementById('editProductName').value = product.name;
-                document.getElementById('editProductPrice').value = product.price;
-                document.getElementById('editProductCategory').value = product.category;
-                document.getElementById('editProductImage').value = product.image;
-                document.getElementById('editProductAttributes').value = product.attributes;
-                new bootstrap.Modal(document.getElementById('editProductModal')).show();
+        // Edit Product
+        window.editProduct = async function(id) {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
             }
-        }
+            try {
+                const firebaseCategory = id.startsWith('drinks') ? 'drinks' : id.startsWith('cakes') ? 'cakes' : 'toppings';
+                const itemIndex = id.split('-')[1];
+                const snapshot = await get(ref(db, `products/${firebaseCategory}/item${itemIndex}`));
+                if (snapshot.exists()) {
+                    const product = snapshot.val();
+                    document.getElementById('editProductId').value = id;
+                    document.getElementById('editProductName').value = product.name;
+                    document.getElementById('editProductPrice').value = product.price;
+                    document.getElementById('editProductCategory').value = firebaseCategory === 'drinks' ? 'Thức Uống' : firebaseCategory === 'cakes' ? 'Bánh' : 'Gọi Thêm';
+                    document.getElementById('editProductImage').value = product.image;
+                    document.getElementById('editProductAttributes').value = product.attributes || '';
+                    new bootstrap.Modal(document.getElementById('editProductModal')).show();
+                }
+            } catch (error) {
+                console.error('Error loading product for edit:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể tải sản phẩm: ${error.message}.`,
+                    showConfirmButton: true
+                });
+            }
+        };
 
-        document.getElementById('editProductForm').addEventListener('submit', function(e) {
+        document.getElementById('editProductForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const id = parseInt(document.getElementById('editProductId').value);
-            const productIndex = products.findIndex(p => p.id === id);
-            if (productIndex !== -1) {
-                products[productIndex] = {
-                    id: id,
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            const id = document.getElementById('editProductId').value;
+            const firebaseCategory = id.startsWith('drinks') ? 'drinks' : id.startsWith('cakes') ? 'cakes' : 'toppings';
+            const itemIndex = id.split('-')[1];
+            try {
+                const updatedProduct = {
                     name: document.getElementById('editProductName').value,
                     price: parseInt(document.getElementById('editProductPrice').value),
-                    category: document.getElementById('editProductCategory').value,
-                    image: document.getElementById('editProductImage').value,
-                    attributes: document.getElementById('editProductAttributes').value,
-                    sales: products[productIndex].sales
+                    image: document.getElementById('editProductImage').value || 'https://via.placeholder.com/120',
+                    attributes: document.getElementById('editProductAttributes').value || ''
                 };
-                saveData('products', products);
-                renderProducts();
+                await set(ref(db, `products/${firebaseCategory}/item${itemIndex}`), updatedProduct);
+                await loadProducts();
                 bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
-                Swal.fire('Thành công!', 'Sản phẩm đã được cập nhật.', 'success');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Sản phẩm đã được cập nhật.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                console.error('Error updating product:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể cập nhật sản phẩm: ${error.message}.`,
+                    showConfirmButton: true
+                });
             }
         });
 
-        function deleteProduct(id) {
+        // Delete Product
+        window.deleteProduct = async function(id) {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
             Swal.fire({
                 title: 'Bạn có chắc?',
-                text: 'Sản phẩm sẽ bị xóa khỏi hệ thống và menu!',
+                text: "Bạn không thể khôi phục sản phẩm sau khi xóa!",
                 icon: 'warning',
                 showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Xóa',
                 cancelButtonText: 'Hủy'
-            }).then(result => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    products = products.filter(p => p.id !== id);
-                    saveData('products', products);
-                    renderProducts();
-                    Swal.fire('Đã xóa!', 'Sản phẩm đã được xóa.', 'success');
+                    try {
+                        const firebaseCategory = id.startsWith('drinks') ? 'drinks' : id.startsWith('cakes') ? 'cakes' : 'toppings';
+                        const itemIndex = id.split('-')[1];
+                        await remove(ref(db, `products/${firebaseCategory}/item${itemIndex}`));
+                        await loadProducts();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã xóa!',
+                            text: 'Sản phẩm đã được xóa.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } catch (error) {
+                        console.error('Error deleting product:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể xóa sản phẩm: ${error.message}.`,
+                            showConfirmButton: true
+                        });
+                    }
                 }
             });
+        };
+
+        // Load Transactions
+        async function loadTransactions() {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            try {
+                const snapshot = await get(ref(db, 'transactions'));
+                let transactions = [];
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    transactions = Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    }));
+                }
+                renderTransactions(transactions);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Dữ liệu giao dịch đã được làm mới.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể tải danh sách giao dịch: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    showConfirmButton: true
+                });
+            }
         }
 
-        // Transactions Management
-        function renderTransactions() {
-    const tbody = document.getElementById('transactionTableBody');
-    tbody.innerHTML = '';
-    const dateFilter = document.getElementById('transactionDateFilter').value;
-    let filteredTransactions = transactions;
-    if (dateFilter) {
-        filteredTransactions = transactions.filter(t => t.date === dateFilter);
-    }
-    filteredTransactions.forEach(t => {
-        const user = users.find(u => u.id === t.userId);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${t.id}</td>
-            <td>${t.customerName || (user ? user.name : 'Unknown')}</td>
-            <td>${t.amount.toLocaleString('vi-VN')}</td>
-            <td>${t.date}</td>
-            <td>${t.status}</td>
-            <td>
-                <button class="btn btn-info btn-sm" onclick="viewTransaction(${t.id})">Xem</button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
-    updateDashboard();
-}
-
-        document.getElementById('transactionDateFilter').addEventListener('change', renderTransactions);
-
-        function viewTransaction(id) {
-    const t = transactions.find(t => t.id === id);
-    if (t) {
-        const user = users.find(u => u.id === t.userId);
-        const product = products.find(p => p.id === t.productId);
-        Swal.fire({
-            title: 'Chi Tiết Giao Dịch',
-            html: `
-                <p>ID: ${t.id}</p>
-                <p>Khách Hàng: ${t.customerName || (user ? user.name : 'Unknown')}</p>
-                <p>Sản Phẩm: ${product ? product.name : 'Unknown'}</p>
-                <p>Số Tiền: ${t.amount.toLocaleString('vi-VN')} VND</p>
-                <p>Ngày: ${t.date}</p>
-                <p>Trạng Thái: ${t.status}</p>
-                <p>Địa Chỉ Thanh Toán: ${t.billingAddress || 'Chưa có'}</p>
-                <p>Phương Thức Thanh Toán: ${t.paymentMethod || 'Chưa chọn'}</p>
-            `,
-            confirmButtonText: 'Đóng'
-        });
-    }
-}
-
-        // Employees Management
-        function renderEmployees() {
-            const tbody = document.getElementById('employeeTableBody');
+        // Render Transactions
+        function renderTransactions(transactions) {
+            const tbody = document.getElementById('transactionTableBody');
+            if (!tbody) {
+                console.error('Transaction table body not found');
+                return;
+            }
             tbody.innerHTML = '';
-            employees.forEach(employee => {
+            if (transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">Không có giao dịch nào.</td></tr>';
+                return;
+            }
+            transactions.forEach(transaction => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${employee.id}</td>
-                    <td>${employee.name}</td>
-                    <td>${employee.position}</td>
-                    <td>${employee.shift}</td>
-                    <td>${employee.performance}%</td>
+                    <td>${transaction.id.substring(0, 8)}...</td>
+                    <td>${transaction.customerName}</td>
+                    <td>${transaction.productName}</td>
+                    <td>${transaction.quantity}</td>
+                    <td>${transaction.amount.toLocaleString('vi-VN')} VND</td>
+                    <td>${transaction.date}</td>
+                    <td>${transaction.status === 'pending' ? 'Đang chờ' : 
+                          transaction.status === 'confirmed' ? 'Đã xác nhận' : 
+                          transaction.status === 'shipped' ? 'Đang giao' : 
+                          transaction.status === 'delivered' ? 'Đã giao' : 'Đã hủy'}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editEmployee(${employee.id})">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteEmployee(${employee.id})">Xóa</button>
+                        <button class="btn btn-warning btn-sm me-1" onclick="editTransaction('${transaction.id}')">Sửa</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTransaction('${transaction.id}')">Xóa</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
-        document.getElementById('addEmployeeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newEmployee = {
-                id: employees.length ? Math.max(...employees.map(e => e.id)) + 1 : 1,
-                name: document.getElementById('employeeName').value,
-                position: document.getElementById('employeePosition').value,
-                shift: document.getElementById('employeeShift').value,
-                performance: 0
-            };
-            employees.push(newEmployee);
-            saveData('employees', employees);
-            renderEmployees();
-            bootstrap.Modal.getInstance(document.getElementById('addEmployeeModal')).hide();
-            Swal.fire('Thành công!', 'Nhân viên đã được thêm.', 'success');
-            document.getElementById('addEmployeeForm').reset();
-        });
-
-        function editEmployee(id) {
-            const employee = employees.find(e => e.id === id);
-            if (employee) {
+        // Edit Transaction
+        window.editTransaction = async function(id) {
+            if (!db) {
                 Swal.fire({
-                    title: 'Sửa Nhân Viên',
-                    html: `
-                        <input id="editEmployeeName" class="swal2-input" value="${employee.name}" placeholder="Tên">
-                        <select id="editEmployeePosition" class="swal2-input">
-                            <option value="Phục Vụ" ${employee.position === 'Phục Vụ' ? 'selected' : ''}>Phục Vụ</option>
-                            <option value="Pha Chế" ${employee.position === 'Pha Chế' ? 'selected' : ''}>Pha Chế</option>
-                            <option value="Quản Lý" ${employee.position === 'Quản Lý' ? 'selected' : ''}>Quản Lý</option>
-                        </select>
-                        <input id="editEmployeeShift" class="swal2-input" value="${employee.shift}" placeholder="Ca Làm Việc">
-                    `,
-                    confirmButtonText: 'Cập Nhật',
-                    preConfirm: () => {
-                        const name = document.getElementById('editEmployeeName').value;
-                        const position = document.getElementById('editEmployeePosition').value;
-                        const shift = document.getElementById('editEmployeeShift').value;
-                        if (!name || !position || !shift) {
-                            Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
-                        }
-                        return { name, position, shift };
-                    }
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        const index = employees.findIndex(e => e.id === id);
-                        employees[index] = { ...employees[index], name: result.value.name, position: result.value.position, shift: result.value.shift };
-                        saveData('employees', employees);
-                        renderEmployees();
-                        Swal.fire('Thành công!', 'Nhân viên đã được cập nhật.', 'success');
-                    }
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            try {
+                const snapshot = await get(ref(db, `transactions/${id}`));
+                if (snapshot.exists()) {
+                    const transaction = snapshot.val();
+                    document.getElementById('editTransactionId').value = id;
+                    document.getElementById('editTransactionStatus').value = transaction.status;
+                    new bootstrap.Modal(document.getElementById('editTransactionModal')).show();
+                }
+            } catch (error) {
+                console.error('Error loading transaction for edit:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể tải giao dịch: ${error.message}.`,
+                    showConfirmButton: true
                 });
             }
-        }
+        };
 
-        function deleteEmployee(id) {
+        document.getElementById('editTransactionForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            const id = document.getElementById('editTransactionId').value;
+            try {
+                await update(ref(db, `transactions/${id}`), {
+                    status: document.getElementById('editTransactionStatus').value
+                });
+                await loadTransactions();
+                bootstrap.Modal.getInstance(document.getElementById('editTransactionModal')).hide();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Trạng thái giao dịch đã được cập nhật.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } catch (error) {
+                console.error('Error updating transaction:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể cập nhật giao dịch: ${error.message}.`,
+                    showConfirmButton: true
+                });
+            }
+        });
+
+        // Delete Transaction
+        window.deleteTransaction = async function(id) {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
             Swal.fire({
                 title: 'Bạn có chắc?',
-                text: 'Nhân viên sẽ bị xóa!',
+                text: "Bạn không thể khôi phục giao dịch sau khi xóa!",
                 icon: 'warning',
                 showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Xóa',
                 cancelButtonText: 'Hủy'
-            }).then(result => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    employees = employees.filter(e => e.id !== id);
-                    saveData('employees', employees);
-                    renderEmployees();
-                    Swal.fire('Đã xóa!', 'Nhân viên đã được xóa.', 'success');
-                }
-            });
-        }
-
-        // Dashboard Updates
-        function updateDashboard() {
-            const today = new Date().toISOString().split('T')[0];
-            const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().split('T')[0];
-            const monthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0];
-
-            // Doanh Thu
-            const dailyRevenue = transactions.filter(t => t.date === today && t.status === 'completed').reduce((sum, t) => sum + t.amount, 0);
-            const weeklyRevenue = transactions.filter(t => t.date >= weekAgo && t.status === 'completed').reduce((sum, t) => sum + t.amount, 0);
-            const monthlyRevenue = transactions.filter(t => t.date >= monthAgo && t.status === 'completed').reduce((sum, t) => sum + t.amount, 0);
-            document.getElementById('dailyRevenue').textContent = dailyRevenue.toLocaleString('vi-VN') + ' VND';
-            document.getElementById('weeklyRevenue').textContent = weeklyRevenue.toLocaleString('vi-VN') + ' VND';
-            document.getElementById('monthlyRevenue').textContent = monthlyRevenue.toLocaleString('vi-VN') + ' VND';
-
-            // Doanh Thu So Với Mục Tiêu
-            const revenueGoal = 10000000; // Mục tiêu giả định
-            const revenueProgress = (monthlyRevenue / revenueGoal) * 100;
-            const progressBar = document.getElementById('revenueProgress');
-            progressBar.style.width = `${Math.min(revenueProgress, 100)}%`;
-            progressBar.setAttribute('aria-valuenow', revenueProgress);
-            progressBar.textContent = `${Math.round(revenueProgress)}%`;
-
-            // Doanh Thu Theo Sản Phẩm
-            updateProductRevenueChart();
-
-            // Khách Hàng
-            const dailyCustomers = new Set(transactions.filter(t => t.date === today).map(t => t.userId)).size;
-            const loyalCustomers = users.filter(u => u.visits >= 5).length;
-            const averageRating = users.reduce((sum, u) => sum + u.rating, 0) / users.length || 0;
-            document.getElementById('dailyCustomers').textContent = dailyCustomers;
-            document.getElementById('loyalCustomers').textContent = loyalCustomers;
-            document.getElementById('averageRating').textContent = averageRating.toFixed(1) + '/5';
-
-            // Đơn Hàng
-            const dailyOrders = transactions.filter(t => t.date === today).length;
-            const pendingOrders = transactions.filter(t => t.status === 'pending').length;
-            const completedOrders = transactions.filter(t => t.status === 'completed').length;
-            document.getElementById('dailyOrders').textContent = dailyOrders;
-            document.getElementById('pendingOrders').textContent = pendingOrders;
-            document.getElementById('completedOrders').textContent = completedOrders;
-
-            // Sản Phẩm Bán Chạy
-            const sortedProducts = [...products].sort((a, b) => b.sales - a.sales);
-            const topProducts = sortedProducts.slice(0, 5);
-            const lowProducts = sortedProducts.slice(-5).reverse();
-            const topProductsList = document.getElementById('topProducts');
-            const lowProductsList = document.getElementById('lowProducts');
-            topProductsList.innerHTML = topProducts.map(p => `<li class="list-group-item">${p.name} - ${p.sales} đơn</li>`).join('');
-            lowProductsList.innerHTML = lowProducts.map(p => `<li class="list-group-item">${p.name} - ${p.sales} đơn</li>`).join('');
-
-            // Chi Phí và Lợi Nhuận
-            const materialCost = costs.material;
-            const operationalCost = costs.operational;
-            const netProfit = monthlyRevenue - (materialCost + operationalCost);
-            document.getElementById('materialCost').textContent = materialCost.toLocaleString('vi-VN') + ' VND';
-            document.getElementById('operationalCost').textContent = operationalCost.toLocaleString('vi-VN') + ' VND';
-            document.getElementById('netProfit').textContent = netProfit.toLocaleString('vi-VN') + ' VND';
-
-            // Khuyến Mãi
-            const promotionsList = document.getElementById('promotions');
-            promotionsList.innerHTML = promotions.map(p => `<li class="list-group-item">${p.name} (${p.startDate} - ${p.endDate})</li>`).join('');
-            const promotionEffectiveness = promotions.reduce((sum, p) => sum + p.participants, 0);
-            document.getElementById('promotionEffectiveness').textContent = `${promotionEffectiveness} khách tham gia`;
-
-            // Tồn Kho
-            const inventoryList = document.getElementById('inventoryStatus');
-            const lowInventoryList = document.getElementById('lowInventoryAlerts');
-            inventoryList.innerHTML = inventory.map(i => `<li class="list-group-item">${i.name}: ${i.quantity} ${i.unit}</li>`).join('');
-            lowInventoryList.innerHTML = inventory
-                .filter(i => i.quantity <= i.threshold)
-                .map(i => `<li class="list-group-item text-danger">${i.name}: ${i.quantity} ${i.unit} (Cảnh báo)</li>`).join('');
-        }
-
-        // Charts Initialization
-        const productRevenueChartCtx = document.getElementById('productRevenueChart').getContext('2d');
-        const productRevenueChart = new Chart(productRevenueChartCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Doanh Thu (VND)',
-                    data: [],
-                    backgroundColor: '#007bff'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString('vi-VN') + ' VND';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        const monthlyRevenueChartCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
-        const monthlyRevenueChart = new Chart(monthlyRevenueChartCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Doanh Thu (VND)',
-                    data: [],
-                    backgroundColor: '#28a745'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString('vi-VN') + ' VND';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        const newUsersChartCtx = document.getElementById('newUsersChart').getContext('2d');
-        const newUsersChart = new Chart(newUsersChartCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Người Dùng Mới',
-                    data: [],
-                    backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745']
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-
-        // Update Charts
-        function updateProductRevenueChart() {
-            const productRevenue = {};
-            transactions.forEach(t => {
-                if (t.status === 'completed' && t.productId) {
-                    const product = products.find(p => p.id === t.productId);
-                    if (product) {
-                        if (!productRevenue[product.name]) {
-                            productRevenue[product.name] = 0;
-                        }
-                        productRevenue[product.name] += t.amount;
+                    try {
+                        await remove(ref(db, `transactions/${id}`));
+                        await loadTransactions();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã xóa!',
+                            text: 'Giao dịch đã được xóa.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } catch (error) {
+                        console.error('Error deleting transaction:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể xóa giao dịch: ${error.message}.`,
+                            showConfirmButton: true
+                        });
                     }
                 }
             });
+        };
 
-            const labels = Object.keys(productRevenue);
-            const data = Object.values(productRevenue);
+        // Refresh Data
+        document.getElementById('refreshData')?.addEventListener('click', loadProducts);
+        document.getElementById('refreshTransactions')?.addEventListener('click', loadTransactions);
 
-            productRevenueChart.data.labels = labels.length ? labels : ['Không có dữ liệu'];
-            productRevenueChart.data.datasets[0].data = data.length ? data : [0];
-            productRevenueChart.update();
-        }
-
-        function updateRevenueChart() {
-            // Deprecated, replaced by productRevenueChart in dashboard
-        }
-
-        function updateMonthlyRevenueChart() {
-            try {
-                const revenueByMonth = {};
-                transactions.forEach(t => {
-                    if (!t.date || !t.amount) return;
-                    const month = t.date.substring(0, 7);
-                    if (!revenueByMonth[month]) {
-                        revenueByMonth[month] = 0;
-                    }
-                    revenueByMonth[month] += t.amount;
-                });
-
-                const sortedMonths = Object.keys(revenueByMonth).sort();
-                const labels = sortedMonths.map(month => `Tháng ${month.split('-')[1]}/${month.split('-')[0]}`);
-                const data = sortedMonths.map(month => revenueByMonth[month]);
-
-                monthlyRevenueChart.data.labels = labels.length ? labels : ['Không có dữ liệu'];
-                monthlyRevenueChart.data.datasets[0].data = data.length ? data : [0];
-                monthlyRevenueChart.update();
-            } catch (error) {
-                console.error('Lỗi khi cập nhật biểu đồ doanh thu theo tháng:', error);
-                monthlyRevenueChart.data.labels = ['Lỗi dữ liệu'];
-                monthlyRevenueChart.data.datasets[0].data = [0];
-                monthlyRevenueChart.update();
-            }
-        }
-
-        function updateNewUsersChart() {
-            try {
-                const usersByMonth = {};
-                users.forEach(u => {
-                    if (u.createdDate) {
-                        const month = u.createdDate.substring(0, 7);
-                        if (!usersByMonth[month]) {
-                            usersByMonth[month] = 0;
-                        }
-                        usersByMonth[month]++;
-                    }
-                });
-
-                const sortedMonths = Object.keys(usersByMonth).sort();
-                const labels = sortedMonths.map(month => `Tháng ${month.split('-')[1]}/${month.split('-')[0]}`);
-                const data = sortedMonths.map(month => usersByMonth[month]);
-
-                newUsersChart.data.labels = labels.length ? labels : ['Không có dữ liệu'];
-                newUsersChart.data.datasets[0].data = data.length ? data : [0];
-                newUsersChart.update();
-            } catch (error) {
-                console.error('Lỗi khi cập nhật biểu đồ người dùng mới:', error);
-                newUsersChart.data.labels = ['Lỗi dữ liệu'];
-                newUsersChart.data.datasets[0].data = [0];
-                newUsersChart.update();
-            }
-        }
-
-        // Return to User Page
-        function returnToUserPage() {
-            Swal.fire({
-                title: 'Quay lại trang người dùng?',
-                text: 'Bạn có muốn trở về trang người dùng không?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Quay lại',
-                cancelButtonText: 'Hủy'
-            }).then(result => {
-                if (result.isConfirmed) {
-                    window.location.href = 'index.html';
-                }
-            });
-        }
-
-        // Logout
-        function logout() {
-            Swal.fire({
-                title: 'Đăng xuất?',
-                text: 'Bạn có muốn đăng xuất khỏi hệ thống?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Đăng xuất',
-                cancelButtonText: 'Hủy'
-            }).then(result => {
-                if (result.isConfirmed) {
-                    window.location.href = 'login.html';
-                }
-            });
-        }
-
-        // Initialize
-        $(document).ready(function() {
-            renderUsers();
-            renderProducts();
-            renderTransactions();
-            renderEmployees();
-            setTimeout(() => {
-                updateDashboard();
-                updateProductRevenueChart();
-            }, 100);
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            loadTransactions();
         });
     </script>
 </body>

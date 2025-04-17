@@ -15,7 +15,7 @@
     <!-- Thêm SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Custom styles cho trang Menu */
+        /* Custom styles cho trang Menu - giữ nguyên */
         .menu-section {
             padding: 60px 0;
             background: #FFFFFF;
@@ -553,228 +553,322 @@
     <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
-    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
     <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
-    <script>
-        // Dữ liệu ảo cho sản phẩm
-        const initialProducts = [
-    // Thức Uống
-    { id: 1, name: 'Cà Phê Đen Đá', price: 35000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.' },
-    { id: 2, name: 'Cappuccino', price: 45000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.' },
-    { id: 3, name: 'Latte', price: 50000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.' },
-    { id: 4, name: 'Espresso', price: 40000, category: 'Thức Uống', image: 'https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.' },
-    // Bánh
-    { id: 5, name: 'Bánh Bông Lan', price: 30000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.' },
-    { id: 6, name: 'Cheesecake', price: 55000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.' },
-    { id: 7, name: 'Bánh Mì', price: 25000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380', attributes: 'Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.' },
-    { id: 8, name: 'Tiramisu', price: 60000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.' },
-    { id: 9, name: 'Mousse Cake', price: 50000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.' },
-    { id: 10, name: 'Cupcake', price: 35000, category: 'Bánh', image: 'https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2150798144.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.' },
-    // Gọi Thêm
-    { id: 11, name: 'Phô Mai', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.' },
-    { id: 12, name: 'Socola', price: 10000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.' },
-    { id: 13, name: 'Mật Ong', price: 8000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.' },
-    { id: 14, name: 'Kem', price: 12000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/view-delicious-ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.' },
-    { id: 15, name: 'Trái Cây', price: 15000, category: 'Gọi Thêm', image: 'https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740', attributes: 'Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.' }
-];
-
-        // Lưu dữ liệu ảo vào localStorage nếu chưa có
-        if (!localStorage.getItem('products')) {
-            localStorage.setItem('products', JSON.stringify(initialProducts));
-        }
-
-        // Ẩn loading overlay
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.querySelector('.loading-overlay').classList.add('hidden');
-            }, 1000);
-        });
-
-        // Hiệu ứng cuộn
-        const elements = document.querySelectorAll('.menu-category');
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        elements.forEach(el => observer.observe(el));
-
-        // Load products from localStorage
-        function loadProducts() {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const drinksList = document.getElementById('drinks-list');
-            const cakesList = document.getElementById('cakes-list');
-            const toppingsList = document.getElementById('toppings-list');
-            const dropdownDrinks = document.getElementById('dropdown-drinks');
-            const dropdownCakes = document.getElementById('dropdown-cakes');
-            const dropdownToppings = document.getElementById('dropdown-toppings');
-
-            drinksList.innerHTML = '';
-            cakesList.innerHTML = '';
-            toppingsList.innerHTML = '';
-            dropdownDrinks.innerHTML = '';
-            dropdownCakes.innerHTML = '';
-            dropdownToppings.innerHTML = '';
-
-            products.forEach(product => {
-                const itemHtml = `
-                    <div class="menu-item">
-                        <img src="${product.image}" alt="${product.name}"/>
-                        <h4>${product.name}</h4>
-                        <p>${product.price.toLocaleString('vi-VN')} VND</p>
-                        <button onclick="addToCart(${product.id})">Thêm vào giỏ</button>
-                        <div class="menu-item-tooltip">
-                            <img src="${product.image}" alt="${product.name}"/>
-                            <h5>${product.name}</h5>
-                            <p>${product.attributes || 'Món ngon từ Ấm Coffee & Cake'}</p>
-                            <p class="price">${product.price.toLocaleString('vi-VN')} VND</p>
-                        </div>
-                    </div>
-                `;
-                const dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
-
-                if (product.category === 'Thức Uống') {
-                    drinksList.innerHTML += itemHtml;
-                    dropdownDrinks.innerHTML += dropdownItem;
-                } else if (product.category === 'Bánh') {
-                    cakesList.innerHTML += itemHtml;
-                    dropdownCakes.innerHTML += dropdownItem;
-                } else if (product.category === 'Gọi Thêm') {
-                    toppingsList.innerHTML += itemHtml;
-                    dropdownToppings.innerHTML += dropdownItem;
-                }
-            });
-
-            // Nếu danh sách rỗng, hiển thị thông báo
-            if (!drinksList.innerHTML) drinksList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
-            if (!cakesList.innerHTML) cakesList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
-            if (!toppingsList.innerHTML) toppingsList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
-        }
-
-        // Hàm thêm sản phẩm vào giỏ và hiển thị thông báo
-        function addToCart(productId) {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const product = products.find(item => item.id === productId);
-            if (!product) return;
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existingProduct = cart.find(item => item.productId === productId);
-
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                cart.push({ productId: product.id, quantity: 1 });
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            updateCartDropdown();
-
-            // Thêm thông báo bằng SweetAlert2
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công!',
-                text: `${product.name} đã được thêm vào giỏ hàng.`,
-                showConfirmButton: false,
-                timer: 1500 // Tự động đóng sau 1.5 giây
-            });
-        }
-
-        // Hàm cập nhật số lượng giỏ hàng trên biểu tượng
-        function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            document.querySelector('.cart_no').textContent = totalItems;
-        }
-
-        // Hàm cập nhật dropdown giỏ hàng
-        function updateCartDropdown() {
-            let dropdown = document.querySelector('.option-cart-item');
-            dropdown.innerHTML = '';
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-
-            if (cart.length === 0) {
-                dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
-                return;
-            }
-
-            cart.forEach(item => {
-                const product = products.find(p => p.id === item.productId);
-                if (product) {
-                    let cartItem = document.createElement('li');
-                    cartItem.classList.add('cart-item');
-                    cartItem.innerHTML = `
-                        <div class="cart-item">
-                            <div class="image"><img src="${product.image}" alt="${product.name}"></div>
-                            <div class="item-description">
-                                <p class="name">${product.name}</p>
-                                <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
-                            </div>
-                            <div class="right">
-                                <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
-                                <a href="#" class="remove" onclick="removeItem(${item.productId}); return false;">Xóa</a>
-                            </div>
-                        </div>
-                    `;
-                    dropdown.appendChild(cartItem);
-                }
-            });
-
-            updateCartTotal();
-        }
-
-        // Hàm xóa sản phẩm khỏi giỏ
-        function removeItem(productId) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart = cart.filter(item => item.productId !== productId);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            updateCartDropdown();
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Đã xóa!',
-                text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-
-        // Hàm cập nhật tổng tiền giỏ hàng
-        function updateCartTotal() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            let totalPrice = cart.reduce((total, item) => {
-                const product = products.find(p => p.id === item.productId);
-                return total + (product ? product.price * item.quantity : 0);
-            }, 0);
-            let totalElement = document.querySelector('.total strong') || document.createElement('strong');
-            totalElement.textContent = totalPrice.toLocaleString('vi-VN') + ' VND';
-            if (!document.querySelector('.total strong')) {
-                let totalDiv = document.createElement('div');
-                totalDiv.className = 'total';
-                totalDiv.appendChild(totalElement);
-                document.querySelector('.option-cart-item').appendChild(totalDiv);
-            }
-        }
-
-        // Khởi tạo khi trang tải
-        window.addEventListener('load', function() {
-            loadProducts();
-            updateCartCount();
-            updateCartDropdown();
-        });
-    </script>
+    <!-- Thêm elevateZoom nếu cần -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Import Firebase SDK
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  
+      // Firebase Config
+      const firebaseConfig = {
+          apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+          authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+          databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "coffee-and-cake-e2f5d",
+          storageBucket: "coffee-and-cake-e2f5d.firebasestorage.app",
+          messagingSenderId: "453243002159",
+          appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+          measurementId: "G-1H7DM8MQCV"
+      };
+  
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+  
+      // Hàm lấy dữ liệu từ Realtime Database
+      async function fetchProducts() {
+          const categories = ["drinks", "cakes", "toppings"];
+          let products = [];
+  
+          for (const category of categories) {
+              try {
+                  const snapshot = await get(ref(db, `products/${category}`));
+                  if (snapshot.exists()) {
+                      const items = snapshot.val();
+                      Object.keys(items).forEach((itemId) => {
+                          products.push({
+                              id: `${category}-${itemId}`,
+                              name: items[itemId].name,
+                              price: items[itemId].price,
+                              category: category === "drinks" ? "Thức Uống" : category === "cakes" ? "Bánh" : "Gọi Thêm",
+                              image: items[itemId].image || "https://via.placeholder.com/120",
+                              attributes: items[itemId].attributes || "Món ngon từ Ấm Coffee & Cake"
+                          });
+                          console.log(`Fetched ${category}/${itemId}:`, items[itemId]);
+                      });
+                  } else {
+                      console.warn(`No data found at products/${category}`);
+                  }
+              } catch (error) {
+                  console.error(`Error fetching ${category}:`, error);
+              }
+          }
+          return products;
+      }
+  
+      // Load products từ Realtime Database
+      async function loadProducts() {
+          try {
+              const drinksList = document.getElementById('drinks-list');
+              const cakesList = document.getElementById('cakes-list');
+              const toppingsList = document.getElementById('toppings-list');
+              const dropdownDrinks = document.getElementById('dropdown-drinks');
+              const dropdownCakes = document.getElementById('dropdown-cakes');
+              const dropdownToppings = document.getElementById('dropdown-toppings');
+  
+              if (!drinksList || !cakesList || !toppingsList || !dropdownDrinks || !dropdownCakes || !dropdownToppings) {
+                  console.error("One or more DOM elements not found");
+                  return;
+              }
+  
+              drinksList.innerHTML = '';
+              cakesList.innerHTML = '';
+              toppingsList.innerHTML = '';
+              dropdownDrinks.innerHTML = '';
+              dropdownCakes.innerHTML = '';
+              dropdownToppings.innerHTML = '';
+  
+              const products = await fetchProducts();
+  
+              if (products.length === 0) {
+                  console.error("No products fetched from Realtime Database");
+                  drinksList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+                  cakesList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+                  toppingsList.innerHTML = '<p>Chưa có sản phẩm nào.</p>';
+                  return;
+              }
+  
+              // Lưu products vào localStorage để cart.html sử dụng
+              localStorage.setItem('products', JSON.stringify(products));
+  
+              products.forEach(product => {
+                  const itemHtml = `
+                      <div class="menu-item">
+                          <img src="${product.image}" alt="${product.name}" loading="lazy"/>
+                          <h4>${product.name}</h4>
+                          <p>${product.price.toLocaleString('vi-VN')} VND</p>
+                          <button class="add-to-cart" data-product-id="${product.id}">Thêm vào giỏ</button>
+                          <div class="menu-item-tooltip">
+                              <img src="${product.image}" alt="${product.name}" loading="lazy"/>
+                              <h5>${product.name}</h5>
+                              <p>${product.attributes}</p>
+                              <p class="price">${product.price.toLocaleString('vi-VN')} VND</p>
+                          </div>
+                      </div>
+                  `;
+                  const dropdownItem = `<li><a href="menu.html">${product.name}</a></li>`;
+  
+                  if (product.category === 'Thức Uống') {
+                      drinksList.innerHTML += itemHtml;
+                      dropdownDrinks.innerHTML += dropdownItem;
+                  } else if (product.category === 'Bánh') {
+                      cakesList.innerHTML += itemHtml;
+                      dropdownCakes.innerHTML += dropdownItem;
+                  } else if (product.category === 'Gọi Thêm') {
+                      toppingsList.innerHTML += itemHtml;
+                      dropdownToppings.innerHTML += dropdownItem;
+                  }
+              });
+  
+              // Gắn sự kiện click cho các nút "Thêm vào giỏ"
+              document.querySelectorAll('.add-to-cart').forEach(button => {
+                  button.addEventListener('click', () => {
+                      const productId = button.getAttribute('data-product-id');
+                      addToCart(productId);
+                  });
+              });
+          } catch (error) {
+              console.error("Error in loadProducts:", error);
+          }
+      }
+  
+      // Hàm thêm sản phẩm vào giỏ và hiển thị thông báo
+      function addToCart(productId) {
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          let existingProduct = cart.find(item => item.productId === productId);
+  
+          if (existingProduct) {
+              existingProduct.quantity += 1;
+          } else {
+              cart.push({ productId: productId, quantity: 1 });
+          }
+  
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateCartCount();
+          updateCartDropdown();
+  
+          Swal.fire({
+              icon: 'success',
+              title: 'Thành công!',
+              text: 'Sản phẩm đã được thêm vào giỏ hàng.',
+              showConfirmButton: true,
+              confirmButtonText: 'Xem giỏ hàng',
+              showCancelButton: true,
+              cancelButtonText: 'Tiếp tục mua sắm',
+              confirmButtonColor: '#3085d6'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.href = 'cart.html';
+              }
+          });
+      }
+  
+      // Hàm cập nhật số lượng giỏ hàng
+      function updateCartCount() {
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+          const cartNo = document.querySelector('.cart_no');
+          if (cartNo) {
+              cartNo.textContent = totalItems;
+          }
+      }
+  
+      // Hàm cập nhật dropdown giỏ hàng
+      function updateCartDropdown() {
+          const dropdown = document.querySelector('.option-cart-item');
+          if (!dropdown) {
+              console.error("Cart dropdown element not found");
+              return;
+          }
+  
+          dropdown.innerHTML = '';
+  
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          let products = JSON.parse(localStorage.getItem('products')) || [];
+  
+          if (cart.length === 0) {
+              dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
+              return;
+          }
+  
+          cart.forEach(item => {
+              const product = products.find(p => p.id === item.productId);
+              if (product) {
+                  let cartItem = document.createElement('li');
+                  cartItem.classList.add('cart-item');
+                  cartItem.innerHTML = `
+                      <div class="cart-item">
+                          <div class="image"><img src="${product.image}" alt="${product.name}" loading="lazy"></div>
+                          <div class="item-description">
+                              <p class="name">${product.name}</p>
+                              <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                          </div>
+                          <div class="right">
+                              <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                              <a href="#" class="remove" data-product-id="${item.productId}">Xóa</a>
+                          </div>
+                      </div>
+                  `;
+                  dropdown.appendChild(cartItem);
+              }
+          });
+  
+          // Gắn sự kiện xóa cho các nút trong dropdown
+          document.querySelectorAll('.option-cart-item .remove').forEach(button => {
+              button.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  const productId = button.getAttribute('data-product-id');
+                  removeItem(productId);
+              });
+          });
+  
+          updateCartTotal(products);
+      }
+  
+      // Hàm xóa sản phẩm khỏi giỏ
+      function removeItem(productId) {
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const product = JSON.parse(localStorage.getItem('products')).find(p => p.id === productId);
+          cart = cart.filter(item => item.productId !== productId);
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateCartCount();
+          updateCartDropdown();
+  
+          Swal.fire({
+              icon: 'success',
+              title: 'Đã xóa!',
+              text: `${product ? product.name : 'Sản phẩm'} đã được xóa khỏi giỏ hàng.`,
+              showConfirmButton: false,
+              timer: 1500
+          });
+      }
+  
+      // Hàm cập nhật tổng tiền giỏ hàng
+      function updateCartTotal(products) {
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          let totalPrice = cart.reduce((total, item) => {
+              const product = products.find(p => p.id === item.productId);
+              return total + (product ? product.price * item.quantity : 0);
+          }, 0);
+          let totalElement = document.querySelector('.total strong') || document.createElement('strong');
+          totalElement.textContent = totalPrice.toLocaleString('vi-VN') + ' VND';
+          if (!document.querySelector('.total strong')) {
+              let totalDiv = document.createElement('div');
+              totalDiv.className = 'total';
+              totalDiv.appendChild(totalElement);
+              document.querySelector('.option-cart-item').appendChild(totalDiv);
+          }
+      }
+  
+      // Hiệu ứng cuộn
+      const elements = document.querySelectorAll('.menu-category');
+      const observerOptions = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.1
+      };
+      const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+              }
+          });
+      }, observerOptions);
+      elements.forEach(el => observer.observe(el));
+  
+      // Ẩn loading overlay và tải sản phẩm
+      window.addEventListener('load', function() {
+          try {
+              setTimeout(function() {
+                  const loadingOverlay = document.querySelector('.loading-overlay');
+                  if (loadingOverlay) {
+                      loadingOverlay.classList.add('hidden');
+                  } else {
+                      console.warn("Loading overlay not found");
+                  }
+              }, 1000);
+              loadProducts()
+                  .then(() => console.log("Products loaded successfully"))
+                  .catch(error => console.error("Error loading products:", error));
+              updateCartCount();
+              updateCartDropdown();
+          } catch (error) {
+              console.error("Error in window load:", error);
+          }
+      });
+  
+      // Vô hiệu hóa carouFredSel cho các phần tử không tồn tại
+      $(document).ready(() => {
+          if (!document.querySelector('#featured')) console.log('No #featured element, skipping carouFredSel');
+          if (!document.querySelector('#hot')) console.log('No #hot element, skipping carouFredSel');
+          if (!document.querySelector('#gallery_01')) console.log('No #gallery_01 element, skipping carouFredSel');
+      });
+  
+      // Kiểm tra để giảm thiểu lỗi script.min.js
+      document.addEventListener('DOMContentLoaded', () => {
+          const elements = ['#featured', '#hot', '#gallery_01'];
+          elements.forEach(selector => {
+              if (!document.querySelector(selector)) {
+                  console.log(`Element ${selector} not found, skipping initialization`);
+              }
+          });
+      });
+  </script>
 </body>
 </html>
