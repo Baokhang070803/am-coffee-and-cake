@@ -7,179 +7,286 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&family=Roboto+Condensed:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFF8E7;
             margin: 0;
             overflow-x: hidden;
+            color: #3C4043;
+        }
+        .header {
+            background-color: #FFF8E7;
+            height: 64px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .header .admin-name {
+            color: #3C4043;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 20px;
         }
         .sidebar {
-            background-color: #1a252f;
-            height: 100vh;
+            background-color: #FFF8E7;
+            height: calc(100vh - 64px);
             position: fixed;
-            width: 250px;
-            padding-top: 30px;
+            top: 64px;
+            width: 240px;
+            padding-top: 24px;
             transition: all 0.3s ease;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
         }
-        .sidebar h3 {
-            color: #fff;
-            font-weight: 500;
-            font-size: 20px;
-            margin-bottom: 30px;
-            text-align: center;
+        .sidebar .logo {
+            display: block;
+            margin: 0 auto 24px;
+            width: 120px;
+            padding: 8px;
+            border: 2px solid #D4A017;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(212, 160, 23, 0.2);
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
-        .sidebar a {
-            color: #adb5bd;
-            padding: 15px 25px;
+        .sidebar .logo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+        .sidebar a.nav-link {
+            color: #3C4043;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            margin: 0 12px;
+            transition: all 0.2s ease;
         }
-        .sidebar a i {
-            margin-right: 10px;
+        .sidebar a.nav-link i {
+            margin-right: 12px;
             font-size: 16px;
         }
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #007bff;
-            color: #fff;
+        .sidebar a.nav-link:hover, .sidebar a.nav-link.active {
+            background-color: #1A73E8;
+            color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
         }
         .main-content {
-            margin-left: 250px;
-            padding: 30px;
-            min-height: 100vh;
-            background-color: #f5f7fa;
+            margin-left: 240px;
+            margin-top: 64px;
+            padding: 24px;
+            min-height: calc(100vh - 64px);
+            background-color: #FFF8E7;
         }
         .card {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            background-color: #fff;
-            transition: transform 0.2s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            background-color: #FFFFFF;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .card-body {
-            padding: 25px;
+            padding: 20px;
         }
         .card-title {
-            font-size: 22px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 20px;
             font-weight: 500;
-            color: #1a252f;
-            margin-bottom: 20px;
+            color: #3C4043;
+            margin-bottom: 16px;
         }
         .table-responsive {
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .table {
             margin-bottom: 0;
-            background-color: #fff;
+            background-color: #FFFFFF;
         }
         .table thead th {
-            background-color: #1a252f;
-            color: #fff;
+            background-color: #3C4043;
+            color: #FFFFFF;
             font-weight: 500;
+            font-size: 14px;
             border: none;
+            padding: 12px;
         }
         .table tbody tr {
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease;
         }
         .table tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: #1A73E8;
+            color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
         }
         .table td, .table th {
             vertical-align: middle;
-            padding: 15px;
+            padding: 12px;
             border: none;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #E8EAED;
         }
         .btn-sm {
-            padding: 8px 15px;
+            padding: 8px 12px;
             font-size: 13px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
         .btn-primary {
-            background-color: #007bff;
+            background-color: #1A73E8;
             border: none;
+            color: #FFFFFF;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #135ABF;
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
+        }
+        .btn-success {
+            background-color: #34A853;
+            border: none;
+            color: #FFFFFF;
+        }
+        .btn-success:hover {
+            background-color: #2D8B44;
+            box-shadow: 0 2px 4px rgba(52, 168, 83, 0.3);
         }
         .btn-warning {
-            background-color: #ffc107;
+            background-color: #D4A017;
             border: none;
-            color: #212529;
+            color: #FFFFFF;
         }
         .btn-warning:hover {
-            background-color: #e0a800;
+            background-color: #B58900;
+            box-shadow: 0 2px 4px rgba(212, 160, 23, 0.3);
         }
         .btn-danger {
-            background-color: #dc3545;
+            background-color: #EA4335;
             border: none;
+            color: #FFFFFF;
         }
         .btn-danger:hover {
-            background-color: #c82333;
+            background-color: #C13528;
+            box-shadow: 0 2px 4px rgba(234, 67, 53, 0.3);
         }
         section {
             display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
         section.active-section {
             display: block;
             opacity: 1;
         }
         .modal-content {
-            border-radius: 10px;
+            border-radius: 8px;
             border: none;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background-color: #FFFFFF;
         }
         .modal-header {
-            background-color: #1a252f;
-            color: #fff;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            background-color: #3C4043;
+            color: #FFFFFF;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
         .modal-body {
-            padding: 25px;
+            padding: 20px;
         }
         .form-control {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            transition: border-color 0.3s ease;
+            border-radius: 6px;
+            border: 1px solid #E8EAED;
+            background-color: #FFFFFF;
+            font-size: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            border-color: #1A73E8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .search-filter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .search-filter .form-control {
+            max-width: 200px;
+            padding: 6px 12px;
+        }
+        .search-filter .btn {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        .search-filter .btn-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         @media (max-width: 768px) {
+            .header {
+                height: 56px;
+                padding: 0 16px;
+            }
+            .header .admin-name {
+                font-size: 13px;
+            }
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
-                padding-bottom: 20px;
+                top: 0;
+                padding-bottom: 16px;
+            }
+            .sidebar .logo {
+                width: 100px;
             }
             .main-content {
                 margin-left: 0;
-                padding: 20px;
+                margin-top: 56px;
+                padding: 16px;
+            }
+            .search-filter .form-control {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <div class="header">
+        <span class="admin-name">Võ Trần Hoàng Bảo Khang ADMIN</span>
+    </div>
+
     <!-- Sidebar -->
     <div class="sidebar">
-        <h3>Admin Dashboard</h3>
-        <a href="#products" class="nav-link active"><i class="fa fa-cutlery"></i> Quản Lý Sản Phẩm</a>
+        <img src="images/LOGO.png" alt="Logo" class="logo">
+        <a href="#dashboard" class="nav-link active"><i class="fa fa-home"></i> Trang Chủ</a>
+        <a href="#products" class="nav-link"><i class="fa fa-cutlery"></i> Quản Lý Sản Phẩm</a>
         <a href="#transactions" class="nav-link"><i class="fa fa-shopping-cart"></i> Quản Lý Giao Dịch</a>
         <a href="#settings" class="nav-link"><i class="fa fa-cog"></i> Cài Đặt</a>
         <a href="index.html" class="nav-link" id="returnToUserPage"><i class="fa fa-arrow-left"></i> Quay về Trang Người Dùng</a>
@@ -188,14 +295,97 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="active-section">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Bảng Điều Khiển Tổng Quan</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Số Sản Phẩm</h5>
+                                    <h3 id="totalProducts">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Doanh Thu Hôm Nay</h5>
+                                    <h3 id="dailyRevenue">0 VND</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Đơn Hàng Chờ Xử Lý</h5>
+                                    <h3 id="pendingOrders">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Số Khách Hàng</h5>
+                                    <h3 id="totalCustomers">100</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Doanh Thu Theo Ngày</h5>
+                                    <div class="chart-container">
+                                        <canvas id="revenueChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tỷ Lệ Trạng Thái Đơn Hàng</h5>
+                                    <div class="chart-container">
+                                        <canvas id="orderStatusChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Thông Báo Hệ Thống</h5>
+                            <ul id="notificationsList" class="list-group">
+                                <li class="list-group-item">Chào mừng bạn đến với Bảng Điều Khiển!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Products Section -->
-        <section id="products" class="active-section">
+        <section id="products">
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Quản Lý Sản Phẩm</h2>
-                    <div class="d-flex align-items-center mb-3">
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Thêm Sản Phẩm</button>
-                        <button class="btn btn-success" id="refreshData">Làm Mới Dữ Liệu</button>
+                    <div class="search-filter">
+                        <form id="productSearchForm" style="display: flex; gap: 8px;">
+                            <input type="text" class="form-control" id="productSearch" placeholder="Tìm kiếm sản phẩm...">
+                            <select class="form-control" id="productCategoryFilter">
+                                <option value="">Tất cả danh mục</option>
+                                <option value="Thức Uống">Thức Uống</option>
+                                <option value="Bánh">Bánh</option>
+                                <option value="Gọi Thêm">Gọi Thêm</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-icon" title="Tìm kiếm"><i class="fa fa-search"></i></button>
+                        </form>
+                        <button class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#addProductModal" title="Thêm Sản Phẩm"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-success btn-icon" id="refreshData" title="Làm Mới Dữ Liệu"><i class="fa fa-refresh"></i></button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
@@ -205,13 +395,13 @@
                                     <th>Tên</th>
                                     <th>Giá</th>
                                     <th>Danh Mục</th>
+                                    <th>Số Lượng</th>
+                                    <th>Trạng Thái</th>
                                     <th>Hình Ảnh</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
-                            <tbody id="productTableBody">
-                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                            </tbody>
+                            <tbody id="productTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -223,8 +413,17 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Quản Lý Giao Dịch</h2>
-                    <div class="d-flex align-items-center mb-3">
-                        <button class="btn btn-success" id="refreshTransactions">Làm Mới Dữ Liệu</button>
+                    <div class="search-filter">
+                        <input type="text" class="form-control" id="transactionSearch" placeholder="Tìm kiếm giao dịch...">
+                        <select class="form-control" id="transactionStatusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="pending">Đang chờ</option>
+                            <option value="confirmed">Đã xác nhận</option>
+                            <option value="shipped">Đang giao</option>
+                            <option value="delivered">Đã giao</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                        <button class="btn btn-success btn-icon" id="refreshTransactions" title="Làm Mới Dữ Liệu"><i class="fa fa-refresh"></i></button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
@@ -240,9 +439,7 @@
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
-                            <tbody id="transactionTableBody">
-                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                            </tbody>
+                            <tbody id="transactionTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -286,6 +483,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label for="productStock" class="form-label">Số Lượng</label>
+                            <input type="number" class="form-control" id="productStock" required min="0">
+                        </div>
+                        <div class="mb-3">
                             <label for="productImage" class="form-label">URL Hình Ảnh</label>
                             <input type="url" class="form-control" id="productImage" required>
                         </div>
@@ -326,6 +527,10 @@
                                 <option value="Bánh">Bánh</option>
                                 <option value="Gọi Thêm">Gọi Thêm</option>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductStock" class="form-label">Số Lượng</label>
+                            <input type="number" class="form-control" id="editProductStock" required min="0">
                         </div>
                         <div class="mb-3">
                             <label for="editProductImage" class="form-label">URL Hình Ảnh</label>
@@ -376,7 +581,7 @@
     <script type="module">
         // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref, get, set, update, remove, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getDatabase, ref, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         // Firebase Config
         const firebaseConfig = {
@@ -407,31 +612,260 @@
         }
 
         // Navigation
+        function switchSection(sectionId) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('section').forEach(section => section.classList.remove('active-section'));
+            
+            const targetLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            const targetSection = document.getElementById(sectionId);
+            
+            if (targetLink && targetSection) {
+                targetLink.classList.add('active');
+                targetSection.classList.add('active-section');
+            } else {
+                console.error(`Section or link not found for ID: ${sectionId}`);
+            }
+        }
+
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+
                 if (this.id === 'logout') {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Đăng xuất thành công!',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = 'index.html';
+                        title: 'Bạn có chắc?',
+                        text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#A63C3C',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Đăng Xuất',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = 'login.html';
+                            });
+                        }
                     });
                     return;
                 }
+
                 if (this.id === 'returnToUserPage') {
-                    window.location.href = 'index.html';
+                    Swal.fire({
+                        title: 'Bạn có chắc?',
+                        text: "Bạn muốn quay lại trang người dùng?",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#8B6F47',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Quay lại',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đang chuyển hướng...',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = 'index.html';
+                            });
+                        }
+                    });
                     return;
                 }
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
-                this.classList.add('active');
-                const sectionId = this.getAttribute('href').substring(1);
-                document.getElementById(sectionId).classList.add('active-section');
+
+                switchSection(sectionId);
             });
         });
+
+        // Dashboard Functions
+        let revenueChartInstance = null;
+        let orderStatusChartInstance = null;
+
+        async function loadDashboardData() {
+            if (!db) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Firebase chưa được khởi tạo.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            try {
+                // Load Products
+                const categories = ['drinks', 'cakes', 'toppings'];
+                let totalProducts = 0;
+                let products = [];
+                for (const category of categories) {
+                    const snapshot = await get(ref(db, `products/${category}`));
+                    if (snapshot.exists()) {
+                        const items = snapshot.val();
+                        totalProducts += Object.keys(items).length;
+                        Object.keys(items).forEach(itemId => {
+                            products.push({
+                                id: `${category}-${itemId.replace('item', '')}`,
+                                firebaseId: itemId,
+                                name: items[itemId].name,
+                                price: items[itemId].price,
+                                category: category === 'drinks' ? 'Thức Uống' : category === 'cakes' ? 'Bánh' : 'Gọi Thêm',
+                                stock: items[itemId].stock || 0,
+                                image: items[itemId].image || 'https://via.placeholder.com/120',
+                                attributes: items[itemId].attributes || ''
+                            });
+                        });
+                    }
+                }
+                document.getElementById('totalProducts').textContent = totalProducts;
+
+                // Load Transactions
+                const snapshot = await get(ref(db, 'transactions'));
+                let transactions = [];
+                let dailyRevenue = 0;
+                let pendingOrders = 0;
+                const today = new Date().toISOString().split('T')[0];
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    transactions = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                    transactions.forEach(t => {
+                        if (t.date && t.date.startsWith(today)) {
+                            dailyRevenue += t.amount || 0;
+                        }
+                        if (t.status === 'pending') {
+                            pendingOrders++;
+                        }
+                    });
+                }
+                document.getElementById('dailyRevenue').textContent = dailyRevenue.toLocaleString('vi-VN') + ' VND';
+                document.getElementById('pendingOrders').textContent = pendingOrders;
+
+                // Mock Customer Data
+                document.getElementById('totalCustomers').textContent = '100';
+
+                // Render Charts
+                renderRevenueChart(transactions);
+                renderOrderStatusChart(transactions);
+
+                // Notifications
+                const notificationsList = document.getElementById('notificationsList');
+                notificationsList.innerHTML = '';
+                if (totalProducts === 0) {
+                    notificationsList.innerHTML += '<li class="list-group-item">Chưa có sản phẩm nào. Hãy thêm sản phẩm!</li>';
+                }
+                if (pendingOrders > 0) {
+                    notificationsList.innerHTML += `<li class="list-group-item">${pendingOrders} đơn hàng đang chờ xử lý.</li>`;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể tải dữ liệu dashboard: ${error.message}.`,
+                    showConfirmButton: true
+                });
+            }
+        }
+
+        function renderRevenueChart(transactions) {
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) {
+                console.error('Revenue chart canvas not found');
+                return;
+            }
+            const last7Days = Array.from({ length: 7 }, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                return d.toISOString().split('T')[0];
+            }).reverse();
+            const revenueData = last7Days.map(day => {
+                return transactions.filter(t => t.date && t.date.startsWith(day)).reduce((sum, t) => sum + (t.amount || 0), 0);
+            });
+
+            if (revenueChartInstance) {
+                revenueChartInstance.data.labels = last7Days;
+                revenueChartInstance.data.datasets[0].data = revenueData;
+                revenueChartInstance.update();
+            } else {
+                revenueChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: last7Days,
+                        datasets: [{
+                            label: 'Doanh Thu (VND)',
+                            data: revenueData,
+                            backgroundColor: '#1A73E8',
+                            borderColor: '#135ABF',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderOrderStatusChart(transactions) {
+            const ctx = document.getElementById('orderStatusChart');
+            if (!ctx) {
+                console.error('Order status chart canvas not found');
+                return;
+            }
+            const statusCounts = {
+                pending: 0,
+                confirmed: 0,
+                shipped: 0,
+                delivered: 0,
+                cancelled: 0
+            };
+            transactions.forEach(t => {
+                if (t.status) statusCounts[t.status]++;
+            });
+
+            if (orderStatusChartInstance) {
+                orderStatusChartInstance.data.datasets[0].data = [
+                    statusCounts.pending,
+                    statusCounts.confirmed,
+                    statusCounts.shipped,
+                    statusCounts.delivered,
+                    statusCounts.cancelled
+                ];
+                orderStatusChartInstance.update();
+            } else {
+                orderStatusChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Đang chờ', 'Đã xác nhận', 'Đang giao', 'Đã giao', 'Đã hủy'],
+                        datasets: [{
+                            data: [
+                                statusCounts.pending,
+                                statusCounts.confirmed,
+                                statusCounts.shipped,
+                                statusCounts.delivered,
+                                statusCounts.cancelled
+                            ],
+                            backgroundColor: ['#1A73E8', '#34A853', '#D4A017', '#EA4335', '#6c757d']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }
 
         // Load Products
         async function loadProducts() {
@@ -458,6 +892,7 @@
                                 name: items[itemId].name,
                                 price: items[itemId].price,
                                 category: category === 'drinks' ? 'Thức Uống' : category === 'cakes' ? 'Bánh' : 'Gọi Thêm',
+                                stock: items[itemId].stock || 0,
                                 image: items[itemId].image || 'https://via.placeholder.com/120',
                                 attributes: items[itemId].attributes || ''
                             });
@@ -477,7 +912,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: `Không thể tải danh sách sản phẩm: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    text: `Không thể tải danh sách sản phẩm: ${error.message}.`,
                     showConfirmButton: true
                 });
             }
@@ -492,16 +927,24 @@
             }
             tbody.innerHTML = '';
             if (products.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có sản phẩm nào.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">Không có sản phẩm nào.</td></tr>';
                 return;
             }
-            products.forEach(product => {
+            const searchQuery = document.getElementById('productSearch')?.value.toLowerCase() || '';
+            const categoryFilter = document.getElementById('productCategoryFilter')?.value || '';
+            const filteredProducts = products.filter(p => {
+                return p.name.toLowerCase().includes(searchQuery) &&
+                       (!categoryFilter || p.category === categoryFilter);
+            });
+            filteredProducts.forEach(product => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.id}</td>
                     <td>${product.name}</td>
                     <td>${product.price.toLocaleString('vi-VN')} VND</td>
                     <td>${product.category}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
                     <td><img src="${product.image}" alt="${product.name}" style="width: 50px; border-radius: 5px;" onerror="this.src='https://via.placeholder.com/120'"></td>
                     <td>
                         <button class="btn btn-warning btn-sm me-1" onclick="editProduct('${product.id}')">Sửa</button>
@@ -534,12 +977,14 @@
                 const newProduct = {
                     name: document.getElementById('productName').value,
                     price: parseInt(document.getElementById('productPrice').value),
+                    stock: parseInt(document.getElementById('productStock').value),
                     image: document.getElementById('productImage').value || 'https://via.placeholder.com/120',
                     attributes: document.getElementById('productAttributes').value || ''
                 };
 
                 await set(ref(db, `products/${firebaseCategory}/item${newIndex}`), newProduct);
                 await loadProducts();
+                await loadDashboardData();
                 bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
                 Swal.fire({
                     icon: 'success',
@@ -554,7 +999,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: `Không thể thêm sản phẩm: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    text: `Không thể thêm sản phẩm: ${error.message}.`,
                     showConfirmButton: true
                 });
             }
@@ -581,6 +1026,7 @@
                     document.getElementById('editProductName').value = product.name;
                     document.getElementById('editProductPrice').value = product.price;
                     document.getElementById('editProductCategory').value = firebaseCategory === 'drinks' ? 'Thức Uống' : firebaseCategory === 'cakes' ? 'Bánh' : 'Gọi Thêm';
+                    document.getElementById('editProductStock').value = product.stock || 0;
                     document.getElementById('editProductImage').value = product.image;
                     document.getElementById('editProductAttributes').value = product.attributes || '';
                     new bootstrap.Modal(document.getElementById('editProductModal')).show();
@@ -614,11 +1060,13 @@
                 const updatedProduct = {
                     name: document.getElementById('editProductName').value,
                     price: parseInt(document.getElementById('editProductPrice').value),
+                    stock: parseInt(document.getElementById('editProductStock').value),
                     image: document.getElementById('editProductImage').value || 'https://via.placeholder.com/120',
                     attributes: document.getElementById('editProductAttributes').value || ''
                 };
                 await set(ref(db, `products/${firebaseCategory}/item${itemIndex}`), updatedProduct);
                 await loadProducts();
+                await loadDashboardData();
                 bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
                 Swal.fire({
                     icon: 'success',
@@ -654,7 +1102,7 @@
                 text: "Bạn không thể khôi phục sản phẩm sau khi xóa!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#dc3545',
+                confirmButtonColor: '#A63C3C',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Xóa',
                 cancelButtonText: 'Hủy'
@@ -665,6 +1113,7 @@
                         const itemIndex = id.split('-')[1];
                         await remove(ref(db, `products/${firebaseCategory}/item${itemIndex}`));
                         await loadProducts();
+                        await loadDashboardData();
                         Swal.fire({
                             icon: 'success',
                             title: 'Đã xóa!',
@@ -719,7 +1168,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: `Không thể tải danh sách giao dịch: ${error.message}. Vui lòng kiểm tra quy tắc bảo mật Firebase.`,
+                    text: `Không thể tải danh sách giao dịch: ${error.message}.`,
                     showConfirmButton: true
                 });
             }
@@ -737,19 +1186,26 @@
                 tbody.innerHTML = '<tr><td colspan="8" class="text-center">Không có giao dịch nào.</td></tr>';
                 return;
             }
-            transactions.forEach(transaction => {
+            const searchQuery = document.getElementById('transactionSearch')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('transactionStatusFilter')?.value || '';
+            const filteredTransactions = transactions.filter(t => {
+                return (t.customerName?.toLowerCase().includes(searchQuery) || t.productName?.toLowerCase().includes(searchQuery)) &&
+                       (!statusFilter || t.status === statusFilter);
+            });
+            filteredTransactions.forEach(transaction => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${transaction.id.substring(0, 8)}...</td>
-                    <td>${transaction.customerName}</td>
-                    <td>${transaction.productName}</td>
-                    <td>${transaction.quantity}</td>
-                    <td>${transaction.amount.toLocaleString('vi-VN')} VND</td>
-                    <td>${transaction.date}</td>
+                    <td>${transaction.customerName || 'N/A'}</td>
+                    <td>${transaction.productName || 'N/A'}</td>
+                    <td>${transaction.quantity || 0}</td>
+                    <td>${(transaction.amount || 0).toLocaleString('vi-VN')} VND</td>
+                    <td>${transaction.date || 'N/A'}</td>
                     <td>${transaction.status === 'pending' ? 'Đang chờ' : 
                           transaction.status === 'confirmed' ? 'Đã xác nhận' : 
                           transaction.status === 'shipped' ? 'Đang giao' : 
-                          transaction.status === 'delivered' ? 'Đã giao' : 'Đã hủy'}</td>
+                          transaction.status === 'delivered' ? 'Đã giao' : 
+                          transaction.status === 'cancelled' ? 'Đã hủy' : 'N/A'}</td>
                     <td>
                         <button class="btn btn-warning btn-sm me-1" onclick="editTransaction('${transaction.id}')">Sửa</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteTransaction('${transaction.id}')">Xóa</button>
@@ -775,7 +1231,7 @@
                 if (snapshot.exists()) {
                     const transaction = snapshot.val();
                     document.getElementById('editTransactionId').value = id;
-                    document.getElementById('editTransactionStatus').value = transaction.status;
+                    document.getElementById('editTransactionStatus').value = transaction.status || 'pending';
                     new bootstrap.Modal(document.getElementById('editTransactionModal')).show();
                 }
             } catch (error) {
@@ -806,6 +1262,7 @@
                     status: document.getElementById('editTransactionStatus').value
                 });
                 await loadTransactions();
+                await loadDashboardData();
                 bootstrap.Modal.getInstance(document.getElementById('editTransactionModal')).hide();
                 Swal.fire({
                     icon: 'success',
@@ -841,7 +1298,7 @@
                 text: "Bạn không thể khôi phục giao dịch sau khi xóa!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#dc3545',
+                confirmButtonColor: '#A63C3C',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Xóa',
                 cancelButtonText: 'Hủy'
@@ -850,6 +1307,7 @@
                     try {
                         await remove(ref(db, `transactions/${id}`));
                         await loadTransactions();
+                        await loadDashboardData();
                         Swal.fire({
                             icon: 'success',
                             title: 'Đã xóa!',
@@ -870,12 +1328,25 @@
             });
         };
 
+        // Search and Filter
+        document.getElementById('productSearchForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            loadProducts();
+        });
+        document.getElementById('productCategoryFilter')?.addEventListener('change', function() {
+            loadProducts();
+        });
+        document.getElementById('transactionSearch')?.addEventListener('input', loadTransactions);
+        document.getElementById('transactionStatusFilter')?.addEventListener('change', loadTransactions);
+
         // Refresh Data
         document.getElementById('refreshData')?.addEventListener('click', loadProducts);
         document.getElementById('refreshTransactions')?.addEventListener('click', loadTransactions);
 
         // Initial Load
         document.addEventListener('DOMContentLoaded', () => {
+            switchSection('dashboard');
+            loadDashboardData();
             loadProducts();
             loadTransactions();
         });
