@@ -12,13 +12,100 @@
     <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
-    <!-- Sử dụng Firebase 8.x để tương thích với cú pháp không module -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Thêm elevateZoom -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
     <style>
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        .auth-modal-content h2 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .auth-modal-content .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4A2F1A;
+        }
+        .auth-modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .auth-modal-content input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .auth-modal-content button {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+            background: #da2a20;
+        }
+        .auth-modal-content .switch {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+            color: #f7544a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+            color: #f7544a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .usermenu li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li a:hover {
+            color: #A63C3C;
+        }
         .step-description { display: none; }
         .steps.active .step-description { display: block; }
         #confirmationMessage { display: none; }
@@ -75,8 +162,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <ul class="usermenu">
-                                        <li><a href="login.html" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                                        <li><a href="register.html" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -265,14 +353,35 @@
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="new-customer">
-                                                    <h5>Khách Hàng Đã Đăng Nhập</h5>
-                                                    <p><strong>Họ và Tên:</strong> Võ Trần Hoàng Bảo Khang</p>
-                                                    <p><strong>Ngày Sinh:</strong> 07/08/2003</p>
-                                                    <p><strong>Giới tính:</strong> Nam</p>
-                                                    <p><strong>Địa Chỉ:</strong> 645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long</p>
-                                                    <p><strong>Thành Viên:</strong> Thành viên hạng đồng</p>
-                                                    <p><strong>Số Điện Thoại:</strong> 0795858581</p>
-                                                    <p><strong>Email:</strong> baokhangml99@gmail.com</p>
+                                                    <h5 id="customer-title">Thông Tin Khách Hàng</h5>
+                                                    <div id="userInfoDisplay" style="display: none;">
+                                                        <p><strong>Họ và Tên:</strong> <span id="display-fullname"></span></p>
+                                                        <p><strong>Ngày Sinh:</strong> <span id="display-dob"></span></p>
+                                                        <p><strong>Giới tính:</strong> <span id="display-gender"></span></p>
+                                                        <p><strong>Địa Chỉ:</strong> <span id="display-address"></span></p>
+                                                        <p><strong>Thành Viên:</strong> <span id="display-membership"></span></p>
+                                                        <p><strong>Số Điện Thoại:</strong> <span id="display-phone"></span></p>
+                                                        <p><strong>Email:</strong> <span id="display-email"></span></p>
+                                                    </div>
+                                                    <div id="guestInput">
+                                                        <h5>Nhập Thông Tin (Nếu chưa đăng nhập)</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-fullname" placeholder="Nhập họ và tên" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-phone" placeholder="Nhập số điện thoại" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Email <strong class="red">*</strong></label>
+                                                            <input type="email" class="input namefild" id="guest-email" placeholder="Nhập email" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-address" placeholder="Nhập địa chỉ" required>
+                                                        </div>
+                                                    </div>
                                                     <button type="button" onclick="nextStep()">Tiếp Tục</button>
                                                 </div>
                                             </div>
@@ -290,15 +399,15 @@
                                                         <h5>Thông Tin Cá Nhân</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="full_name" disabled value="Võ Trần Hoàng Bảo Khang">
+                                                            <input type="text" class="input namefild" id="full_name" placeholder="Nhập họ và tên" required>
                                                         </div>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="phone" disabled value="0795858581">
+                                                            <input type="text" class="input namefild" id="phone" placeholder="Nhập số điện thoại" required>
                                                         </div>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Email <strong class="red">*</strong></label>
-                                                            <input type="email" class="input namefild" id="email" disabled value="baokhangml99@gmail.com">
+                                                            <input type="email" class="input namefild" id="email" placeholder="Nhập email" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -307,7 +416,7 @@
                                                         <h5>Địa Chỉ Thanh Toán</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="billing_address" placeholder="Nhập địa chỉ thanh toán" required value="645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long">
+                                                            <input type="text" class="input namefild" id="billing_address" placeholder="Nhập địa chỉ thanh toán" required>
                                                         </div>
                                                         <p class="privacy">
                                                             <span class="input-radio"><input type="checkbox" name="privacy" checked></span>
@@ -331,11 +440,11 @@
                                                         <h5>Thông Tin Liên Hệ</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="receiver_name" disabled value="Võ Trần Hoàng Bảo Khang">
+                                                            <input type="text" class="input namefild" id="receiver_name" placeholder="Nhập họ và tên" required>
                                                         </div>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="receiver_phone" disabled value="0795858581">
+                                                            <input type="text" class="input namefild" id="receiver_phone" placeholder="Nhập số điện thoại" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -344,7 +453,7 @@
                                                         <h5>Địa Chỉ Giao Hàng</h5>
                                                         <div class="form-row">
                                                             <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
-                                                            <input type="text" class="input namefild" id="shipping_address" placeholder="Nhập địa chỉ giao hàng" required value="645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long">
+                                                            <input type="text" class="input namefild" id="shipping_address" placeholder="Nhập địa chỉ giao hàng" required>
                                                         </div>
                                                         <p class="privacy">
                                                             <span class="input-radio"><input type="radio" name="payment_method" value="cod" checked></span>
@@ -367,13 +476,13 @@
                                     <div class="step-description">
                                         <div id="orderDetails">
                                             <h6>Thông Tin Khách Hàng</h6>
-                                            <p><strong>Họ và Tên:</strong> <span id="order-fullname">Võ Trần Hoàng Bảo Khang</span></p>
-                                            <p><strong>Ngày Sinh:</strong> <span id="order-dob">07/08/2003</span></p>
-                                            <p><strong>Giới Tính:</strong> <span id="order-gender">Nam</span></p>
-                                            <p><strong>Địa Chỉ:</strong> <span id="order-address">645, Cái Vồn, thị xã Bình Minh, tỉnh Vĩnh Long</span></p>
-                                            <p><strong>Số Điện Thoại:</strong> <span id="order-phone">0795858581</span></p>
-                                            <p><strong>Email:</strong> <span id="order-email">baokhangml99@gmail.com</span></p>
-                                            <p><strong>Thành Viên:</strong> <span id="order-membership">Thành viên hạng đồng</span></p>
+                                            <p><strong>Họ và Tên:</strong> <span id="order-fullname"></span></p>
+                                            <p><strong>Ngày Sinh:</strong> <span id="order-dob"></span></p>
+                                            <p><strong>Giới Tính:</strong> <span id="order-gender"></span></p>
+                                            <p><strong>Địa Chỉ:</strong> <span id="order-address"></span></p>
+                                            <p><strong>Số Điện Thoại:</strong> <span id="order-phone"></span></p>
+                                            <p><strong>Email:</strong> <span id="order-email"></span></p>
+                                            <p><strong>Thành Viên:</strong> <span id="order-membership"></span></p>
                                             <h6>Thông Tin Thanh Toán</h6>
                                             <p><strong>Địa Chỉ Thanh Toán:</strong> <span id="order-billing"></span></p>
                                             <h6>Thông Tin Giao Hàng</h6>
@@ -479,7 +588,56 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Đăng Nhập -->
+        <div id="loginModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Đăng Nhập</h1>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button type="submit">Đăng Nhập</button>
+                </form>
+                <div class="switch">
+                    Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Đăng Ký -->
+        <div id="registerModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Đăng Ký</h2>
+                <form id="registerForm">
+                    <input type="text" id="registerName" placeholder="Họ và Tên" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button type="submit">Đăng Ký</button>
+                </form>
+                <div class="switch">
+                    Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Quên Mật Khẩu -->
+        <div id="forgotPasswordModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Quên Mật Khẩu</h2>
+                <form id="forgotPasswordForm">
+                    <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+                    <button type="submit">Gửi Yêu Cầu</button>
+                </form>
+                <div class="switch">
+                    Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+                </div>
+            </div>
+        </div>
     </div>
+
     <!-- JavaScript -->
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
@@ -489,450 +647,724 @@
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Tự động đến bước 4 nếu có tham số ?step=4
-    const urlParams = new URLSearchParams(window.location.search);
-    const step = parseInt(urlParams.get('step')) || 1;
-    toggleStep(step);
-    if (step === 4) {
-        updateOrderDetails();
-    }
-
-    // Đồng bộ thông tin khách hàng từ form sang phần hiển thị
-    syncCustomerInfo();
-
-    // Cập nhật dropdown menu và giỏ hàng
-    loadDropdownMenu();
-    updateCartCount();
-    updateCartDropdown();
-});
-
-// Ẩn loading overlay
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        const loadingOverlay = document.querySelector('.loading-overlay');
-        if (loadingOverlay) {
-            loadingOverlay.classList.add('hidden');
-        }
-    }, 1000);
-});
-
-// Đồng bộ thông tin khách hàng từ form sang phần hiển thị
-function syncCustomerInfo() {
-    document.getElementById('order-fullname').textContent = document.getElementById('full_name').value;
-    document.getElementById('order-email').textContent = document.getElementById('email').value;
-    document.getElementById('order-phone').textContent = document.getElementById('phone').value;
-    document.getElementById('order-address').textContent = document.getElementById('billing_address').value;
-}
-
-// Cập nhật dropdown menu
-function loadDropdownMenu() {
-    const dropdownDrinks = document.getElementById('dropdown-drinks');
-    const dropdownCakes = document.getElementById('dropdown-cakes');
-    const dropdownToppings = document.getElementById('dropdown-toppings');
-
-    if (!dropdownDrinks || !dropdownCakes || !dropdownToppings) {
-        console.error("Không tìm thấy một hoặc nhiều phần tử dropdown menu");
-        return;
-    }
-
-    dropdownDrinks.innerHTML = '';
-    dropdownCakes.innerHTML = '';
-    dropdownToppings.innerHTML = '';
-
-    const drinks = ['Cà Phê Đen Đá', 'Cappuccino', 'Latte', 'Espresso'];
-    const cakes = ['Bánh Bông Lan', 'Cheesecake', 'Bánh Mì', 'Tiramisu', 'Mousse Cake', 'Cupcake'];
-    const toppings = ['Phô Mai', 'Socola', 'Mật Ong', 'Kem', 'Trái Cây'];
-
-    drinks.forEach(item => dropdownDrinks.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
-    cakes.forEach(item => dropdownCakes.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
-    toppings.forEach(item => dropdownToppings.innerHTML += `<li><a href="menu.html#${item.toLowerCase().replace(/\s/g, '-')}"">${item}</a></li>`);
-}
-
-// Cập nhật số lượng giỏ hàng
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-    const cartNo = document.querySelector('.cart_no');
-    if (cartNo) {
-        cartNo.textContent = count;
-    }
-}
-
-// Cập nhật dropdown giỏ hàng
-function updateCartDropdown() {
-    const dropdown = document.querySelector('.option-cart-item');
-    if (!dropdown) {
-        console.error("Không tìm thấy phần tử dropdown giỏ hàng");
-        return;
-    }
-
-    dropdown.innerHTML = '';
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-
-    if (cart.length === 0) {
-        dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
-        return;
-    }
-
-    cart.forEach(item => {
-        const product = products.find(p => p.id === item.productId);
-        if (!product) {
-            console.error("Không tìm thấy sản phẩm với productId:", item.productId);
-            return;
-        }
-
-        let cartItem = document.createElement('li');
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-            <div class="cart-item">
-                <div class="image"><img src="${product.image}" alt="${product.name}" loading="lazy"></div>
-                <div class="item-description">
-                    <p class="name">${product.name}</p>
-                    <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
-                </div>
-                <div class="right">
-                    <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
-                    <a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa"></a>
-                </div>
-            </div>
-        `;
-        dropdown.appendChild(cartItem);
-    });
-
-    document.querySelectorAll('.option-cart-item .remove').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const productId = button.getAttribute('data-product-id');
-            removeItem(productId);
-        });
-    });
-
-    let totalPrice = cart.reduce((total, item) => {
-        let product = products.find(p => p.id === item.productId);
-        return total + (product ? product.price * item.quantity : 0);
-    }, 0);
-    let totalLi = document.createElement('li');
-    totalLi.innerHTML = `<span class="total">Tổng <strong>${totalPrice.toLocaleString('vi-VN')} VND</strong></span><button class="checkout" onclick="window.location.href='checkout.html?step=4'">Thanh Toán</button>`;
-    dropdown.appendChild(totalLi);
-}
-
-// Xóa sản phẩm khỏi giỏ hàng
-function removeItem(productId) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const item = cart.find(i => i.productId === productId);
-    cart = cart.filter(item => item.productId !== productId);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    updateCartDropdown();
-    updateOrderDetails();
-
-    Swal.fire({
-        icon: 'success',
-        title: 'Đã xóa!',
-        text: `${item ? (products.find(p => p.id === item.productId)?.name || 'Sản phẩm') : 'Sản phẩm'} đã được xóa khỏi giỏ hàng.`,
-        showConfirmButton: false,
-        timer: 1500
-    });
-}
-
-// Chuyển đổi bước thanh toán
-function toggleStep(step) {
-    const steps = document.querySelectorAll('.steps');
-    steps.forEach(s => s.classList.remove('active'));
-    const targetStep = document.getElementById(`step-${step}`);
-    if (targetStep) {
-        targetStep.classList.add('active');
-    }
-
-    for (let i = 1; i <= step; i++) {
-        const stepElement = document.getElementById(`step-${i}`);
-        if (stepElement) {
-            stepElement.classList.remove('disabled');
-        }
-    }
-
-    if (step >= 2) {
-        document.getElementById('order-billing').textContent = document.getElementById('billing_address').value || 'Chưa nhập địa chỉ thanh toán';
-    }
-    if (step >= 3) {
-        const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
-        document.getElementById('order-payment').textContent = paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : paymentMethod === 'bank' ? 'Thanh toán qua ngân hàng' : 'Chưa chọn phương thức';
-    }
-
-    if (step === 4) {
-        updateOrderDetails();
-    }
-}
-
-// Chuyển đến bước tiếp theo
-function nextStep() {
-    const currentStep = document.querySelector('.steps.active').id.split('-')[1];
-    const nextStepNum = parseInt(currentStep) + 1;
-    if (nextStepNum <= 4) {
-        toggleStep(nextStepNum);
-    }
-}
-
-// Xử lý form thanh toán
-document.getElementById('billing-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const billingAddress = document.getElementById('billing_address').value;
-    if (!billingAddress) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Vui lòng nhập địa chỉ thanh toán.',
-            showConfirmButton: true
-        });
-        return;
-    }
-    toggleStep(3);
-});
-
-// Xử lý form giao hàng
-document.getElementById('shipping-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const shippingAddress = document.getElementById('shipping_address').value;
-    if (!shippingAddress) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Vui lòng nhập địa chỉ giao hàng.',
-            showConfirmButton: true
-        });
-        return;
-    }
-    toggleStep(4);
-});
-
-// Cập nhật chi tiết đơn hàng từ cart trong localStorage
-function updateOrderDetails() {
-    const tbody = document.getElementById('order-items-body');
-    if (!tbody) {
-        console.error("Không tìm thấy phần tử 'order-items-body' trong HTML");
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Không tìm thấy bảng hiển thị đơn hàng. Vui lòng kiểm tra HTML.',
-            showConfirmButton: true
-        });
-        return;
-    }
-
-    tbody.innerHTML = '';
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    let total = 0;
-
-    if (cart.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6">Giỏ hàng trống!</td></tr>';
-        document.getElementById('order-total').textContent = '0 VND';
-        return;
-    }
-
-    cart.forEach(item => {
-        // Tìm sản phẩm tương ứng trong danh sách products
-        const product = products.find(p => p.id === item.productId);
-        if (!product) {
-            console.error("Không tìm thấy sản phẩm với productId:", item.productId);
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: `Sản phẩm với mã ${item.productId} không tồn tại.`,
-                showConfirmButton: true
-            });
-            return;
-        }
-
-        const price = Number(product.price);
-        const quantity = Number(item.quantity);
-        if (isNaN(price) || isNaN(quantity)) {
-            console.error("Giá hoặc số lượng không hợp lệ:", product);
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: `Sản phẩm ${product.name} có giá hoặc số lượng không hợp lệ.`,
-                showConfirmButton: true
-            });
-            return;
-        }
-
-        const itemTotal = price * quantity;
-        total += itemTotal;
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><img src="${product.image}" alt="${product.name}" style="width: 50px; height: auto;"></td>
-            <td>${product.name}</td>
-            <td>${quantity}</td>
-            <td>${price.toLocaleString('vi-VN')} VND</td>
-            <td>${itemTotal.toLocaleString('vi-VN')} VND</td>
-            <td><a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa" style="width: 20px;"></a></td>
-        `;
-        tbody.appendChild(row);
-    });
-
-    // Gắn sự kiện xóa cho các nút xóa
-    document.querySelectorAll('#order-items-body .remove').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const productId = button.getAttribute('data-product-id');
-            removeItem(productId);
-        });
-    });
-
-    document.getElementById('order-total').textContent = `${total.toLocaleString('vi-VN')} VND`;
-}
-
-// Đặt hàng và lưu vào Firebase
-async function placeOrder() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const products = JSON.parse(localStorage.getItem('products')) || [];
-    if (cart.length === 0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Giỏ hàng trống!',
-            showConfirmButton: true
-        });
-        return;
-    }
-
-    // Kiểm tra thông tin khách hàng
-    const billingAddress = document.getElementById('billing_address').value;
-    const shippingAddress = document.getElementById('shipping_address').value;
-    const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
-    if (!billingAddress || !shippingAddress || !paymentMethod) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Vui lòng điền đầy đủ thông tin thanh toán, giao hàng và chọn phương thức thanh toán.',
-            showConfirmButton: true
-        });
-        return;
-    }
-
-    // Hiển thị thông báo đang xử lý
-    Swal.fire({
-        title: 'Đang xử lý...',
-        text: 'Vui lòng chờ trong giây lát.',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
-    // Khởi tạo Firebase
-    let db;
-    try {
+        // Khởi tạo Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
             authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
             databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "coffee-and-cake-e2f5d",
-            storageBucket: "coffee-and-cake-e2f5d.firebasestorage.app",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
             messagingSenderId: "453243002159",
             appId: "1:453243002159:web:074baa5652ed789ecbd5da",
             measurementId: "G-1H7DM8MQCV"
         };
-        const app = firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-    } catch (error) {
-        console.error('Lỗi khởi tạo Firebase:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Không thể kết nối với máy chủ. Vui lòng thử lại sau.',
-            showConfirmButton: true
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tự động đến bước 4 nếu có tham số ?step=4
+            const urlParams = new URLSearchParams(window.location.search);
+            const step = parseInt(urlParams.get('step')) || 1;
+            toggleStep(step);
+            if (step === 4) {
+                updateOrderDetails();
+            }
+
+            // Kiểm tra trạng thái đăng nhập và lấy thông tin người dùng
+            auth.onAuthStateChanged((user) => {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
+                const guestInput = document.getElementById('guestInput');
+                const customerTitle = document.getElementById('customer-title');
+
+                if (user) {
+                    // Người dùng đã đăng nhập, lấy thông tin từ Firebase
+                    userInfo.style.display = 'inline-block';
+                    loginLink.style.display = 'none';
+                    registerLink.style.display = 'none';
+                    userInfoDisplay.style.display = 'block';
+                    guestInput.style.display = 'none';
+                    customerTitle.textContent = 'Thông Tin Khách Hàng (Đã Đăng Nhập)';
+
+                    // Lấy thông tin người dùng từ Firebase Authentication
+                    document.getElementById('display-fullname').textContent = user.displayName || 'Chưa cập nhật';
+                    document.getElementById('display-email').textContent = user.email || 'Chưa cập nhật';
+                    document.getElementById('display-phone').textContent = user.phoneNumber || 'Chưa cập nhật';
+                    document.getElementById('display-address').textContent = 'Chưa cập nhật'; // Firebase Auth không lưu địa chỉ, cần lấy từ Realtime Database nếu có
+                    document.getElementById('display-dob').textContent = 'Chưa cập nhật';
+                    document.getElementById('display-gender').textContent = 'Chưa cập nhật';
+                    document.getElementById('display-membership').textContent = 'Thành viên hạng đồng';
+
+                    // Lấy thông tin bổ sung từ Realtime Database (nếu có)
+                    db.ref('users/' + user.uid).once('value').then((snapshot) => {
+                        const userData = snapshot.val();
+                        if (userData) {
+                            document.getElementById('display-fullname').textContent = userData.fullName || user.displayName || 'Chưa cập nhật';
+                            document.getElementById('display-address').textContent = userData.address || 'Chưa cập nhật';
+                            document.getElementById('display-dob').textContent = userData.dob || 'Chưa cập nhật';
+                            document.getElementById('display-gender').textContent = userData.gender || 'Chưa cập nhật';
+                            document.getElementById('display-phone').textContent = userData.phone || user.phoneNumber || 'Chưa cập nhật';
+                            document.getElementById('display-membership').textContent = userData.membership || 'Thành viên hạng đồng';
+                        }
+
+                        // Đồng bộ dữ liệu sang các bước khác
+                        syncCustomerInfo(user, userData);
+                    }).catch((error) => {
+                        console.error('Lỗi khi lấy dữ liệu người dùng:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không thể lấy thông tin người dùng. Vui lòng thử lại.',
+                            showConfirmButton: true
+                        });
+                    });
+                } else {
+                    // Người dùng chưa đăng nhập, hiển thị form nhập tay
+                    userInfo.style.display = 'none';
+                    loginLink.style.display = 'inline-block';
+                    registerLink.style.display = 'inline-block';
+                    userInfoDisplay.style.display = 'none';
+                    guestInput.style.display = 'block';
+                    customerTitle.textContent = 'Thông Tin Khách Hàng (Khách Vãng Lai)';
+                }
+            });
+
+            // Cập nhật dropdown menu và giỏ hàng
+            loadDropdownMenu();
+            updateCartCount();
+            updateCartDropdown();
+
+            // Xử lý modal đăng nhập/đăng ký
+            bindModalEvents();
+
+            // Xử lý form đăng nhập
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                try {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    document.getElementById('loginModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+
+            // Xử lý form đăng ký
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                try {
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await userCredential.user.updateProfile({ displayName: name });
+                    await auth.sendEmailVerification(userCredential.user);
+
+                    // Lưu thông tin bổ sung vào Realtime Database
+                    await db.ref('users/' + userCredential.user.uid).set({
+                        fullName: name,
+                        email: email,
+                        membership: 'Thành viên hạng đồng'
+                    });
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('registerModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+
+            // Xử lý form quên mật khẩu
+            document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgotPasswordEmail').value;
+                if (!email) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                    });
+                    return;
+                }
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+
+            // Xử lý đăng xuất
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A63C3C',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Đăng Xuất',
+                    cancelButtonText: 'Hủy'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await auth.signOut();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            });
         });
-        return;
-    }
 
-    // Lấy thông tin khách hàng
-    const customer = {
-        name: document.getElementById('order-fullname').textContent,
-        email: document.getElementById('order-email').textContent,
-        billingAddress: document.getElementById('order-billing').textContent,
-        shippingAddress: document.getElementById('shipping_address').value,
-        paymentMethod: paymentMethod
-    };
+        // Ẩn loading overlay
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('hidden');
+                }
+            }, 1000);
+        });
 
-    // Tạo danh sách giao dịch
-    const transactions = cart.map(item => {
-        const product = products.find(p => p.id === item.productId);
-        if (!product) {
-            throw new Error(`Sản phẩm với mã ${item.productId} không tồn tại.`);
+        // Đồng bộ thông tin khách hàng từ Firebase hoặc form nhập tay
+        function syncCustomerInfo(user, userData) {
+            let fullName, email, phone, address, dob, gender, membership;
+
+            if (user && userData) {
+                // Dữ liệu từ Firebase
+                fullName = userData.fullName || user.displayName || 'Chưa cập nhật';
+                email = user.email || 'Chưa cập nhật';
+                phone = userData.phone || user.phoneNumber || 'Chưa cập nhật';
+                address = userData.address || 'Chưa cập nhật';
+                dob = userData.dob || 'Chưa cập nhật';
+                gender = userData.gender || 'Chưa cập nhật';
+                membership = userData.membership || 'Thành viên hạng đồng';
+            } else {
+                // Dữ liệu từ form nhập tay
+                fullName = document.getElementById('guest-fullname').value || 'Chưa nhập';
+                email = document.getElementById('guest-email').value || 'Chưa nhập';
+                phone = document.getElementById('guest-phone').value || 'Chưa nhập';
+                address = document.getElementById('guest-address').value || 'Chưa nhập';
+                dob = 'Chưa nhập';
+                gender = 'Chưa nhập';
+                membership = 'Khách vãng lai';
+            }
+
+            // Cập nhật cho Step 2
+            document.getElementById('full_name').value = fullName;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('billing_address').value = address;
+
+            // Cập nhật cho Step 3
+            document.getElementById('receiver_name').value = fullName;
+            document.getElementById('receiver_phone').value = phone;
+            document.getElementById('shipping_address').value = address;
+
+            // Cập nhật cho Step 4
+            document.getElementById('order-fullname').textContent = fullName;
+            document.getElementById('order-email').textContent = email;
+            document.getElementById('order-phone').textContent = phone;
+            document.getElementById('order-address').textContent = address;
+            document.getElementById('order-dob').textContent = dob;
+            document.getElementById('order-gender').textContent = gender;
+            document.getElementById('order-membership').textContent = membership;
         }
 
-        const price = Number(product.price);
-        const quantity = Number(item.quantity);
-        if (isNaN(price) || isNaN(quantity)) {
-            throw new Error(`Sản phẩm ${product.name} có giá hoặc số lượng không hợp lệ.`);
+        // Cập nhật dropdown menu
+        function loadDropdownMenu() {
+            const dropdownDrinks = document.getElementById('dropdown-drinks');
+            const dropdownCakes = document.getElementById('dropdown-cakes');
+            const dropdownToppings = document.getElementById('dropdown-toppings');
+
+            if (!dropdownDrinks || !dropdownCakes || !dropdownToppings) {
+                console.error("Không tìm thấy một hoặc nhiều phần tử dropdown menu");
+                return;
+            }
+
+            dropdownDrinks.innerHTML = '';
+            dropdownCakes.innerHTML = '';
+            dropdownToppings.innerHTML = '';
+
+            const drinks = ['Cà Phê Đen Đá', 'Cappuccino', 'Latte', 'Espresso'];
+            const cakes = ['Bánh Bông Lan', 'Cheesecake', 'Bánh Mì', 'Tiramisu', 'Mousse Cake', 'Cupcake'];
+            const toppings = ['Phô Mai', 'Socola', 'Mật Ong', 'Kem', 'Trái Cây'];
+
+            drinks.forEach(item => dropdownDrinks.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
+            cakes.forEach(item => dropdownCakes.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
+            toppings.forEach(item => dropdownToppings.innerHTML += `<li><a href="menu.html#${item.toLowerCase().replace(/\s/g, '-')}"">${item}</a></li>`);
         }
 
-        return {
-            amount: price * quantity,
-            billingAddress: customer.billingAddress,
-            customerName: customer.name,
-            date: new Date().toISOString().split('T')[0],
-            paymentMethod: customer.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ngân hàng',
-            productId: item.productId,
-            productName: product.name,
-            quantity: quantity,
-            shippingAddress: customer.shippingAddress,
-            status: 'pending'
-        };
-    });
-
-    // Lưu từng giao dịch vào Firebase
-    try {
-        const promises = transactions.map(transaction => {
-            const newTransactionRef = db.ref('transactions').push();
-            return newTransactionRef.set(transaction);
-        });
-        await Promise.all(promises);
-
-        // Xóa giỏ hàng sau khi đặt hàng thành công
-        localStorage.removeItem('cart');
-        updateCartCount();
-        updateCartDropdown();
-
-        // Ẩn chi tiết đơn hàng và hiển thị thông báo xác nhận
-        document.getElementById('orderDetails').style.display = 'none';
-        document.getElementById('confirmationMessage').style.display = 'block';
-        document.querySelector('button[onclick="placeOrder()"]').style.display = 'none';
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công!',
-            text: 'Đơn hàng của bạn đã được đặt thành công!',
-            showConfirmButton: false,
-            timer: 1500
-        }).then(() => {
-            window.location.href = 'index.html';
-        });
-    } catch (error) {
-        console.error('Lỗi khi lưu đơn hàng:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Không thể lưu đơn hàng. Vui lòng thử lại.',
-            showConfirmButton: true
-        });
-    }
-}
-
-// Kiểm tra carouFredSel
-$(document).ready(() => {
-    const selectors = ['#featured', '#hot', '#gallery_01'];
-    selectors.forEach(selector => {
-        if (!$(selector).length) {
-            console.log(`No ${selector} element found, skipping carouFredSel`);
+        // Cập nhật số lượng giỏ hàng
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            const cartNo = document.querySelector('.cart_no');
+            if (cartNo) {
+                cartNo.textContent = count;
+            }
         }
-    });
-});
-</script>
+
+        // Cập nhật dropdown giỏ hàng
+        function updateCartDropdown() {
+            const dropdown = document.querySelector('.option-cart-item');
+            if (!dropdown) {
+                console.error("Không tìm thấy phần tử dropdown giỏ hàng");
+                return;
+            }
+
+            dropdown.innerHTML = '';
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+
+            if (cart.length === 0) {
+                dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
+                return;
+            }
+
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (!product) {
+                    console.error("Không tìm thấy sản phẩm với productId:", item.productId);
+                    return;
+                }
+
+                let cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <div class="cart-item">
+                        <div class="image"><img src="${product.image}" alt="${product.name}" loading="lazy"></div>
+                        <div class="item-description">
+                            <p class="name">${product.name}</p>
+                            <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                        </div>
+                        <div class="right">
+                            <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                            <a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa"></a>
+                        </div>
+                    </div>
+                `;
+                dropdown.appendChild(cartItem);
+            });
+
+            document.querySelectorAll('.option-cart-item .remove').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = button.getAttribute('data-product-id');
+                    removeItem(productId);
+                });
+            });
+
+            let totalPrice = cart.reduce((total, item) => {
+                let product = products.find(p => p.id === item.productId);
+                return total + (product ? product.price * item.quantity : 0);
+            }, 0);
+            let totalLi = document.createElement('li');
+            totalLi.innerHTML = `<span class="total">Tổng <strong>${totalPrice.toLocaleString('vi-VN')} VND</strong></span><button class="checkout" onclick="window.location.href='checkout.html?step=4'">Thanh Toán</button>`;
+            dropdown.appendChild(totalLi);
+        }
+
+        // Xóa sản phẩm khỏi giỏ hàng
+        function removeItem(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const item = cart.find(i => i.productId === productId);
+            cart = cart.filter(item => item.productId !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            updateOrderDetails();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Đã xóa!',
+                text: `${item ? (products.find(p => p.id === item.productId)?.name || 'Sản phẩm') : 'Sản phẩm'} đã được xóa khỏi giỏ hàng.`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        // Chuyển đổi bước thanh toán
+        function toggleStep(step) {
+            const steps = document.querySelectorAll('.steps');
+            steps.forEach(s => s.classList.remove('active'));
+            const targetStep = document.getElementById(`step-${step}`);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+
+            for (let i = 1; i <= step; i++) {
+                const stepElement = document.getElementById(`step-${i}`);
+                if (stepElement) {
+                    stepElement.classList.remove('disabled');
+                }
+            }
+
+            if (step >= 2) {
+                document.getElementById('order-billing').textContent = document.getElementById('billing_address').value || 'Chưa nhập địa chỉ thanh toán';
+            }
+            if (step >= 3) {
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+                document.getElementById('order-payment').textContent = paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : paymentMethod === 'bank' ? 'Thanh toán qua ngân hàng' : 'Chưa chọn phương thức';
+            }
+
+            if (step === 4) {
+                updateOrderDetails();
+            }
+        }
+
+        // Chuyển đến bước tiếp theo
+        function nextStep() {
+            const currentStep = document.querySelector('.steps.active').id.split('-')[1];
+            const nextStepNum = parseInt(currentStep) + 1;
+            if (nextStepNum <= 4) {
+                if (currentStep === '1' && !auth.currentUser) {
+                    // Kiểm tra thông tin nhập tay
+                    const fullName = document.getElementById('guest-fullname').value;
+                    const email = document.getElementById('guest-email').value;
+                    const phone = document.getElementById('guest-phone').value;
+                    const address = document.getElementById('guest-address').value;
+                    if (!fullName || !email || !phone || !address) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Vui lòng điền đầy đủ thông tin khách hàng.',
+                            showConfirmButton: true
+                        });
+                        return;
+                    }
+                }
+                toggleStep(nextStepNum);
+            }
+        }
+
+        // Xử lý form thanh toán
+        document.getElementById('billing-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const billingAddress = document.getElementById('billing_address').value;
+            if (!billingAddress) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng nhập địa chỉ thanh toán.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            toggleStep(3);
+        });
+
+        // Xử lý form giao hàng
+        document.getElementById('shipping-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng nhập địa chỉ giao hàng.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            toggleStep(4);
+        });
+
+        // Cập nhật chi tiết đơn hàng từ cart trong localStorage
+        function updateOrderDetails() {
+            const tbody = document.getElementById('order-items-body');
+            if (!tbody) {
+                console.error("Không tìm thấy phần tử 'order-items-body' trong HTML");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không tìm thấy bảng hiển thị đơn hàng. Vui lòng kiểm tra HTML.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            tbody.innerHTML = '';
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let total = 0;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">Giỏ hàng trống!</td></tr>';
+                document.getElementById('order-total').textContent = '0 VND';
+                return;
+            }
+
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (!product) {
+                    console.error("Không tìm thấy sản phẩm với productId:", item.productId);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Sản phẩm với mã ${item.productId} không tồn tại.`,
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                const price = Number(product.price);
+                const quantity = Number(item.quantity);
+                if (isNaN(price) || isNaN(quantity)) {
+                    console.error("Giá hoặc số lượng không hợp lệ:", product);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Sản phẩm ${product.name} có giá hoặc số lượng không hợp lệ.`,
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                const itemTotal = price * quantity;
+                total += itemTotal;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${product.image}" alt="${product.name}" style="width: 50px; height: auto;"></td>
+                    <td>${product.name}</td>
+                    <td>${quantity}</td>
+                    <td>${price.toLocaleString('vi-VN')} VND</td>
+                    <td>${itemTotal.toLocaleString('vi-VN')} VND</td>
+                    <td><a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa" style="width: 20px;"></a></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.querySelectorAll('#order-items-body .remove').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = button.getAttribute('data-product-id');
+                    removeItem(productId);
+                });
+            });
+
+            document.getElementById('order-total').textContent = `${total.toLocaleString('vi-VN')} VND`;
+        }
+
+        // Đặt hàng và lưu vào Firebase
+        async function placeOrder() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            if (cart.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Giỏ hàng trống!',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            const billingAddress = document.getElementById('billing_address').value;
+            const shippingAddress = document.getElementById('shipping_address').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+            if (!billingAddress || !shippingAddress || !paymentMethod) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng điền đầy đủ thông tin thanh toán, giao hàng và chọn phương thức thanh toán.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const customer = {
+                name: document.getElementById('order-fullname').textContent,
+                email: document.getElementById('order-email').textContent,
+                billingAddress: document.getElementById('order-billing').textContent,
+                shippingAddress: document.getElementById('shipping_address').value,
+                paymentMethod: paymentMethod,
+                phone: document.getElementById('order-phone').textContent
+            };
+
+            const transactions = cart.map(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (!product) {
+                    throw new Error(`Sản phẩm với mã ${item.productId} không tồn tại.`);
+                }
+
+                const price = Number(product.price);
+                const quantity = Number(item.quantity);
+                if (isNaN(price) || isNaN(quantity)) {
+                    throw new Error(`Sản phẩm ${product.name} có giá hoặc số lượng không hợp lệ.`);
+                }
+
+                return {
+                    amount: price * quantity,
+                    billingAddress: customer.billingAddress,
+                    customerName: customer.name,
+                    date: new Date().toISOString().split('T')[0],
+                    paymentMethod: customer.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ngân hàng',
+                    productId: item.productId,
+                    productName: product.name,
+                    quantity: quantity,
+                    shippingAddress: customer.shippingAddress,
+                    status: 'pending',
+                    email: customer.email,
+                    phone: customer.phone
+                };
+            });
+
+            try {
+                const promises = transactions.map(transaction => {
+                    const newTransactionRef = db.ref('transactions').push();
+                    return newTransactionRef.set(transaction);
+                });
+                await Promise.all(promises);
+
+                localStorage.removeItem('cart');
+                updateCartCount();
+                updateCartDropdown();
+
+                document.getElementById('orderDetails').style.display = 'none';
+                document.getElementById('confirmationMessage').style.display = 'block';
+                document.querySelector('button[onclick="placeOrder()"]').style.display = 'none';
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Đơn hàng của bạn đã được đặt thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
+            } catch (error) {
+                console.error('Lỗi khi lưu đơn hàng:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể lưu đơn hàng. Vui lòng thử lại.',
+                    showConfirmButton: true
+                });
+            }
+        }
+
+        // Xử lý modal đăng nhập/đăng ký
+        function bindModalEvents() {
+            document.querySelector('.log').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelector('.reg').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('forgotPasswordModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => {
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('registerModal').style.display = 'none';
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('.auth-modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Kiểm tra carouFredSel
+        $(document).ready(() => {
+            const selectors = ['#featured', '#hot', '#gallery_01'];
+            selectors.forEach(selector => {
+                if (!$(selector).length) {
+                    console.log(`No ${selector} element found, skipping carouFredSel`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

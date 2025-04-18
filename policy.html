@@ -12,6 +12,112 @@
     <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+           apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+           authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+           databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "coffee-and-cake-e2f5d",
+           storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+           messagingSenderId: "453243002159",
+           appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+           measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <style>
+        .auth-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.7);
+           z-index: 10000;
+           align-items: center;
+           justify-content: center;
+        }
+        .auth-modal-content {
+           background: #fff;
+           padding: 30px;
+           border-radius: 10px;
+           width: 100%;
+           max-width: 400px;
+           position: relative;
+        }
+        .auth-modal-content h2 {
+           font-size: 24px;
+           color: #4A2F1A;
+           margin-bottom: 20px;
+           text-align: center;
+        }
+        .auth-modal-content .close {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           font-size: 20px;
+           cursor: pointer;
+           color: #4A2F1A;
+        }
+        .auth-modal-content form {
+           display: flex;
+           flex-direction: column;
+        }
+        .auth-modal-content input {
+           margin-bottom: 15px;
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           font-size: 16px;
+        }
+        .auth-modal-content button {
+           background: #f7544a;
+           color: #fff;
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+           background: #da2a20;
+        }
+        .auth-modal-content .switch {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .usermenu li {
+           display: inline-block;
+           margin-right: 10px;
+        }
+        .usermenu li a {
+           color: #000000;
+           text-decoration: none;
+        }
+        .usermenu li a:hover {
+           color: #A63C3C;
+        }
+     </style>
     <style>
         /* Custom styles cho trang Policy */
         .policy-section {
@@ -222,9 +328,10 @@
                          </div>
                          <div class="col-md-3">
                             <ul class="usermenu">
-                               <li><a href="login.html" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                               <li><a href="register.html" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
-                            </ul>
+                                <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                             </ul>
                          </div>
                       </div>
                    </div>
@@ -546,6 +653,54 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal Đăng Nhập -->
+<div id="loginModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Nhập</h2>
+       <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit">Đăng Nhập</button>
+       </form>
+       <div class="switch">
+          Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+       </div>
+       <div class="forgot-password">
+          <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Đăng Ký -->
+ <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Ký</h2>
+       <form id="registerForm">
+          <input type="text" id="registerName" placeholder="Họ và Tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit">Đăng Ký</button>
+       </form>
+       <div class="switch">
+          Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Quên Mật Khẩu -->
+ <div id="forgotPasswordModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Quên Mật Khẩu</h2>
+       <form id="forgotPasswordForm">
+          <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+          <button type="submit">Gửi Yêu Cầu</button>
+       </form>
+       <div class="switch">
+          Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
         </div>
         <!-- Bootstrap core JavaScript -->
         <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
@@ -555,6 +710,207 @@
         <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
         <script defer src="js/jquery.flexslider.js"></script>
         <script type="text/javascript" src="js/script.min.js"></script>
+        <script type="module">
+            import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+         
+            document.addEventListener('DOMContentLoaded', () => {
+               // Kiểm tra trạng thái đăng nhập
+               onAuthStateChanged(auth, (user) => {
+                  const loginLink = document.getElementById('loginLink');
+                  const registerLink = document.getElementById('registerLink');
+                  const userInfo = document.getElementById('userInfo');
+         
+                  if (user) {
+                     userInfo.style.display = 'inline-block';
+                     loginLink.style.display = 'none';
+                     registerLink.style.display = 'none';
+                  } else {
+                     userInfo.style.display = 'none';
+                     loginLink.style.display = 'inline-block';
+                     registerLink.style.display = 'inline-block';
+                  }
+               });
+         
+               // Xử lý modal đăng nhập/đăng ký
+               bindModalEvents();
+         
+               // Xử lý form đăng nhập
+               document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('loginEmail').value;
+                  const password = document.getElementById('loginPassword').value;
+                  try {
+                     await signInWithEmailAndPassword(auth, email, password);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                     });
+                     document.getElementById('loginModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+         
+               // Xử lý form đăng ký
+               document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const name = document.getElementById('registerName').value;
+                  const email = document.getElementById('registerEmail').value;
+                  const password = document.getElementById('registerPassword').value;
+                  try {
+                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                     await updateProfile(userCredential.user, { displayName: name });
+                     await sendEmailVerification(userCredential.user);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('registerModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+         
+               // Xử lý form quên mật khẩu
+               document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('forgotPasswordEmail').value;
+                  if (!email) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                     });
+                     return;
+                  }
+                  try {
+                     await sendPasswordResetEmail(auth, email);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+               });
+         
+               // Xử lý đăng xuất
+               document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                  e.preventDefault();
+                  Swal.fire({
+                     title: 'Bạn có chắc?',
+                     text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                     icon: 'warning',
+                     showCancelButton: true,
+                     confirmButtonColor: '#A63C3C',
+                     cancelButtonColor: '#6c757d',
+                     confirmButtonText: 'Đăng Xuất',
+                     cancelButtonText: 'Hủy'
+                  }).then(async (result) => {
+                     if (result.isConfirmed) {
+                        try {
+                           await signOut(auth);
+                           Swal.fire({
+                              icon: 'success',
+                              title: 'Đăng xuất thành công!',
+                              showConfirmButton: false,
+                              timer: 1500
+                           });
+                        } catch (error) {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Lỗi!',
+                              text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                              showConfirmButton: true
+                           });
+                        }
+                     }
+                  });
+               });
+            });
+         
+            function bindModalEvents() {
+               // Mở modal đăng nhập
+               document.querySelector('.log').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Mở modal đăng ký
+               document.querySelector('.reg').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Mở modal quên mật khẩu
+               document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('forgotPasswordModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng nhập sang đăng ký
+               document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng ký sang đăng nhập
+               document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ quên mật khẩu về đăng nhập
+               document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('forgotPasswordModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Đóng modal
+               document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                  closeBtn.addEventListener('click', () => {
+                     document.getElementById('loginModal').style.display = 'none';
+                     document.getElementById('registerModal').style.display = 'none';
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  });
+               });
+         
+               // Đóng modal khi click bên ngoài
+               document.querySelectorAll('.auth-modal').forEach(modal => {
+                  modal.addEventListener('click', (e) => {
+                     if (e.target === modal) {
+                        modal.style.display = 'none';
+                     }
+                  });
+               });
+            }
+         </script>
         <script>
             // Ẩn loading overlay sau khi trang tải xong
             window.addEventListener('load', function() {

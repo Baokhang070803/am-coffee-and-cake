@@ -276,6 +276,93 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* Style cho user-info (chỉ hiển thị nút Đăng Xuất) */
+        .usermenu li.user-info {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li.user-info a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li.user-info a:hover {
+            color: #A63C3C;
+        }
+        /* Style cho modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        .modal-content h2 {
+            text-align: center;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .modal-content button {
+            padding: 10px;
+            background-color: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-content button:hover {
+            background-color: #A63C3C;
+        }
+        .modal-content .switch-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .modal-content .switch-form a {
+            color: #f7544a;
+            text-decoration: none;
+        }
+        .modal-content .switch-form a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body id="home">
@@ -316,8 +403,9 @@
                          </div>
                          <div class="col-md-3">
                             <ul class="usermenu">
-                               <li><a href="login.html" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                               <li><a href="register.html" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                               <li id="loginLink"><a href="#" class="log" onclick="openModal('loginModal')"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                               <li id="registerLink"><a href="#" class="reg" onclick="openModal('registerModal')"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                               <li class="user-info" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
                             </ul>
                          </div>
                       </div>
@@ -495,7 +583,7 @@
                    <div class="col-md-3">
                       <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"/></a></div>
                    </div>
-                   <div class="col-md-3 col-sm-6">
+                   <div class="colilas-md-3 col-sm-6">
                       <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
                       <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
                       <p>Hotline: (028) 1234 5678</p>
@@ -548,6 +636,52 @@
           <div class="loading-spinner"></div>
        </div>
     </div>
+    <!-- Modal cho Đăng Nhập -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">×</span>
+            <h2>Đăng Nhập</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                <button type="button" onclick="handleLogin()">Đăng Nhập</button>
+            </form>
+            <div class="switch-form">
+                <p>Quên mật khẩu? <a href="#" onclick="switchToForgotPassword()">Đặt lại mật khẩu</a></p>
+                <p>Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal cho Đăng Ký -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">×</span>
+            <h2>Đăng Ký</h2>
+            <form id="registerForm">
+                <input type="text" id="registerName" placeholder="Họ và tên" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Mật khẩu (tối thiểu 8 ký tự)" required>
+                <button type="button" onclick="handleRegister()">Đăng Ký</button>
+            </form>
+            <div class="switch-form">
+                <p>Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập ngay</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal cho Quên Mật Khẩu -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('forgotPasswordModal')">×</span>
+            <h2>Quên Mật Khẩu</h2>
+            <form id="forgotPasswordForm">
+                <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+                <button type="button" onclick="handleForgotPassword()">Gửi Yêu Cầu</button>
+            </form>
+            <div class="switch-form">
+                <p>Quay lại <a href="#" onclick="switchToLogin()">Đăng nhập</a></p>
+            </div>
+        </div>
+    </div>
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
@@ -562,7 +696,8 @@
     <script type="module">
       // Import Firebase SDK
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+      import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+      import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   
       // Firebase Config
       const firebaseConfig = {
@@ -579,6 +714,184 @@
       // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
+      const auth = getAuth(app);
+  
+      // Check Auth State
+      onAuthStateChanged(auth, (user) => {
+          const logoutLink = document.getElementById('logoutLink');
+          const loginLink = document.getElementById('loginLink');
+          const registerLink = document.getElementById('registerLink');
+          const userInfo = document.querySelector('.user-info');
+  
+          if (user) {
+              // User is logged in
+              userInfo.style.display = 'inline-block';
+              loginLink.style.display = 'none';
+              registerLink.style.display = 'none';
+          } else {
+              // User is not logged in
+              userInfo.style.display = 'none';
+              loginLink.style.display = 'inline-block';
+              registerLink.style.display = 'inline-block';
+          }
+      });
+  
+      // Handle Logout
+      document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          Swal.fire({
+              title: 'Bạn có chắc?',
+              text: "Bạn muốn đăng xuất khỏi hệ thống?",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#A63C3C',
+              cancelButtonColor: '#6c757d',
+              confirmButtonText: 'Đăng Xuất',
+              cancelButtonText: 'Hủy'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  signOut(auth).then(() => {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Đăng xuất thành công!',
+                          timer: 1500,
+                          showConfirmButton: false
+                      }).then(() => {
+                          window.location.href = 'index.html'; // Redirect to index.html after logout
+                      });
+                  }).catch(error => {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Lỗi!',
+                          text: `Không thể đăng xuất: ${error.message}.`,
+                          showConfirmButton: true
+                      });
+                  });
+              }
+          });
+      });
+  
+      // Modal Functions
+      window.openModal = function(modalId) {
+          document.getElementById(modalId).style.display = 'block';
+      }
+  
+      window.closeModal = function(modalId) {
+          document.getElementById(modalId).style.display = 'none';
+      }
+  
+      window.switchToRegister = function() {
+          closeModal('loginModal');
+          openModal('registerModal');
+      }
+  
+      window.switchToLogin = function() {
+          closeModal('registerModal');
+          closeModal('forgotPasswordModal');
+          openModal('loginModal');
+      }
+  
+      window.switchToForgotPassword = function() {
+          closeModal('loginModal');
+          openModal('forgotPasswordModal');
+      }
+  
+      // Handle Login
+      window.handleLogin = function() {
+          const email = document.getElementById('loginEmail').value;
+          const password = document.getElementById('loginPassword').value;
+  
+          signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Đăng nhập thành công!',
+                      timer: 1500,
+                      showConfirmButton: false
+                  }).then(() => {
+                      closeModal('loginModal');
+                  });
+              })
+              .catch((error) => {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Lỗi!',
+                      text: `Đăng nhập thất bại: ${error.message}`,
+                      showConfirmButton: true
+                  });
+              });
+      }
+  
+      // Handle Register
+      window.handleRegister = function() {
+          const name = document.getElementById('registerName').value;
+          const email = document.getElementById('registerEmail').value;
+          const password = document.getElementById('registerPassword').value;
+  
+          if (password.length < 8) {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Lỗi!',
+                  text: 'Mật khẩu phải có ít nhất 8 ký tự.',
+                  showConfirmButton: true
+              });
+              return;
+          }
+  
+          createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  const user = userCredential.user;
+                  // Save user info to Realtime Database
+                  return set(ref(db, 'users/' + user.uid), {
+                      name: name,
+                      email: email,
+                      createdAt: new Date().toISOString()
+                  });
+              })
+              .then(() => {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Đăng ký thành công!',
+                      timer: 1500,
+                      showConfirmButton: false
+                  }).then(() => {
+                      closeModal('registerModal');
+                  });
+              })
+              .catch((error) => {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Lỗi!',
+                      text: `Đăng ký thất bại: ${error.message}`,
+                      showConfirmButton: true
+                  });
+              });
+      }
+  
+      // Handle Forgot Password
+      window.handleForgotPassword = function() {
+          const email = document.getElementById('forgotPasswordEmail').value;
+  
+          sendPasswordResetEmail(auth, email)
+              .then(() => {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Thành công!',
+                      text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                      showConfirmButton: true
+                  }).then(() => {
+                      closeModal('forgotPasswordModal');
+                  });
+              })
+              .catch((error) => {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Lỗi!',
+                      text: `Không thể gửi email: ${error.message}`,
+                      showConfirmButton: true
+                  });
+              });
+      }
   
       // Hàm lấy dữ liệu từ Realtime Database
       async function fetchProducts() {
@@ -869,6 +1182,6 @@
               }
           });
       });
-  </script>
+    </script>
 </body>
 </html>
