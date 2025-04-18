@@ -1,0 +1,451 @@
+{
+  "products": {
+    "cakes": {
+      "item1": {
+        "attributes": "Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.",
+        "image": "https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Bánh Bông Lan",
+        "price": 30000
+      },
+      "item2": {
+        "attributes": "Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.",
+        "image": "https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cheesecake",
+        "price": 55000
+      },
+      "item3": {
+        "attributes": "Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.",
+        "image": "https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380",
+        "name": "Bánh Mì",
+        "price": 25000
+      },
+      "item4": {
+        "attributes": "Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.",
+        "image": "https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Tiramisu",
+        "price": 60000
+      },
+      "item5": {
+        "attributes": "Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.",
+        "image": "https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Mousse Cake",
+        "price": 50000
+      },
+      "item6": {
+        "attributes": "Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.",
+        "image": "https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cupcake",
+        "price": 35000
+      }
+    },
+    "drinks": {
+      "item1": {
+        "attributes": "Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.",
+        "image": "https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cà Phê Đen Đá",
+        "price": 35000
+      },
+      "item2": {
+        "attributes": "Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.",
+        "image": "https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cappuccino",
+        "price": 45000
+      },
+      "item3": {
+        "attributes": "Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.",
+        "image": "https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Latte",
+        "price": 50000
+      },
+      "item4": {
+        "attributes": "Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.",
+        "image": "https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635 christian -southeast1.firebasedatabase.app",
+        "name": "Espresso",
+        "price": 40000
+      }
+    },
+    "toppings": {
+      "item1": {
+        "attributes": "Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.",
+        "image": "https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Phô Mai",
+        "price": 10000
+      },
+      "item2": {
+        "attributes": "Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.",
+        "image": "https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Socola",
+        "price": 10000
+      },
+      "item3": {
+        "attributes": "Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.",
+        "image": "https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Mật Ong",
+        "price": 8000
+      },
+      "item4": {
+        "attributes": "Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.",
+        "image": "https://img.freepik.com/free-photo/view-delicious ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Kem",
+        "price": 12000
+      },
+      "item5": {
+        "attributes": "Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.",
+        "image": "https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Trái Cây",
+        "price": 15000
+      }
+    }
+  },
+  "transactions": {
+    "-OO5npWX7RVFaDo6c1nl": {
+      "amount": 35000,
+      "billingAddress": "Cần thơi",
+      "customerName": "Phạm Hồng Quân",
+      "date": "2025-04-18",
+      "email": "phamhongquan9117@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0398197737",
+      "productId": "drinks-item1",
+      "productName": "Cà Phê Đen Đá",
+      "quantity": 1,
+      "shippingAddress": "Cần thơi",
+      "status": "delivered"
+    },
+    "-OO5npWYe_NY7n8ZMgDw": {
+      "amount": 45000,
+      "billingAddress": "Cần thơi",
+      "customerName": "Phạm Hồng Quân",
+      "date": "2025-04-18",
+      "email": "phamhongquan9117@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0398197737",
+      "productId": "drinks-item2",
+      "productName": "Cappuccino",
+      "quantity": 1,
+      "shippingAddress": "Cần thơi",
+      "status": "cancelled"
+    },
+    "-OO5o0Py9gpKl3Rg2s2s": {
+      "amount": 35000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "drinks-item1",
+      "productName": "Cà Phê Đen Đá",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "delivered"
+    },
+    "-OO5o0Q-wUv9TNeFlq0Q": {
+      "amount": 25000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "cakes-item3",
+      "productName": "Bánh Mì",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "confirmed"
+    },
+    "-OO5o0Q-wUv9TNeFlq0R": {
+      "amount": 10000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "toppings-item2",
+      "productName": "Socola",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "pending"
+    },
+    "-OO5o0Q-wUv9TNeFlq0S": {
+      "amount": 15000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "toppings-item5",
+      "productName": "Trái Cây",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "pending"
+    },
+    "-OO5o0Q0Yz7xQkomzg8s": {
+      "amount": 12000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "toppings-item4",
+      "productName": "Kem",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "pending"
+    },
+    "-OO5o0Q0Yz7xQkomzg8t": {
+      "amount": 30000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "cakes-item1",
+      "productName": "Bánh Bông Lan",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "pending"
+    },
+    "-OO5o0Q0Yz7xQkomzg8u": {
+      "amount": 55000,
+      "billingAddress": "Ninh keu can tho",
+      "customerName": "Hai Dang",
+      "date": "2025-04-18",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "0334770411",
+      "productId": "cakes-item2",
+      "productName": "Cheesecake",
+      "quantity": 1,
+      "shippingAddress": "Ninh keu can tho",
+      "status": "pending"
+    },
+    "-OO5oByjQ0WCUzZ57JDp": {
+      "amount": 45000,
+      "billingAddress": "dfxngvc",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "drinks-item2",
+      "productName": "Cappuccino",
+      "quantity": 1,
+      "shippingAddress": "dfxngvc",
+      "status": "confirmed"
+    },
+    "-OO5oBykovRydahHvo1P": {
+      "amount": 35000,
+      "billingAddress": "dfxngvc",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "cakes-item6",
+      "productName": "Cupcake",
+      "quantity": 1,
+      "shippingAddress": "dfxngvc",
+      "status": "cancelled"
+    },
+    "-OO5oBykovRydahHvo1Q": {
+      "amount": 25000,
+      "billingAddress": "dfxngvc",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "cakes-item3",
+      "productName": "Bánh Mì",
+      "quantity": 1,
+      "shippingAddress": "dfxngvc",
+      "status": "pending"
+    },
+    "-OO5pdTWB4GBy1sB_ZK7": {
+      "amount": 500000,
+      "billingAddress": "dfxngvc",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "drinks-item3",
+      "productName": "Latte",
+      "quantity": 10,
+      "shippingAddress": "dfxngvc",
+      "status": "cancelled"
+    },
+    "-OO5qXPQqki8w8RQqGYN": {
+      "amount": 12000,
+      "billingAddress": "avvfasdgs",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "toppings-item4",
+      "productName": "Kem",
+      "quantity": 1,
+      "shippingAddress": "dfxngvc",
+      "status": "pending"
+    },
+    "-OO5qxJlvqHK-ETG_J50": {
+      "amount": 60000000,
+      "billingAddress": "dfxngvc",
+      "customerName": "Vương Hữu Phúc",
+      "date": "2025-04-18",
+      "email": "phucvuong175@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "082636774",
+      "productId": "cakes-item4",
+      "productName": "Tiramisu",
+      "quantity": 1000,
+      "shippingAddress": "dfxngvc",
+      "status": "delivered"
+    },
+    "-OO6I8oXR71ba2AvQrn5": {
+      "amount": 4305000,
+      "billingAddress": "123 hàm tử",
+      "customerName": "Uyae",
+      "date": "2025-04-18",
+      "email": "nguyentienchuc2023ct@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "09876543211",
+      "productId": "drinks-item1",
+      "productName": "Cà Phê Đen Đá",
+      "quantity": 123,
+      "shippingAddress": "123 hàm tử",
+      "status": "pending"
+    },
+    "-OO6I8oeiSCZR2jfvDsC": {
+      "amount": 45000,
+      "billingAddress": "123 hàm tử",
+      "customerName": "Uyae",
+      "date": "2025-04-18",
+      "email": "nguyentienchuc2023ct@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "09876543211",
+      "productId": "drinks-item2",
+      "productName": "Cappuccino",
+      "quantity": 1,
+      "shippingAddress": "123 hàm tử",
+      "status": "pending"
+    },
+    "-OO6I8ogdbJkrcME5vYf": {
+      "amount": 100000,
+      "billingAddress": "123 hàm tử",
+      "customerName": "Uyae",
+      "date": "2025-04-18",
+      "email": "nguyentienchuc2023ct@gmail.com",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "phone": "09876543211",
+      "productId": "cakes-item3",
+      "productName": "Bánh Mì",
+      "quantity": 4,
+      "shippingAddress": "123 hàm tử",
+      "status": "pending"
+    }
+  },
+  "users": {
+    "4LG0ynFIH2YIty7hAXqyQL2Nqqr1": {
+      "address": "Ninh keu can tho",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "name": "Hai Dang",
+      "phone": "0334770411"
+    },
+    "5yS2Oh7WguVYbL6UcK2xTKzjEvv1": {
+      "address": "Cần thơi",
+      "email": "phamhongquan9117@gmail.com",
+      "name": "Phạm Hồng Quân",
+      "phone": "0398197737"
+    },
+    "N4A98bd2nWyfKu2HL": {
+      "address": "",
+      "avatarUrl": "",
+      "created_at": "2025-04-17",
+      "deleted": false,
+      "email": "quantri1amcoffeeandcake@gmail.com",
+      "emailVerified": false,
+      "name": "Admin",
+      "phone": "",
+      "role": "admin"
+    },
+    "NlXRlYjnPhViMUoQrz39utqurgg2": {
+      "address": "abcdxyz",
+      "email": "phucvuong175@gmail.com",
+      "name": "Vương Hữu Phúc",
+      "phone": "1234567890"
+    },
+    "Q1YYsoo4jLYShEmFe1SIrYgTRX83": {
+      "address": "dfxngvc",
+      "email": "phucvuong175@gmail.com",
+      "name": "Vương Hữu Phúc",
+      "phone": "082636774"
+    },
+    "o8lI2czPnWPbgovuT0RMCtd5kC93": {
+      "address": "123 hàm tử",
+      "email": "nguyentienchuc2023ct@gmail.com",
+      "name": "Uyae",
+      "phone": "09876543211"
+    },
+    "yFrGykBD3IaD81Yah2SkXzAW7uY2": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long",
+      "email": "baokhangml99@gmail.com",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
+    },
+    "yfYkG8D81bY1zHxAW": {
+      "address": "",
+      "avatarUrl": "",
+      "created_at": "2025-04-18",
+      "deleted": false,
+      "email": "backhoang99@gmail.com",
+      "emailVerified": false,
+      "name": "User One",
+      "phone": "",
+      "role": "user"
+    }
+  },
+  "promotions": {
+    "SUMMER25": {
+      "code": "SUMMER25",
+      "discount": 25,
+      "startDate": "2025-04-01",
+      "endDate": "2025-04-30",
+      "status": "active"
+    },
+    "WELCOME10": {
+      "code": "WELCOME10",
+      "discount": 10,
+      "startDate": "2025-04-15",
+      "endDate": "2025-05-15",
+      "status": "active"
+    },
+    "FLASH20": {
+      "code": "FLASH20",
+      "discount": 20,
+      "startDate": "2025-04-10",
+      "endDate": "2025-04-20",
+      "status": "active"
+    },
+    "NEWYEAR30": {
+      "code": "NEWYEAR30",
+      "discount": 30,
+      "startDate": "2025-01-01",
+      "endDate": "2025-01-15",
+      "status": "inactive"
+    },
+    "COFFEE15": {
+      "code": "COFFEE15",
+      "discount": 15,
+      "startDate": "2025-03-01",
+      "endDate": "2025-03-31",
+      "status": "inactive"
+    }
+  }
+}

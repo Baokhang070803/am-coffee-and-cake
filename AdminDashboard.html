@@ -179,6 +179,7 @@
       <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> Tổng Quan</a>
       <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> Quản Lý Sản Phẩm</a>
       <a class="nav-link" href="#transactionManagement"><i class="fas fa-file-invoice-dollar"></i> Quản Lý Giao Dịch</a>
+      <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> Quản Lý Mã Giảm Giá</a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a>
     </nav>
   </div>
@@ -314,6 +315,45 @@
       </table>
     </section>
 
+    <!-- Promotion Management Section -->
+    <section id="promotionManagement">
+      <h2>Quản Lý Mã Giảm Giá</h2>
+      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
+        <i class="fas fa-plus me-2"></i> Thêm Mã Giảm Giá
+      </button>
+      <form id="promotionSearchForm" class="mb-3">
+        <div class="row">
+          <div class="col-md-6">
+            <input type="text" id="promotionSearch" class="form-control" placeholder="Tìm kiếm mã giảm giá...">
+          </div>
+          <div class="col-md-4">
+            <select id="promotionStatusFilter" class="form-select">
+              <option value="">Tất cả trạng thái</option>
+              <option value="active">Hoạt động</option>
+              <option value="inactive">Không hoạt động</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+            <button type="button" id="refreshPromotions" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Mã</th>
+            <th>Giảm Giá (%)</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody id="promotionTableBody"></tbody>
+      </table>
+    </section>
+
     <!-- Add Product Modal -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -424,7 +464,87 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Add Promotion Modal -->
+    <div class="modal fade" id="addPromotionModal" tabindex="-1" aria-labelledby="addPromotionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPromotionModalLabel">Thêm Mã Giảm Giá</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addPromotionForm">
+              <div class="mb-3">
+                <label for="promotionCode" class="form-label">Mã Giảm Giá</label>
+                <input type="text" class="form-control" id="promotionCode" required>
+              </div>
+              <div class="mb-3">
+                <label for="promotionDiscount" class="form-label">Giảm Giá (%)</label>
+                <input type="number" class="form-control" id="promotionDiscount" min="1" max="100" required>
+              </div>
+              <div class="mb-3">
+                <label for="promotionStartDate" class="form-label">Ngày Bắt Đầu</label>
+                <input type="date" class="form-control" id="promotionStartDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="promotionEndDate" class="form-label">Ngày Kết Thúc</label>
+                <input type="date" class="form-control" id="promotionEndDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="promotionStatus" class="form-label">Trạng Thái</label>
+                <select class="form-select" id="promotionStatus" required>
+                  <option value="active">Hoạt động</option>
+                  <option value="inactive">Không hoạt động</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Promotion Modal -->
+    <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPromotionModalLabel">Sửa Mã Giảm Giá</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editPromotionForm">
+              <input type="hidden" id="editPromotionId">
+              <div class="mb-3">
+                <label for="editPromotionCode" class="form-label">Mã Giảm Giá</label>
+                <input type="text" class="form-control" id="editPromotionCode" required>
+              </div>
+              <div class="mb-3">
+                <label for="editPromotionDiscount" class="form-label">Giảm Giá (%)</label>
+                <input type="number" class="form-control" id="editPromotionDiscount" min="1" max="100" required>
+              </div>
+              <div class="mb-3">
+                <label for="editPromotionStartDate" class="form-label">Ngày Bắt Đầu</label>
+                <input type="date" class="form-control" id="editPromotionStartDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="editPromotionEndDate" class="form-label">Ngày Kết Thúc</label>
+                <input type="date" class="form-control" id="editPromotionEndDate" required>
+              </div>
+              <div class="mb-3">
+                <label for="editPromotionStatus" class="form-label">Trạng Thái</label>
+                <select class="form-select" id="editPromotionStatus" required>
+                  <option value="active">Hoạt động</option>
+                  <option value="inactive">Không hoạt động</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -489,6 +609,7 @@
         loadDashboardData();
         loadProducts();
         loadTransactions();
+        loadPromotions();
       }
     });
 
@@ -539,31 +660,6 @@
                   text: `Không thể đăng xuất: ${error.message}.`,
                   showConfirmButton: true
                 });
-              });
-            }
-          });
-          return;
-        }
-
-        if (this.id === 'returnToUserPage') {
-          Swal.fire({
-            title: 'Bạn có chắc?',
-            text: "Bạn muốn quay lại trang người dùng?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#8B6F47',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Quay lại',
-            cancelButtonText: 'Hủy'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Đang chuyển hướng...',
-                timer: 1500,
-                showConfirmButton: false
-              }).then(() => {
-                window.location.href = 'index.html';
               });
             }
           });
@@ -1167,6 +1263,234 @@
       });
     };
 
+    // Load Promotions
+    async function loadPromotions() {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const snapshot = await get(ref(db, 'promotions'));
+        let promotions = [];
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          promotions = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+        }
+        renderPromotions(promotions);
+      } catch (error) {
+        console.error('Error loading promotions:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải danh sách mã giảm giá: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    }
+
+    // Render Promotions
+    function renderPromotions(promotions) {
+      const tbody = document.getElementById('promotionTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      if (promotions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có mã giảm giá nào.</td></tr>';
+        return;
+      }
+      const searchQuery = document.getElementById('promotionSearch')?.value.toLowerCase() || '';
+      const statusFilter = document.getElementById('promotionStatusFilter')?.value || '';
+      const filteredPromotions = promotions.filter(p => {
+        return p.code.toLowerCase().includes(searchQuery) &&
+               (!statusFilter || p.status === statusFilter);
+      });
+      filteredPromotions.forEach(promo => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${promo.code}</td>
+          <td>${promo.discount}%</td>
+          <td>${promo.startDate}</td>
+          <td>${promo.endDate}</td>
+          <td>${promo.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" onclick="editPromotion('${promo.id}')"><i class="fas fa-edit"></i> Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePromotion('${promo.id}')"><i class="fas fa-trash"></i> Xóa</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Add Promotion
+    document.getElementById('addPromotionForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      const code = document.getElementById('promotionCode').value;
+      try {
+        const newPromotion = {
+          code: code,
+          discount: parseInt(document.getElementById('promotionDiscount').value),
+          startDate: document.getElementById('promotionStartDate').value,
+          endDate: document.getElementById('promotionEndDate').value,
+          status: document.getElementById('promotionStatus').value
+        };
+        await set(ref(db, `promotions/${code}`), newPromotion);
+        await loadPromotions();
+        bootstrap.Modal.getInstance(document.getElementById('addPromotionModal')).hide();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Mã giảm giá đã được thêm.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        document.getElementById('addPromotionForm').reset();
+      } catch (error) {
+        console.error('Error adding promotion:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền thêm mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể thêm mã giảm giá: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    });
+
+    // Edit Promotion
+    window.editPromotion = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const snapshot = await get(ref(db, `promotions/${id}`));
+        if (snapshot.exists()) {
+          const promotion = snapshot.val();
+          document.getElementById('editPromotionId').value = id;
+          document.getElementById('editPromotionCode').value = promotion.code;
+          document.getElementById('editPromotionDiscount').value = promotion.discount;
+          document.getElementById('editPromotionStartDate').value = promotion.startDate;
+          document.getElementById('editPromotionEndDate').value = promotion.endDate;
+          document.getElementById('editPromotionStatus').value = promotion.status;
+          new bootstrap.Modal(document.getElementById('editPromotionModal')).show();
+        }
+      } catch (error) {
+        console.error('Error loading promotion for edit:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải mã giảm giá: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    };
+
+    document.getElementById('editPromotionForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      const id = document.getElementById('editPromotionId').value;
+      try {
+        const updatedPromotion = {
+          code: document.getElementById('editPromotionCode').value,
+          discount: parseInt(document.getElementById('editPromotionDiscount').value),
+          startDate: document.getElementById('editPromotionStartDate').value,
+          endDate: document.getElementById('editPromotionEndDate').value,
+          status: document.getElementById('editPromotionStatus').value
+        };
+        await set(ref(db, `promotions/${id}`), updatedPromotion);
+        await loadPromotions();
+        bootstrap.Modal.getInstance(document.getElementById('editPromotionModal')).hide();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Mã giảm giá đã được cập nhật.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error updating promotion:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể cập nhật mã giảm giá: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    });
+
+    // Delete Promotion
+    window.deletePromotion = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      Swal.fire({
+        title: 'Bạn có chắc?',
+        text: "Bạn không thể khôi phục mã giảm giá sau khi xóa!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#A63C3C',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await remove(ref(db, `promotions/${id}`));
+            await loadPromotions();
+            Swal.fire({
+              icon: 'success',
+              title: 'Đã xóa!',
+              text: 'Mã giảm giá đã được xóa.',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          } catch (error) {
+            console.error('Error deleting promotion:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi!',
+              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể xóa mã giảm giá: ${error.message}.`,
+              showConfirmButton: true
+            });
+          }
+        }
+      });
+    };
+
     // Search and Filter
     document.getElementById('productSearchForm')?.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1198,6 +1522,30 @@
         icon: 'success',
         title: 'Thành công!',
         text: 'Dữ liệu giao dịch đã được làm mới.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    });
+
+    document.getElementById('promotionSearchForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await loadPromotions();
+    });
+
+    document.getElementById('promotionSearch')?.addEventListener('input', async function() {
+      await loadPromotions();
+    });
+
+    document.getElementById('promotionStatusFilter')?.addEventListener('change', async function() {
+      await loadPromotions();
+    });
+
+    document.getElementById('refreshPromotions')?.addEventListener('click', async function() {
+      await loadPromotions();
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công!',
+        text: 'Dữ liệu mã giảm giá đã được làm mới.',
         timer: 1500,
         showConfirmButton: false
       });
