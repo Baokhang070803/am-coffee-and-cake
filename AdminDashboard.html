@@ -26,14 +26,54 @@
       position: fixed;
       width: 260px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      transition: width 0.3s;
+      z-index: 1030;
     }
-
-    .logo-img {
-      width: 120px;
-      margin-bottom: 30px;
-      transition: all 0.3s ease;
+    .sidebar.collapsed {
+      width: 70px;
+      padding: 25px 10px;
     }
-
+    .sidebar .sidebar-toggle {
+      position: absolute;
+      top: 20px;
+      right: -18px;
+      background: #4fd1c5;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(79,209,197,0.15);
+      z-index: 1040;
+      transition: right 0.3s;
+    }
+    .sidebar.collapsed .sidebar-toggle {
+      right: -18px;
+    }
+    .sidebar .admin-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 3px solid #4fd1c5;
+      box-shadow: 0 2px 8px rgba(79,209,197,0.15);
+      transition: all 0.3s;
+    }
+    .sidebar.collapsed .logo-img,
+    .sidebar.collapsed .admin-avatar,
+    .sidebar.collapsed h6,
+    .sidebar.collapsed .nav-link span {
+      display: none !important;
+    }
+    .sidebar .nav-link i {
+      width: 22px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
     .sidebar .nav-link {
       color: #8391a7;
       padding: 12px 20px;
@@ -42,12 +82,21 @@
       font-weight: 500;
       font-size: 0.95rem;
       transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-
     .sidebar .nav-link:hover,
     .sidebar .nav-link.active {
       color: #4fd1c5;
       background: rgba(79, 209, 197, 0.1);
+    }
+    .sidebar .nav-link span {
+      transition: opacity 0.2s;
+    }
+    .sidebar.collapsed .nav-link {
+      justify-content: center;
+      padding: 12px 0;
     }
 
     /* Content Area */
@@ -60,28 +109,41 @@
     }
 
     /* Dashboard Cards */
-    .stat-card {
-      background: #fff;
+    .stat-card, .card {
+      background: linear-gradient(135deg, #f8fafc 60%, #e6fffa 100%);
       border-radius: 16px;
       padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 32px rgba(79,209,197,0.07);
       transition: all 0.3s ease;
-      border: 1px solid rgba(0, 0, 0, 0.03);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.7s;
     }
-
+    .stat-card .stat-icon {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      font-size: 3.5rem;
+      color: #e6fffa;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 0;
+    }
     .stat-card h5 {
       color: #8391a7;
       font-size: 0.875rem;
       font-weight: 500;
       margin-bottom: 15px;
     }
-
-    .stat-card h3 {
+    .stat-card h3, .card h3 {
       color: #464f5c;
-      font-size: 1.75rem;
-      font-weight: 600;
+      font-size: 2.2rem;
+      font-weight: 700;
       margin-bottom: 0;
+      letter-spacing: -1px;
+      animation: counterUp 1s;
     }
 
     /* Charts */
@@ -105,7 +167,8 @@
       background: #fff;
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 12px rgba(79,209,197,0.07);
+      animation: fadeInUp 0.7s;
     }
 
     .table thead th {
@@ -114,12 +177,33 @@
       font-weight: 500;
       border: none;
       padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #e6fffa;
+      color: #4fd1c5;
+      font-weight: 600;
+      border-bottom: 2px solid #4fd1c5;
     }
 
     .table td {
       padding: 15px;
       color: #464f5c;
       border-bottom: 1px solid #f3f6f9;
+    }
+
+    .table tbody tr:hover {
+      background: #e6fffa;
+      transition: background 0.2s;
+    }
+
+    .table td .btn {
+      transition: transform 0.1s;
+    }
+
+    .table td .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 2px 8px rgba(79,209,197,0.12);
     }
 
     /* Buttons */
@@ -156,14 +240,38 @@
       .sidebar {
         width: 80px;
         padding: 20px 10px;
+        left: -260px;
+        width: 260px;
+        transition: left 0.3s;
       }
       
       .content {
         margin-left: 80px;
+        margin-left: 0;
+        padding: 18px 6px;
       }
 
       .logo-img {
         width: 40px;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .sidebar.collapsed {
+        width: 70px;
+      }
+
+      .dark-mode-toggle {
+        right: 12px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .quick-stats {
+        flex-direction: column;
+        gap: 10px;
       }
     }
 
@@ -193,6 +301,10 @@
       position: relative;
       margin-top: 15px;
       height: 300px;
+      background: linear-gradient(135deg, #e6fffa 0%, #f3f6f9 100%);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(79,209,197,0.07);
+      padding: 10px;
     }
 
     /* Section Visibility Control */
@@ -308,21 +420,173 @@
     .order-table td {
       vertical-align: middle;
     }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes counterUp {
+      from { opacity: 0.5; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+
+    /* Quick Stats */
+    .quick-stats {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .quick-stat {
+      flex: 1 1 180px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 12px rgba(79,209,197,0.06);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 160px;
+      animation: fadeInUp 0.7s;
+    }
+    .quick-stat .icon {
+      font-size: 2rem;
+      color: #4fd1c5;
+      background: #e6fffa;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .quick-stat .label {
+      font-size: 0.95rem;
+      color: #8391a7;
+      font-weight: 500;
+    }
+    .quick-stat .value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #464f5c;
+    }
+
+    /* Timeline */
+    .timeline {
+      border-left: 3px solid #4fd1c5;
+      margin-left: 10px;
+      padding-left: 18px;
+      margin-bottom: 0;
+      list-style: none;
+    }
+    .timeline li {
+      margin-bottom: 18px;
+      position: relative;
+      padding-left: 12px;
+      font-size: 1rem;
+      color: #464f5c;
+      animation: fadeInUp 0.7s;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      background: #4fd1c5;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(79,209,197,0.15);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #8391a7;
+      font-size: 0.95rem;
+      padding: 18px 0 8px 0;
+      background: none;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background: #23272f;
+      color: #e2e8f0;
+    }
+    body.dark-mode .sidebar {
+      background: #23272f;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    }
+    body.dark-mode .content,
+    body.dark-mode .stat-card,
+    body.dark-mode .card,
+    body.dark-mode .quick-stat,
+    body.dark-mode .table-container {
+      background: #2d323c !important;
+      color: #e2e8f0;
+      box-shadow: 0 2px 12px rgba(79,209,197,0.09);
+    }
+    body.dark-mode .table thead th {
+      background: #23272f;
+      color: #4fd1c5;
+    }
+    body.dark-mode .table tbody tr:hover {
+      background: #23272f;
+    }
+    body.dark-mode .footer {
+      color: #4fd1c5;
+    }
+    body.dark-mode .chart-container {
+      background: #23272f;
+    }
+
+    /* Dark mode toggle */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 32px;
+      z-index: 2000;
+      background: #fff;
+      color: #4fd1c5;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(79,209,197,0.13);
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .dark-mode .dark-mode-toggle {
+      background: #23272f;
+      color: #fff;
+      border: 1px solid #4fd1c5;
+    }
   </style>
 </head>
 <body>
   <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="text-center mb-4">
-      <img src="images/LOGO.png" alt="Coffee & Cake Logo" class="logo-img">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-toggle" id="sidebarToggle" title="Thu gọn/Mở rộng menu">
+      <i class="fas fa-angle-double-left"></i>
     </div>
-    <h6 class="text-center mb-4"></h6>
+    <div class="text-center mb-3">
+      <img src="images/logocappy.png" alt="Admin Avatar" class="admin-avatar" onerror="this.src='https://i.pravatar.cc/120?img=12'">
+      <!-- <img src="images/LOGO.png" alt="Coffee & Cake Logo" class="logo-img"> -->
+    </div>
+    <h6 class="text-center mb-4">Quản trị viên</h6>
     <nav class="nav flex-column">
-      <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> Tổng Quan</a>
-      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> Quản Lý Sản Phẩm</a>
-      <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> Quản Lý Mã Giảm Giá</a>
-      <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> Quản Lý Đơn Hàng</a>
-      <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a>
+      <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> <span>Tổng Quan</span></a>
+      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</a>
+      <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> <span>Quản Lý Mã Giảm Giá</span></a>
+      <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> <span>Quản Lý Đơn Hàng</span></a>
+      <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
   </div>
 
@@ -330,22 +594,56 @@
   <div class="content">
     <!-- Dashboard Section -->
     <section id="dashboard" class="active-section">
-      <h1>Tổng Quan</h1>
+      <h1 style="font-weight:700;letter-spacing:-1px;">Tổng Quan</h1>
+      <!-- Quick Stats -->
+      <div class="quick-stats">
+        <div class="quick-stat">
+          <div class="icon"><i class="fas fa-users"></i></div>
+          <div>
+            <div class="label">Tổng Người Dùng</div>
+            <div class="value" id="totalUsers">0</div>
+          </div>
+        </div>
+        <div class="quick-stat">
+          <div class="icon"><i class="fas fa-star"></i></div>
+          <div>
+            <div class="label">Sản Phẩm Bán Chạy</div>
+            <div class="value" id="bestSeller">N/A</div>
+          </div>
+        </div>
+        <div class="quick-stat">
+          <div class="icon"><i class="fas fa-percentage"></i></div>
+          <div>
+            <div class="label">Mã Giảm Giá Đang Hoạt Động</div>
+            <div class="value" id="activePromotions">0</div>
+          </div>
+        </div>
+        <div class="quick-stat">
+          <div class="icon"><i class="fas fa-truck"></i></div>
+          <div>
+            <div class="label">Đơn Đang Giao</div>
+            <div class="value" id="shippingOrders">0</div>
+          </div>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col-md-4">
-          <div class="card p-3">
+          <div class="stat-card">
+            <span class="stat-icon"><i class="fas fa-box"></i></span>
             <h5><i class="fas fa-box me-2"></i> Tổng Sản Phẩm</h5>
             <h3 id="totalProducts">0</h3>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="card p-3">
+          <div class="stat-card">
+            <span class="stat-icon"><i class="fas fa-coins"></i></span>
             <h5><i class="fas fa-coins me-2"></i> Doanh Thu Hôm Nay</h5>
             <h3 id="dailyRevenue">0 VND</h3>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="card p-3">
+          <div class="stat-card">
+            <span class="stat-icon"><i class="fas fa-hourglass-half"></i></span>
             <h5><i class="fas fa-hourglass-half me-2"></i> Đơn Hàng Đang Chờ</h5>
             <h3 id="pendingOrders">0</h3>
           </div>
@@ -369,13 +667,20 @@
           </div>
         </div>
       </div>
+      <!-- Activity Timeline -->
       <div class="row mt-4">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <div class="card p-3">
             <h5><i class="fas fa-bell me-2"></i> Thông Báo</h5>
             <ul class="list-group" id="notificationsList"></ul>
           </div>
-        </div>  
+        </div>
+        <div class="col-md-4">
+          <div class="card p-3">
+            <h5><i class="fas fa-history me-2"></i> Hoạt Động Gần Đây</h5>
+            <ul class="timeline" id="activityTimeline"></ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -748,6 +1053,13 @@
       </div>
     </div>
 
+    <div class="footer">
+      &copy; 2024 Coffee & Cake Admin Dashboard. All rights reserved.
+    </div>
+    <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
+      <i class="fas fa-moon"></i>
+    </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -970,6 +1282,55 @@
         if (orders.length === 0) {
           notificationsList.innerHTML += '<li class="list-group-item">Chưa có đơn hàng nào.</li>';
         }
+
+        // Load Users
+        let totalUsers = 0;
+        try {
+          const usersSnap = await get(ref(db, 'users'));
+          if (usersSnap.exists()) {
+            totalUsers = Object.keys(usersSnap.val()).length;
+          }
+        } catch {}
+        document.getElementById('totalUsers').textContent = totalUsers;
+
+        // Load Promotions
+        let activePromotions = 0;
+        try {
+          const promoSnap = await get(ref(db, 'promotions'));
+          if (promoSnap.exists()) {
+            activePromotions = Object.values(promoSnap.val()).filter(p => p.status === 'active').length;
+          }
+        } catch {}
+        document.getElementById('activePromotions').textContent = activePromotions;
+
+        // Best Seller
+        let bestSeller = 'N/A';
+        if (orders.length > 0) {
+          const productSales = {};
+          orders.forEach(order => {
+            (order.items || []).forEach(item => {
+              if (!productSales[item.name]) productSales[item.name] = 0;
+              productSales[item.name] += item.quantity || 1;
+            });
+          });
+          const sorted = Object.entries(productSales).sort((a, b) => b[1] - a[1]);
+          if (sorted.length > 0) bestSeller = sorted[0][0];
+        }
+        document.getElementById('bestSeller').textContent = bestSeller;
+
+        // Shipping Orders
+        const shippingOrders = orders.filter(o => o.status === 'shipped').length;
+        document.getElementById('shippingOrders').textContent = shippingOrders;
+
+        // Activity Timeline (last 5 orders)
+        const timeline = document.getElementById('activityTimeline');
+        timeline.innerHTML = '';
+        orders.slice(-5).reverse().forEach(order => {
+          timeline.innerHTML += `<li>
+            <b>${order.fullName || 'Khách'}</b> đã đặt đơn <span style="color:#4fd1c5;">#${order.id}</span>
+            <br><small class="text-muted">${order.createdAt ? order.createdAt.replace('T', ' ') : ''}</small>
+          </li>`;
+        });
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         Swal.fire({
@@ -1942,6 +2303,39 @@
       } catch (error) {
         console.error('Error updating analytics:', error);
       }
+    }
+
+    // Sidebar collapse/expand
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      sidebarToggle.querySelector('i').classList.toggle('fa-angle-double-left');
+      sidebarToggle.querySelector('i').classList.toggle('fa-angle-double-right');
+    });
+
+    // Responsive sidebar for mobile
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 992) {
+        sidebar.classList.add('collapsed');
+      } else {
+        sidebar.classList.remove('collapsed');
+      }
+    });
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      darkModeToggle.innerHTML = document.body.classList.contains('dark-mode')
+        ? '<i class="fas fa-sun"></i>'
+        : '<i class="fas fa-moon"></i>';
+      localStorage.setItem('dashboard-dark-mode', document.body.classList.contains('dark-mode'));
+    });
+    // Load dark mode preference
+    if (localStorage.getItem('dashboard-dark-mode') === 'true') {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
     }
   </script>
 </body>
