@@ -1,4 +1,50 @@
 {
+  "orders": {
+    "-OOCEgAJn3tKBUDeS7KQ": {
+      "billingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "phone": "0795858581"
+      },
+      "createdAt": "2025-04-19T08:51:20.877Z",
+      "customerInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "name": "Admin",
+        "phone": "0795858581"
+      },
+      "deliveryMethod": "Giao Hàng Tiêu Chuẩn",
+      "discount": 0,
+      "grandTotal": 125000,
+      "items": [
+        {
+          "productId": "drinks-item3",
+          "quantity": 1
+        },
+        {
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "productId": "drinks-item4",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentMethod": "Thanh toán khi nhận hàng",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
+      },
+      "status": "pending",
+      "subtotal": 125000,
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
+    }
+  },
   "products": {
     "cakes": {
       "item1": {
@@ -59,7 +105,7 @@
       },
       "item4": {
         "attributes": "Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.",
-        "image": "https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635 christian -southeast1.firebasedatabase.app",
+        "image": "https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid",
         "name": "Espresso",
         "price": 40000
       }
@@ -97,258 +143,55 @@
       }
     }
   },
-  "transactions": {
-    "-OO5npWX7RVFaDo6c1nl": {
-      "amount": 35000,
-      "billingAddress": "Cần thơi",
-      "customerName": "Phạm Hồng Quân",
-      "date": "2025-04-18",
-      "email": "phamhongquan9117@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0398197737",
-      "productId": "drinks-item1",
-      "productName": "Cà Phê Đen Đá",
-      "quantity": 1,
-      "shippingAddress": "Cần thơi",
-      "status": "delivered"
+  "promotions": {
+    "COFFEE15": {
+      "code": "COFFEE15",
+      "discount": 15,
+      "endDate": "2025-03-31",
+      "startDate": "2025-03-01",
+      "status": "inactive"
     },
-    "-OO5npWYe_NY7n8ZMgDw": {
-      "amount": 45000,
-      "billingAddress": "Cần thơi",
-      "customerName": "Phạm Hồng Quân",
-      "date": "2025-04-18",
-      "email": "phamhongquan9117@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0398197737",
-      "productId": "drinks-item2",
-      "productName": "Cappuccino",
-      "quantity": 1,
-      "shippingAddress": "Cần thơi",
-      "status": "cancelled"
+    "FLASH20": {
+      "code": "FLASH20",
+      "discount": 20,
+      "endDate": "2025-04-20",
+      "startDate": "2025-04-10",
+      "status": "active"
     },
-    "-OO5o0Py9gpKl3Rg2s2s": {
-      "amount": 35000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "drinks-item1",
-      "productName": "Cà Phê Đen Đá",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "delivered"
+    "NEWYEAR30": {
+      "code": "NEWYEAR30",
+      "discount": 30,
+      "endDate": "2025-01-15",
+      "startDate": "2025-01-01",
+      "status": "inactive"
     },
-    "-OO5o0Q-wUv9TNeFlq0Q": {
-      "amount": 25000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "cakes-item3",
-      "productName": "Bánh Mì",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "confirmed"
+    "QUANDEPTRAI": {
+      "code": "QUANDEPTRAI",
+      "discount": 50,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-18",
+      "status": "active"
     },
-    "-OO5o0Q-wUv9TNeFlq0R": {
-      "amount": 10000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "toppings-item2",
-      "productName": "Socola",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "pending"
+    "SINHNHATAM": {
+      "code": "SINHNHATAM",
+      "discount": 20,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-18",
+      "status": "active"
     },
-    "-OO5o0Q-wUv9TNeFlq0S": {
-      "amount": 15000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "toppings-item5",
-      "productName": "Trái Cây",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "pending"
+    "SUMMER25": {
+      "code": "SUMMER25",
+      "discount": 25,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-01",
+      "status": "active"
     },
-    "-OO5o0Q0Yz7xQkomzg8s": {
-      "amount": 12000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "toppings-item4",
-      "productName": "Kem",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "pending"
-    },
-    "-OO5o0Q0Yz7xQkomzg8t": {
-      "amount": 30000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "cakes-item1",
-      "productName": "Bánh Bông Lan",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "pending"
-    },
-    "-OO5o0Q0Yz7xQkomzg8u": {
-      "amount": 55000,
-      "billingAddress": "Ninh keu can tho",
-      "customerName": "Hai Dang",
-      "date": "2025-04-18",
-      "email": "nguyendanghaidangasus@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "0334770411",
-      "productId": "cakes-item2",
-      "productName": "Cheesecake",
-      "quantity": 1,
-      "shippingAddress": "Ninh keu can tho",
-      "status": "pending"
-    },
-    "-OO5oByjQ0WCUzZ57JDp": {
-      "amount": 45000,
-      "billingAddress": "dfxngvc",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "drinks-item2",
-      "productName": "Cappuccino",
-      "quantity": 1,
-      "shippingAddress": "dfxngvc",
-      "status": "confirmed"
-    },
-    "-OO5oBykovRydahHvo1P": {
-      "amount": 35000,
-      "billingAddress": "dfxngvc",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "cakes-item6",
-      "productName": "Cupcake",
-      "quantity": 1,
-      "shippingAddress": "dfxngvc",
-      "status": "cancelled"
-    },
-    "-OO5oBykovRydahHvo1Q": {
-      "amount": 25000,
-      "billingAddress": "dfxngvc",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "cakes-item3",
-      "productName": "Bánh Mì",
-      "quantity": 1,
-      "shippingAddress": "dfxngvc",
-      "status": "pending"
-    },
-    "-OO5pdTWB4GBy1sB_ZK7": {
-      "amount": 500000,
-      "billingAddress": "dfxngvc",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "drinks-item3",
-      "productName": "Latte",
-      "quantity": 10,
-      "shippingAddress": "dfxngvc",
-      "status": "cancelled"
-    },
-    "-OO5qXPQqki8w8RQqGYN": {
-      "amount": 12000,
-      "billingAddress": "avvfasdgs",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "toppings-item4",
-      "productName": "Kem",
-      "quantity": 1,
-      "shippingAddress": "dfxngvc",
-      "status": "pending"
-    },
-    "-OO5qxJlvqHK-ETG_J50": {
-      "amount": 60000000,
-      "billingAddress": "dfxngvc",
-      "customerName": "Vương Hữu Phúc",
-      "date": "2025-04-18",
-      "email": "phucvuong175@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "082636774",
-      "productId": "cakes-item4",
-      "productName": "Tiramisu",
-      "quantity": 1000,
-      "shippingAddress": "dfxngvc",
-      "status": "delivered"
-    },
-    "-OO6I8oXR71ba2AvQrn5": {
-      "amount": 4305000,
-      "billingAddress": "123 hàm tử",
-      "customerName": "Uyae",
-      "date": "2025-04-18",
-      "email": "nguyentienchuc2023ct@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "09876543211",
-      "productId": "drinks-item1",
-      "productName": "Cà Phê Đen Đá",
-      "quantity": 123,
-      "shippingAddress": "123 hàm tử",
-      "status": "pending"
-    },
-    "-OO6I8oeiSCZR2jfvDsC": {
-      "amount": 45000,
-      "billingAddress": "123 hàm tử",
-      "customerName": "Uyae",
-      "date": "2025-04-18",
-      "email": "nguyentienchuc2023ct@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "09876543211",
-      "productId": "drinks-item2",
-      "productName": "Cappuccino",
-      "quantity": 1,
-      "shippingAddress": "123 hàm tử",
-      "status": "pending"
-    },
-    "-OO6I8ogdbJkrcME5vYf": {
-      "amount": 100000,
-      "billingAddress": "123 hàm tử",
-      "customerName": "Uyae",
-      "date": "2025-04-18",
-      "email": "nguyentienchuc2023ct@gmail.com",
-      "paymentMethod": "Thanh toán khi nhận hàng",
-      "phone": "09876543211",
-      "productId": "cakes-item3",
-      "productName": "Bánh Mì",
-      "quantity": 4,
-      "shippingAddress": "123 hàm tử",
-      "status": "pending"
+    "WELCOME10": {
+      "code": "WELCOME10",
+      "discount": 10,
+      "endDate": "2025-05-15",
+      "startDate": "2025-04-15",
+      "status": "active"
     }
   },
   "users": {
@@ -363,6 +206,12 @@
       "email": "phamhongquan9117@gmail.com",
       "name": "Phạm Hồng Quân",
       "phone": "0398197737"
+    },
+    "MmtivTpSmldsvlgswPgvBw2kHJo1": {
+      "address": "abcdxyz",
+      "email": "nguyenquocan3005031@gmai.com",
+      "name": "nqa1",
+      "phone": "0779877192"
     },
     "N4A98bd2nWyfKu2HL": {
       "address": "",
@@ -381,11 +230,29 @@
       "name": "Vương Hữu Phúc",
       "phone": "1234567890"
     },
+    "Nt4988nd2wNiGy1kUHZ1UFLCtxH3": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+      "email": "quantri1amcoffeeandcake@gmail.com",
+      "name": "Admin",
+      "phone": "0795858581"
+    },
+    "PJgiAncfbicLSPnMSROMtIaHRZI2": {
+      "address": "diachi",
+      "email": "nguyenquocan300503@gmail.com",
+      "name": "nqa2",
+      "phone": "0779877185"
+    },
     "Q1YYsoo4jLYShEmFe1SIrYgTRX83": {
       "address": "dfxngvc",
       "email": "phucvuong175@gmail.com",
       "name": "Vương Hữu Phúc",
       "phone": "082636774"
+    },
+    "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
+      "address": "Bình Minh, Vĩnh Long",
+      "email": "baokhangml99@gmail.com",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0338484558"
     },
     "o8lI2czPnWPbgovuT0RMCtd5kC93": {
       "address": "123 hàm tử",
@@ -409,43 +276,6 @@
       "name": "User One",
       "phone": "",
       "role": "user"
-    }
-  },
-  "promotions": {
-    "SUMMER25": {
-      "code": "SUMMER25",
-      "discount": 25,
-      "startDate": "2025-04-01",
-      "endDate": "2025-04-30",
-      "status": "active"
-    },
-    "WELCOME10": {
-      "code": "WELCOME10",
-      "discount": 10,
-      "startDate": "2025-04-15",
-      "endDate": "2025-05-15",
-      "status": "active"
-    },
-    "FLASH20": {
-      "code": "FLASH20",
-      "discount": 20,
-      "startDate": "2025-04-10",
-      "endDate": "2025-04-20",
-      "status": "active"
-    },
-    "NEWYEAR30": {
-      "code": "NEWYEAR30",
-      "discount": 30,
-      "startDate": "2025-01-01",
-      "endDate": "2025-01-15",
-      "status": "inactive"
-    },
-    "COFFEE15": {
-      "code": "COFFEE15",
-      "discount": 15,
-      "startDate": "2025-03-01",
-      "endDate": "2025-03-31",
-      "status": "inactive"
     }
   }
 }

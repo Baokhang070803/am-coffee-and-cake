@@ -171,10 +171,10 @@
             background: #FFF5E6;
         }
         /* Style cho cột Tình trạng */
-        .transaction-table td:nth-child(4) {
+        .transaction-table td:nth-child(5) {
             font-weight: 500;
         }
-        .transaction-table td:nth-child(4):before {
+        .transaction-table td:nth-child(5):before {
             content: '';
             display: inline-block;
             width: 10px;
@@ -183,17 +183,23 @@
             margin-right: 5px;
             vertical-align: middle;
         }
-        .transaction-table td:nth-child(4)[data-status="Đã giao"]:before {
-            background: #28a745; /* Màu xanh cho trạng thái Đã giao */
+        .transaction-table td:nth-child(5)[data-status="Đang xử lý"]:before {
+            background: #ffc107; /* Màu vàng */
         }
-        .transaction-table td:nth-child(4)[data-status="Đang xử lý"]:before {
-            background: #ffc107; /* Màu vàng cho trạng thái Đang xử lý */
+        .transaction-table td:nth-child(5)[data-status="Đã xác nhận"]:before {
+            background: #17a2b8; /* Màu xanh dương */
         }
-        .transaction-table td:nth-child(4)[data-status="Hủy"]:before {
-            background: #dc3545; /* Màu đỏ cho trạng thái Hủy */
+        .transaction-table td:nth-child(5)[data-status="Đang giao"]:before {
+            background: #007bff; /* Màu xanh dương nhạt */
         }
-        .transaction-table td:nth-child(4)[data-status="Không xác định"]:before {
-            background: #6c757d; /* Màu xám cho trạng thái Không xác định */
+        .transaction-table td:nth-child(5)[data-status="Đã giao"]:before {
+            background: #28a745; /* Màu xanh lá */
+        }
+        .transaction-table td:nth-child(5)[data-status="Hủy"]:before {
+            background: #dc3545; /* Màu đỏ */
+        }
+        .transaction-table td:nth-child(5)[data-status="Không xác định"]:before {
+            background: #6c757d; /* Màu xám */
         }
         .transaction-table .cancel-btn {
             background: #dc3545;
@@ -477,7 +483,7 @@
                                     <ul class="topmenu">
                                         <li><a href="contact.html">Liên Hệ</a></li>
                                         <li><a href="policy.html">Hỗ Trợ Khách Hàng</a></li>
-                                        <li class="active dropdown"><a href="member.html">Thành Viên</a></li>
+                                        <li class="active dropdown"><a href="member Facetime</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
@@ -636,13 +642,14 @@
                     </div>
                     <!-- Lịch sử giao dịch -->
                     <div class="transaction-history">
-                        <h3>Lịch Sử Giao Dịch</h3>
+                        <h3>Lịch Sử Đặt Hàng</h3>
                         <table class="transaction-table" id="transactionTable">
                             <thead>
                                 <tr>
-                                    <th>Ngày</th>
+                                    <th>Ngày Giờ</th>
                                     <th>Sản Phẩm</th>
-                                    <th>Giá</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Tổng Tiền</th>
                                     <th>Tình Trạng</th>
                                 </tr>
                             </thead>
@@ -820,7 +827,7 @@
         // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getDatabase, ref, onValue, update, query, orderByChild, equalTo, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
         // Firebase Config
@@ -842,27 +849,47 @@
         const storage = getStorage(app);
 
         // Pagination Variables
-        let transactions = [];
+        let orders = [];
         const itemsPerPage = 2;
         let currentPage = 1;
 
-        // Display Transactions
+        // Map Firebase status to display status
+        const statusMap = {
+            'pending': 'Đang xử lý',
+            'confirmed': 'Đã xác nhận',
+            'shipped': 'Đang giao',
+            'delivered': 'Đã giao',
+            'cancelled': 'Hủy'
+        };
+
+        // Display Orders
         function displayTransactions(page) {
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            const paginatedTransactions = transactions.slice(start, end);
+            const paginatedOrders = orders.slice(start, end);
 
             const tbody = document.getElementById('transactionTableBody');
             tbody.innerHTML = '';
-            paginatedTransactions.forEach(tx => {
-                const status = tx.status || 'Không xác định';
-                const cancelButton = status === 'Đang xử lý' ? `<button class="cancel-btn" onclick="cancelOrder('${tx.id}')">Hủy</button>` : '';
+            if (paginatedOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Không có đơn hàng nào.</td></tr>';
+                return;
+            }
+            paginatedOrders.forEach(order => {
+                const firebaseStatus = order.status || 'Không xác định';
+                const displayStatus = statusMap[firebaseStatus] || 'Không xác định';
+                const cancelButton = firebaseStatus === 'pending' ? `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">Hủy</button>` : '';
+                const productNames = order.items && order.items.length > 0
+                    ? order.items.map(item => `${item.name} (${item.quantity})`).join(', ')
+                    : 'Không có sản phẩm';
+                const address = order.billingInfo?.address || order.shippingInfo?.address || 'N/A';
+                const dateTime = (order.date && order.time) ? `${order.date} ${order.time}` : new Date(order.createdAt).toLocaleString('vi-VN');
                 const row = `
                     <tr>
-                        <td>${tx.date}</td>
-                        <td>${tx.productName} x${tx.quantity}</td>
-                        <td>${tx.amount.toLocaleString()} VND</td>
-                        <td data-status="${status}">${status} ${cancelButton}</td>
+                        <td>${dateTime}</td>
+                        <td>${productNames}</td>
+                        <td>${address}</td>
+                        <td>${order.grandTotal.toLocaleString('vi-VN')} VND</td>
+                        <td data-status="${displayStatus}">${displayStatus} ${cancelButton}</td>
                     </tr>
                 `;
                 tbody.innerHTML += row;
@@ -870,7 +897,7 @@
 
             // Update pagination buttons
             document.getElementById('prevBtn').disabled = page === 1;
-            document.getElementById('nextBtn').disabled = end >= transactions.length;
+            document.getElementById('nextBtn').disabled = end >= orders.length;
         }
 
         // Pagination Functions
@@ -879,17 +906,17 @@
                 currentPage--;
                 displayTransactions(currentPage);
             }
-        }
+        };
 
         window.nextPage = function() {
-            if (currentPage < Math.ceil(transactions.length / itemsPerPage)) {
+            if (currentPage < Math.ceil(orders.length / itemsPerPage)) {
                 currentPage++;
                 displayTransactions(currentPage);
             }
-        }
+        };
 
         // Cancel Order
-        window.cancelOrder = function(transactionId) {
+        window.cancelOrder = async function(orderId) {
             Swal.fire({
                 title: 'Hủy đơn hàng?',
                 text: 'Bạn có chắc muốn hủy đơn hàng này?',
@@ -901,13 +928,23 @@
                 cancelButtonText: 'Quay Lại'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const transactionRef = ref(database, `transactions/${transactionId}`);
-                    update(transactionRef, { status: 'Hủy' }).then(() => {
+                    const orderRef = ref(database, `orders/${orderId}`);
+                    update(orderRef, { status: 'cancelled' }).then(() => {
                         Swal.fire({
                             icon: 'success',
                             title: 'Đã hủy đơn hàng!',
                             timer: 1500,
                             showConfirmButton: false
+                        });
+                        // Reload orders
+                        const ordersRef = query(ref(database, 'orders'), orderByChild('userId'), equalTo(auth.currentUser.uid));
+                        onValue(ordersRef, (snapshot) => {
+                            const data = snapshot.val();
+                            if (data) {
+                                orders = Object.entries(data).map(([id, order]) => ({ id, ...order }));
+                                orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                                displayTransactions(currentPage);
+                            }
                         });
                     }).catch(error => {
                         Swal.fire({
@@ -919,7 +956,7 @@
                     });
                 }
             });
-        }
+        };
 
         // Preview avatar when selected
         document.getElementById('editAvatar').addEventListener('change', (event) => {
@@ -972,7 +1009,7 @@
                 });
                 document.getElementById('editProfileModal').style.display = 'block';
             }
-        }
+        };
 
         // Handle Edit Profile
         window.handleEditProfile = async function() {
@@ -1030,7 +1067,7 @@
                     });
                 }
             }
-        }
+        };
 
         // Check Auth State and Load Data
         onAuthStateChanged(auth, (user) => {
@@ -1049,6 +1086,7 @@
                 loginLink.style.display = 'none';
                 registerLink.style.display = 'none';
 
+                // Load user info
                 const userRef = ref(database, `users/${user.uid}`);
                 onValue(userRef, (snapshot) => {
                     const data = snapshot.val();
@@ -1069,29 +1107,33 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi!',
-                        text: `Không thể tải thông tin: ${error.message}`,
+                        text: `Không thể tải thông tin người dùng: ${error.message}`,
                         showConfirmButton: true
                     });
                 });
 
-                const transactionsRef = ref(database, 'transactions');
-                onValue(transactionsRef, (snapshot) => {
+                // Load orders
+                const ordersRef = query(ref(database, 'orders'), orderByChild('userId'), equalTo(user.uid));
+                onValue(ordersRef, (snapshot) => {
                     const data = snapshot.val();
+                    console.log('Loaded orders:', data); // Debug log
                     if (data) {
-                        const userName = user.displayName || (snapshot.val() && snapshot.val().name) || "Người dùng chưa đặt tên";
-                        transactions = Object.entries(data).map(([id, tx]) => ({ id, ...tx })).filter(tx => tx.customerName === userName);
-                        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        orders = Object.entries(data).map(([id, order]) => ({ id, ...order }));
+                        orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                         displayTransactions(currentPage);
 
+                        // Process data for chart
                         const monthlyData = {};
-                        transactions.forEach(tx => {
-                            const date = new Date(tx.date);
+                        orders.forEach(order => {
+                            const date = new Date(order.createdAt);
                             const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
                             if (!monthlyData[monthYear]) {
                                 monthlyData[monthYear] = { quantity: 0, amount: 0 };
                             }
-                            monthlyData[monthYear].quantity += tx.quantity;
-                            monthlyData[monthYear].amount += tx.amount;
+                            order.items.forEach(item => {
+                                monthlyData[monthYear].quantity += item.quantity;
+                            });
+                            monthlyData[monthYear].amount += order.grandTotal;
                         });
 
                         const labels = Object.keys(monthlyData);
@@ -1136,25 +1178,16 @@
                                         position: 'right',
                                         title: { display: true, text: 'Tổng Tiền (VND)' },
                                         beginAtZero: true,
-                                        grid: {
-                                            drawOnChartArea: false
-                                        }
+                                        grid: { drawOnChartArea: false }
                                     },
-                                    x: {
-                                        title: { display: true, text: 'Tháng' }
-                                    }
+                                    x: { title: { display: true, text: 'Tháng' } }
                                 },
-                                plugins: {
-                                    legend: { display: true }
-                                },
-                                animation: {
-                                    duration: 2000,
-                                    easing: 'easeOutBounce'
-                                }
+                                plugins: { legend: { display: true } },
+                                animation: { duration: 2000, easing: 'easeOutBounce' }
                             }
                         });
                     } else {
-                        transactions = [];
+                        orders = [];
                         displayTransactions(currentPage);
 
                         const ctx = document.getElementById('purchaseChart').getContext('2d');
@@ -1195,29 +1228,21 @@
                                         position: 'right',
                                         title: { display: true, text: 'Tổng Tiền (VND)' },
                                         beginAtZero: true,
-                                        grid: {
-                                            drawOnChartArea: false
-                                        }
+                                        grid: { drawOnChartArea: false }
                                     },
-                                    x: {
-                                        title: { display: true, text: 'Tháng' }
-                                    }
+                                    x: { title: { display: true, text: 'Tháng' } }
                                 },
-                                plugins: {
-                                    legend: { display: true }
-                                },
-                                animation: {
-                                    duration: 2000,
-                                    easing: 'easeOutBounce'
-                                }
+                                plugins: { legend: { display: true } },
+                                animation: { duration: 2000, easing: 'easeOutBounce' }
                             }
                         });
                     }
                 }, (error) => {
+                    console.error('Error loading orders:', error); // Debug log
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi!',
-                        text: `Không thể tải giao dịch: ${error.message}`,
+                        title: 'Lỗi tải đơn hàng!',
+                        text: `Không thể tải đơn hàng: ${error.code} - ${error.message}. Vui lòng kiểm tra quyền truy cập hoặc liên hệ quản trị viên.`,
                         showConfirmButton: true
                     });
                 });
@@ -1274,27 +1299,27 @@
         // Modal Functions
         window.openModal = function(modalId) {
             document.getElementById(modalId).style.display = 'block';
-        }
+        };
 
         window.closeModal = function(modalId) {
             document.getElementById(modalId).style.display = 'none';
-        }
+        };
 
         window.switchToRegister = function() {
             closeModal('loginModal');
             openModal('registerModal');
-        }
+        };
 
         window.switchToLogin = function() {
             closeModal('registerModal');
             closeModal('forgotPasswordModal');
             openModal('loginModal');
-        }
+        };
 
         window.switchToForgotPassword = function() {
             closeModal('loginModal');
             openModal('forgotPasswordModal');
-        }
+        };
 
         // Handle Login
         window.handleLogin = function() {
@@ -1321,7 +1346,7 @@
                         showConfirmButton: true
                     });
                 });
-        }
+        };
 
         // Handle Register
         window.handleRegister = function() {
@@ -1381,7 +1406,7 @@
                         showConfirmButton: true
                     });
                 });
-        }
+        };
 
         // Handle Forgot Password
         window.handleForgotPassword = function() {
@@ -1406,16 +1431,16 @@
                         showConfirmButton: true
                     });
                 });
-        }
+        };
 
-        // Ẩn loading overlay
+        // Hide loading overlay
         window.addEventListener('load', function() {
             setTimeout(function() {
                 document.querySelector('.loading-overlay').classList.add('hidden');
             }, 1000);
         });
 
-        // Hiệu ứng cuộn
+        // Scroll animation
         const elements = document.querySelectorAll('.membership-info, .purchase-chart, .transaction-history');
         const observerOptions = {
             root: null,

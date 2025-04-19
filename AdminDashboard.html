@@ -178,8 +178,8 @@
     <nav class="nav flex-column">
       <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> Tổng Quan</a>
       <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> Quản Lý Sản Phẩm</a>
-      <a class="nav-link" href="#transactionManagement"><i class="fas fa-file-invoice-dollar"></i> Quản Lý Giao Dịch</a>
       <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> Quản Lý Mã Giảm Giá</a>
+      <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> Quản Lý Đơn Hàng</a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a>
     </nav>
   </div>
@@ -277,44 +277,6 @@
       </table>
     </section>
 
-    <!-- Transaction Management Section -->
-    <section id="transactionManagement">
-      <h2>Quản Lý Giao Dịch</h2>
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <input type="text" id="transactionSearch" class="form-control" placeholder="Tìm kiếm giao dịch...">
-        </div>
-        <div class="col-md-4">
-          <select id="transactionStatusFilter" class="form-select">
-            <option value="">Tất cả trạng thái</option>
-            <option value="pending">Đang chờ</option>
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="shipped">Đang giao</option>
-            <option value="delivered">Đã giao</option>
-            <option value="cancelled">Đã hủy</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button type="button" id="refreshTransactions" class="btn btn-primary w-100"><i class="fas fa-sync"></i> Làm mới</button>
-        </div>
-      </div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Khách Hàng</th>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Tổng Tiền</th>
-            <th>Ngày</th>
-            <th>Trạng Thái</th>
-            <th>Hành Động</th>
-          </tr>
-        </thead>
-        <tbody id="transactionTableBody"></tbody>
-      </table>
-    </section>
-
     <!-- Promotion Management Section -->
     <section id="promotionManagement">
       <h2>Quản Lý Mã Giảm Giá</h2>
@@ -351,6 +313,46 @@
           </tr>
         </thead>
         <tbody id="promotionTableBody"></tbody>
+      </table>
+    </section>
+
+    <!-- Order Management Section -->
+    <section id="orderManagement">
+      <h2>Quản Lý Đơn Hàng</h2>
+      <form id="orderSearchForm" class="mb-3">
+        <div class="row">
+          <div class="col-md-6">
+            <input type="text" id="orderSearch" class="form-control" placeholder="Tìm kiếm đơn hàng (ID hoặc khách hàng)...">
+          </div>
+          <div class="col-md-4">
+            <select id="orderStatusFilter" class="form-select">
+              <option value="">Tất cả trạng thái</option>
+              <option value="pending">Đang chờ</option>
+              <option value="confirmed">Đã xác nhận</option>
+              <option value="shipped">Đang giao</option>
+              <option value="delivered">Đã giao</option>
+              <option value="cancelled">Đã hủy</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+            <button type="button" id="refreshOrders" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID Đơn Hàng</th>
+            <th>Khách Hàng</th>
+            <th>Sản Phẩm</th>
+            <th>Địa Chỉ</th>
+            <th>Ngày Giờ</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody id="orderTableBody"></tbody>
       </table>
     </section>
 
@@ -429,34 +431,6 @@
               <div class="mb-3">
                 <label for="editProductAttributes" class="form-label">Mô Tả</label>
                 <textarea class="form-control" id="editProductAttributes"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Transaction Modal -->
-    <div class="modal fade" id="editTransactionModal" tabindex="-1" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editTransactionModalLabel">Sửa Giao Dịch</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editTransactionForm">
-              <input type="hidden" id="editTransactionId">
-              <div class="mb-3">
-                <label for="editTransactionStatus" class="form-label">Trạng Thái</label>
-                <select class="form-select" id="editTransactionStatus" required>
-                  <option value="pending">Đang chờ</option>
-                  <option value="confirmed">Đã xác nhận</option>
-                  <option value="shipped">Đang giao</option>
-                  <option value="delivered">Đã giao</option>
-                  <option value="cancelled">Đã hủy</option>
-                </select>
               </div>
               <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
             </form>
@@ -546,6 +520,34 @@
       </div>
     </div>
 
+    <!-- Edit Order Modal -->
+    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editOrderModalLabel">Cập Nhật Đơn Hàng</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editOrderForm">
+              <input type="hidden" id="editOrderId">
+              <div class="mb-3">
+                <label for="editOrderStatus" class="form-label">Trạng Thái</label>
+                <select class="form-select" id="editOrderStatus" required>
+                  <option value="pending">Đang chờ</option>
+                  <option value="confirmed">Đã xác nhận</option>
+                  <option value="shipped">Đang giao</option>
+                  <option value="delivered">Đã giao</option>
+                  <option value="cancelled">Đã hủy</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -555,7 +557,7 @@
     // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase, ref, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, get, set, update, remove, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     // Firebase Config
     const firebaseConfig = {
@@ -605,11 +607,8 @@
           window.location.href = 'index.html';
         });
       } else {
-        console.log('Admin logged in:', user.email);
-        loadDashboardData();
-        loadProducts();
-        loadTransactions();
-        loadPromotions();
+        console.log('Admin logged in:', user.email, 'UID:', user.uid);
+        initializeDashboard();
       }
     });
 
@@ -688,42 +687,28 @@
         // Load Products
         const categories = ['drinks', 'cakes', 'toppings'];
         let totalProducts = 0;
-        let products = [];
         for (const category of categories) {
           const snapshot = await get(ref(db, `products/${category}`));
           if (snapshot.exists()) {
-            const items = snapshot.val();
-            totalProducts += Object.keys(items).length;
-            Object.keys(items).forEach(itemId => {
-              products.push({
-                id: `${category}-${itemId.replace('item', '')}`,
-                firebaseId: itemId,
-                name: items[itemId].name,
-                price: items[itemId].price,
-                category: category === 'drinks' ? 'Thức Uống' : category === 'cakes' ? 'Bánh' : 'Gọi Thêm',
-                stock: items[itemId].stock || 0,
-                image: items[itemId].image || 'https://via.placeholder.com/120',
-                attributes: items[itemId].attributes || ''
-              });
-            });
+            totalProducts += Object.keys(snapshot.val()).length;
           }
         }
         document.getElementById('totalProducts').textContent = totalProducts;
 
-        // Load Transactions
-        const snapshot = await get(ref(db, 'transactions'));
-        let transactions = [];
+        // Load Orders
+        const snapshot = await get(ref(db, 'orders'));
+        let orders = [];
         let dailyRevenue = 0;
         let pendingOrders = 0;
         const today = new Date().toISOString().split('T')[0];
         if (snapshot.exists()) {
           const data = snapshot.val();
-          transactions = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-          transactions.forEach(t => {
-            if (t.date && t.date.startsWith(today)) {
-              dailyRevenue += t.amount || 0;
+          orders = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+          orders.forEach(order => {
+            if (order.createdAt && order.createdAt.startsWith(today)) {
+              dailyRevenue += order.grandTotal || 0;
             }
-            if (t.status === 'pending') {
+            if (order.status === 'pending') {
               pendingOrders++;
             }
           });
@@ -732,8 +717,8 @@
         document.getElementById('pendingOrders').textContent = pendingOrders;
 
         // Render Charts
-        renderRevenueChart(transactions);
-        renderOrderStatusChart(transactions);
+        renderRevenueChart(orders);
+        renderOrderStatusChart(orders);
 
         // Notifications
         const notificationsList = document.getElementById('notificationsList');
@@ -743,6 +728,9 @@
         }
         if (pendingOrders > 0) {
           notificationsList.innerHTML += `<li class="list-group-item">${pendingOrders} đơn hàng đang chờ xử lý.</li>`;
+        }
+        if (orders.length === 0) {
+          notificationsList.innerHTML += '<li class="list-group-item">Chưa có đơn hàng nào.</li>';
         }
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -755,7 +743,7 @@
       }
     }
 
-    function renderRevenueChart(transactions) {
+    function renderRevenueChart(orders) {
       const ctx = document.getElementById('revenueChart');
       if (!ctx) return;
       const last7Days = Array.from({ length: 7 }, (_, i) => {
@@ -764,7 +752,7 @@
         return d.toISOString().split('T')[0];
       }).reverse();
       const revenueData = last7Days.map(day => {
-        return transactions.filter(t => t.date && t.date.startsWith(day)).reduce((sum, t) => sum + (t.amount || 0), 0);
+        return orders.filter(o => o.createdAt && o.createdAt.startsWith(day)).reduce((sum, o) => sum + (o.grandTotal || 0), 0);
       });
 
       if (revenueChartInstance) {
@@ -793,14 +781,14 @@
       }
     }
 
-    function renderOrderStatusChart(transactions) {
+    function renderOrderStatusChart(orders) {
       const ctx = document.getElementById('orderStatusChart');
       if (!ctx) return;
       const statusCounts = {
         pending: 0, confirmed: 0, shipped: 0, delivered: 0, cancelled: 0
       };
-      transactions.forEach(t => {
-        if (t.status) statusCounts[t.status]++;
+      orders.forEach(o => {
+        if (o.status) statusCounts[o.status]++;
       });
 
       if (orderStatusChartInstance) {
@@ -865,7 +853,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu sản phẩm. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải danh sách sản phẩm: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu sản phẩm.' : `Không thể tải danh sách sản phẩm: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -946,7 +934,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền thêm sản phẩm. Vui lòng kiểm tra Firebase Rules.' : `Không thể thêm sản phẩm: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền thêm sản phẩm.' : `Không thể thêm sản phẩm: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -982,7 +970,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu sản phẩm. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải sản phẩm: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu sản phẩm.' : `Không thể tải sản phẩm: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1025,7 +1013,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật sản phẩm. Vui lòng kiểm tra Firebase Rules.' : `Không thể cập nhật sản phẩm: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật sản phẩm.' : `Không thể cập nhật sản phẩm: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1071,191 +1059,7 @@
             Swal.fire({
               icon: 'error',
               title: 'Lỗi!',
-              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa sản phẩm. Vui lòng kiểm tra Firebase Rules.' : `Không thể xóa sản phẩm: ${error.message}.`,
-              showConfirmButton: true
-            });
-          }
-        }
-      });
-    };
-
-    // Load Transactions
-    async function loadTransactions() {
-      if (!db) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: 'Firebase chưa được khởi tạo.',
-          showConfirmButton: true
-        });
-        return;
-      }
-      try {
-        const snapshot = await get(ref(db, 'transactions'));
-        let transactions = [];
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          transactions = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          }));
-        }
-        renderTransactions(transactions);
-      } catch (error) {
-        console.error('Error loading transactions:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu giao dịch. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải danh sách giao dịch: ${error.message}.`,
-          showConfirmButton: true
-        });
-      }
-    }
-
-    // Render Transactions
-    function renderTransactions(transactions) {
-      const tbody = document.getElementById('transactionTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      if (transactions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center">Không có giao dịch nào.</td></tr>';
-        return;
-      }
-      const searchQuery = document.getElementById('transactionSearch')?.value.toLowerCase() || '';
-      const statusFilter = document.getElementById('transactionStatusFilter')?.value || '';
-      const filteredTransactions = transactions.filter(t => {
-        return (t.customerName?.toLowerCase().includes(searchQuery) || t.productName?.toLowerCase().includes(searchQuery)) &&
-               (!statusFilter || t.status === statusFilter);
-      });
-      filteredTransactions.forEach(transaction => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${transaction.id.substring(0, 8)}...</td>
-          <td>${transaction.customerName || 'N/A'}</td>
-          <td>${transaction.productName || 'N/A'}</td>
-          <td>${transaction.quantity || 0}</td>
-          <td>${(transaction.amount || 0).toLocaleString('vi-VN')} VND</td>
-          <td>${transaction.date || 'N/A'}</td>
-          <td>${transaction.status === 'pending' ? 'Đang chờ' : 
-                transaction.status === 'confirmed' ? 'Đã xác nhận' : 
-                transaction.status === 'shipped' ? 'Đang giao' : 
-                transaction.status === 'delivered' ? 'Đã giao' : 
-                transaction.status === 'cancelled' ? 'Đã hủy' : 'N/A'}</td>
-          <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="editTransaction('${transaction.id}')"><i class="fas fa-edit"></i> Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteTransaction('${transaction.id}')"><i class="fas fa-trash"></i> Xóa</button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    // Edit Transaction
-    window.editTransaction = async function(id) {
-      if (!db) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: 'Firebase chưa được khởi tạo.',
-          showConfirmButton: true
-        });
-        return;
-      }
-      try {
-        const snapshot = await get(ref(db, `transactions/${id}`));
-        if (snapshot.exists()) {
-          const transaction = snapshot.val();
-          document.getElementById('editTransactionId').value = id;
-          document.getElementById('editTransactionStatus').value = transaction.status || 'pending';
-          new bootstrap.Modal(document.getElementById('editTransactionModal')).show();
-        }
-      } catch (error) {
-        console.error('Error loading transaction for edit:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu giao dịch. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải giao dịch: ${error.message}.`,
-          showConfirmButton: true
-        });
-      }
-    };
-
-    document.getElementById('editTransactionForm')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      if (!db) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: 'Firebase chưa được khởi tạo.',
-          showConfirmButton: true
-        });
-        return;
-      }
-      const id = document.getElementById('editTransactionId').value;
-      try {
-        await update(ref(db, `transactions/${id}`), {
-          status: document.getElementById('editTransactionStatus').value
-        });
-        await loadTransactions();
-        await loadDashboardData();
-        bootstrap.Modal.getInstance(document.getElementById('editTransactionModal')).hide();
-        Swal.fire({
-          icon: 'success',
-          title: 'Thành công!',
-          text: 'Trạng thái giao dịch đã được cập nhật.',
-          timer: 1500,
-          showConfirmButton: false
-        });
-      } catch (error) {
-        console.error('Error updating transaction:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật giao dịch. Vui lòng kiểm tra Firebase Rules.' : `Không thể cập nhật giao dịch: ${error.message}.`,
-          showConfirmButton: true
-        });
-      }
-    });
-
-    // Delete Transaction
-    window.deleteTransaction = async function(id) {
-      if (!db) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: 'Firebase chưa được khởi tạo.',
-          showConfirmButton: true
-        });
-        return;
-      }
-      Swal.fire({
-        title: 'Bạn có chắc?',
-        text: "Bạn không thể khôi phục giao dịch sau khi xóa!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#A63C3C',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Xóa',
-        cancelButtonText: 'Hủy'
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            await remove(ref(db, `transactions/${id}`));
-            await loadTransactions();
-            await loadDashboardData();
-            Swal.fire({
-              icon: 'success',
-              title: 'Đã xóa!',
-              text: 'Giao dịch đã được xóa.',
-              timer: 1500,
-              showConfirmButton: false
-            });
-          } catch (error) {
-            console.error('Error deleting transaction:', error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Lỗi!',
-              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa giao dịch. Vui lòng kiểm tra Firebase Rules.' : `Không thể xóa giao dịch: ${error.message}.`,
+              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa sản phẩm.' : `Không thể xóa sản phẩm: ${error.message}.`,
               showConfirmButton: true
             });
           }
@@ -1290,7 +1094,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải danh sách mã giảm giá: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá.' : `Không thể tải danh sách mã giảm giá: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1365,7 +1169,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền thêm mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể thêm mã giảm giá: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền thêm mã giảm giá.' : `Không thể thêm mã giảm giá: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1399,7 +1203,9 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải mã giảm giá: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu mã giảm giá.' : `Không‟s
+
+System: thể tải mã giảm giá: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1440,7 +1246,7 @@
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể cập nhật mã giảm giá: ${error.message}.`,
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật mã giảm giá.' : `Không thể cập nhật mã giảm giá: ${error.message}.`,
           showConfirmButton: true
         });
       }
@@ -1483,7 +1289,203 @@
             Swal.fire({
               icon: 'error',
               title: 'Lỗi!',
-              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa mã giảm giá. Vui lòng kiểm tra Firebase Rules.' : `Không thể xóa mã giảm giá: ${error.message}.`,
+              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa mã giảm giá.' : `Không thể xóa mã giảm giá: ${error.message}.`,
+              showConfirmButton: true
+            });
+          }
+        }
+      });
+    };
+
+    // Load Orders
+   // Load Orders
+   async function loadOrders() {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const snapshot = await get(ref(db, 'orders'));
+        let orders = [];
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          orders = Object.keys(data).map(key => ({
+            id: key,
+            fullName: data[key].fullName || data[key].customerInfo?.fullName || 'Khách vãng lai',
+            items: data[key].items || [],
+            address: data[key].billingInfo?.address || data[key].shippingInfo?.address || 'N/A',
+            date: data[key].date || 'N/A',
+            time: data[key].time || 'N/A',
+            status: data[key].status || 'pending',
+            grandTotal: data[key].grandTotal || 0
+          }));
+        }
+        renderOrders(orders);
+      } catch (error) {
+        console.error('Error loading orders:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu đơn hàng.' : `Không thể tải danh sách đơn hàng: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    }
+
+    // Render Orders
+    function renderOrders(orders) {
+      const tbody = document.getElementById('orderTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào.</td></tr>';
+        return;
+      }
+      const searchQuery = document.getElementById('orderSearch')?.value.toLowerCase() || '';
+      const statusFilter = document.getElementById('orderStatusFilter')?.value || '';
+      const filteredOrders = orders.filter(o => {
+        return (o.id.toLowerCase().includes(searchQuery) || o.fullName.toLowerCase().includes(searchQuery)) &&
+               (!statusFilter || o.status === statusFilter);
+      });
+      filteredOrders.forEach(order => {
+        const statusText = {
+          pending: 'Đang chờ',
+          confirmed: 'Đã xác nhận',
+          shipped: 'Đang giao',
+          delivered: 'Đã giao',
+          cancelled: 'Đã hủy'
+        }[order.status] || 'Đang chờ';
+        const itemsText = order.items.length > 0
+          ? order.items.map(item => `${item.name} (${item.quantity})`).join(', ')
+          : 'Không có sản phẩm';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${order.id}</td>
+          <td>${order.fullName}</td>
+          <td>${itemsText}</td>
+          <td>${order.address}</td>
+          <td>${order.date} ${order.time}</td>
+          <td>${statusText}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" onclick="editOrder('${order.id}')"><i class="fas fa-edit"></i> Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')"><i class="fas fa-trash"></i> Xóa</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Edit Order
+    window.editOrder = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const snapshot = await get(ref(db, `orders/${id}`));
+        if (snapshot.exists()) {
+          const order = snapshot.val();
+          document.getElementById('editOrderId').value = id;
+          document.getElementById('editOrderStatus').value = order.status || 'pending';
+          new bootstrap.Modal(document.getElementById('editOrderModal')).show();
+        }
+      } catch (error) {
+        console.error('Error loading order for edit:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu đơn hàng.' : `Không thể tải đơn hàng: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    };
+
+    document.getElementById('editOrderForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      const id = document.getElementById('editOrderId').value;
+      try {
+        await update(ref(db, `orders/${id}`), {
+          status: document.getElementById('editOrderStatus').value
+        });
+        await loadOrders();
+        await loadDashboardData(); // Update dashboard stats
+        bootstrap.Modal.getInstance(document.getElementById('editOrderModal')).hide();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Trạng thái đơn hàng đã được cập nhật.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error updating order:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền cập nhật đơn hàng.' : `Không thể cập nhật đơn hàng: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    });
+
+    // Delete Order
+    window.deleteOrder = async function(id) {
+      if (!db) {
+        Swal.fire({
+          cruise: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      Swal.fire({
+        title: 'Bạn có chắc?',
+        text: "Bạn không thể khôi phục đơn hàng sau khi xóa!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#A63C3C',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await remove(ref(db, `orders/${id}`));
+            await loadOrders();
+            await loadDashboardData(); // Update dashboard stats
+            Swal.fire({
+              icon: 'success',
+              title: 'Đã xóa!',
+              text: 'Đơn hàng đã được xóa.',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          } catch (error) {
+            console.error('Error deleting order:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi!',
+              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa đơn hàng.' : `Không thể xóa đơn hàng: ${error.message}.`,
               showConfirmButton: true
             });
           }
@@ -1497,31 +1499,22 @@
       await loadProducts();
     });
 
+    document.getElementById('productSearch')?.addEventListener('input', async function() {
+      await loadProducts();
+    });
+
+    document.getElementById('productCategoryFilter')?.addEventListener('change', async function() {
+      await loadProducts();
+    });
+
     document.getElementById('refreshData')?.addEventListener('click', async function() {
+      document.getElementById('productSearch').value = '';
+      document.getElementById('productCategoryFilter').value = '';
       await loadProducts();
       Swal.fire({
         icon: 'success',
-        title: 'Thành công!',
-        text: 'Dữ liệu sản phẩm đã được làm mới.',
-        timer: 1500,
-        showConfirmButton: false
-      });
-    });
-
-    document.getElementById('transactionSearch')?.addEventListener('input', async function() {
-      await loadTransactions();
-    });
-
-    document.getElementById('transactionStatusFilter')?.addEventListener('change', async function() {
-      await loadTransactions();
-    });
-
-    document.getElementById('refreshTransactions')?.addEventListener('click', async function() {
-      await loadTransactions();
-      Swal.fire({
-        icon: 'success',
-        title: 'Thành công!',
-        text: 'Dữ liệu giao dịch đã được làm mới.',
+        title: 'Đã làm mới!',
+        text: 'Danh sách sản phẩm đã được làm mới.',
         timer: 1500,
         showConfirmButton: false
       });
@@ -1541,14 +1534,75 @@
     });
 
     document.getElementById('refreshPromotions')?.addEventListener('click', async function() {
+      document.getElementById('promotionSearch').value = '';
+      document.getElementById('promotionStatusFilter').value = '';
       await loadPromotions();
       Swal.fire({
         icon: 'success',
-        title: 'Thành công!',
-        text: 'Dữ liệu mã giảm giá đã được làm mới.',
+        title: 'Đã làm mới!',
+        text: 'Danh sách mã giảm giá đã được làm mới.',
         timer: 1500,
         showConfirmButton: false
       });
+    });
+
+    document.getElementById('orderSearchForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await loadOrders();
+    });
+
+    document.getElementById('orderSearch')?.addEventListener('input', async function() {
+      await loadOrders();
+    });
+
+    document.getElementById('orderStatusFilter')?.addEventListener('change', async function() {
+      await loadOrders();
+    });
+
+    document.getElementById('refreshOrders')?.addEventListener('click', async function() {
+      document.getElementById('orderSearch').value = '';
+      document.getElementById('orderStatusFilter').value = '';
+      await loadOrders();
+      Swal.fire({
+        icon: 'success',
+        title: 'Đã làm mới!',
+        text: 'Danh sách đơn hàng đã được làm mới.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    });
+
+    // Initialize Dashboard
+    async function initializeDashboard() {
+      try {
+        await Promise.all([
+          loadDashboardData(),
+          loadProducts(),
+          loadPromotions(),
+          loadOrders()
+        ]);
+        console.log('Dashboard initialized successfully');
+      } catch (error) {
+        console.error('Error initializing dashboard:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu.' : `Không thể khởi tạo dashboard: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    }
+
+    // Global Error Handling
+    window.addEventListener('unhandledrejection', function(event) {
+      if (event.reason && event.reason.code && event.reason.code.includes('PERMISSION_DENIED')) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi Quyền Truy Cập!',
+          text: 'Không có quyền thực hiện thao tác này. Vui lòng kiểm tra Firebase Rules hoặc liên hệ quản trị viên.',
+          showConfirmButton: true
+        });
+      }
     });
   </script>
 </body>
