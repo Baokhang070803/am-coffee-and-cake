@@ -16,6 +16,8 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'; // Thêm dòng này
+
         const firebaseConfig = {
             apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
             authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
@@ -28,6 +30,7 @@
         };
         const app = initializeApp(firebaseConfig);
         window.auth = getAuth(app);
+        window.db = getDatabase(app); // Khởi tạo database
     </script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -992,6 +995,7 @@
 
     <script type="module">
         import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'; // Thêm dòng này
 
         document.addEventListener('DOMContentLoaded', () => {
             // Kiểm tra trạng thái đăng nhập
@@ -1096,6 +1100,50 @@
                         icon: 'error',
                         title: 'Lỗi!',
                         text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+
+            // Xử lý gửi form liên hệ
+            document.getElementById('contact-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = e.target.name.value.trim();
+                const email = e.target.email.value.trim();
+                const phone = e.target.phone.value.trim();
+                const message = e.target.message.value.trim();
+
+                if (!name || !email || !message) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                try {
+                    const db = window.db || getDatabase();
+                    await push(ref(db, 'contactMessages'), {
+                        name,
+                        email,
+                        phone,
+                        message,
+                        createdAt: new Date().toISOString()
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Gửi thành công!',
+                        text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
+                        showConfirmButton: true
+                    });
+                    e.target.reset();
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
                         showConfirmButton: true
                     });
                 }

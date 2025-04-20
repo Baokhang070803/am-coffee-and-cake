@@ -677,6 +677,17 @@
           </div>
         </div>
       </div>
+      <!-- Thêm đánh giá người dùng -->
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <div class="card p-3">
+            <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
+            <ul class="list-group" id="userReviewsList">
+              <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Product Management Section -->
@@ -1331,6 +1342,10 @@
             <br><small class="text-muted">${order.createdAt ? order.createdAt.replace('T', ' ') : ''}</small>
           </li>`;
         });
+
+        // Thêm: Load đánh giá người dùng
+        await loadUserReviews();
+
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         Swal.fire({
@@ -2435,6 +2450,41 @@
     if (localStorage.getItem('dashboard-dark-mode') === 'true') {
       document.body.classList.add('dark-mode');
       darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+    // Thêm hàm loadUserReviews
+    async function loadUserReviews() {
+      if (!db) return;
+      const list = document.getElementById('userReviewsList');
+      if (!list) return;
+      list.innerHTML = '<li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>';
+      try {
+        const snapshot = await get(ref(db, 'contactMessages'));
+        if (!snapshot.exists()) {
+          list.innerHTML = '<li class="list-group-item text-center text-muted">Chưa có đánh giá nào.</li>';
+          return;
+        }
+        const messages = Object.values(snapshot.val())
+          .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+          .slice(0, 5); // Hiển thị tối đa 5 đánh giá mới nhất
+        if (messages.length === 0) {
+          list.innerHTML = '<li class="list-group-item text-center text-muted">Chưa có đánh giá nào.</li>';
+          return;
+        }
+        list.innerHTML = '';
+        messages.forEach(msg => {
+          list.innerHTML += `
+            <li class="list-group-item">
+              <div style="font-weight:600">${msg.name || 'Ẩn danh'}</div>
+              <div style="font-size:13px;color:#A67C52;">${msg.email || ''}${msg.phone ? ' - ' + msg.phone : ''}</div>
+              <div style="margin:6px 0 2px 0;">${msg.message || ''}</div>
+              <div class="text-muted" style="font-size:12px;">${msg.createdAt ? new Date(msg.createdAt).toLocaleString('vi-VN') : ''}</div>
+            </li>
+          `;
+        });
+      } catch (error) {
+        list.innerHTML = `<li class="list-group-item text-danger">Không thể tải đánh giá: ${error.message}</li>`;
+      }
     }
   </script>
 </body>

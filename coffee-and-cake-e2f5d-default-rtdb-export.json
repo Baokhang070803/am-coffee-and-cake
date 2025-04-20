@@ -1,13 +1,23 @@
 {
+  "contactMessages": {
+    "-OOIoxFjwzodRnSaxrIo": {
+      "createdAt": "2025-04-20T15:31:53.518Z",
+      "email": "baokhangml99@gmail.com",
+      "message": "Nhân viên chu đáo",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
+    }
+  },
   "orders": {
-    "-OODCjGikqufPh6Uwc2i": {
+    "-OOHMKCSCJpEtiSqKByw": {
       "billingInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
         "email": "quantri1amcoffeeandcake@gmail.com",
         "fullName": "Admin",
         "phone": "0795858581"
       },
-      "createdAt": "2025-04-19T13:22:26.510Z",
+      "couponCode": "SINHNHATAM",
+      "createdAt": "2025-04-20T08:42:49.858Z",
       "customerInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
         "email": "quantri1amcoffeeandcake@gmail.com",
@@ -15,9 +25,12 @@
         "name": "Admin",
         "phone": "0795858581"
       },
-      "date": "19/4/2025",
+      "date": "20/4/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 17000,
+      "discountedTotal": 68000,
       "fullName": "Admin",
-      "grandTotal": 135000,
+      "grandTotal": 68000,
       "items": [
         {
           "name": "Cappuccino",
@@ -28,79 +41,28 @@
           "name": "Espresso",
           "productId": "drinks-item4",
           "quantity": 1
-        },
-        {
-          "name": "Latte",
-          "productId": "drinks-item3",
-          "quantity": 1
         }
       ],
+      "shippingFee": 0,
       "shippingInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
         "receiverName": "Admin",
         "receiverPhone": "0795858581"
       },
       "status": "delivered",
-      "time": "20:22:26",
+      "subtotal": 85000,
+      "time": "15:42:49",
       "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
     },
-    "-OODE_ZevdbxBzI69mes": {
-      "billingInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0338484558"
-      },
-      "createdAt": "2025-04-19T13:30:31.046Z",
-      "customerInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "name": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0338484558"
-      },
-      "date": "19/4/2025",
-      "fullName": "Võ Trần Hoàng Bảo Khang",
-      "grandTotal": 185000,
-      "items": [
-        {
-          "name": "Latte",
-          "productId": "drinks-item3",
-          "quantity": 1
-        },
-        {
-          "name": "Espresso",
-          "productId": "drinks-item4",
-          "quantity": 1
-        },
-        {
-          "name": "Cà Phê Đen Đá",
-          "productId": "drinks-item1",
-          "quantity": 1
-        },
-        {
-          "name": "Tiramisu",
-          "productId": "cakes-item4",
-          "quantity": 1
-        }
-      ],
-      "shippingInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "receiverName": "Võ Trần Hoàng Bảo Khang",
-        "receiverPhone": "0338484558"
-      },
-      "status": "pending",
-      "time": "20:30:31",
-      "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
-    },
-    "-OOEcjmv5v8tG-0FbeYb": {
+    "-OOHMkxt8V-48pPCVXt5": {
       "billingInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
         "email": "quantri1amcoffeeandcake@gmail.com",
         "fullName": "Admin",
         "phone": "0795858581"
       },
-      "createdAt": "2025-04-19T20:00:03.602Z",
+      "couponCode": "SINHNHATAM",
+      "createdAt": "2025-04-20T08:44:43.555Z",
       "customerInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
         "email": "quantri1amcoffeeandcake@gmail.com",
@@ -109,184 +71,118 @@
         "phone": "0795858581"
       },
       "date": "20/4/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 100000,
+      "discountedTotal": 400000,
       "fullName": "Admin",
-      "grandTotal": 205000,
+      "grandTotal": 400000,
       "items": [
-        {
-          "name": "Latte",
-          "productId": "drinks-item3",
-          "quantity": 1
-        },
-        {
-          "name": "Espresso",
-          "productId": "drinks-item4",
-          "quantity": 1
-        },
-        {
-          "name": "Bánh Mì",
-          "productId": "cakes-item3",
-          "quantity": 1
-        },
-        {
-          "name": "Bánh Bông Lan",
-          "productId": "cakes-item1",
-          "quantity": 1
-        },
-        {
-          "name": "Tiramisu",
-          "productId": "cakes-item4",
-          "quantity": 1
-        }
-      ],
-      "shippingInfo": {
-        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
-        "receiverName": "Admin",
-        "receiverPhone": "0795858581"
-      },
-      "status": "pending",
-      "time": "03:00:03",
-      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
-    },
-    "-OOEfDWjwFbj-fgiD8zv": {
-      "billingInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "phone": "0779877152"
-      },
-      "createdAt": "2025-04-19T20:10:53.969Z",
-      "customerInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "name": "Nguyễn Quốc An",
-        "phone": "0779877152"
-      },
-      "date": "20/4/2025",
-      "fullName": "Nguyễn Quốc An",
-      "grandTotal": 560000,
-      "items": [
-        {
-          "name": "Cà Phê Đen Đá",
-          "productId": "drinks-item1",
-          "quantity": 2
-        },
         {
           "name": "Latte",
           "productId": "drinks-item3",
           "quantity": 10
         }
       ],
+      "shippingFee": 0,
       "shippingInfo": {
-        "address": "diachi",
-        "receiverName": "Nguyễn Quốc An",
-        "receiverPhone": "0779877152"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
       },
-      "status": "pending",
-      "time": "03:10:53",
-      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+      "status": "delivered",
+      "subtotal": 500000,
+      "time": "15:44:43",
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
     },
-    "-OOEg6QFAwi4zv16OdNH": {
+    "-OOHNayu_3taolW-mtNT": {
       "billingInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0338484558"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "phone": "0795858581"
       },
-      "createdAt": "2025-04-19T20:14:46.821Z",
+      "couponCode": "30THANG4",
+      "createdAt": "2025-04-20T08:48:24.805Z",
       "customerInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "name": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0338484558"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "name": "Admin",
+        "phone": "0795858581"
       },
       "date": "20/4/2025",
-      "fullName": "Võ Trần Hoàng Bảo Khang",
-      "grandTotal": 40000,
-      "items": [
-        {
-          "name": "Espresso",
-          "productId": "drinks-item4",
-          "quantity": 1
-        }
-      ],
-      "shippingInfo": {
-        "address": "Bình Minh, Vĩnh Long",
-        "receiverName": "Võ Trần Hoàng Bảo Khang",
-        "receiverPhone": "0338484558"
-      },
-      "status": "pending",
-      "time": "03:14:46",
-      "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
-    },
-    "-OOEiSSSKGpSocEdmVRn": {
-      "billingInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "phone": "0779877152"
-      },
-      "createdAt": "2025-04-19T20:25:01.563Z",
-      "customerInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "name": "Nguyễn Quốc An",
-        "phone": "0779877152"
-      },
-      "date": "20/4/2025",
-      "fullName": "Nguyễn Quốc An",
-      "grandTotal": 45000,
+      "deliveryMethod": "standard",
+      "discountAmount": 28500,
+      "discountedTotal": 66500,
+      "fullName": "Admin",
+      "grandTotal": 66500,
       "items": [
         {
           "name": "Cappuccino",
           "productId": "drinks-item2",
           "quantity": 1
+        },
+        {
+          "name": "Latte",
+          "productId": "drinks-item3",
+          "quantity": 1
         }
       ],
+      "shippingFee": 0,
       "shippingInfo": {
-        "address": "diachi",
-        "receiverName": "Nguyễn Quốc An",
-        "receiverPhone": "0779877152"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
       },
-      "status": "cancelled",
-      "time": "03:25:01",
-      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+      "status": "delivered",
+      "subtotal": 95000,
+      "time": "15:48:24",
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
     },
-    "-OOEiteThZ20bS16uCnC": {
+    "-OOHOSrfp8R1M8jnfzIH": {
       "billingInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "phone": "0779877152"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "phone": "0795858581"
       },
-      "createdAt": "2025-04-19T20:26:57.086Z",
+      "couponCode": "",
+      "createdAt": "2025-04-20T08:52:09.622Z",
       "customerInfo": {
-        "address": "diachi",
-        "email": "nguyenquocan300503@gmail.com",
-        "fullName": "Nguyễn Quốc An",
-        "name": "Nguyễn Quốc An",
-        "phone": "0779877152"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "name": "Admin",
+        "phone": "0795858581"
       },
       "date": "20/4/2025",
-      "fullName": "Nguyễn Quốc An",
-      "grandTotal": 315000,
+      "deliveryMethod": "express",
+      "discountAmount": 0,
+      "discountedTotal": 1080000,
+      "fullName": "Admin",
+      "grandTotal": 1080000,
       "items": [
         {
-          "name": "Cappuccino",
-          "productId": "drinks-item2",
-          "quantity": 7
+          "name": "Cheesecake",
+          "productId": "cakes-item2",
+          "quantity": 10
+        },
+        {
+          "name": "Bánh Mì",
+          "productId": "cakes-item3",
+          "quantity": 20
         }
       ],
+      "shippingFee": 30000,
       "shippingInfo": {
-        "address": "diachi",
-        "receiverName": "Nguyễn Quốc An",
-        "receiverPhone": "0779877152"
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
       },
       "status": "pending",
-      "time": "03:26:57",
-      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+      "subtotal": 1050000,
+      "time": "15:52:09",
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
     }
   },
   "products": {
@@ -388,6 +284,13 @@
     }
   },
   "promotions": {
+    "30THANG4": {
+      "code": "30THANG4",
+      "discount": 30,
+      "endDate": "2025-05-11",
+      "startDate": "2025-04-20",
+      "status": "active"
+    },
     "COFFEE15": {
       "code": "COFFEE15",
       "discount": 15,
@@ -428,14 +331,14 @@
       "discount": 25,
       "endDate": "2025-04-30",
       "startDate": "2025-04-01",
-      "status": "active"
+      "status": "inactive"
     },
     "WELCOME10": {
       "code": "WELCOME10",
       "discount": 10,
       "endDate": "2025-05-15",
       "startDate": "2025-04-15",
-      "status": "active"
+      "status": "inactive"
     }
   },
   "users": {
@@ -497,6 +400,18 @@
       "email": "baokhangml99@gmail.com",
       "name": "Võ Trần Hoàng Bảo Khang",
       "phone": "0338484558"
+    },
+    "coTgqFWGm2g4ZI3h0u0UHKmC0gB2": {
+      "address": "VLbbbbbb",
+      "email": "ntho0124@gmail.com",
+      "name": "Nguyễn Trần Anh Thơ",
+      "phone": "0123456789"
+    },
+    "hvIbwfuCvSX3v2aWaUtZI6PkvBh2": {
+      "address": "bình minh vĩnh long",
+      "email": "locb2106310@student.ctu.edu.vn",
+      "name": "lê thanh loc",
+      "phone": "0946247641"
     },
     "nKYvEOzYZphjEZA0yTTZoOo8Nlm2": {
       "address": "diachi",
