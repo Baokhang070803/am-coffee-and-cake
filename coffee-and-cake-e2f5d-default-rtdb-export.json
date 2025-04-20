@@ -1,0 +1,531 @@
+{
+  "orders": {
+    "-OODCjGikqufPh6Uwc2i": {
+      "billingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "phone": "0795858581"
+      },
+      "createdAt": "2025-04-19T13:22:26.510Z",
+      "customerInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "name": "Admin",
+        "phone": "0795858581"
+      },
+      "date": "19/4/2025",
+      "fullName": "Admin",
+      "grandTotal": 135000,
+      "items": [
+        {
+          "name": "Cappuccino",
+          "productId": "drinks-item2",
+          "quantity": 1
+        },
+        {
+          "name": "Espresso",
+          "productId": "drinks-item4",
+          "quantity": 1
+        },
+        {
+          "name": "Latte",
+          "productId": "drinks-item3",
+          "quantity": 1
+        }
+      ],
+      "shippingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
+      },
+      "status": "delivered",
+      "time": "20:22:26",
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
+    },
+    "-OODE_ZevdbxBzI69mes": {
+      "billingInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "email": "baokhangml99@gmail.com",
+        "fullName": "Võ Trần Hoàng Bảo Khang",
+        "phone": "0338484558"
+      },
+      "createdAt": "2025-04-19T13:30:31.046Z",
+      "customerInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "email": "baokhangml99@gmail.com",
+        "fullName": "Võ Trần Hoàng Bảo Khang",
+        "name": "Võ Trần Hoàng Bảo Khang",
+        "phone": "0338484558"
+      },
+      "date": "19/4/2025",
+      "fullName": "Võ Trần Hoàng Bảo Khang",
+      "grandTotal": 185000,
+      "items": [
+        {
+          "name": "Latte",
+          "productId": "drinks-item3",
+          "quantity": 1
+        },
+        {
+          "name": "Espresso",
+          "productId": "drinks-item4",
+          "quantity": 1
+        },
+        {
+          "name": "Cà Phê Đen Đá",
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "name": "Tiramisu",
+          "productId": "cakes-item4",
+          "quantity": 1
+        }
+      ],
+      "shippingInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "receiverName": "Võ Trần Hoàng Bảo Khang",
+        "receiverPhone": "0338484558"
+      },
+      "status": "pending",
+      "time": "20:30:31",
+      "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OOEcjmv5v8tG-0FbeYb": {
+      "billingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "phone": "0795858581"
+      },
+      "createdAt": "2025-04-19T20:00:03.602Z",
+      "customerInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "email": "quantri1amcoffeeandcake@gmail.com",
+        "fullName": "Admin",
+        "name": "Admin",
+        "phone": "0795858581"
+      },
+      "date": "20/4/2025",
+      "fullName": "Admin",
+      "grandTotal": 205000,
+      "items": [
+        {
+          "name": "Latte",
+          "productId": "drinks-item3",
+          "quantity": 1
+        },
+        {
+          "name": "Espresso",
+          "productId": "drinks-item4",
+          "quantity": 1
+        },
+        {
+          "name": "Bánh Mì",
+          "productId": "cakes-item3",
+          "quantity": 1
+        },
+        {
+          "name": "Bánh Bông Lan",
+          "productId": "cakes-item1",
+          "quantity": 1
+        },
+        {
+          "name": "Tiramisu",
+          "productId": "cakes-item4",
+          "quantity": 1
+        }
+      ],
+      "shippingInfo": {
+        "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+        "receiverName": "Admin",
+        "receiverPhone": "0795858581"
+      },
+      "status": "pending",
+      "time": "03:00:03",
+      "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
+    },
+    "-OOEfDWjwFbj-fgiD8zv": {
+      "billingInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "createdAt": "2025-04-19T20:10:53.969Z",
+      "customerInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "name": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "date": "20/4/2025",
+      "fullName": "Nguyễn Quốc An",
+      "grandTotal": 560000,
+      "items": [
+        {
+          "name": "Cà Phê Đen Đá",
+          "productId": "drinks-item1",
+          "quantity": 2
+        },
+        {
+          "name": "Latte",
+          "productId": "drinks-item3",
+          "quantity": 10
+        }
+      ],
+      "shippingInfo": {
+        "address": "diachi",
+        "receiverName": "Nguyễn Quốc An",
+        "receiverPhone": "0779877152"
+      },
+      "status": "pending",
+      "time": "03:10:53",
+      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+    },
+    "-OOEg6QFAwi4zv16OdNH": {
+      "billingInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "email": "baokhangml99@gmail.com",
+        "fullName": "Võ Trần Hoàng Bảo Khang",
+        "phone": "0338484558"
+      },
+      "createdAt": "2025-04-19T20:14:46.821Z",
+      "customerInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "email": "baokhangml99@gmail.com",
+        "fullName": "Võ Trần Hoàng Bảo Khang",
+        "name": "Võ Trần Hoàng Bảo Khang",
+        "phone": "0338484558"
+      },
+      "date": "20/4/2025",
+      "fullName": "Võ Trần Hoàng Bảo Khang",
+      "grandTotal": 40000,
+      "items": [
+        {
+          "name": "Espresso",
+          "productId": "drinks-item4",
+          "quantity": 1
+        }
+      ],
+      "shippingInfo": {
+        "address": "Bình Minh, Vĩnh Long",
+        "receiverName": "Võ Trần Hoàng Bảo Khang",
+        "receiverPhone": "0338484558"
+      },
+      "status": "pending",
+      "time": "03:14:46",
+      "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OOEiSSSKGpSocEdmVRn": {
+      "billingInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "createdAt": "2025-04-19T20:25:01.563Z",
+      "customerInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "name": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "date": "20/4/2025",
+      "fullName": "Nguyễn Quốc An",
+      "grandTotal": 45000,
+      "items": [
+        {
+          "name": "Cappuccino",
+          "productId": "drinks-item2",
+          "quantity": 1
+        }
+      ],
+      "shippingInfo": {
+        "address": "diachi",
+        "receiverName": "Nguyễn Quốc An",
+        "receiverPhone": "0779877152"
+      },
+      "status": "cancelled",
+      "time": "03:25:01",
+      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+    },
+    "-OOEiteThZ20bS16uCnC": {
+      "billingInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "createdAt": "2025-04-19T20:26:57.086Z",
+      "customerInfo": {
+        "address": "diachi",
+        "email": "nguyenquocan300503@gmail.com",
+        "fullName": "Nguyễn Quốc An",
+        "name": "Nguyễn Quốc An",
+        "phone": "0779877152"
+      },
+      "date": "20/4/2025",
+      "fullName": "Nguyễn Quốc An",
+      "grandTotal": 315000,
+      "items": [
+        {
+          "name": "Cappuccino",
+          "productId": "drinks-item2",
+          "quantity": 7
+        }
+      ],
+      "shippingInfo": {
+        "address": "diachi",
+        "receiverName": "Nguyễn Quốc An",
+        "receiverPhone": "0779877152"
+      },
+      "status": "pending",
+      "time": "03:26:57",
+      "userId": "nKYvEOzYZphjEZA0yTTZoOo8Nlm2"
+    }
+  },
+  "products": {
+    "cakes": {
+      "item1": {
+        "attributes": "Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.",
+        "image": "https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Bánh Bông Lan",
+        "price": 30000
+      },
+      "item2": {
+        "attributes": "Kem phô mai béo ngậy kết hợp lớp bánh quy giòn, phủ mứt cherry ngọt ngào.",
+        "image": "https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cheesecake",
+        "price": 55000
+      },
+      "item3": {
+        "attributes": "Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.",
+        "image": "https://img.freepik.com/free-photo/top-view-delicious-slices-bread_23-2148361976.jpg?t=st=1744466864~exp=1744470464~hmac=4dfe2be3d4ef49a478a9ed040b20d6d0bd3ea67d6f10688a58d7309cd0fac5cc&w=1380",
+        "name": "Bánh Mì",
+        "price": 25000
+      },
+      "item4": {
+        "attributes": "Lớp bánh ngấm cà phê, kem mascarpone béo, rắc bột cacao đậm đà.",
+        "image": "https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Tiramisu",
+        "price": 60000
+      },
+      "item5": {
+        "attributes": "Kem mousse mịn màng, vị dâu ngọt nhẹ, tan ngay đầu lưỡi.",
+        "image": "https://img.freepik.com/free-photo/side-view-two-strawberry-cheesecake-with-cup-tea-cinnamon_140725-14015.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Mousse Cake",
+        "price": 50000
+      },
+      "item6": {
+        "attributes": "Bánh nhỏ xinh, kem tươi ngọt ngào, trang trí thủ công đầy sáng tạo.",
+        "image": "https://img.freepik.com/free-photo/delicious-cupcakes-with-lemons_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cupcake",
+        "price": 35000
+      }
+    },
+    "drinks": {
+      "item1": {
+        "attributes": "Thơm nồng, đậm đà từ cà phê nguyên chất, phục vụ lạnh với đá mát lành.",
+        "image": "https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cà Phê Đen Đá",
+        "price": 30000
+      },
+      "item2": {
+        "attributes": "Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.",
+        "image": "https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Cappuccino",
+        "price": 45000
+      },
+      "item3": {
+        "attributes": "Espresso đậm đà kết hợp sữa tươi nóng, phủ lớp bọt sữa nhẹ nhàng.",
+        "image": "https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Latte",
+        "price": 50000
+      },
+      "item4": {
+        "attributes": "Cà phê đậm đặc, tinh tế, được chiết xuất từ hạt cà phê chất lượng cao.",
+        "image": "https://img.freepik.com/free-photo/double-espresso-coffee-mug-with-cinnamon-sticks-coffee-beans-wooden-board_181624-57625.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid",
+        "name": "Espresso",
+        "price": 40000
+      }
+    },
+    "toppings": {
+      "item1": {
+        "attributes": "Phô mai béo ngậy, tan chảy, thêm đậm đà cho mọi món ăn.",
+        "image": "https://img.freepik.com/free-photo/grated-triangular-chunk-cheese-wooden-table_23-2148166461.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Phô Mai",
+        "price": 10000
+      },
+      "item2": {
+        "attributes": "Sô-cô-la đậm đà, ngọt ngào, làm nổi bật mọi thức uống hoặc bánh.",
+        "image": "https://img.freepik.com/free-photo/top-view-tasty-chocolate-bars_23-2148349193.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Socola",
+        "price": 10000
+      },
+      "item3": {
+        "attributes": "Mật ong nguyên chất, ngọt tự nhiên, thêm chút thanh lịch cho món của bạn.",
+        "image": "https://img.freepik.com/free-photo/delicious-honeycomb-wooden-bowl_23-2148346681.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Mật Ong",
+        "price": 8000
+      },
+      "item4": {
+        "attributes": "Kem tươi mát lạnh, béo mịn, thêm chút thú vị cho mọi món tráng miệng.",
+        "image": "https://img.freepik.com/free-photo/view-delicious ice-cream_23-2149022011.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Kem",
+        "price": 12000
+      },
+      "item5": {
+        "attributes": "Trái cây tươi ngon, đầy màu sắc, thêm sự tươi mới cho món của bạn.",
+        "image": "https://img.freepik.com/free-photo/fruit-splash-illustration-with-juice_23-2151900042.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+        "name": "Trái Cây",
+        "price": 15000
+      }
+    }
+  },
+  "promotions": {
+    "COFFEE15": {
+      "code": "COFFEE15",
+      "discount": 15,
+      "endDate": "2025-03-31",
+      "startDate": "2025-03-01",
+      "status": "inactive"
+    },
+    "FLASH20": {
+      "code": "FLASH20",
+      "discount": 20,
+      "endDate": "2025-04-20",
+      "startDate": "2025-04-10",
+      "status": "active"
+    },
+    "NEWYEAR30": {
+      "code": "NEWYEAR30",
+      "discount": 30,
+      "endDate": "2025-01-15",
+      "startDate": "2025-01-01",
+      "status": "inactive"
+    },
+    "QUANDEPTRAI": {
+      "code": "QUANDEPTRAI",
+      "discount": 50,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-18",
+      "status": "active"
+    },
+    "SINHNHATAM": {
+      "code": "SINHNHATAM",
+      "discount": 20,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-18",
+      "status": "active"
+    },
+    "SUMMER25": {
+      "code": "SUMMER25",
+      "discount": 25,
+      "endDate": "2025-04-30",
+      "startDate": "2025-04-01",
+      "status": "active"
+    },
+    "WELCOME10": {
+      "code": "WELCOME10",
+      "discount": 10,
+      "endDate": "2025-05-15",
+      "startDate": "2025-04-15",
+      "status": "active"
+    }
+  },
+  "users": {
+    "4LG0ynFIH2YIty7hAXqyQL2Nqqr1": {
+      "address": "Ninh keu can tho",
+      "email": "nguyendanghaidangasus@gmail.com",
+      "name": "Hai Dang",
+      "phone": "0334770411"
+    },
+    "5yS2Oh7WguVYbL6UcK2xTKzjEvv1": {
+      "address": "Cần thơi",
+      "email": "phamhongquan9117@gmail.com",
+      "name": "Phạm Hồng Quân",
+      "phone": "0398197737"
+    },
+    "MmtivTpSmldsvlgswPgvBw2kHJo1": {
+      "address": "abcdxyz",
+      "email": "nguyenquocan3005031@gmai.com",
+      "name": "nqa1",
+      "phone": "0779877192"
+    },
+    "N4A98bd2nWyfKu2HL": {
+      "address": "",
+      "avatarUrl": "",
+      "created_at": "2025-04-17",
+      "deleted": false,
+      "email": "quantri1amcoffeeandcake@gmail.com",
+      "emailVerified": false,
+      "name": "Admin",
+      "phone": "",
+      "role": "admin"
+    },
+    "NlXRlYjnPhViMUoQrz39utqurgg2": {
+      "address": "abcdxyz",
+      "email": "phucvuong175@gmail.com",
+      "name": "Vương Hữu Phúc",
+      "phone": "1234567890"
+    },
+    "Nt4988nd2wNiGy1kUHZ1UFLCtxH3": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
+      "email": "quantri1amcoffeeandcake@gmail.com",
+      "name": "Admin",
+      "phone": "0795858581"
+    },
+    "PJgiAncfbicLSPnMSROMtIaHRZI2": {
+      "address": "diachi",
+      "email": "nguyenquocan300503@gmail.com",
+      "name": "nqa2",
+      "phone": "0779877185"
+    },
+    "Q1YYsoo4jLYShEmFe1SIrYgTRX83": {
+      "address": "dfxngvc",
+      "email": "phucvuong175@gmail.com",
+      "name": "Vương Hữu Phúc",
+      "phone": "082636774"
+    },
+    "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
+      "address": "Bình Minh, Vĩnh Long",
+      "email": "baokhangml99@gmail.com",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0338484558"
+    },
+    "nKYvEOzYZphjEZA0yTTZoOo8Nlm2": {
+      "address": "diachi",
+      "email": "nguyenquocan300503@gmail.com",
+      "name": "Nguyễn Quốc An",
+      "phone": "0779877152"
+    },
+    "o8lI2czPnWPbgovuT0RMCtd5kC93": {
+      "address": "123 hàm tử",
+      "email": "nguyentienchuc2023ct@gmail.com",
+      "name": "Uyae",
+      "phone": "09876543211"
+    },
+    "yFrGykBD3IaD81Yah2SkXzAW7uY2": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long",
+      "email": "baokhangml99@gmail.com",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
+    },
+    "yfYkG8D81bY1zHxAW": {
+      "address": "",
+      "avatarUrl": "",
+      "created_at": "2025-04-18",
+      "deleted": false,
+      "email": "backhoang99@gmail.com",
+      "emailVerified": false,
+      "name": "User One",
+      "phone": "",
+      "role": "user"
+    }
+  }
+}
