@@ -138,28 +138,30 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin-bottom: 40px;
-        }
-        .transaction-history h3 {
-            font-size: 24px;
-            color: #4A2F1A;
-            margin-bottom: 20px;
+            overflow-x: auto; /* Thêm để tránh tràn bảng */
         }
         .transaction-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: auto; /* Đổi từ fixed sang auto để bảng tự co giãn */
+            min-width: 800px; /* Đảm bảo đủ rộng cho 5 cột */
+            background: #fff;
         }
         .transaction-table th, .transaction-table td {
-            padding: 12px;
+            padding: 12px 8px;
             text-align: left;
             font-size: 16px;
             border-bottom: 1px solid #ddd;
+            word-break: break-word;
+            min-width: 110px;
+            max-width: 260px;
+            box-sizing: border-box;
         }
         .transaction-table th {
             background: #FFCC99;
             color: #4A2F1A;
-            position: sticky;
-            top: 0;
-            z-index: 1;
+            /* Không dùng sticky để tránh lỗi lệch */
         }
         .transaction-table td {
             color: #333333;
@@ -201,17 +203,31 @@
         .transaction-table td:nth-child(5)[data-status="Không xác định"]:before {
             background: #6c757d; /* Màu xám */
         }
+        .transaction-table td[data-status] {
+            vertical-align: middle;
+            position: relative;
+        }
         .transaction-table .cancel-btn {
-            background: #dc3545;
-            color: #FFFFFF;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
+            display: inline-block;
+            margin-left: 8px;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            vertical-align: middle;
+            box-shadow: none;
         }
         .transaction-table .cancel-btn:hover {
-            background: #c82333;
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+        .transaction-table td[data-status] {
+            white-space: nowrap;
         }
         /* Phân trang */
         .pagination {
@@ -439,6 +455,114 @@
             object-fit: cover;
             border: 2px solid #f7544a;
         }
+        /* --- Thêm vào cuối thẻ <style> hoặc trong file CSS chính --- */
+        .account-page-layout .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .account-sidebar {
+            /* background: #FFF5E6; */ /* Xóa màu nền */
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 25px 15px 15px 15px;
+            min-height: 100%;
+            margin-bottom: 30px;
+            background: none; /* Đảm bảo không có màu nền */
+        }
+        .account-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .account-menu ul li {
+            margin-bottom: 15px;
+        }
+        .account-menu ul li a {
+            color: #4A2F1A;
+            font-size: 16px;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .account-menu ul li.active a,
+        .account-menu ul li a:hover {
+            background: #f7544a;
+            color: #fff;
+        }
+        .sidebar-avatar img {
+            border: 2px solid #f7544a;
+        }
+        .account-main-content {
+            padding-left: 30px;
+            padding-right: 0;
+        }
+        @media (max-width: 991px) {
+            .account-main-content {
+                padding-left: 0;
+            }
+            .account-sidebar {
+                margin-bottom: 20px;
+            }
+            .transaction-table th, .transaction-table td {
+                min-width: 90px;
+                max-width: 160px;
+                font-size: 14px;
+            }
+            .transaction-history {
+                padding: 10px 2px;
+            }
+        }
+        @media (max-width: 767px) {
+            .account-page-layout .row {
+                flex-direction: column;
+            }
+            .account-sidebar, .account-main-content {
+                padding: 0;
+            }
+            .transaction-history {
+                padding: 5px 0;
+            }
+            .transaction-table th, .transaction-table td {
+                min-width: 80px;
+                max-width: 120px;
+                font-size: 13px;
+                padding: 6px 4px;
+            }
+            .transaction-table {
+                min-width: 600px;
+            }
+        }
+        @media (max-width: 480px) {
+            .transaction-table th, .transaction-table td {
+                min-width: 70px;
+                max-width: 90px;
+                font-size: 11px;
+                padding: 4px 2px;
+            }
+            .transaction-table {
+                min-width: 400px;
+            }
+        }
+        .account-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .account-section.active-section {
+            display: block;
+            opacity: 1;
+            animation: fadeInTab 0.4s;
+        }
+        @keyframes fadeInTab {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .account-menu ul li.active a {
+            background: #f7544a;
+            color: #fff;
+        }
     </style>
 </head>
 <body id="home">
@@ -613,54 +737,77 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         <div class="clearfix"></div>
         <div class="container_fullwidth">
             <div class="container">
-                <div class="membership-section">
-                    <h2 class="membership-title">Thông Tin Thành Viên</h2>
-                    <p class="membership-subtitle">Xem thông tin cá nhân và lịch sử mua sắm của bạn tại Ấm - Coffee and Cake!</p>
-                    <div class="membership-container">
-                        <!-- Thông tin thành viên -->
-                        <div class="membership-info">
-                            <h3>Thông Tin Cá Nhân</h3>
-                            <div class="avatar-container">
-                                <img src="images/nguoidung.png" alt="Avatar" class="avatar"/>
-                            </div>
-                            <div class="user-details">
-                                <p><strong>Họ và Tên:</strong> <span id="userName">Chưa đăng nhập</span></p>
-                                <p><strong>Email:</strong> <span id="userEmail">Chưa đăng nhập</span></p>
-                                <p><strong>Số Điện Thoại:</strong> <span id="userPhone">Chưa đăng nhập</span></p>
-                                <p><strong>Địa Chỉ:</strong> <span id="userAddress">Chưa có địa chỉ</span></p>
-                                <button class="edit-btn" onclick="openEditModal()">Chỉnh Sửa Thông Tin</button>
+                <div class="membership-section account-page-layout">
+                    <div class="row">
+                        <!-- Sidebar tài khoản -->
+                        <div class="col-md-3 col-sm-12 account-sidebar">
+                            <div class="account-menu">
+                                <div class="sidebar-avatar text-center">
+                                    <img src="images/nguoidung.png" alt="Avatar" class="avatar" id="sidebarAvatar" style="width:80px;height:80px;margin-bottom:10px;">
+                                    <div style="font-weight:600;margin-bottom:5px;" id="sidebarUserName">Chưa đăng nhập</div>
+                                </div>
+                                <ul>
+                                    <li class="active"><a href="#" data-section="profileSection">Thông Tin Cá Nhân</a></li>
+                                    <li><a href="#" data-section="chartSection">Thống Kê Mua Hàng</a></li>
+                                    <li><a href="#" data-section="ordersSection">Lịch Sử Đặt Hàng</a></li>
+                                    <li><a href="#" id="sidebarLogout">Đăng Xuất</a></li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                    <!-- Biểu đồ mua hàng -->
-                    <div class="purchase-chart">
-                        <h3>Thống Kê Mua Hàng</h3>
-                        <canvas id="purchaseChart"></canvas>
-                    </div>
-                    <!-- Lịch sử giao dịch -->
-                    <div class="transaction-history">
-                        <h3>Lịch Sử Đặt Hàng</h3>
-                        <table class="transaction-table" id="transactionTable">
-                            <thead>
-                                <tr>
-                                    <th>Ngày Giờ</th>
-                                    <th>Sản Phẩm</th>
-                                    <th>Địa Chỉ</th>
-                                    <th>Tổng Tiền</th>
-                                    <th>Tình Trạng</th>
-                                </tr>
-                            </thead>
-                            <tbody id="transactionTableBody">
-                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-                            </tbody>
-                        </table>
-                        <div class="pagination">
-                            <button onclick="prevPage()" id="prevBtn">Trước</button>
-                            <button onclick="nextPage()" id="nextBtn">Tiếp</button>
+                        <!-- Nội dung chính -->
+                        <div class="col-md-9 col-sm-12 account-main-content">
+                            <h2 class="membership-title">Thông Tin Thành Viên</h2>
+                            <p class="membership-subtitle">Xem thông tin cá nhân và lịch sử mua sắm của bạn tại Ấm - Coffee and Cake!</p>
+                            <div id="profileSection" class="account-section active-section">
+                                <div class="membership-container">
+                                    <div class="membership-info">
+                                        <h3>Thông Tin Cá Nhân</h3>
+                                        <div class="avatar-container">
+                                            <img src="images/nguoidung.png" alt="Avatar" class="avatar"/>
+                                        </div>
+                                        <div class="user-details">
+                                            <p><strong>Họ và Tên:</strong> <span id="userName">Chưa đăng nhập</span></p>
+                                            <p><strong>Email:</strong> <span id="userEmail">Chưa đăng nhập</span></p>
+                                            <p><strong>Số Điện Thoại:</strong> <span id="userPhone">Chưa đăng nhập</span></p>
+                                            <p><strong>Địa Chỉ:</strong> <span id="userAddress">Chưa có địa chỉ</span></p>
+                                            <button class="edit-btn" onclick="openEditModal()">Chỉnh Sửa Thông Tin</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chartSection" class="account-section" style="display:none;">
+                                <div class="purchase-chart">
+                                    <h3>Thống Kê Mua Hàng</h3>
+                                    <canvas id="purchaseChart"></canvas>
+                                </div>
+                            </div>
+                            <div id="ordersSection" class="account-section" style="display:none;">
+                                <div class="transaction-history">
+                                    <h3>Lịch Sử Đặt Hàng</h3>
+                                    <table class="transaction-table" id="transactionTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày Giờ</th>
+                                                <th>Sản Phẩm</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Tổng Tiền</th>
+                                                <th>Tình Trạng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transactionTableBody">
+                                            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button onclick="prevPage()" id="prevBtn">Trước</button>
+                                        <button onclick="nextPage()" id="nextBtn">Tiếp</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -878,7 +1025,9 @@
             paginatedOrders.forEach(order => {
                 const firebaseStatus = order.status || 'Không xác định';
                 const displayStatus = statusMap[firebaseStatus] || 'Không xác định';
-                const cancelButton = firebaseStatus === 'pending' ? `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">Hủy</button>` : '';
+                const cancelButton = firebaseStatus === 'pending'
+                    ? `<button class="cancel-btn" onclick="cancelOrder('${order.id}')"><i class="fa fa-times"></i> Hủy</button>`
+                    : '';
                 const productNames = order.items && order.items.length > 0
                     ? order.items.map(item => `${item.name} (${item.quantity})`).join(', ')
                     : 'Không có sản phẩm';
@@ -890,7 +1039,7 @@
                         <td>${productNames}</td>
                         <td>${address}</td>
                         <td>${order.grandTotal.toLocaleString('vi-VN')} VND</td>
-                        <td data-status="${displayStatus}">${displayStatus} ${cancelButton}</td>
+                        <td data-status="${displayStatus}"><span>${displayStatus}</span> ${cancelButton}</td>
                     </tr>
                 `;
                 tbody.innerHTML += row;
@@ -1081,6 +1230,8 @@
             const userPhoneElement = document.getElementById('userPhone');
             const userAddressElement = document.getElementById('userAddress');
             const avatarElement = document.querySelector('.avatar');
+            const sidebarAvatar = document.getElementById('sidebarAvatar');
+            const sidebarUserName = document.getElementById('sidebarUserName');
 
             if (user) {
                 userInfo.style.display = 'inline-block';
@@ -1097,12 +1248,16 @@
                         userPhoneElement.textContent = data.phone || "Chưa có số điện thoại";
                         userAddressElement.textContent = data.address || "Chưa có địa chỉ";
                         avatarElement.src = data.avatarUrl || "https://img.freepik.com/free-photo/portrait-smiling-young-woman-looking-camera_23-2148276937.jpg";
+                        sidebarUserName.textContent = data.name || user.displayName || "Người dùng";
+                        sidebarAvatar.src = data.avatarUrl || "images/nguoidung.png";
                     } else {
                         userNameElement.textContent = user.displayName || "Người dùng chưa đặt tên";
                         userEmailElement.textContent = user.email || "Chưa có email";
                         userPhoneElement.textContent = "Chưa có số điện thoại";
                         userAddressElement.textContent = "Chưa có địa chỉ";
                         avatarElement.src = "https://img.freepik.com/free-photo/portrait-smiling-young-woman-looking-camera_23-2148276937.jpg";
+                        sidebarUserName.textContent = user.displayName || "Người dùng";
+                        sidebarAvatar.src = "images/nguoidung.png";
                     }
                 }, (error) => {
                     Swal.fire({
@@ -1141,102 +1296,12 @@
                         const quantities = labels.map(label => monthlyData[label].quantity);
                         const amounts = labels.map(label => monthlyData[label].amount);
 
-                        const ctx = document.getElementById('purchaseChart').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Số Lượng Sản Phẩm',
-                                        data: quantities,
-                                        backgroundColor: 'rgba(247, 84, 74, 0.6)',
-                                        borderColor: '#f7544a',
-                                        borderWidth: 1,
-                                        yAxisID: 'y1'
-                                    },
-                                    {
-                                        label: 'Tổng Số Tiền (VND)',
-                                        data: amounts,
-                                        backgroundColor: 'rgba(74, 47, 26, 0.6)',
-                                        borderColor: '#4A2F1A',
-                                        borderWidth: 1,
-                                        yAxisID: 'y2'
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    y1: {
-                                        type: 'linear',
-                                        position: 'left',
-                                        title: { display: true, text: 'Số Lượng' },
-                                        beginAtZero: true
-                                    },
-                                    y2: {
-                                        type: 'linear',
-                                        position: 'right',
-                                        title: { display: true, text: 'Tổng Tiền (VND)' },
-                                        beginAtZero: true,
-                                        grid: { drawOnChartArea: false }
-                                    },
-                                    x: { title: { display: true, text: 'Tháng' } }
-                                },
-                                plugins: { legend: { display: true } },
-                                animation: { duration: 2000, easing: 'easeOutBounce' }
-                            }
-                        });
+                        renderPurchaseChart(labels, quantities, amounts);
                     } else {
                         orders = [];
                         displayTransactions(currentPage);
 
-                        const ctx = document.getElementById('purchaseChart').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ['Không có dữ liệu'],
-                                datasets: [
-                                    {
-                                        label: 'Số Lượng Sản Phẩm',
-                                        data: [0],
-                                        backgroundColor: 'rgba(247, 84, 74, 0.6)',
-                                        borderColor: '#f7544a',
-                                        borderWidth: 1,
-                                        yAxisID: 'y1'
-                                    },
-                                    {
-                                        label: 'Tổng Số Tiền (VND)',
-                                        data: [0],
-                                        backgroundColor: 'rgba(74, 47, 26, 0.6)',
-                                        borderColor: '#4A2F1A',
-                                        borderWidth: 1,
-                                        yAxisID: 'y2'
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    y1: {
-                                        type: 'linear',
-                                        position: 'left',
-                                        title: { display: true, text: 'Số Lượng' },
-                                        beginAtZero: true
-                                    },
-                                    y2: {
-                                        type: 'linear',
-                                        position: 'right',
-                                        title: { display: true, text: 'Tổng Tiền (VND)' },
-                                        beginAtZero: true,
-                                        grid: { drawOnChartArea: false }
-                                    },
-                                    x: { title: { display: true, text: 'Tháng' } }
-                                },
-                                plugins: { legend: { display: true } },
-                                animation: { duration: 2000, easing: 'easeOutBounce' }
-                            }
-                        });
+                        renderPurchaseChart(['Không có dữ liệu'], [0], [0]);
                     }
                 }, (error) => {
                     console.error('Error loading orders:', error); // Debug log
@@ -1251,6 +1316,8 @@
                 userInfo.style.display = 'none';
                 loginLink.style.display = 'inline-block';
                 registerLink.style.display = 'inline-block';
+                sidebarUserName.textContent = "Chưa đăng nhập";
+                sidebarAvatar.src = "images/nguoidung.png";
                 Swal.fire({
                     icon: 'warning',
                     title: 'Chưa đăng nhập!',
@@ -1295,6 +1362,12 @@
                     });
                 }
             });
+        });
+
+        // Đăng xuất từ sidebar
+        document.getElementById('sidebarLogout')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('logoutLink')?.click();
         });
 
         // Modal Functions
@@ -1457,6 +1530,94 @@
             });
         }, observerOptions);
         elements.forEach(el => observer.observe(el));
+
+        // Tab chuyển đổi vùng nội dung tài khoản
+        document.querySelectorAll('.account-menu ul li a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Xóa active ở sidebar
+                document.querySelectorAll('.account-menu ul li').forEach(li => li.classList.remove('active'));
+                this.parentElement.classList.add('active');
+                // Ẩn tất cả section
+                document.querySelectorAll('.account-section').forEach(sec => {
+                    sec.classList.remove('active-section');
+                    sec.style.display = 'none';
+                });
+                // Hiện section được chọn
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.style.display = 'block';
+                    setTimeout(() => section.classList.add('active-section'), 10);
+                }
+            });
+        });
+        // Khi load trang, chỉ hiện section đầu tiên
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.account-section').forEach((sec, idx) => {
+                if(idx === 0) {
+                    sec.style.display = 'block';
+                    sec.classList.add('active-section');
+                } else {
+                    sec.style.display = 'none';
+                    sec.classList.remove('active-section');
+                }
+            });
+        });
+
+        // Thay đổi biểu đồ sang histogram (bar chart)
+        function renderPurchaseChart(labels, quantities, amounts) {
+            const ctx = document.getElementById('purchaseChart').getContext('2d');
+            // Xóa chart cũ nếu có
+            if (window.purchaseChartInstance) {
+                window.purchaseChartInstance.destroy();
+            }
+            window.purchaseChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Số Lượng Sản Phẩm',
+                            data: quantities,
+                            backgroundColor: 'rgba(247, 84, 74, 0.6)',
+                            borderColor: '#f7544a',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Tổng Số Tiền (VND)',
+                            data: amounts,
+                            backgroundColor: 'rgba(74, 47, 26, 0.6)',
+                            borderColor: '#4A2F1A',
+                            borderWidth: 1,
+                            yAxisID: 'y2'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y1: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: 'Số Lượng' },
+                            beginAtZero: true
+                        },
+                        y2: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: 'Tổng Tiền (VND)' },
+                            beginAtZero: true,
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: { title: { display: true, text: 'Tháng' } }
+                    },
+                    plugins: { legend: { display: true } },
+                    animation: { duration: 2000, easing: 'easeOutBounce' }
+                }
+            });
+        }
     </script>
 </body>
 </html>
