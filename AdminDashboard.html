@@ -843,11 +843,11 @@
           <thead>
             <tr>
               <th>Mã đơn hàng</th>
-              <th>Hình thức giao hàng</th>
+              <th>Tên món hàng đặt</th>
+              <th>Tên người đặt</th>
               <th>Trạng thái</th>
               <th>Số lượng</th>
               <th>Khách hàng phải trả</th>
-              <th>Hạn xác nhận</th>
               <th>Thao tác</th>
             </tr>
           </thead>
@@ -1980,19 +1980,26 @@
       // Render orders table
       tbody.innerHTML = '';
       if (filteredOrders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào</td></tr>'; // update colspan to 7
         return;
       }
     
       filteredOrders.forEach(order => {
+        // Get ordered items as a comma-separated string
+        const itemNames = (order.items && order.items.length)
+          ? order.items.map(item => item.name).join(', ')
+          : 'N/A';
+        // Get customer name
+        const customerName = order.fullName || 'N/A';
+
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${order.id}</td>
-          <td>${order.shippingMethod || 'Tiêu chuẩn'}</td>
+          <td>${itemNames}</td>
+          <td>${customerName}</td>
           <td><span class="badge bg-${getStatusColor(order.status)}">${getStatusText(order.status)}</span></td>
           <td>${order.items?.length || 0}</td>
           <td>${(order.grandTotal || 0).toLocaleString('vi-VN')} đ</td>
-          <td>${order.deadline || 'N/A'}</td>
           <td>
             <button class="btn btn-sm btn-primary" onclick="editOrder('${order.id}')">
               <i class="fas fa-edit"></i> Xử lý
@@ -2307,13 +2314,8 @@
       await loadOrders();
     });
 
-    document.getElementById('orderStatusFilter')?.addEventListener('change', async function() {
-      await loadOrders();
-    });
-
     document.getElementById('refreshOrders')?.addEventListener('click', async function() {
       document.getElementById('orderSearch').value = '';
-      document.getElementById('orderStatusFilter').value = '';
       await loadOrders();
       Swal.fire({
         icon: 'success',

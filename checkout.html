@@ -1205,190 +1205,216 @@
         }
 
         async function placeOrder() {
-  // Kiểm tra đăng nhập
-  if (!auth.currentUser) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Vui lòng đăng nhập để đặt hàng.',
-      showConfirmButton: true,
-      confirmButtonText: 'Đăng nhập',
-      showCancelButton: true,
-      cancelButtonText: 'Hủy'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = 'login.html';
-      }
-    });
-    return;
-  }
+            // Kiểm tra đăng nhập
+            if (!auth.currentUser) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng đăng nhập để đặt hàng.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Đăng nhập',
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'login.html';
+                    }
+                });
+                return;
+            }
 
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const products = JSON.parse(localStorage.getItem('products')) || [];
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = JSON.parse(localStorage.getItem('products')) || [];
 
-  // Kiểm tra giỏ hàng
-  if (cart.length === 0) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Giỏ hàng trống!',
-      showConfirmButton: true
-    });
-    return;
-  }
+            // Kiểm tra giỏ hàng
+            if (cart.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Giỏ hàng trống!',
+                    showConfirmButton: true
+                });
+                return;
+            }
 
-  // Kiểm tra danh sách sản phẩm
-  if (!products.length) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Danh sách sản phẩm không khả dụng.',
-      showConfirmButton: true
-    });
-    return;
-  }
+            // Kiểm tra danh sách sản phẩm
+            if (!products.length) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Danh sách sản phẩm không khả dụng.',
+                    showConfirmButton: true
+                });
+                return;
+            }
 
-  // Lấy và kiểm tra địa chỉ giao hàng
-  const shippingAddress = document.getElementById('shipping_address').value;
-  if (!shippingAddress || typeof shippingAddress !== 'string' || shippingAddress.trim().length < 5) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Vui lòng điền địa chỉ giao hàng hợp lệ (tối thiểu 5 ký tự).',
-      showConfirmButton: true
-    });
-    return;
-  }
+            // Lấy và kiểm tra địa chỉ giao hàng
+            const shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress || typeof shippingAddress !== 'string' || shippingAddress.trim().length < 5) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng điền địa chỉ giao hàng hợp lệ (tối thiểu 5 ký tự).',
+                    showConfirmButton: true
+                });
+                return;
+            }
 
-  // Lấy thông tin người dùng
-  let userData = {};
-  try {
-    const userRef = db.ref('users/' + auth.currentUser.uid);
-    const snapshot = await userRef.once('value');
-    userData = snapshot.val() || {};
-    userData.email = userData.email || auth.currentUser.email;
-    userData.fullName = userData.fullName || auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
-    userData.phone = userData.phone || '';
-    userData.address = userData.address || shippingAddress;
-    console.log('User data:', { uid: auth.currentUser.uid, ...userData }); // Debug
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Không thể lấy thông tin người dùng.',
-      showConfirmButton: true
-    });
-    return;
-  }
+            // Lấy thông tin người dùng
+            let userData = {};
+            try {
+                const userRef = db.ref('users/' + auth.currentUser.uid);
+                const snapshot = await userRef.once('value');
+                userData = snapshot.val() || {};
+                userData.email = userData.email || auth.currentUser.email;
+                userData.fullName = userData.fullName || auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                userData.phone = userData.phone || '';
+                userData.address = userData.address || shippingAddress;
+                console.log('User data:', { uid: auth.currentUser.uid, ...userData }); // Debug
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể lấy thông tin người dùng.',
+                    showConfirmButton: true
+                });
+                return;
+            }
 
-  // Tính grandTotal
-  const productMap = products.reduce((map, p) => ({ ...map, [p.id]: p }), {});
-  let grandTotal = cart.reduce((total, item) => {
-    const product = productMap[item.productId];
-    return total + (product ? product.price * item.quantity : 0);
-  }, 0);
+            // Tính subtotal
+            const productMap = products.reduce((map, p) => ({ ...map, [p.id]: p }), {});
+            let subtotal = cart.reduce((total, item) => {
+                const product = productMap[item.productId];
+                return total + (product ? product.price * item.quantity : 0);
+            }, 0);
 
-  // Tạo ngày và giờ
-  const createdAt = new Date();
-  const date = createdAt.toLocaleDateString('vi-VN'); // DD/MM/YYYY
-  const time = createdAt.toLocaleTimeString('vi-VN', { hour12: false }); // HH:mm:ss
+            // Lấy thông tin giảm giá và phương thức giao hàng
+            let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon')) || {};
+            let discountAmount = 0;
+            let couponCode = '';
+            let deliveryMethod = document.querySelector('input[name="delivery_method"]:checked')?.value || 'standard';
+            let shippingFee = deliveryMethod === 'express' ? 30000 : 0;
 
-  // Tạo đối tượng đơn hàng
-  const order = {
-    userId: auth.currentUser.uid,
-    customerInfo: {
-      name: userData.fullName,
-      fullName: userData.fullName,
-      email: userData.email,
-      phone: userData.phone,
-      address: userData.address
-    },
-    billingInfo: {
-      fullName: userData.fullName,
-      email: userData.email,
-      phone: userData.phone,
-      address: shippingAddress
-    },
-    shippingInfo: {
-      receiverName: userData.fullName,
-      receiverPhone: userData.phone,
-      address: shippingAddress
-    },
-    items: cart.map(item => ({
-      productId: item.productId,
-      name: productMap[item.productId]?.name || 'Unknown Product',
-      quantity: Number(item.quantity) || 1
-    })),
-    grandTotal,
-    createdAt: createdAt.toISOString(),
-    status: 'pending',
-    date, // Thêm để đáp ứng yêu cầu
-    time, // Thêm để đáp ứng yêu cầu
-    fullName: userData.fullName // Thêm để đáp ứng yêu cầu
-  };
+            if (appliedCoupon.code) {
+                // Lấy thông tin khuyến mãi từ localStorage (nếu có)
+                const promotions = await fetchPromotions();
+                const promo = Object.values(promotions).find(p => p.code === appliedCoupon.code);
+                if (isValidPromotion(promo, appliedCoupon.code)) {
+                    discountAmount = (subtotal * promo.discount) / 100;
+                    couponCode = appliedCoupon.code;
+                }
+            }
 
-  // Hiển thị loading
-  Swal.fire({
-    title: 'Đang xử lý...',
-    text: 'Vui lòng chờ trong giây lát.',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
+            let discountedTotal = subtotal - discountAmount + shippingFee;
+            let grandTotal = discountedTotal;
 
-  // Lưu vào Firebase
-  try {
-    await db.ref('orders').push(order);
-    localStorage.removeItem('cart');
-    localStorage.removeItem('appliedCoupon');
-    updateCartCount();
-    updateCartDropdown();
-    document.getElementById('orderDetails').style.display = 'none';
-    document.getElementById('confirmationMessage').style.display = 'block';
-    document.querySelector('button[onclick="placeOrder()"]').style.display = 'none';
-    document.querySelector('button[onclick="prevStep()"]').style.display = 'none';
-    Swal.fire({
-      icon: 'success',
-      title: 'Thành công!',
-      text: 'Đơn hàng của bạn đã được đặt thành công!',
-      showConfirmButton: false,
-      timer: 1500
-    });
-  } catch (error) {
-    console.error('Error saving order:', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền lưu đơn hàng. Vui lòng kiểm tra quy tắc bảo mật Firebase.' : 'Không thể lưu đơn hàng.',
-      showConfirmButton: true
-    });
-  }
-}
+            // Tạo ngày và giờ
+            const createdAt = new Date();
+            const date = createdAt.toLocaleDateString('vi-VN'); // DD/MM/YYYY
+            const time = createdAt.toLocaleTimeString('vi-VN', { hour12: false }); // HH:mm:ss
 
-// Kiểm tra trạng thái đăng nhập khi tải trang
-document.addEventListener('DOMContentLoaded', () => {
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Chưa đăng nhập',
-        text: 'Vui lòng đăng nhập để tiếp tục thanh toán.',
-        showConfirmButton: true,
-        confirmButtonText: 'Đăng nhập',
-        showCancelButton: true,
-        cancelButtonText: 'Hủy'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'login.html';
+            // Tạo đối tượng đơn hàng
+            const order = {
+                userId: auth.currentUser.uid,
+                customerInfo: {
+                    name: userData.fullName,
+                    fullName: userData.fullName,
+                    email: userData.email,
+                    phone: userData.phone,
+                    address: userData.address
+                },
+                billingInfo: {
+                    fullName: userData.fullName,
+                    email: userData.email,
+                    phone: userData.phone,
+                    address: shippingAddress
+                },
+                shippingInfo: {
+                    receiverName: userData.fullName,
+                    receiverPhone: userData.phone,
+                    address: shippingAddress
+                },
+                items: cart.map(item => ({
+                    productId: item.productId,
+                    name: productMap[item.productId]?.name || 'Unknown Product',
+                    quantity: Number(item.quantity) || 1
+                })),
+                subtotal, // Tổng tiền trước giảm giá
+                discountAmount, // Số tiền giảm giá
+                couponCode, // Mã giảm giá đã áp dụng
+                shippingFee, // Phí giao hàng
+                deliveryMethod, // Phương thức giao hàng
+                discountedTotal, // Tổng tiền sau giảm giá và phí giao hàng
+                grandTotal, // Tổng cuối cùng (giống discountedTotal)
+                createdAt: createdAt.toISOString(),
+                status: 'pending',
+                date,
+                time,
+                fullName: userData.fullName
+            };
+
+            // Hiển thị loading
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Lưu vào Firebase
+            try {
+                await db.ref('orders').push(order);
+                localStorage.removeItem('cart');
+                localStorage.removeItem('appliedCoupon');
+                updateCartCount();
+                updateCartDropdown();
+                document.getElementById('orderDetails').style.display = 'none';
+                document.getElementById('confirmationMessage').style.display = 'block';
+                document.querySelector('button[onclick="placeOrder()"]').style.display = 'none';
+                document.querySelector('button[onclick="prevStep()"]').style.display = 'none';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Đơn hàng của bạn đã được đặt thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (error) {
+                console.error('Error saving order:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền lưu đơn hàng. Vui lòng kiểm tra quy tắc bảo mật Firebase.' : 'Không thể lưu đơn hàng.',
+                    showConfirmButton: true
+                });
+            }
         }
-      });
-    } else {
-      console.log('User logged in:', { uid: user.uid, email: user.email }); // Debug
-    }
-  });
-});
+
+        // Kiểm tra trạng thái đăng nhập khi tải trang
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onAuthStateChanged(user => {
+                if (!user) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa đăng nhập',
+                        text: 'Vui lòng đăng nhập để tiếp tục thanh toán.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Đăng nhập',
+                        showCancelButton: true,
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                } else {
+                    console.log('User logged in:', { uid: user.uid, email: user.email }); // Debug
+                }
+            });
+        });
 
         function bindModalEvents() {
             document.querySelector('.log').addEventListener('click', (e) => {
