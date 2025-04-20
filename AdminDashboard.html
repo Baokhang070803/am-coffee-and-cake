@@ -555,10 +555,62 @@
       font-size: 1.5rem;
       transition: background 0.2s, color 0.2s;
     }
-    .dark-mode .dark-mode-toggle {
+    body.dark-mode .dark-mode-toggle {
       background: #23272f;
       color: #fff;
       border: 1px solid #A67C52;
+    }
+
+    /* Message Management Styles */
+    .message-container {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    .message-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    .message-container::-webkit-scrollbar-track {
+      background: #f3ede6;
+      border-radius: 10px;
+    }
+    .message-container::-webkit-scrollbar-thumb {
+      background: #A67C52;
+      border-radius: 10px;
+    }
+    .message-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+      transition: all 0.3s ease;
+    }
+    .message-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(166,124,82,0.15);
+    }
+    .message-item.admin {
+      background: #f3ede6;
+    }
+    .message-item .message-sender {
+      font-weight: 600;
+      color: #464f5c;
+    }
+    .message-item .message-content {
+      margin: 8px 0;
+      color: #64748b;
+    }
+    .message-item .message-timestamp {
+      font-size: 0.85rem;
+      color: #8391a7;
+    }
+    body.dark-mode .message-item {
+      background: #2d323c;
+      color: #e2e8f0;
+    }
+    body.dark-mode .message-item.admin {
+      background: #23272f;
     }
   </style>
 </head>
@@ -570,14 +622,14 @@
     </div>
     <div class="text-center mb-3">
       <img src="images/logocappy.png" alt="Admin Avatar" class="admin-avatar" onerror="this.src='https://i.pravatar.cc/120?img=12'">
-      <!-- <img src="images/LOGO.png" alt="Coffee & Cake Logo" class="logo-img"> -->
     </div>
     <h6 class="text-center mb-4">Quản trị viên</h6>
     <nav class="nav flex-column">
       <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> <span>Tổng Quan</span></a>
-      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</a>
+      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</span></a>
       <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> <span>Quản Lý Mã Giảm Giá</span></a>
       <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> <span>Quản Lý Đơn Hàng</span></a>
+      <a class="nav-link" href="#messageManagement"><i class="fas fa-envelope"></i> <span>Quản Lý Tin Nhắn</span></a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
   </div>
@@ -587,18 +639,7 @@
     <!-- Dashboard Section -->
     <section id="dashboard" class="active-section">
       <h1 style="font-weight:700;letter-spacing:-1px;">Tổng Quan</h1>
-      <!-- Quick Stats -->
       <div class="quick-stats">
-        <!-- Xóa block Tổng Người Dùng -->
-        <!--
-        <div class="quick-stat">
-          <div class="icon"><i class="fas fa-users"></i></div>
-          <div>
-            <div class="label">Tổng Người Dùng</div>
-            <div class="value" id="totalUsers">0</div>
-          </div>
-        </div>
-        -->
         <div class="quick-stat">
           <div class="icon"><i class="fas fa-star"></i></div>
           <div>
@@ -662,7 +703,6 @@
           </div>
         </div>
       </div>
-      <!-- Activity Timeline -->
       <div class="row mt-4">
         <div class="col-md-8">
           <div class="card p-3">
@@ -677,7 +717,6 @@
           </div>
         </div>
       </div>
-      <!-- Thêm đánh giá người dùng -->
       <div class="row mt-4">
         <div class="col-md-12">
           <div class="card p-3">
@@ -772,8 +811,6 @@
     <!-- Order Management Section -->
     <section id="orderManagement">
       <h2>Quản Lý Đơn Hàng</h2>
-      
-      <!-- Analytics Dashboard -->
       <div class="row mb-4">
         <div class="col-md-3">
           <div class="card">
@@ -812,7 +849,6 @@
           </div>
         </div>
       </div>
-
       <div class="order-tabs">
         <button class="order-tab active" data-status="all">
           Tất cả
@@ -839,7 +875,6 @@
           <span class="order-count">0</span>
         </button>
       </div>
-    
       <div class="order-filters">
         <div class="order-search flex-grow-1">
           <input type="text" id="orderSearch" class="form-control" placeholder="Nhập ID đơn hàng hoặc tên khách hàng...">
@@ -848,7 +883,6 @@
           <i class="fas fa-sync-alt"></i> Làm mới
         </button>
       </div>
-    
       <div class="table-container">
         <table class="table order-table mb-0">
           <thead>
@@ -864,6 +898,27 @@
           </thead>
           <tbody id="orderTableBody"></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- Message Management Section -->
+    <section id="messageManagement">
+      <h2>Quản Lý Tin Nhắn</h2>
+      <div class="card p-3">
+        <h5><i class="fas fa-envelope me-2"></i> Tin Nhắn Từ Người Dùng</h5>
+        <form id="messageSearchForm" class="mb-3">
+          <div class="row">
+            <div class="col-md-6">
+              <input type="text" id="messageSearch" class="form-control" placeholder="Tìm kiếm tin nhắn theo người gửi hoặc nội dung...">
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+            </div>
+          </div>
+        </form>
+        <div class="message-container" id="messageContainer">
+          <div class="text-center text-muted">Đang tải tin nhắn...</div>
+        </div>
       </div>
     </section>
 
@@ -1074,12 +1129,36 @@
       </div>
     </div>
 
+    <!-- Reply Message Modal -->
+    <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="replyMessageModalLabel">Trả Lời Tin Nhắn</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="replyMessageForm">
+              <input type="hidden" id="replyMessageId">
+              <div class="mb-3">
+                <label for="replyMessageContent" class="form-label">Nội Dung Trả Lời</label>
+                <textarea class="form-control" id="replyMessageContent" rows="4" required maxlength="500"></textarea>
+                <small class="form-text text-muted">Tối đa 500 ký tự</small>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i> Gửi</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="footer">
       <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
     </div>
     <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
       <i class="fas fa-moon"></i>
     </div>
+  </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -1090,7 +1169,7 @@
     // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase, ref, get, set, update, remove, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, get, set, update, remove, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     // Firebase Config
     const firebaseConfig = {
@@ -1145,22 +1224,83 @@
       }
     });
 
+    // Initialize Dashboard
+    function initializeDashboard() {
+      loadDashboardData();
+      setupEventListeners();
+    }
+
+    // Setup Event Listeners
+    function setupEventListeners() {
+      // Sidebar Toggle
+      document.getElementById('sidebarToggle').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+        document.querySelector('.content').style.marginLeft = sidebar.classList.contains('collapsed') ? '70px' : '260px';
+      });
+
+      // Dark Mode Toggle
+      document.getElementById('darkModeToggle').addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+      });
+
+      // Load dark mode preference
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+
+      // Product Search
+      document.getElementById('productSearchForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadProducts();
+      });
+
+      // Promotion Search
+      document.getElementById('promotionSearchForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadPromotions();
+      });
+
+      // Message Search
+      document.getElementById('messageSearchForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadMessages();
+      });
+
+      // Order Search
+      document.getElementById('orderSearch')?.addEventListener('input', () => {
+        loadOrders();
+      });
+
+      // Order Tabs
+      document.querySelectorAll('.order-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          loadOrders();
+        });
+      });
+
+      // Refresh Buttons
+      document.getElementById('refreshData')?.addEventListener('click', loadProducts);
+      document.getElementById('refreshPromotions')?.addEventListener('click', loadPromotions);
+      document.getElementById('refreshOrders')?.addEventListener('click', loadOrders);
+    }
+
     // Navigation
     function switchSection(sectionId) {
       const sections = document.querySelectorAll('section');
       const navLinks = document.querySelectorAll('.nav-link');
       
-      // Hide all sections first
       sections.forEach(section => {
         section.classList.remove('active-section');
       });
       
-      // Remove active class from all nav links
       navLinks.forEach(link => {
         link.classList.remove('active');
       });
       
-      // Show selected section with animation
       const targetSection = document.getElementById(sectionId);
       const targetLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
       
@@ -1170,16 +1310,13 @@
         }, 50);
         targetLink.classList.add('active');
         
-        // Update page title
         document.title = `${targetLink.textContent.trim()} - Admin Dashboard`;
         
-        // Scroll to top smoothly
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
         
-        // Load section data if needed
         switch(sectionId) {
           case 'dashboard':
             loadDashboardData();
@@ -1192,6 +1329,9 @@
             break;
           case 'orderManagement':
             loadOrders();
+            break;
+          case 'messageManagement':
+            loadMessages();
             break;
         }
       }
@@ -1255,7 +1395,6 @@
         return;
       }
       try {
-        // Load Products
         const categories = ['drinks', 'cakes', 'toppings'];
         let totalProducts = 0;
         for (const category of categories) {
@@ -1266,7 +1405,6 @@
         }
         document.getElementById('totalProducts').textContent = totalProducts;
 
-        // Load Orders
         const snapshot = await get(ref(db, 'orders'));
         let orders = [];
         let dailyRevenue = 0;
@@ -1287,11 +1425,9 @@
         document.getElementById('dailyRevenue').textContent = dailyRevenue.toLocaleString('vi-VN') + ' VND';
         document.getElementById('pendingOrders').textContent = pendingOrders;
 
-        // Render Charts
         renderRevenueChart(orders);
         renderOrderStatusChart(orders);
 
-        // Notifications
         const notificationsList = document.getElementById('notificationsList');
         notificationsList.innerHTML = '';
         if (totalProducts === 0) {
@@ -1304,7 +1440,6 @@
           notificationsList.innerHTML += '<li class="list-group-item">Chưa có đơn hàng nào.</li>';
         }
 
-        // Load Promotions
         let activePromotions = 0;
         try {
           const promoSnap = await get(ref(db, 'promotions'));
@@ -1314,7 +1449,6 @@
         } catch {}
         document.getElementById('activePromotions').textContent = activePromotions;
 
-        // Best Seller
         let bestSeller = 'N/A';
         if (orders.length > 0) {
           const productSales = {};
@@ -1329,11 +1463,9 @@
         }
         document.getElementById('bestSeller').textContent = bestSeller;
 
-        // Shipping Orders
         const shippingOrders = orders.filter(o => o.status === 'shipped').length;
         document.getElementById('shippingOrders').textContent = shippingOrders;
 
-        // Activity Timeline (last 5 orders)
         const timeline = document.getElementById('activityTimeline');
         timeline.innerHTML = '';
         orders.slice(-5).reverse().forEach(order => {
@@ -1343,7 +1475,6 @@
           </li>`;
         });
 
-        // Thêm: Load đánh giá người dùng
         await loadUserReviews();
 
       } catch (error) {
@@ -1354,6 +1485,31 @@
           text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu. Vui lòng kiểm tra Firebase Rules.' : `Không thể tải dữ liệu dashboard: ${error.message}.`,
           showConfirmButton: true
         });
+      }
+    }
+
+    async function loadUserReviews() {
+      try {
+        const snapshot = await get(ref(db, 'reviews'));
+        const reviewsList = document.getElementById('userReviewsList');
+        reviewsList.innerHTML = '';
+        if (snapshot.exists()) {
+          const reviews = Object.values(snapshot.val());
+          reviews.slice(-5).reverse().forEach(review => {
+            reviewsList.innerHTML += `
+              <li class="list-group-item">
+                <strong>${review.userName || 'Ẩn danh'}</strong> đánh giá: 
+                <span class="text-warning">${'★'.repeat(review.rating)}</span>
+                <p class="mb-0">${review.comment}</p>
+                <small class="text-muted">${new Date(review.timestamp).toLocaleString('vi-VN')}</small>
+              </li>`;
+          });
+        } else {
+          reviewsList.innerHTML = '<li class="list-group-item text-center">Chưa có đánh giá nào.</li>';
+        }
+      } catch (error) {
+        console.error('Error loading reviews:', error);
+        document.getElementById('userReviewsList').innerHTML = '<li class="list-group-item text-center">Không thể tải đánh giá.</li>';
       }
     }
 
@@ -1654,8 +1810,8 @@
         return;
       }
       Swal.fire({
-        title: 'Bạn có chắc?',
-        text: "Bạn không thể khôi phục sản phẩm sau khi xóa!",
+        title: 'Xác nhận xóa?',
+        text: 'Bạn có chắc muốn xóa sản phẩm này?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#A63C3C',
@@ -1672,7 +1828,7 @@
             await loadDashboardData();
             Swal.fire({
               icon: 'success',
-              title: 'Đã xóa!',
+              title: 'Thành công!',
               text: 'Sản phẩm đã được xóa.',
               timer: 1500,
               showConfirmButton: false
@@ -1745,10 +1901,16 @@
           <td>${promo.discount}%</td>
           <td>${promo.startDate}</td>
           <td>${promo.endDate}</td>
-          <td>${promo.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="editPromotion('${promo.id}')"><i class="fas fa-edit"></i> Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deletePromotion('${promo.id}')"><i class="fas fa-trash"></i> Xóa</button>
+            <span class="badge ${promo.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+              ${promo.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex flex-column gap-1">
+              <button class="btn btn-warning btn-sm" onclick="editPromotion('${promo.id}')"><i class="fas fa-edit"></i> Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deletePromotion('${promo.id}')"><i class="fas fa-trash"></i> Xóa</button>
+            </div>
           </td>
         `;
         tbody.appendChild(row);
@@ -1767,17 +1929,17 @@
         });
         return;
       }
-      const code = document.getElementById('promotionCode').value;
       try {
         const newPromotion = {
-          code: code,
+          code: document.getElementById('promotionCode').value,
           discount: parseInt(document.getElementById('promotionDiscount').value),
           startDate: document.getElementById('promotionStartDate').value,
           endDate: document.getElementById('promotionEndDate').value,
           status: document.getElementById('promotionStatus').value
         };
-        await set(ref(db, `promotions/${code}`), newPromotion);
+        await push(ref(db, 'promotions'), newPromotion);
         await loadPromotions();
+        await loadDashboardData();
         bootstrap.Modal.getInstance(document.getElementById('addPromotionModal')).hide();
         Swal.fire({
           icon: 'success',
@@ -1812,13 +1974,13 @@
       try {
         const snapshot = await get(ref(db, `promotions/${id}`));
         if (snapshot.exists()) {
-          const promotion = snapshot.val();
+          const promo = snapshot.val();
           document.getElementById('editPromotionId').value = id;
-          document.getElementById('editPromotionCode').value = promotion.code;
-          document.getElementById('editPromotionDiscount').value = promotion.discount;
-          document.getElementById('editPromotionStartDate').value = promotion.startDate;
-          document.getElementById('editPromotionEndDate').value = promotion.endDate;
-          document.getElementById('editPromotionStatus').value = promotion.status;
+          document.getElementById('editPromotionCode').value = promo.code;
+          document.getElementById('editPromotionDiscount').value = promo.discount;
+          document.getElementById('editPromotionStartDate').value = promo.startDate;
+          document.getElementById('editPromotionEndDate').value = promo.endDate;
+          document.getElementById('editPromotionStatus').value = promo.status;
           new bootstrap.Modal(document.getElementById('editPromotionModal')).show();
         }
       } catch (error) {
@@ -1854,6 +2016,7 @@
         };
         await set(ref(db, `promotions/${id}`), updatedPromotion);
         await loadPromotions();
+        await loadDashboardData();
         bootstrap.Modal.getInstance(document.getElementById('editPromotionModal')).hide();
         Swal.fire({
           icon: 'success',
@@ -1885,8 +2048,8 @@
         return;
       }
       Swal.fire({
-        title: 'Bạn có chắc?',
-        text: "Bạn không thể khôi phục mã giảm giá sau khi xóa!",
+        title: 'Xác nhận xóa?',
+        text: 'Bạn có chắc muốn xóa mã giảm giá này?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#A63C3C',
@@ -1898,9 +2061,10 @@
           try {
             await remove(ref(db, `promotions/${id}`));
             await loadPromotions();
+            await loadDashboardData();
             Swal.fire({
               icon: 'success',
-              title: 'Đã xóa!',
+              title: 'Thành công!',
               text: 'Mã giảm giá đã được xóa.',
               timer: 1500,
               showConfirmButton: false
@@ -1934,19 +2098,10 @@
         let orders = [];
         if (snapshot.exists()) {
           const data = snapshot.val();
-          orders = Object.keys(data).map(key => ({
-            id: key,
-            fullName: data[key].fullName || data[key].customerInfo?.fullName || 'Khách vãng lai',
-            items: data[key].items || [],
-            address: data[key].billingInfo?.address || data[key].shippingInfo?.address || 'N/A',
-            date: data[key].date || 'N/A',
-            time: data[key].time || 'N/A',
-            status: data[key].status || 'pending',
-            grandTotal: data[key].grandTotal || 0
-          }));
+          orders = Object.keys(data).map(key => ({ id: key, ...data[key] }));
         }
         renderOrders(orders);
-        await updateOrderAnalytics();
+        updateOrderStats(orders);
       } catch (error) {
         console.error('Error loading orders:', error);
         Swal.fire({
@@ -1962,9 +2117,70 @@
     function renderOrders(orders) {
       const tbody = document.getElementById('orderTableBody');
       if (!tbody) return;
-      
-      // Update order counts
-      const counts = {
+      tbody.innerHTML = '';
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào.</td></tr>';
+        return;
+      }
+      const searchQuery = document.getElementById('orderSearch')?.value.toLowerCase() || '';
+      const activeTab = document.querySelector('.order-tab.active')?.dataset.status || 'all';
+      const filteredOrders = orders.filter(o => {
+        const matchesSearch = o.id.toLowerCase().includes(searchQuery) ||
+                            (o.fullName || '').toLowerCase().includes(searchQuery);
+        const matchesStatus = activeTab === 'all' || o.status === activeTab;
+        return matchesSearch && matchesStatus;
+      });
+      filteredOrders.forEach(order => {
+        const items = Array.isArray(order.items) ? order.items : [];
+        const itemNames = items.map(item => item.name).join(', ');
+        const totalQuantity = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>#${order.id}</td>
+          <td>${itemNames || 'N/A'}</td>
+          <td>${order.fullName || 'N/A'}</td>
+          <td>
+            <span class="badge ${
+              order.status === 'pending' ? 'bg-warning' :
+              order.status === 'confirmed' ? 'bg-info' :
+              order.status === 'shipped' ? 'bg-primary' :
+              order.status === 'delivered' ? 'bg-success' :
+              'bg-danger'
+            }">
+              ${
+                order.status === 'pending' ? 'Đang chờ' :
+                order.status === 'confirmed' ? 'Đã xác nhận' :
+                order.status === 'shipped' ? 'Đang giao' :
+                order.status === 'delivered' ? 'Đã giao' :
+                'Đã hủy'
+              }
+            </span>
+          </td>
+          <td>${totalQuantity}</td>
+          <td>${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</td>
+          <td>
+            <div class="d-flex flex-column gap-1">
+              <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem</button>
+              <button class="btn btn-warning btn-sm" onclick="editOrder('${order.id}')"><i class="fas fa-edit"></i> Sửa</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Update Order Stats
+    function updateOrderStats(orders) {
+      const today = new Date().toISOString().split('T')[0];
+      const lastWeek = new Date();
+      lastWeek.setDate(lastWeek.getDate() - 7);
+      const lastWeekStr = lastWeek.toISOString().split('T')[0];
+
+      let todayRevenue = 0;
+      let weekRevenue = 0;
+      let completedOrders = 0;
+      let cancelledOrders = 0;
+      const statusCounts = {
         all: orders.length,
         pending: 0,
         confirmed: 0,
@@ -1972,93 +2188,101 @@
         delivered: 0,
         cancelled: 0
       };
-      
+
       orders.forEach(order => {
-        if (counts.hasOwnProperty(order.status)) {
-          counts[order.status]++;
+        if (order.createdAt && order.createdAt.startsWith(today)) {
+          todayRevenue += order.grandTotal || 0;
+        }
+        if (order.createdAt && order.createdAt >= lastWeekStr) {
+          weekRevenue += order.grandTotal || 0;
+        }
+        if (order.status === 'delivered') {
+          completedOrders++;
+        }
+        if (order.status === 'cancelled') {
+          cancelledOrders++;
+        }
+        if (statusCounts[order.status] !== undefined) {
+          statusCounts[order.status]++;
         }
       });
-      
-      // Update tab counts
+
+      document.getElementById('todayRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + ' đ';
+      document.getElementById('weekRevenue').textContent = weekRevenue.toLocaleString('vi-VN') + ' đ';
+      document.getElementById('completionRate').textContent = orders.length > 0 ? ((completedOrders / orders.length) * 100).toFixed(1) + '%' : '0%';
+      document.getElementById('cancellationRate').textContent = orders.length > 0 ? ((cancelledOrders / orders.length) * 100).toFixed(1) + '%' : '0%';
+
       document.querySelectorAll('.order-tab').forEach(tab => {
         const status = tab.dataset.status;
-        const count = tab.querySelector('.order-count');
-        count.textContent = counts[status] || 0;
+        const count = statusCounts[status] || 0;
+        tab.querySelector('.order-count').textContent = count;
       });
-      
-      // Filter orders based on active tab
-      const activeStatus = document.querySelector('.order-tab.active').dataset.status;
-      const filteredOrders = activeStatus === 'all' ? 
-        orders : 
-        orders.filter(o => o.status === activeStatus);
-        
-      // Render orders table
-      tbody.innerHTML = '';
-      if (filteredOrders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào</td></tr>'; // update colspan to 7
+    }
+
+    // View Order Details
+    window.viewOrderDetails = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
         return;
       }
-    
-      filteredOrders.forEach(order => {
-        // Get ordered items as a comma-separated string
-        const itemNames = (order.items && order.items.length)
-          ? order.items.map(item => item.name).join(', ')
-          : 'N/A';
-        // Get customer name
-        const customerName = order.fullName || 'N/A';
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${order.id}</td>
-          <td>${itemNames}</td>
-          <td>${customerName}</td>
-          <td><span class="badge bg-${getStatusColor(order.status)}">${getStatusText(order.status)}</span></td>
-          <td>${order.items?.length || 0}</td>
-          <td>${(order.grandTotal || 0).toLocaleString('vi-VN')} đ</td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="editOrder('${order.id}')">
-              <i class="fas fa-edit"></i> Xử lý
-            </button>
-            <button class="btn btn-sm btn-info" onclick="showOrderDetail('${order.id}')">
-              <i class="fas fa-info-circle"></i> Chi tiết
-            </button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-    
-    // Add tab click handlers
-    document.querySelectorAll('.order-tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        loadOrders(); // Reload orders with new filter
-      });
-    });
-    
-    // Helper functions
-    function getStatusColor(status) {
-      const colors = {
-        pending: 'warning',
-        confirmed: 'info',
-        shipped: 'primary',
-        delivered: 'success',
-        cancelled: 'danger'
-      };
-      return colors[status] || 'secondary';
-    }
-    
-    function getStatusText(status) {
-      const texts = {
-        pending: 'Chờ xác nhận',
-        confirmed: 'Đang xử lý',
-        shipped: 'Đang vận chuyển',
-        delivered: 'Đã giao',
-        cancelled: 'Đã hủy'
-      };
-      return texts[status] || status;
-    }
+      try {
+        const snapshot = await get(ref(db, `orders/${id}`));
+        if (snapshot.exists()) {
+          const order = snapshot.val();
+          const items = Array.isArray(order.items) ? order.items : [];
+          let itemsHtml = items.map(item => `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              ${item.name} (x${item.quantity})
+              <span>${(item.price * item.quantity).toLocaleString('vi-VN')} VND</span>
+            </li>
+          `).join('');
+          const orderDetailBody = document.getElementById('orderDetailBody');
+          orderDetailBody.innerHTML = `
+            <h6>Mã đơn hàng: #${id}</h6>
+            <p><strong>Khách hàng:</strong> ${order.fullName || 'N/A'}</p>
+            <p><strong>Địa chỉ:</strong> ${order.address || 'N/A'}</p>
+            <p><strong>Số điện thoại:</strong> ${order.phone || 'N/A'}</p>
+            <p><strong>Trạng thái:</strong> 
+              <span class="badge ${
+                order.status === 'pending' ? 'bg-warning' :
+                order.status === 'confirmed' ? 'bg-info' :
+                order.status === 'shipped' ? 'bg-primary' :
+                order.status === 'delivered' ? 'bg-success' :
+                'bg-danger'
+              }">
+                ${
+                  order.status === 'pending' ? 'Đang chờ' :
+                  order.status === 'confirmed' ? 'Đã xác nhận' :
+                  order.status === 'shipped' ? 'Đang giao' :
+                  order.status === 'delivered' ? 'Đã giao' :
+                  'Đã hủy'
+                }
+              </span>
+            </p>
+            <p><strong>Ngày đặt:</strong> ${order.createdAt ? order.createdAt.replace('T', ' ') : 'N/A'}</p>
+            <h6>Danh sách sản phẩm:</h6>
+            <ul class="list-group mb-3">
+              ${itemsHtml || '<li class="list-group-item">Không có sản phẩm</li>'}
+            </ul>
+            <p><strong>Tổng cộng:</strong> ${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</p>
+          `;
+          new bootstrap.Modal(document.getElementById('orderDetailModal')).show();
+        }
+      } catch (error) {
+        console.error('Error loading order details:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu đơn hàng.' : `Không thể tải chi tiết đơn hàng: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    };
 
     // Edit Order
     window.editOrder = async function(id) {
@@ -2076,7 +2300,7 @@
         if (snapshot.exists()) {
           const order = snapshot.val();
           document.getElementById('editOrderId').value = id;
-          document.getElementById('editOrderStatus').value = order.status || 'pending';
+          document.getElementById('editOrderStatus').value = order.status;
           new bootstrap.Modal(document.getElementById('editOrderModal')).show();
         }
       } catch (error) {
@@ -2107,12 +2331,12 @@
           status: document.getElementById('editOrderStatus').value
         });
         await loadOrders();
-        await loadDashboardData(); // Update dashboard stats
+        await loadDashboardData();
         bootstrap.Modal.getInstance(document.getElementById('editOrderModal')).hide();
         Swal.fire({
           icon: 'success',
           title: 'Thành công!',
-          text: 'Trạng thái đơn hàng đã được cập nhật.',
+          text: 'Đơn hàng đã được cập nhật.',
           timer: 1500,
           showConfirmButton: false
         });
@@ -2127,54 +2351,8 @@
       }
     });
 
-    // Delete Order
-    window.deleteOrder = async function(id) {
-      if (!db) {
-        Swal.fire({
-          cruise: 'error',
-          title: 'Lỗi!',
-          text: 'Firebase chưa được khởi tạo.',
-          showConfirmButton: true
-        });
-        return;
-      }
-      Swal.fire({
-        title: 'Bạn có chắc?',
-        text: "Bạn không thể khôi phục đơn hàng sau khi xóa!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#A63C3C',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Xóa',
-        cancelButtonText: 'Hủy'
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            await remove(ref(db, `orders/${id}`));
-            await loadOrders();
-            await loadDashboardData(); // Update dashboard stats
-            Swal.fire({
-              icon: 'success',
-              title: 'Đã xóa!',
-              text: 'Đơn hàng đã được xóa.',
-              timer: 1500,
-              showConfirmButton: false
-            });
-          } catch (error) {
-            console.error('Error deleting order:', error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Lỗi!',
-              text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền xóa đơn hàng.' : `Không thể xóa đơn hàng: ${error.message}.`,
-              showConfirmButton: true
-            });
-          }
-        }
-      });
-    };
-
-    // Hiển thị chi tiết đơn hàng
-    window.showOrderDetail = async function(id) {
+    // Load Messages
+    async function loadMessages() {
       if (!db) {
         Swal.fire({
           icon: 'error',
@@ -2185,307 +2363,152 @@
         return;
       }
       try {
-        const snapshot = await get(ref(db, `orders/${id}`));
-        if (!snapshot.exists()) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Không tìm thấy!',
-            text: 'Không tìm thấy đơn hàng.',
-            showConfirmButton: true
-          });
-          return;
+        const snapshot = await get(ref(db, 'chatMessages'));
+        let messages = [];
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          messages = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
         }
-        const order = snapshot.val();
-        // Thông tin người đặt
-        const info = order.billingInfo || order.customerInfo || {};
-        // Thông tin giao hàng
-        const shipping = order.shippingInfo || {};
-        // Danh sách sản phẩm
-        const items = (order.items || []).map(item => `
-          <tr>
-            <td>${item.name || ''}</td>
-            <td>${item.productId || ''}</td>
-            <td>${item.quantity || 1}</td>
-          </tr>
-        `).join('');
-        // Render nội dung modal
-        document.getElementById('orderDetailBody').innerHTML = `
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <h6>Thông tin người đặt</h6>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Họ tên:</b> ${info.fullName || info.name || 'N/A'}</li>
-                <li class="list-group-item"><b>Email:</b> ${info.email || 'N/A'}</li>
-                <li class="list-group-item"><b>SĐT:</b> ${info.phone || 'N/A'}</li>
-                <li class="list-group-item"><b>Địa chỉ:</b> ${info.address || 'N/A'}</li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <h6>Thông tin giao hàng</h6>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Người nhận:</b> ${shipping.receiverName || info.fullName || info.name || 'N/A'}</li>
-                <li class="list-group-item"><b>SĐT nhận:</b> ${shipping.receiverPhone || info.phone || 'N/A'}</li>
-                <li class="list-group-item"><b>Địa chỉ nhận:</b> ${shipping.address || info.address || 'N/A'}</li>
-              </ul>
-            </div>
-          </div>
-          <div class="mb-3">
-            <h6>Thông tin đơn hàng</h6>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><b>Mã đơn hàng:</b> ${id}</li>
-              <li class="list-group-item"><b>Ngày đặt:</b> ${order.date || ''} ${order.time || ''}</li>
-              <li class="list-group-item"><b>Ngày tạo:</b> ${order.createdAt ? order.createdAt.replace('T', ' ') : ''}</li>
-              <li class="list-group-item"><b>Trạng thái:</b> <span class="badge bg-${getStatusColor(order.status)}">${getStatusText(order.status)}</span></li>
-              <li class="list-group-item"><b>Tổng tiền:</b> ${(order.grandTotal || 0).toLocaleString('vi-VN')} đ</li>
-            </ul>
-          </div>
-          <div>
-            <h6>Danh sách sản phẩm</h6>
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Tên sản phẩm</th>
-                  <th>Mã sản phẩm</th>
-                  <th>Số lượng</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${items || '<tr><td colspan="3" class="text-center">Không có sản phẩm</td></tr>'}
-              </tbody>
-            </table>
-          </div>
+        renderMessages(messages);
+      } catch (error) {
+        console.error('Error loading messages:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu tin nhắn.' : `Không thể tải danh sách tin nhắn: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    }
+
+    // Render Messages
+    function renderMessages(messages) {
+      const container = document.getElementById('messageContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      if (messages.length === 0) {
+        container.innerHTML = '<div class="text-center text-muted">Không có tin nhắn nào.</div>';
+        return;
+      }
+      const searchQuery = document.getElementById('messageSearch')?.value.toLowerCase() || '';
+      const filteredMessages = messages.filter(m => {
+        return (m.sender || '').toLowerCase().includes(searchQuery) ||
+               (m.message || '').toLowerCase().includes(searchQuery);
+      }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      filteredMessages.forEach(message => {
+        const isAdmin = message.sender === 'quantri1amcoffeeandcake@gmail.com';
+        const div = document.createElement('div');
+        div.className = `message-item ${isAdmin ? 'admin' : ''}`;
+        div.innerHTML = `
+          <div class="message-sender">${message.sender || 'Ẩn danh'}</div>
+          <div class="message-content">${message.message}</div>
+          <div class="message-timestamp">${new Date(message.timestamp).toLocaleString('vi-VN')}</div>
+          ${!isAdmin ? `
+            <button class="btn btn-primary btn-sm mt-2" onclick="replyMessage('${message.id}')">
+              <i class="fas fa-reply"></i> Trả lời
+            </button>
+          ` : ''}
         `;
-        new bootstrap.Modal(document.getElementById('orderDetailModal')).show();
-      } catch (error) {
-        console.error('Error loading order detail:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi!',
-          text: error.message,
-          showConfirmButton: true
-        });
-      }
+        container.appendChild(div);
+      });
+    }
+
+    // Reply Message
+    window.replyMessage = function(messageId) {
+      document.getElementById('replyMessageId').value = messageId;
+      document.getElementById('replyMessageContent').value = '';
+      new bootstrap.Modal(document.getElementById('replyMessageModal')).show();
     };
 
-    // Search and Filter
-    document.getElementById('productSearchForm')?.addEventListener('submit', async function(e) {
+    document.getElementById('replyMessageForm')?.addEventListener('submit', async function(e) {
       e.preventDefault();
-      await loadProducts();
-    });
-
-    document.getElementById('productSearch')?.addEventListener('input', async function() {
-      await loadProducts();
-    });
-
-    document.getElementById('productCategoryFilter')?.addEventListener('change', async function() {
-      await loadProducts();
-    });
-
-    document.getElementById('refreshData')?.addEventListener('click', async function() {
-      document.getElementById('productSearch').value = '';
-      document.getElementById('productCategoryFilter').value = '';
-      await loadProducts();
-      Swal.fire({
-        icon: 'success',
-        title: 'Đã làm mới!',
-        text: 'Danh sách sản phẩm đã được làm mới.',
-        timer: 1500,
-        showConfirmButton: false
-      });
-    });
-
-    document.getElementById('promotionSearchForm')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await loadPromotions();
-    });
-
-    document.getElementById('promotionSearch')?.addEventListener('input', async function() {
-      await loadPromotions();
-    });
-
-    document.getElementById('promotionStatusFilter')?.addEventListener('change', async function() {
-      await loadPromotions();
-    });
-
-    document.getElementById('refreshPromotions')?.addEventListener('click', async function() {
-      document.getElementById('promotionSearch').value = '';
-      document.getElementById('promotionStatusFilter').value = '';
-      await loadPromotions();
-      Swal.fire({
-        icon: 'success',
-        title: 'Đã làm mới!',
-        text: 'Danh sách mã giảm giá đã được làm mới.',
-        timer: 1500,
-        showConfirmButton: false
-      });
-    });
-
-    document.getElementById('orderSearchForm')?.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await loadOrders();
-    });
-
-    document.getElementById('orderSearch')?.addEventListener('input', async function() {
-      await loadOrders();
-    });
-
-    document.getElementById('refreshOrders')?.addEventListener('click', async function() {
-      document.getElementById('orderSearch').value = '';
-      await loadOrders();
-      Swal.fire({
-        icon: 'success',
-        title: 'Đã làm mới!',
-        text: 'Danh sách đơn hàng đã được làm mới.',
-        timer: 1500,
-        showConfirmButton: false
-      });
-    });
-
-    // Initialize Dashboard
-    async function initializeDashboard() {
-      try {
-        await Promise.all([
-          loadDashboardData(),
-          loadProducts(),
-          loadPromotions(),
-          loadOrders()
-        ]);
-        console.log('Dashboard initialized successfully');
-      } catch (error) {
-        console.error('Error initializing dashboard:', error);
+      if (!db || !auth.currentUser) {
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
-          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền truy cập dữ liệu.' : `Không thể khởi tạo dashboard: ${error.message}.`,
+          text: 'Firebase chưa được khởi tạo hoặc chưa đăng nhập.',
           showConfirmButton: true
         });
+        return;
       }
-    }
-
-    // Global Error Handling
-    window.addEventListener('unhandledrejection', function(event) {
-      if (event.reason && event.reason.code && event.reason.code.includes('PERMISSION_DENIED')) {
+      const messageContent = document.getElementById('replyMessageContent').value.trim();
+      if (!messageContent) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cảnh báo!',
+          text: 'Vui lòng nhập nội dung trả lời.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const newMessage = {
+          sender: 'quantri1amcoffeeandcake@gmail.com',
+          senderId: auth.currentUser.uid,
+          message: messageContent,
+          timestamp: new Date().toISOString()
+        };
+        await push(ref(db, 'chatMessages'), newMessage);
+        await loadMessages();
+        bootstrap.Modal.getInstance(document.getElementById('replyMessageModal')).hide();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Tin nhắn đã được gửi.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        document.getElementById('replyMessageForm').reset();
+      } catch (error) {
+        console.error('Error sending reply:', error);
         Swal.fire({
           icon: 'error',
-          title: 'Lỗi Quyền Truy Cập!',
-          text: 'Không có quyền thực hiện thao tác này. Vui lòng kiểm tra Firebase Rules hoặc liên hệ quản trị viên.',
+          title: 'Lỗi!',
+          text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền gửi tin nhắn.' : `Không thể gửi tin nhắn: ${error.message}.`,
           showConfirmButton: true
         });
       }
     });
 
-    async function updateOrderAnalytics() {
-      try {
-        const snapshot = await get(ref(db, 'orders'));
-        if (!snapshot.exists()) return;
-    
-        const orders = Object.values(snapshot.val());
-        const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    
-        // Calculate revenues
-        const todayRevenue = orders
-          .filter(order => order.createdAt?.startsWith(today))
-          .reduce((sum, order) => sum + (order.grandTotal || 0), 0);
-        
-        const yesterdayRevenue = orders
-          .filter(order => order.createdAt?.startsWith(yesterday))
-          .reduce((sum, order) => sum + (order.grandTotal || 0), 0);
-    
-        // Calculate rates
-        const totalOrders = orders.length;
-        const completedOrders = orders.filter(order => order.status === 'delivered').length;
-        const cancelledOrders = orders.filter(order => order.status === 'cancelled').length;
-        
-        // Update DOM
-        document.getElementById('todayRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + ' đ';
-        document.getElementById('completionRate').textContent = 
-          ((completedOrders / totalOrders) * 100).toFixed(1) + '%';
-        document.getElementById('cancellationRate').textContent = 
-          ((cancelledOrders / totalOrders) * 100).toFixed(1) + '%';
-    
-        // Revenue change percentage
-        const revenueChange = yesterdayRevenue ? 
-          ((todayRevenue - yesterdayRevenue) / yesterdayRevenue * 100).toFixed(1) : 0;
-        const changeElement = document.getElementById('revenueChange');
-        changeElement.textContent = revenueChange + '%';
-        changeElement.className = revenueChange >= 0 ? 'text-success' : 'text-danger';
-    
-        // Save orders for chart updates
-        window.currentOrders = orders;
-        
-      } catch (error) {
-        console.error('Error updating analytics:', error);
+    // Real-time Updates
+    onValue(ref(db, 'orders'), () => {
+      if (document.querySelector('.nav-link[href="#orderManagement"]').classList.contains('active')) {
+        loadOrders();
       }
-    }
-
-    // Sidebar collapse/expand
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    sidebarToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      sidebarToggle.querySelector('i').classList.toggle('fa-angle-double-left');
-      sidebarToggle.querySelector('i').classList.toggle('fa-angle-double-right');
-    });
-
-    // Responsive sidebar for mobile
-    window.addEventListener('resize', () => {
-      if (window.innerWidth < 992) {
-        sidebar.classList.add('collapsed');
-      } else {
-        sidebar.classList.remove('collapsed');
+      if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
+        loadDashboardData();
       }
     });
 
-    // Dark mode toggle
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      darkModeToggle.innerHTML = document.body.classList.contains('dark-mode')
-        ? '<i class="fas fa-sun"></i>'
-        : '<i class="fas fa-moon"></i>';
-      localStorage.setItem('dashboard-dark-mode', document.body.classList.contains('dark-mode'));
-    });
-    // Load dark mode preference
-    if (localStorage.getItem('dashboard-dark-mode') === 'true') {
-      document.body.classList.add('dark-mode');
-      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-
-    // Thêm hàm loadUserReviews
-    async function loadUserReviews() {
-      if (!db) return;
-      const list = document.getElementById('userReviewsList');
-      if (!list) return;
-      list.innerHTML = '<li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>';
-      try {
-        const snapshot = await get(ref(db, 'contactMessages'));
-        if (!snapshot.exists()) {
-          list.innerHTML = '<li class="list-group-item text-center text-muted">Chưa có đánh giá nào.</li>';
-          return;
-        }
-        const messages = Object.values(snapshot.val())
-          .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
-          .slice(0, 5); // Hiển thị tối đa 5 đánh giá mới nhất
-        if (messages.length === 0) {
-          list.innerHTML = '<li class="list-group-item text-center text-muted">Chưa có đánh giá nào.</li>';
-          return;
-        }
-        list.innerHTML = '';
-        messages.forEach(msg => {
-          list.innerHTML += `
-            <li class="list-group-item">
-              <div style="font-weight:600">${msg.name || 'Ẩn danh'}</div>
-              <div style="font-size:13px;color:#A67C52;">${msg.email || ''}${msg.phone ? ' - ' + msg.phone : ''}</div>
-              <div style="margin:6px 0 2px 0;">${msg.message || ''}</div>
-              <div class="text-muted" style="font-size:12px;">${msg.createdAt ? new Date(msg.createdAt).toLocaleString('vi-VN') : ''}</div>
-            </li>
-          `;
-        });
-      } catch (error) {
-        list.innerHTML = `<li class="list-group-item text-danger">Không thể tải đánh giá: ${error.message}</li>`;
+    onValue(ref(db, 'products'), () => {
+      if (document.querySelector('.nav-link[href="#productManagement"]').classList.contains('active')) {
+        loadProducts();
       }
-    }
+      if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
+        loadDashboardData();
+      }
+    });
+
+    onValue(ref(db, 'promotions'), () => {
+      if (document.querySelector('.nav-link[href="#promotionManagement"]').classList.contains('active')) {
+        loadPromotions();
+      }
+      if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
+        loadDashboardData();
+      }
+    });
+
+    onValue(ref(db, 'chatMessages'), () => {
+      if (document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active')) {
+        loadMessages();
+      }
+    });
+
+    // Initialize on page load
+    switchSection('dashboard');
   </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'; // Thêm dòng này
+        import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
@@ -30,7 +30,7 @@
         };
         const app = initializeApp(firebaseConfig);
         window.auth = getAuth(app);
-        window.db = getDatabase(app); // Khởi tạo database
+        window.db = getDatabase(app);
     </script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -437,7 +437,7 @@
             text-decoration: underline;
             cursor: pointer;
         }
-        
+
         /* CSS cho usermenu */
         .usermenu li {
             display: inline-block;
@@ -449,6 +449,141 @@
         }
         .usermenu li a:hover {
             color: #A63C3C;
+        }
+
+        /* Chatbox Messenger Style */
+        .chatbox-messenger {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .chatbox-toggle {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            width: auto !important;
+            height: auto !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chatbox-toggle img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            display: block;
+        }
+        .chatbox-toggle:hover {
+            background: transparent !important;
+        }
+        .chatbox-window {
+            width: 340px;
+            max-width: 95vw;
+            height: 420px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            animation: fadeInUp 0.3s;
+        }
+        .chatbox-header {
+            background: #0084ff;
+            color: #fff;
+            padding: 14px 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chatbox-header .chatbox-title {
+            font-size: 16px;
+        }
+        .chatbox-header .chatbox-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .chatbox-messages {
+            flex: 1;
+            padding: 16px;
+            background: #f5f6fa;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chatbox-message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            word-break: break-word;
+            display: inline-block;
+        }
+        .chatbox-message.admin {
+            background: #e4e6eb;
+            color: #222;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .chatbox-message.user {
+            background: #0084ff;
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .chatbox-input-area {
+            display: flex;
+            padding: 10px 12px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+        .chatbox-input {
+            flex: 1;
+            border: none;
+            border-radius: 18px;
+            padding: 8px 14px;
+            font-size: 15px;
+            outline: none;
+            background: #f0f2f5;
+        }
+        .chatbox-send {
+            background: #0084ff;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            width: 64px;
+            height: 36px;
+            margin-left: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+        .chatbox-send:hover {
+            background: #005fc1;
+        }
+        @media (max-width: 480px) {
+            .chatbox-window {
+                width: 98vw;
+                right: 1vw;
+            }
         }
     </style>
 </head>
@@ -494,7 +629,7 @@
                                     <ul class="topmenu">
                                         <li><a href="policy.html">Chính Sách</a></li>
                                         <li><a href="member.html">Thành Viên</a></li>
-                                     </ul>
+                                    </ul>
                                 </div>
                                 <div class="col-md-3">
                                     <ul class="usermenu">
@@ -513,7 +648,6 @@
                                 </li>
                                 <li class="option-cart">
                                     <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
-                                   
                                 </li>
                             </ul>
                             <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
@@ -613,13 +747,13 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
-                         </div>
-                         <div class="col-md-4 col-sm-4 col-xs-4">
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
-                         </div>
-                         <div class="col-md-4 col-sm-4 col-xs-4">
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -984,6 +1118,28 @@
         </div>
     </div>
 
+    <!-- Chatbox Messenger -->
+    <div class="chatbox-messenger">
+        <button class="chatbox-toggle" id="chatboxToggle" aria-label="Mở hộp chat" style="background: transparent; box-shadow: none; padding: 0; border: none;">
+            <img src="images/chat-bubble_11267489.png" alt="Chat" style="width:56px;height:56px;object-fit:contain;display:block;">
+        </button>
+        <div class="chatbox-window" id="chatboxWindow" style="display:none;">
+            <div class="chatbox-header">
+                <span class="chatbox-title"><i class="fa fa-coffee"></i> Ấm - Chat với Admin</span>
+                <button class="chatbox-close" id="chatboxClose" aria-label="Đóng hộp chat">×</button>
+            </div>
+            <div class="chatbox-messages" id="chatboxMessages">
+                <div class="chatbox-message admin">
+                    Xin chào, Ấm có thể giúp gì cho bạn?
+                </div>
+            </div>
+            <form class="chatbox-input-area" id="chatboxForm" autocomplete="off">
+                <input type="text" class="chatbox-input" id="chatboxInput" placeholder="Nhập tin nhắn..." required />
+                <button type="submit" class="chatbox-send" aria-label="Gửi">Gửi</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
@@ -995,7 +1151,7 @@
 
     <script type="module">
         import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'; // Thêm dòng này
+        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             // Kiểm tra trạng thái đăng nhập
@@ -1031,7 +1187,6 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    // Kiểm tra nếu là tài khoản quản trị, chuyển hướng đến AdminDashboard.html
                     if (email === 'quantri1amcoffeeandcake@gmail.com') {
                         window.location.href = 'AdminDashboard.html';
                     } else {
@@ -1185,47 +1340,40 @@
         });
 
         function bindModalEvents() {
-            // Mở modal đăng nhập
             document.querySelector('.log').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('loginModal').style.display = 'flex';
             });
 
-            // Mở modal đăng ký
             document.querySelector('.reg').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('registerModal').style.display = 'flex';
             });
 
-            // Mở modal quên mật khẩu
             document.getElementById('forgotPassword').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('forgotPasswordModal').style.display = 'flex';
             });
 
-            // Chuyển từ đăng nhập sang đăng ký
             document.getElementById('switchToRegister').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('registerModal').style.display = 'flex';
             });
 
-            // Chuyển từ đăng ký sang đăng nhập
             document.getElementById('switchToLogin').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('registerModal').style.display = 'none';
                 document.getElementById('loginModal').style.display = 'flex';
             });
 
-            // Chuyển từ quên mật khẩu về đăng nhập
             document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('forgotPasswordModal').style.display = 'none';
                 document.getElementById('loginModal').style.display = 'flex';
             });
 
-            // Đóng modal
             document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
                 closeBtn.addEventListener('click', () => {
                     document.getElementById('loginModal').style.display = 'none';
@@ -1234,7 +1382,6 @@
                 });
             });
 
-            // Đóng modal khi click bên ngoài
             document.querySelectorAll('.auth-modal').forEach(modal => {
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
@@ -1244,91 +1391,109 @@
             });
         }
     </script>
-    <script>
-        // Testimonial Slider
-        $(document).ready(function() {
-            var currentTestimonial = 0;
-            var testimonials = $('.testimonial-item');
-            var totalTestimonials = testimonials.length;
+    <script type="module">
+        import { getDatabase, ref, push, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-            function showTestimonial(index) {
-                testimonials.hide();
-                testimonials.eq(index).fadeIn();
-            }
+        const chatboxToggle = document.getElementById('chatboxToggle');
+        const chatboxWindow = document.getElementById('chatboxWindow');
+        const chatboxClose = document.getElementById('chatboxClose');
+        const chatboxForm = document.getElementById('chatboxForm');
+        const chatboxInput = document.getElementById('chatboxInput');
+        const chatboxMessages = document.getElementById('chatboxMessages');
 
-            showTestimonial(currentTestimonial);
-
-            $('#next_testimonial').click(function(e) {
-                e.preventDefault();
-                currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
-                showTestimonial(currentTestimonial);
-            });
-
-            $('#prev_testimonial').click(function(e) {
-                e.preventDefault();
-                currentTestimonial = (currentTestimonial - 1 + totalTestimonials) % totalTestimonials;
-                showTestimonial(currentTestimonial);
-            });
+        // Mở chatbox
+        chatboxToggle.addEventListener('click', () => {
+            chatboxWindow.style.display = 'flex';
+            chatboxToggle.style.display = 'none';
+            setTimeout(() => {
+                chatboxInput.focus();
+                loadMessages(); // Tải tin nhắn khi mở chatbox
+            }, 200);
         });
 
-        // Gallery Modal
-        document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.getAttribute('data-img');
-                const modal = document.getElementById('gallery-modal');
-                const modalImg = modal.querySelector('img');
-                modalImg.src = imgSrc;
-                modal.style.display = 'flex';
-            });
+        // Đóng chatbox
+        chatboxClose.addEventListener('click', () => {
+            chatboxWindow.style.display = 'none';
+            chatboxToggle.style.display = 'flex';
         });
 
-        document.querySelector('.gallery-modal .btn-close').addEventListener('click', () => {
-            document.getElementById('gallery-modal').style.display = 'none';
-        });
-
-        document.getElementById('gallery-modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('gallery-modal')) {
-                document.getElementById('gallery-modal').style.display = 'none';
-            }
-        });
-
-        // Scroll Animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+        // Hàm tải và hiển thị tin nhắn
+        function loadMessages() {
+            const db = window.db || getDatabase();
+            const messagesRef = ref(db, 'chatMessages');
+            onValue(messagesRef, (snapshot) => {
+                chatboxMessages.innerHTML = ''; // Xóa nội dung cũ
+                if (snapshot.exists()) {
+                    const messages = [];
+                    snapshot.forEach((childSnapshot) => {
+                        messages.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                    });
+                    // Sắp xếp tin nhắn theo thời gian
+                    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                    // Hiển thị tin nhắn
+                    messages.forEach((msg) => {
+                        const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
+                        const msgElement = document.createElement('div');
+                        msgElement.className = `chatbox-message ${isAdmin ? 'admin' : 'user'}`;
+                        msgElement.textContent = msg.message;
+                        chatboxMessages.appendChild(msgElement);
+                    });
+                    // Cuộn xuống cuối
+                    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+                } else {
+                    // Hiển thị tin nhắn mặc định nếu không có tin nhắn
+                    const defaultMsg = document.createElement('div');
+                    defaultMsg.className = 'chatbox-message admin';
+                    defaultMsg.textContent = 'Xin chào, Ấm có thể giúp gì cho bạn?';
+                    chatboxMessages.appendChild(defaultMsg);
                 }
+            }, (error) => {
+                console.error('Lỗi khi tải tin nhắn:', error);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chatbox-message admin';
+                errorMsg.textContent = 'Không thể tải tin nhắn. Vui lòng thử lại.';
+                chatboxMessages.appendChild(errorMsg);
             });
-        }, { threshold: 0.2 });
+        }
 
-        document.querySelectorAll('.about-section, .news-item, .testimonial-section, .gallery-section, .cta-section').forEach(el => {
-            el.classList.add('animate-hidden');
-            observer.observe(el);
-        });
-    </script>
-    <!-- Messenger Chat Plugin Code -->
-    <div id="fb-root"></div>
-    <div id="fb-customer-chat" class="fb-customerchat"></div>
-    <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "m.me/103706371900713");
-      chatbox.setAttribute("attribution", "biz_inbox");
-    </script>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v19.0'
-        });
-      };
+        // Xử lý gửi tin nhắn
+        chatboxForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const message = chatboxInput.value.trim();
+            if (!message) return;
 
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+            // Lấy thông tin người dùng
+            const user = auth.currentUser;
+            const sender = user ? user.displayName || user.email : 'Khách';
+            const senderId = user ? user.uid : 'anonymous';
+            const timestamp = new Date().toISOString();
+
+            // Hiển thị tin nhắn trên giao diện
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chatbox-message user';
+            userMsg.textContent = message;
+            chatboxMessages.appendChild(userMsg);
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            chatboxInput.value = '';
+
+            // Lưu tin nhắn vào Firebase
+            try {
+                const db = window.db || getDatabase();
+                await push(ref(db, 'chatMessages'), {
+                    sender,
+                    senderId,
+                    message,
+                    timestamp
+                });
+            } catch (error) {
+                console.error('Lỗi khi lưu tin nhắn:', error);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chatbox-message admin';
+                errorMsg.textContent = 'Đã có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.';
+                chatboxMessages.appendChild(errorMsg);
+                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            }
+        });
     </script>
 </body>
 </html>
