@@ -114,6 +114,31 @@
         .cart-item .image img { width: 50px; height: auto; margin-right: 10px; }
         .cart-item .right { text-align: right; }
         .cart-item .remove img { width: 20px; height: auto; }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
     </style>
 </head>
 <body id="home">
@@ -630,7 +655,10 @@
                 <form id="loginForm">
                     <input type="email" id="loginEmail" placeholder="Email" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button type="submit">Đăng Nhập</button>
+                    <button type="submit" id="loginBtn">
+                        Đăng Nhập
+                        <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
                 </form>
                 <div class="switch">
                     Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
@@ -649,7 +677,10 @@
                     <input type="text" id="registerName" placeholder="Họ và Tên" required>
                     <input type="email" id="registerEmail" placeholder="Email" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <button type="submit">Đăng Ký</button>
+                    <button type="submit" id="registerBtn">
+                        Đăng Ký
+                        <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
                 </form>
                 <div class="switch">
                     Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
@@ -663,7 +694,10 @@
                 <h2>Quên Mật Khẩu</h2>
                 <form id="forgotPasswordForm">
                     <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
-                    <button type="submit">Gửi Yêu Cầu</button>
+                    <button type="submit" id="forgotBtn">
+                        Gửi Yêu Cầu
+                        <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
                 </form>
                 <div class="switch">
                     Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
@@ -763,6 +797,10 @@
                 e.preventDefault();
                 const email = document.getElementById('loginEmail').value;
                 const password = document.getElementById('loginPassword').value;
+                const btn = document.getElementById('loginBtn');
+                const spinner = document.getElementById('loginSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
                 try {
                     await auth.signInWithEmailAndPassword(email, password);
                     Swal.fire({
@@ -780,6 +818,8 @@
                         showConfirmButton: true
                     });
                 }
+                btn.disabled = false;
+                spinner.style.display = 'none';
             });
 
             document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -787,6 +827,10 @@
                 const name = document.getElementById('registerName').value;
                 const email = document.getElementById('registerEmail').value;
                 const password = document.getElementById('registerPassword').value;
+                const btn = document.getElementById('registerBtn');
+                const spinner = document.getElementById('registerSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
                 try {
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                     await userCredential.user.updateProfile({ displayName: name });
@@ -810,17 +854,25 @@
                         showConfirmButton: true
                     });
                 }
+                btn.disabled = false;
+                spinner.style.display = 'none';
             });
 
             document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const email = document.getElementById('forgotPasswordEmail').value;
+                const btn = document.getElementById('forgotBtn');
+                const spinner = document.getElementById('forgotSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
                 if (!email) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi!',
                         text: 'Vui lòng nhập email để đặt lại mật khẩu.'
                     });
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
                     return;
                 }
                 try {
@@ -840,6 +892,8 @@
                         showConfirmButton: true
                     });
                 }
+                btn.disabled = false;
+                spinner.style.display = 'none';
             });
 
             document.getElementById('logoutLink').addEventListener('click', async (e) => {
@@ -1159,7 +1213,7 @@
                     <td>${quantity}</td>
                     <td>${price.toLocaleString('vi-VN')} VND</td>
                     <td>${itemTotal.toLocaleString('vi-VN')} VND</td>
-                    <td><a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa" style="width: 20px;"></a></td>
+                    <td><a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa" style="width: 20px;"></td>
                 `;
                 tbody.appendChild(row);
             });
@@ -1398,14 +1452,14 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'Chưa đăng nhập',
-                        text: 'Vui lòng đăng nhập để tiếp tục thanh toán.',
+                        text: 'Bạn sẽ được chuyển về trang chủ.',
                         showConfirmButton: true,
                         confirmButtonText: 'Đăng nhập',
                         showCancelButton: true,
                         cancelButtonText: 'Hủy'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = 'login.html';
+                            window.location.href = 'index.html';
                         }
                     });
                 } else {
