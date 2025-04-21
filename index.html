@@ -1392,7 +1392,7 @@
         }
     </script>
     <script type="module">
-        import { getDatabase, ref, push, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        import { getDatabase, ref, push, onChildAdded } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
         const chatboxToggle = document.getElementById('chatboxToggle');
         const chatboxWindow = document.getElementById('chatboxWindow');
@@ -1401,60 +1401,53 @@
         const chatboxInput = document.getElementById('chatboxInput');
         const chatboxMessages = document.getElementById('chatboxMessages');
 
+        let chatboxOpenedAt = null;
+        let chatListenerUnsub = null;
+
         // Mở chatbox
         chatboxToggle.addEventListener('click', () => {
             chatboxWindow.style.display = 'flex';
             chatboxToggle.style.display = 'none';
+            chatboxMessages.innerHTML = '';
+            // Hiển thị tin nhắn chào hỏi
+            const defaultMsg = document.createElement('div');
+            defaultMsg.className = 'chatbox-message admin';
+            defaultMsg.textContent = 'Xin chào ngài, hạ thần có thể giúp gì cho ngài ạ?';
+            chatboxMessages.appendChild(defaultMsg);
             setTimeout(() => {
                 chatboxInput.focus();
-                loadMessages(); // Tải tin nhắn khi mở chatbox
             }, 200);
+
+            // Ghi nhận thời điểm mở chatbox
+            chatboxOpenedAt = new Date();
+
+            // Lắng nghe tin nhắn mới từ admin (hoặc bất kỳ ai)
+            if (chatListenerUnsub) chatListenerUnsub(); // Hủy lắng nghe cũ nếu có
+            const db = window.db || getDatabase();
+            const messagesRef = ref(db, 'chatMessages');
+            chatListenerUnsub = onChildAdded(messagesRef, (snapshot) => {
+                const msg = snapshot.val();
+                // Chỉ hiển thị tin nhắn gửi sau khi mở chatbox
+                if (msg && msg.timestamp && new Date(msg.timestamp) > chatboxOpenedAt) {
+                    const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
+                    const msgElement = document.createElement('div');
+                    msgElement.className = `chatbox-message ${isAdmin ? 'admin' : 'user'}`;
+                    msgElement.textContent = msg.message;
+                    chatboxMessages.appendChild(msgElement);
+                    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+                }
+            });
         });
 
         // Đóng chatbox
         chatboxClose.addEventListener('click', () => {
             chatboxWindow.style.display = 'none';
             chatboxToggle.style.display = 'flex';
+            if (chatListenerUnsub) {
+                chatListenerUnsub();
+                chatListenerUnsub = null;
+            }
         });
-
-        // Hàm tải và hiển thị tin nhắn
-        function loadMessages() {
-            const db = window.db || getDatabase();
-            const messagesRef = ref(db, 'chatMessages');
-            onValue(messagesRef, (snapshot) => {
-                chatboxMessages.innerHTML = ''; // Xóa nội dung cũ
-                if (snapshot.exists()) {
-                    const messages = [];
-                    snapshot.forEach((childSnapshot) => {
-                        messages.push({ id: childSnapshot.key, ...childSnapshot.val() });
-                    });
-                    // Sắp xếp tin nhắn theo thời gian
-                    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                    // Hiển thị tin nhắn
-                    messages.forEach((msg) => {
-                        const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
-                        const msgElement = document.createElement('div');
-                        msgElement.className = `chatbox-message ${isAdmin ? 'admin' : 'user'}`;
-                        msgElement.textContent = msg.message;
-                        chatboxMessages.appendChild(msgElement);
-                    });
-                    // Cuộn xuống cuối
-                    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
-                } else {
-                    // Hiển thị tin nhắn mặc định nếu không có tin nhắn
-                    const defaultMsg = document.createElement('div');
-                    defaultMsg.className = 'chatbox-message admin';
-                    defaultMsg.textContent = 'Xin chào, Ấm có thể giúp gì cho bạn?';
-                    chatboxMessages.appendChild(defaultMsg);
-                }
-            }, (error) => {
-                console.error('Lỗi khi tải tin nhắn:', error);
-                const errorMsg = document.createElement('div');
-                errorMsg.className = 'chatbox-message admin';
-                errorMsg.textContent = 'Không thể tải tin nhắn. Vui lòng thử lại.';
-                chatboxMessages.appendChild(errorMsg);
-            });
-        }
 
         // Xử lý gửi tin nhắn
         chatboxForm.addEventListener('submit', async function(e) {
@@ -1463,17 +1456,11 @@
             if (!message) return;
 
             // Lấy thông tin người dùng
-            const user = auth.currentUser;
+            const user = window.auth && window.auth.currentUser;
             const sender = user ? user.displayName || user.email : 'Khách';
             const senderId = user ? user.uid : 'anonymous';
             const timestamp = new Date().toISOString();
 
-            // Hiển thị tin nhắn trên giao diện
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chatbox-message user';
-            userMsg.textContent = message;
-            chatboxMessages.appendChild(userMsg);
-            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
             chatboxInput.value = '';
 
             // Lưu tin nhắn vào Firebase

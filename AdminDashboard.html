@@ -935,16 +935,6 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <div class="card p-3">
-            <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
-            <ul class="list-group" id="userReviewsList">
-              <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- Product Management Section -->
@@ -1136,6 +1126,16 @@
         </form>
         <div class="message-container" id="messageContainer">
           <div class="text-center text-muted">Đang tải tin nhắn...</div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <div class="card p-3">
+            <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
+            <ul class="list-group" id="userReviewsList">
+              <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -1708,18 +1708,21 @@
 
     async function loadUserReviews() {
       try {
-        const snapshot = await get(ref(db, 'reviews'));
+        // Lấy dữ liệu từ contactMessages
+        const snapshot = await get(ref(db, 'contactMessages'));
         const reviewsList = document.getElementById('userReviewsList');
         reviewsList.innerHTML = '';
         if (snapshot.exists()) {
-          const reviews = Object.values(snapshot.val());
-          reviews.slice(-5).reverse().forEach(review => {
+          // Lấy các đánh giá, sắp xếp theo thời gian giảm dần
+          const reviews = Object.values(snapshot.val())
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          reviews.slice(0, 5).forEach(review => {
             reviewsList.innerHTML += `
               <li class="list-group-item">
-                <strong>${review.userName || 'Ẩn danh'}</strong> đánh giá: 
-                <span class="text-warning">${'★'.repeat(review.rating)}</span>
-                <p class="mb-0">${review.comment}</p>
-                <small class="text-muted">${new Date(review.timestamp).toLocaleString('vi-VN')}</small>
+                <strong>${review.name || 'Ẩn danh'}</strong>
+                <span class="text-muted" style="font-size:0.95em;">(${review.email || ''})</span>
+                <p class="mb-0">${review.message || ''}</p>
+                <small class="text-muted">${review.createdAt ? new Date(review.createdAt).toLocaleString('vi-VN') : ''}</small>
               </li>`;
           });
         } else {
@@ -2701,6 +2704,12 @@
       container.appendChild(userListDiv);
       container.appendChild(chatboxDiv);
 
+      // Cuộn xuống dưới cùng sau khi render
+      setTimeout(() => {
+        const thread = chatboxDiv.querySelector('.chat-thread');
+        if (thread) thread.scrollTop = thread.scrollHeight;
+      }, 50);
+
       // Xử lý gửi nhanh
       document.getElementById('quickReplyForm').onsubmit = async function(e) {
         e.preventDefault();
@@ -2726,6 +2735,11 @@
           await push(ref(db, 'chatMessages'), newMessage);
           document.getElementById('quickReplyInput').value = '';
           await loadMessages();
+          // Cuộn xuống dưới cùng sau khi gửi
+          setTimeout(() => {
+            const thread = container.querySelector('.chat-thread');
+            if (thread) thread.scrollTop = thread.scrollHeight;
+          }, 100);
         } catch (error) {
           console.error('Error sending reply:', error);
           Swal.fire({
