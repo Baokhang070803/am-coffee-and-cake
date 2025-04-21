@@ -1466,31 +1466,51 @@
 
         let chatboxOpenedAt = null;
         let chatListenerUnsub = null;
+        let autoResponseTimeout = null;
+        let lastMessageTime = null;
+
+        // Function to add auto-response message
+        const addAutoResponse = () => {
+            const autoMsg = document.createElement('div');
+            autoMsg.className = 'chatbox-message admin';
+            autoMsg.textContent = 'Hiện tại Ấm đang bận, bạn vui lòng đợi trong giây lát';
+            chatboxMessages.appendChild(autoMsg);
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+        };
+
+        // Function to reset auto-response timer
+        const resetAutoResponseTimer = () => {
+            if (autoResponseTimeout) {
+                clearTimeout(autoResponseTimeout);
+            }
+            lastMessageTime = new Date();
+            autoResponseTimeout = setTimeout(addAutoResponse, 30000);
+        };
 
         // Mở chatbox
         chatboxToggle.addEventListener('click', () => {
             chatboxWindow.style.display = 'flex';
             chatboxToggle.style.display = 'none';
             chatboxMessages.innerHTML = '';
-            // Hiển thị tin nhắn chào hỏi
+            
             const defaultMsg = document.createElement('div');
             defaultMsg.className = 'chatbox-message admin';
             defaultMsg.textContent = 'Xin chào ngài, hạ thần có thể giúp gì cho ngài ạ?';
             chatboxMessages.appendChild(defaultMsg);
+            
             setTimeout(() => {
                 chatboxInput.focus();
             }, 200);
 
-            // Ghi nhận thời điểm mở chatbox
             chatboxOpenedAt = new Date();
+            lastMessageTime = new Date();
+            resetAutoResponseTimer();
 
-            // Lắng nghe tin nhắn mới từ admin (hoặc bất kỳ ai)
-            if (chatListenerUnsub) chatListenerUnsub(); // Hủy lắng nghe cũ nếu có
+            if (chatListenerUnsub) chatListenerUnsub();
             const db = window.db || getDatabase();
             const messagesRef = ref(db, 'chatMessages');
             chatListenerUnsub = onChildAdded(messagesRef, (snapshot) => {
                 const msg = snapshot.val();
-                // Chỉ hiển thị tin nhắn gửi sau khi mở chatbox
                 if (msg && msg.timestamp && new Date(msg.timestamp) > chatboxOpenedAt) {
                     const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
                     const msgElement = document.createElement('div');
@@ -1498,6 +1518,7 @@
                     msgElement.textContent = msg.message;
                     chatboxMessages.appendChild(msgElement);
                     chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+                    resetAutoResponseTimer();
                 }
             });
         });
@@ -1510,6 +1531,10 @@
                 chatListenerUnsub();
                 chatListenerUnsub = null;
             }
+            if (autoResponseTimeout) {
+                clearTimeout(autoResponseTimeout);
+                autoResponseTimeout = null;
+            }
         });
 
         // Xử lý gửi tin nhắn
@@ -1518,15 +1543,14 @@
             const message = chatboxInput.value.trim();
             if (!message) return;
 
-            // Lấy thông tin người dùng
             const user = window.auth && window.auth.currentUser;
             const sender = user ? user.displayName || user.email : 'Khách';
             const senderId = user ? user.uid : 'anonymous';
             const timestamp = new Date().toISOString();
 
             chatboxInput.value = '';
+            resetAutoResponseTimer();
 
-            // Lưu tin nhắn vào Firebase
             try {
                 const db = window.db || getDatabase();
                 await push(ref(db, 'chatMessages'), {
