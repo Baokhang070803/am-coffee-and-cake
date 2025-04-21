@@ -712,6 +712,7 @@
     <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
         // Khởi tạo Firebase
         const firebaseConfig = {
@@ -1416,9 +1417,138 @@
                 }
             });
 
-            // Lưu vào Firebase
             try {
-                await db.ref('orders').push(order);
+                // Lưu đơn hàng trước, lấy key
+                const orderRef = await db.ref('orders').push(order);
+                const orderKey = orderRef.key;
+
+                // ==== Tạo layout hóa đơn kiểu siêu thị ====
+                // Lấy lại thông tin cần thiết
+                const storeName = "Ấm - Coffee and Cake";
+                const storeAddress = "Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh";
+                const storePhone = "(028) 1234 5678";
+                const logoUrl = "images/logo.png";
+                const orderDate = order.date;
+                const orderTime = order.time;
+                const orderId = orderKey;
+                const customerName = order.customerInfo.fullName;
+                const customerPhone = order.customerInfo.phone;
+                const customerAddress = order.customerInfo.address;
+                const items = order.items;
+                const subtotal = order.subtotal;
+                const discount = order.discountAmount;
+                const shippingFee = order.shippingFee;
+                const total = order.grandTotal;
+                const coupon = order.couponCode;
+
+                // Lấy thông tin sản phẩm chi tiết
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const productMap = products.reduce((map, p) => { map[p.id] = p; return map; }, {});
+
+                // Tạo div tạm thời
+                const billDiv = document.createElement('div');
+                billDiv.style.width = '350px';
+                billDiv.style.background = '#fff';
+                billDiv.style.padding = '16px 12px';
+                billDiv.style.fontFamily = 'monospace, Arial, sans-serif';
+                billDiv.style.fontSize = '15px';
+                billDiv.style.color = '#222';
+                billDiv.style.border = '1px solid #eee';
+                billDiv.style.margin = '0 auto';
+
+                billDiv.innerHTML = `
+                    <div style="text-align:center;">
+                        <img src="${logoUrl}" alt="logo" style="height:48px;margin-bottom:8px;">
+                        <div style="font-weight:bold;font-size:18px;">${storeName}</div>
+                        <div style="font-size:13px;">${storeAddress}</div>
+                        <div style="font-size:13px;">${storePhone}</div>
+                        <hr style="margin:8px 0;">
+                        <div style="font-size:14px;">Mã đơn: <b>${orderId.slice(-8).toUpperCase()}</b></div>
+                        <div style="font-size:13px;">Ngày: ${orderDate} &nbsp; ${orderTime}</div>
+                    </div>
+                    <hr style="margin:8px 0;">
+                    <div>
+                        <div>Khách: <b>${customerName}</b></div>
+                        <div>ĐT: ${customerPhone}</div>
+                        <div>Địa chỉ: ${customerAddress}</div>
+                    </div>
+                    <hr style="margin:8px 0;">
+                    <table style="width:100%;font-size:14px;">
+                        <thead>
+                            <tr>
+                                <th align="left">SP</th>
+                                <th align="center">SL</th>
+                                <th align="right">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(item => {
+                                const p = productMap[item.productId] || {};
+                                return `
+                                <tr>
+                                    <td>${p.name || item.name}</td>
+                                    <td align="center">${item.quantity}</td>
+                                    <td align="right">${((p.price || 0) * item.quantity).toLocaleString('vi-VN')}đ</td>
+                                </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                    <hr style="margin:8px 0;">
+                    <div style="display:flex;justify-content:space-between;">
+                        <span>Tạm tính:</span>
+                        <span>${subtotal.toLocaleString('vi-VN')}đ</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                        <span>Giảm giá:</span>
+                        <span style="color:#0a0;">-${discount.toLocaleString('vi-VN')}đ</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                        <span>Phí giao hàng:</span>
+                        <span>${shippingFee ? shippingFee.toLocaleString('vi-VN') + 'đ' : 'Miễn phí'}</span>
+                    </div>
+                    ${coupon ? `<div style="display:flex;justify-content:space-between;"><span>Mã KM:</span><span>${coupon}</span></div>` : ''}
+                    <hr style="margin:8px 0;">
+                    <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:17px;">
+                        <span>TỔNG CỘNG:</span>
+                        <span>${total.toLocaleString('vi-VN')}đ</span>
+                    </div>
+                    <hr style="margin:8px 0;">
+                    <div style="text-align:center;font-size:14px;margin-top:10px;">
+                        <b>Cảm ơn quý khách!</b><br>
+                        Hẹn gặp lại tại <span style="color:#4A2F1A;">Ấm - Coffee and Cake</span>
+                    </div>
+                `;
+
+                // Thêm vào body để html2canvas render được
+                billDiv.style.position = 'fixed';
+                billDiv.style.left = '-9999px';
+                document.body.appendChild(billDiv);
+
+                // Render hóa đơn thành ảnh
+                const canvas = await html2canvas(billDiv, { backgroundColor: "#fff", scale: 2 });
+                const billImage = canvas.toDataURL("image/png");
+                document.body.removeChild(billDiv);
+
+                // Không lưu ảnh hóa đơn vào Firebase nữa
+
+                // Hiển thị ảnh hóa đơn cho người dùng
+                const confirmationMsg = document.getElementById('confirmationMessage');
+                if (confirmationMsg) {
+                    // Xóa ảnh cũ nếu có
+                    confirmationMsg.querySelectorAll('img').forEach(img => img.remove());
+                    const img = document.createElement('img');
+                    img.src = billImage;
+                    img.alt = "Hóa đơn";
+                    img.style.maxWidth = "100%";
+                    img.style.margin = "20px 0";
+                    img.style.display = "block";
+                    img.style.border = "1px solid #eee";
+                    img.style.background = "#fff";
+                    confirmationMsg.insertBefore(img, confirmationMsg.firstChild);
+                }
+
+                // ...existing code...
                 localStorage.removeItem('cart');
                 localStorage.removeItem('appliedCoupon');
                 updateCartCount();
@@ -1527,52 +1657,5 @@
             });
         });
     </script>
-    <script>
-  // ...existing Firebase initialization code...
-
-  document.getElementById('confirmOrderBtn').addEventListener('click', async function() {
-    // Lấy thông tin từ form
-    const customerName = document.getElementById('customerName').value;
-    const customerPhone = document.getElementById('customerPhone').value;
-    const customerAddress = document.getElementById('customerAddress').value;
-    const paymentAddress = document.getElementById('paymentAddress').value;
-    const shippingInfo = document.getElementById('shippingInfo').value;
-
-    // Lấy thông tin giỏ hàng (ví dụ lưu ở localStorage)
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    const orderData = {
-      customer: {
-        name: customerName,
-        phone: customerPhone,
-        address: customerAddress
-      },
-      paymentAddress,
-      shippingInfo,
-      items: cart.map(item => ({
-        image: item.image, // Hình ảnh sản phẩm
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-        total: item.price * item.quantity
-      })),
-      totalAmount,
-      status: 'Chờ xác nhận',
-      createdAt: new Date().toISOString()
-    };
-
-    try {
-      await db.collection('orders').add(orderData);
-      alert('Đặt hàng thành công!');
-      localStorage.removeItem('cart'); // Xóa giỏ hàng nếu cần
-      // Chuyển hướng hoặc cập nhật giao diện
-    } catch (error) {
-      alert('Có lỗi xảy ra khi lưu đơn hàng!');
-      console.error(error);
-    }
-  });
-  
-</script>
 </body>
 </html>

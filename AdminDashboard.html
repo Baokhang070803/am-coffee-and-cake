@@ -2459,15 +2459,13 @@
           let itemsHtml = items.map(item => `
             <li class="list-group-item d-flex justify-content-between align-items-center">
               ${item.name} (x${item.quantity})
-              <span>${(item.price * item.quantity).toLocaleString('vi-VN')} VND</span>
             </li>
           `).join('');
           const orderDetailBody = document.getElementById('orderDetailBody');
           orderDetailBody.innerHTML = `
             <h6>Mã đơn hàng: #${id}</h6>
-            <p><strong>Khách hàng:</strong> ${order.fullName || 'N/A'}</p>
-            <p><strong>Địa chỉ:</strong> ${order.address || 'N/A'}</p>
-            <p><strong>Số điện thoại:</strong> ${order.phone || 'N/A'}</p>
+            <p><strong>Ngày đặt:</strong> ${order.date || (order.createdAt ? order.createdAt.replace('T', ' ') : 'N/A')}</p>
+            <p><strong>Thời gian:</strong> ${order.time || ''}</p>
             <p><strong>Trạng thái:</strong> 
               <span class="badge ${
                 order.status === 'pending' ? 'bg-warning' :
@@ -2485,11 +2483,35 @@
                 }
               </span>
             </p>
-            <p><strong>Ngày đặt:</strong> ${order.createdAt ? order.createdAt.replace('T', ' ') : 'N/A'}</p>
+            <hr>
+            <h6>Thông tin khách hàng</h6>
+            <p><strong>Họ tên:</strong> ${order.customerInfo?.fullName || order.fullName || 'N/A'}</p>
+            <p><strong>Email:</strong> ${order.customerInfo?.email || 'N/A'}</p>
+            <p><strong>SĐT:</strong> ${order.customerInfo?.phone || 'N/A'}</p>
+            <p><strong>Địa chỉ:</strong> ${order.customerInfo?.address || 'N/A'}</p>
+            <hr>
+            <h6>Thông tin thanh toán</h6>
+            <p><strong>Họ tên:</strong> ${order.billingInfo?.fullName || ''}</p>
+            <p><strong>Email:</strong> ${order.billingInfo?.email || ''}</p>
+            <p><strong>SĐT:</strong> ${order.billingInfo?.phone || ''}</p>
+            <p><strong>Địa chỉ:</strong> ${order.billingInfo?.address || ''}</p>
+            <hr>
+            <h6>Thông tin giao hàng</h6>
+            <p><strong>Người nhận:</strong> ${order.shippingInfo?.receiverName || ''}</p>
+            <p><strong>SĐT:</strong> ${order.shippingInfo?.receiverPhone || ''}</p>
+            <p><strong>Địa chỉ:</strong> ${order.shippingInfo?.address || ''}</p>
+            <hr>
             <h6>Danh sách sản phẩm:</h6>
             <ul class="list-group mb-3">
               ${itemsHtml || '<li class="list-group-item">Không có sản phẩm</li>'}
             </ul>
+            <p><strong>Tạm tính:</strong> ${(order.subtotal || 0).toLocaleString('vi-VN')} VND</p>
+            <p><strong>Giảm giá:</strong> ${(order.discountAmount || 0).toLocaleString('vi-VN')} VND</p>
+            <p><strong>Mã giảm giá:</strong> ${order.couponCode || 'Không áp dụng'}</p>
+            <p><strong>Phí giao hàng:</strong> ${(order.shippingFee || 0).toLocaleString('vi-VN')} VND</p>
+            <p><strong>Phương thức giao hàng:</strong> ${
+              order.deliveryMethod === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'
+            }</p>
             <p><strong>Tổng cộng:</strong> ${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</p>
           `;
           new bootstrap.Modal(document.getElementById('orderDetailModal')).show();
