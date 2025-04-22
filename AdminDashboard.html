@@ -11,6 +11,7 @@
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #f3f6f9;
@@ -880,6 +881,28 @@
           </div>
         </div>
       </div>
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Xuất Báo Cáo Tháng</h5>
+              <div class="row align-items-end">
+                <div class="col-md-4">
+                  <label for="reportMonth" class="form-label">Chọn tháng</label>
+                  <input type="month" class="form-control" id="reportMonth">
+                </div>
+                <div class="col-md-8">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-success" onclick="exportMonthlyReport('excel')">
+                      <i class="fas fa-file-excel me-2"></i>Xuất Excel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="stat-card">
@@ -1405,6 +1428,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script type="module">
     // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -3005,6 +3029,207 @@
       // Ẩn dot đỏ khi xem
       document.getElementById('notificationBellDot').style.display = 'none';
       new bootstrap.Modal(document.getElementById('notificationHistoryModal')).show();
+    };
+
+    // Report Generation Functions
+    window.exportMonthlyReport = async function() {
+      const monthInput = document.getElementById('reportMonth').value;
+      if (!monthInput) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Vui lòng chọn tháng',
+          text: 'Hãy chọn tháng cần xuất báo cáo'
+        });
+        return;
+      }
+
+      try {
+        // Get orders data
+        const snapshot = await get(ref(db, 'orders'));
+        if (!snapshot.exists()) {
+          throw new Error('Không có dữ liệu đơn hàng');
+        }
+
+        const orders = Object.values(snapshot.val());
+        const [year, month] = monthInput.split('-');
+        
+        // Filter orders for selected month
+        const monthlyOrders = orders.filter(order => {
+          const orderDate = new Date(order.createdAt);
+          return orderDate.getFullYear() === parseInt(year) && 
+                 orderDate.getMonth() === parseInt(month) - 1;
+        });
+
+        // Calculate statistics
+        const totalOrders = monthlyOrders.length;
+        const totalRevenue = monthlyOrders.reduce((sum, order) => sum + (order.grandTotal || 0), 0);
+        const deliveredOrders = monthlyOrders.filter(o => o.status === 'delivered').length;
+        const cancelledOrders = monthlyOrders.filter(o => o.status === 'cancelled').length;
+        const successRate = totalOrders ? ((deliveredOrders / totalOrders) * 100).toFixed(1) : 0;
+        const cancelRate = totalOrders ? ((cancelledOrders / totalOrders) * 100).toFixed(1) : 0;
+
+        // Calculate best-selling products
+        const productSales = {};
+        monthlyOrders.forEach(order => {
+          if (Array.isArray(order.items)) {
+            order.items.forEach(item => {
+              if (!productSales[item.name]) {
+                productSales[item.name] = { quantity: 0, revenue: 0 };
+              }
+              productSales[item.name].quantity += item.quantity || 1;
+              productSales[item.name].revenue += (item.price * (item.quantity || 1));
+            });
+          }
+        });
+
+        const bestSellers = Object.entries(productSales)
+          .sort((a, b) => b[1].quantity - a[1].quantity)
+          .slice(0, 10)
+          .map(([name, data]) => ({
+            name,
+            quantity: data.quantity,
+            revenue: data.revenue
+          }));
+
+        // Export to Excel with enhanced formatting
+        const wb = XLSX.utils.book_new();
+        
+        // Add company logo and title styling
+        const titleStyle = {
+          font: { bold: true, size: 16, color: { rgb: "8B6F47" } },
+          alignment: { horizontal: "center" },
+          fill: { fgColor: { rgb: "F3EDE6" } }
+        };
+
+        const headerStyle = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          fill: { fgColor: { rgb: "A67C52" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          border: {
+            top: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+            right: { style: "thin" }
+          }
+        };
+
+        const dataStyle = {
+          font: { color: { rgb: "464F5C" } },
+          border: {
+            top: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+            right: { style: "thin" }
+          }
+        };
+
+        // Summary sheet with enhanced layout
+        const summaryData = [
+          [`BÁO CÁO DOANH THU THÁNG ${month}/${year}`],
+          [''],
+          ['THÔNG TIN TỔNG QUAN'],
+          ['Chỉ số', 'Giá trị', 'Ghi chú'],
+          ['Tổng số đơn hàng', totalOrders, ''],
+          ['Doanh thu', `${totalRevenue.toLocaleString('vi-VN')} VND`, ''],
+          ['Đơn đã giao', deliveredOrders, ''],
+          ['Đơn đã hủy', cancelledOrders, ''],
+          ['Tỷ lệ giao thành công', `${successRate}%`, ''],
+          ['Tỷ lệ hủy đơn', `${cancelRate}%`, ''],
+          [''],
+          ['Được tạo bởi:', 'Admin'],
+          ['Ngày xuất báo cáo:', new Date().toLocaleDateString('vi-VN')],
+        ];
+
+        // Best sellers sheet with enhanced layout
+        const bestSellersData = [
+          [`DANH SÁCH SẢN PHẨM BÁN CHẠY THÁNG ${month}/${year}`],
+          [''],
+          ['STT', 'Tên sản phẩm', 'Số lượng bán ra', 'Doanh thu', 'Tỷ lệ'],
+          ...bestSellers.map((product, index) => [
+            index + 1,
+            product.name,
+            product.quantity,
+            `${product.revenue.toLocaleString('vi-VN')} VND`,
+            `${((product.revenue / totalRevenue) * 100).toFixed(1)}%`
+          ])
+        ];
+
+        // Add sheets with styling
+        const ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+        const ws2 = XLSX.utils.aoa_to_sheet(bestSellersData);
+
+        // Apply column widths
+        ws1['!cols'] = [
+          { wch: 25 }, // A
+          { wch: 30 }, // B
+          { wch: 20 }, // C
+        ];
+
+        ws2['!cols'] = [
+          { wch: 8 },  // A
+          { wch: 30 }, // B
+          { wch: 15 }, // C
+          { wch: 20 }, // D
+          { wch: 10 }, // E
+        ];
+
+        // Apply merged cells for titles
+        ws1['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }, // Title
+          { s: { r: 2, c: 0 }, e: { r: 2, c: 2 } }  // Subtitle
+        ];
+
+        ws2['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } } // Title
+        ];
+
+        // Set print area and page setup
+        ws1['!print'] = {
+          scale: 1,
+          paperSize: 9,
+          orientation: 'portrait',
+          margins: { left: 0.7, right: 0.7, top: 0.75, bottom: 0.75, header: 0.3, footer: 0.3 }
+        };
+
+        ws2['!print'] = {
+          scale: 1,
+          paperSize: 9,
+          orientation: 'landscape',
+          margins: { left: 0.7, right: 0.7, top: 0.75, bottom: 0.75, header: 0.3, footer: 0.3 }
+        };
+
+        XLSX.utils.book_append_sheet(wb, ws1, "Tổng Quan");
+        XLSX.utils.book_append_sheet(wb, ws2, "Top Sản Phẩm");
+
+        // Add custom properties
+        wb.Props = {
+          Title: `Báo Cáo Doanh Thu Tháng ${month}/${year}`,
+          Subject: "Báo cáo doanh thu",
+          Author: "Admin",
+          CreatedDate: new Date()
+        };
+
+        // Save with formatted name
+        const fileName = `Bao_Cao_Doanh_Thu_T${month}_${year}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        // Show success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Xuất báo cáo thành công!',
+          text: `File đã được tải xuống: ${fileName}`,
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+      } catch (error) {
+        console.error('Error generating report:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể tạo báo cáo: ${error.message}`
+        });
+      }
     };
 
     // Initialize on page load
