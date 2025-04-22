@@ -1376,6 +1376,28 @@
     <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
       <i class="fas fa-moon"></i>
     </div>
+    <!-- Nút chuông thông báo -->
+    <div id="notificationBell" title="Xem lịch sử thông báo"
+      style="position:fixed;bottom:90px;right:32px;z-index:2001;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;color:#A67C52;border-radius:50%;box-shadow:0 2px 12px rgba(166,124,82,0.13);font-size:1.5rem;">
+      <i class="fas fa-bell"></i>
+      <span id="notificationBellDot" style="position:absolute;top:10px;right:10px;width:10px;height:10px;background:#dc3545;border-radius:50%;display:none;"></span>
+    </div>
+    <!-- Modal lịch sử thông báo -->
+    <div class="modal fade" id="notificationHistoryModal" tabindex="-1" aria-labelledby="notificationHistoryModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationHistoryModalLabel">Lịch sử thông báo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+          <div class="modal-body" style="max-height:400px;overflow-y:auto;">
+            <ul class="list-group" id="notificationHistoryList">
+              <li class="list-group-item text-center text-muted">Chưa có thông báo nào.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->
@@ -2780,6 +2802,8 @@
     window._knownOrderIds = [];
     // Lưu danh sách ID tin nhắn đã biết để phát hiện tin nhắn mới
     window._knownMessageIds = [];
+    // Lưu danh sách ID đánh giá đã biết để phát hiện đánh giá mới
+    window._knownReviewIds = [];
 
     onValue(ref(db, 'orders'), (snapshot) => {
       // Phát hiện đơn hàng mới
@@ -2807,6 +2831,12 @@
                   timerProgressBar: true
                 });
               }
+              // Lưu vào lịch sử thông báo
+              addNotificationHistory({
+                type: 'order',
+                message: `Đơn hàng mới #${id} từ ${order.fullName || 'Khách hàng'}`,
+                time: order.createdAt ? new Date(order.createdAt).toLocaleString('vi-VN') : new Date().toLocaleString('vi-VN')
+              });
             });
           }
         }
@@ -2848,6 +2878,12 @@
                     timerProgressBar: true
                   });
                 }
+                // Lưu vào lịch sử thông báo
+                addNotificationHistory({
+                  type: 'message',
+                  message: `Tin nhắn mới từ ${msg.sender || 'Người dùng'}`,
+                  time: msg.timestamp ? new Date(msg.timestamp).toLocaleString('vi-VN') : new Date().toLocaleString('vi-VN')
+                });
               }
             });
           }
@@ -2858,6 +2894,65 @@
         loadMessages();
       }
     });
+
+    // Real-time cập nhật đánh giá và thông báo khi có đánh giá mới
+    onValue(ref(db, 'contactMessages'), (snapshot) => {
+      try {
+        const data = snapshot.val() || {};
+        const currentIds = Object.keys(data);
+        // Nếu đã từng load, kiểm tra đánh giá mới
+        if (window._knownReviewIds.length > 0) {
+          const newIds = currentIds.filter(id => !window._knownReviewIds.includes(id));
+          if (newIds.length > 0) {
+            newIds.forEach(id => {
+              const review = data[id];
+              const isReviewTab = document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active') ||
+                                  document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active');
+              if (isReviewTab) {
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'info',
+                  title: `Có đánh giá mới từ ${review.name || 'Người dùng'}`,
+                  showConfirmButton: false,
+                  timer: 3500,
+                  timerProgressBar: true
+                });
+              }
+              // Lưu vào lịch sử thông báo
+              addNotificationHistory({
+                type: 'review',
+                message: `Đánh giá mới từ ${review.name || 'Người dùng'}`,
+                time: review.createdAt ? new Date(review.createdAt).toLocaleString('vi-VN') : new Date().toLocaleString('vi-VN')
+              });
+            });
+          }
+        }
+        window._knownReviewIds = currentIds;
+        // Tự động cập nhật danh sách đánh giá
+        renderUserReviewsRealtime(data);
+      } catch (e) {}
+    });
+
+    // Hàm render realtime cho đánh giá
+    function renderUserReviewsRealtime(data) {
+      const reviewsList = document.getElementById('userReviewsList');
+      reviewsList.innerHTML = '';
+      const reviews = Object.values(data || {}).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      if (reviews.length === 0) {
+        reviewsList.innerHTML = '<li class="list-group-item text-center">Chưa có đánh giá nào.</li>';
+        return;
+      }
+      reviews.slice(0, 5).forEach(review => {
+        reviewsList.innerHTML += `
+          <li class="list-group-item">
+            <strong>${review.name || 'Ẩn danh'}</strong>
+            <span class="text-muted" style="font-size:0.95em;">(${review.email || ''})</span>
+            <p class="mb-0">${review.message || ''}</p>
+            <small class="text-muted">${review.createdAt ? new Date(review.createdAt).toLocaleString('vi-VN') : ''}</small>
+          </li>`;
+      });
+    }
 
     onValue(ref(db, 'products'), () => {
       if (document.querySelector('.nav-link[href="#productManagement"]').classList.contains('active')) {
@@ -2876,6 +2971,41 @@
         loadDashboardData();
       }
     });
+
+    // Lưu lịch sử thông báo
+    window._notificationHistory = [];
+
+    // Hàm thêm thông báo vào lịch sử và hiện dot đỏ trên chuông
+    function addNotificationHistory({type, message, time}) {
+      window._notificationHistory = window._notificationHistory || [];
+      window._notificationHistory.unshift({
+        type, message, time: time || new Date().toLocaleString('vi-VN')
+      });
+      // Giới hạn tối đa 50 thông báo
+      if (window._notificationHistory.length > 50) window._notificationHistory.length = 50;
+      // Hiện dot đỏ
+      document.getElementById('notificationBellDot').style.display = 'block';
+    }
+
+    // Xử lý nút chuông
+    document.getElementById('notificationBell').onclick = function() {
+      // Render danh sách thông báo
+      const list = document.getElementById('notificationHistoryList');
+      const history = window._notificationHistory || [];
+      if (history.length === 0) {
+        list.innerHTML = '<li class="list-group-item text-center text-muted">Chưa có thông báo nào.</li>';
+      } else {
+        list.innerHTML = history.map(n =>
+          `<li class="list-group-item">
+            <span style="font-weight:500">${n.message}</span>
+            <br><small class="text-muted">${n.time}</small>
+          </li>`
+        ).join('');
+      }
+      // Ẩn dot đỏ khi xem
+      document.getElementById('notificationBellDot').style.display = 'none';
+      new bootstrap.Modal(document.getElementById('notificationHistoryModal')).show();
+    };
 
     // Initialize on page load
     switchSection('dashboard');
