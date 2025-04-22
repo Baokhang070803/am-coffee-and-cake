@@ -2775,8 +2775,46 @@
     }
 
     // Real-time Updates
-    onValue(ref(db, 'orders'), () => {
-      // Luôn cập nhật dashboard và tab đơn hàng nếu đang mở
+
+    // Lưu danh sách ID đơn hàng đã biết để phát hiện đơn mới
+    window._knownOrderIds = [];
+    // Lưu danh sách ID tin nhắn đã biết để phát hiện tin nhắn mới
+    window._knownMessageIds = [];
+
+    onValue(ref(db, 'orders'), (snapshot) => {
+      // Phát hiện đơn hàng mới
+      try {
+        const data = snapshot.val() || {};
+        const currentIds = Object.keys(data);
+        // Nếu đã từng load, kiểm tra đơn mới
+        if (window._knownOrderIds.length > 0) {
+          const newIds = currentIds.filter(id => !window._knownOrderIds.includes(id));
+          if (newIds.length > 0) {
+            // Lấy thông tin đơn mới nhất (có thể nhiều đơn cùng lúc)
+            newIds.forEach(id => {
+              const order = data[id];
+              // Chỉ thông báo nếu đang ở dashboard hoặc tab đơn hàng
+              const isOrderTab = document.querySelector('.nav-link[href="#orderManagement"]').classList.contains('active');
+              const isDashboard = document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active');
+              if (isOrderTab || isDashboard) {
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'info',
+                  title: `Có đơn hàng mới #${id} từ ${order.fullName || 'Khách hàng'}`,
+                  showConfirmButton: false,
+                  timer: 3500,
+                  timerProgressBar: true
+                });
+              }
+            });
+          }
+        }
+        // Cập nhật danh sách ID đã biết
+        window._knownOrderIds = currentIds;
+      } catch (e) {
+        // Bỏ qua lỗi
+      }
       if (document.querySelector('.nav-link[href="#orderManagement"]').classList.contains('active')) {
         loadOrders();
       }
@@ -2785,8 +2823,43 @@
       }
     });
 
+    onValue(ref(db, 'chatMessages'), (snapshot) => {
+      try {
+        const data = snapshot.val() || {};
+        const currentIds = Object.keys(data);
+        // Nếu đã từng load, kiểm tra tin nhắn mới
+        if (window._knownMessageIds.length > 0) {
+          const newIds = currentIds.filter(id => !window._knownMessageIds.includes(id));
+          if (newIds.length > 0) {
+            newIds.forEach(id => {
+              const msg = data[id];
+              // Chỉ thông báo nếu là tin nhắn từ user (không phải admin)
+              if (msg && msg.sender !== 'quantri1amcoffeeandcake@gmail.com') {
+                const isMsgTab = document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active');
+                const isDashboard = document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active');
+                if (isMsgTab || isDashboard) {
+                  Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'info',
+                    title: `Tin nhắn mới từ ${msg.sender || 'Người dùng'}`,
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true
+                  });
+                }
+              }
+            });
+          }
+        }
+        window._knownMessageIds = currentIds;
+      } catch (e) {}
+      if (document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active')) {
+        loadMessages();
+      }
+    });
+
     onValue(ref(db, 'products'), () => {
-      // Luôn cập nhật dashboard và tab sản phẩm nếu đang mở
       if (document.querySelector('.nav-link[href="#productManagement"]').classList.contains('active')) {
         loadProducts();
       }
@@ -2796,28 +2869,12 @@
     });
 
     onValue(ref(db, 'promotions'), () => {
-      // Luôn cập nhật dashboard và tab mã giảm giá nếu đang mở
       if (document.querySelector('.nav-link[href="#promotionManagement"]').classList.contains('active')) {
         loadPromotions();
       }
       if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
         loadDashboardData();
       }
-    });
-
-    onValue(ref(db, 'chatMessages'), () => {
-      // Luôn cập nhật tab tin nhắn nếu đang mở
-      if (document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active')) {
-        loadMessages();
-      }
-    });
-
-    // Thêm realtime cho đánh giá (contactMessages) để dashboard luôn cập nhật đánh giá mới
-    onValue(ref(db, 'contactMessages'), () => {
-      if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
-        loadUserReviews();
-      }
-      // Nếu muốn cập nhật tab messageManagement khi có đánh giá mới, có thể gọi loadMessages() hoặc loadUserReviews() ở đây nếu cần
     });
 
     // Initialize on page load
