@@ -142,6 +142,10 @@
         .menu-item button:hover {
             background: #d63c32;
         }
+        .menu-item button.active {
+            background: #28a745;
+            transition: background 0.3s ease;
+        }
         /* Bảng giới thiệu món */
         .menu-item-tooltip {
             position: absolute;
@@ -1044,6 +1048,7 @@
       function addToCart(productId) {
           let cart = JSON.parse(localStorage.getItem('cart')) || [];
           let existingProduct = cart.find(item => item.productId === productId);
+          const button = document.querySelector(`button[data-product-id="${productId}"]`);
   
           if (existingProduct) {
               existingProduct.quantity += 1;
@@ -1055,20 +1060,11 @@
           updateCartCount();
           updateCartDropdown();
   
-          Swal.fire({
-              icon: 'success',
-              title: 'Thành công!',
-              text: 'Sản phẩm đã được thêm vào giỏ hàng.',
-              showConfirmButton: true,
-              confirmButtonText: 'Xem giỏ hàng',
-              showCancelButton: true,
-              cancelButtonText: 'Tiếp tục mua sắm',
-              confirmButtonColor: '#3085d6'
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  window.location.href = 'cart.html';
-              }
-          });
+          // Add active class to button
+          button.classList.add('active');
+          setTimeout(() => {
+              button.classList.remove('active');
+          }, 500);
       }
   
       // Hàm cập nhật số lượng giỏ hàng

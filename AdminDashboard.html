@@ -842,7 +842,7 @@
     <div class="text-center mb-3">
       <img src="images/logocappy.png" alt="Admin Avatar" class="admin-avatar" onerror="this.src='https://i.pravatar.cc/120?img=12'">
     </div>
-    <h6 class="text-center mb-4">Quản trị viên</h6>
+    <h6 class="text-center mb-4 user-name">Quản trị viên</h6>
     <nav class="nav flex-column">
       <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> <span>Tổng Quan</span></a>
       <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</span></a>
@@ -1474,7 +1474,7 @@
         }).then(() => {
           window.location.href = 'index.html';
         });
-      } else if (user.email !== 'quantri1amcoffeeandcake@gmail.com') {
+      } else if (user.email !== 'quantri1amcoffeeandcake@gmail.com' && user.email !== 'nhanvienorders@gmail.com') {
         Swal.fire({
           icon: 'error',
           title: 'Truy cập bị từ chối!',
@@ -1483,8 +1483,22 @@
           window.location.href = 'index.html';
         });
       } else {
-        console.log('Admin logged in:', user.email, 'UID:', user.uid);
-        initializeDashboard();
+        console.log('User logged in:', user.email, 'UID:', user.uid);
+        // Set user name based on role
+        const userName = user.email === 'quantri1amcoffeeandcake@gmail.com' ? 'Quản trị viên' : 'Nhân viên';
+        document.querySelector('.user-name').textContent = userName;
+        // Set initial visibility based on user role
+        if (user.email === 'nhanvienorders@gmail.com') {
+          // Hide admin-only sections
+          document.querySelector('.nav-link[href="#dashboard"]').style.display = 'none';
+          document.querySelector('.nav-link[href="#productManagement"]').style.display = 'none';
+          document.querySelector('.nav-link[href="#promotionManagement"]').style.display = 'none';
+          // Make Order Management the default active section
+          switchSection('orderManagement');
+        } else {
+          // For admin, show everything and start with dashboard
+          initializeDashboard();
+        }
       }
     });
 
@@ -1580,6 +1594,14 @@
           top: 0,
           behavior: 'smooth'
         });
+
+        // Only allow order and message management for nhanvienorders@gmail.com
+        if (auth.currentUser?.email === 'nhanvienorders@gmail.com') {
+          if (sectionId !== 'orderManagement' && sectionId !== 'messageManagement') {
+            switchSection('orderManagement');
+            return;
+          }
+        }
         
         switch(sectionId) {
           case 'dashboard':
