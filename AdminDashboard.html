@@ -831,6 +831,70 @@
       color: #e2e8f0;
       border: 1px solid #393e4a;
     }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      .print-bill-area, .print-bill-area * {
+        visibility: visible !important;
+      }
+      .print-bill-area {
+        position: absolute !important;
+        left: 0; top: 0; width: 100vw; min-width: 0; background: #fff !important; color: #000 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      /* Ẩn header/footer/modal khi in */
+      .modal-header, .modal-footer, .sidebar, .footer, .dark-mode-toggle, #notificationBell, #notificationHistoryModal {
+        display: none !important;
+      }
+      .print-bill-area, .print-bill-area * {
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border-color: #000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .print-bill-area img {
+        filter: grayscale(100%) contrast(1.2) brightness(1.1) !important;
+        -webkit-filter: grayscale(100%) contrast(1.2) brightness(1.1) !important;
+      }
+      .print-bill-area .table th,
+      .print-bill-area .table td,
+      .print-bill-area .table,
+      .print-bill-area .table-bordered,
+      .print-bill-area .table-sm,
+      .print-bill-area .table-light {
+        background: #fff !important;
+        color: #000 !important;
+        border-color: #000 !important;
+      }
+      .print-bill-area hr {
+        border-color: #000 !important;
+        background: #000 !important;
+        color: #000 !important;
+      }
+      .print-bill-area [class*="text-"],
+      .print-bill-area [class*="bg-"] {
+        color: #000 !important;
+        background: #fff !important;
+      }
+      .print-bill-area b, .print-bill-area strong {
+        color: #000 !important;
+        font-weight: bold !important;
+      }
+      .print-bill-area h5, .print-bill-area h6 {
+        color: #000 !important;
+      }
+      /* Ẩn mọi hiệu ứng màu sắc khác */
+      .print-bill-area [style*="color:"], .print-bill-area [style*="background"] {
+        color: #000 !important;
+        background: #fff !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -855,568 +919,678 @@
 
   <!-- Content -->
   <div class="content">
-    <!-- Dashboard Section -->
-    <section id="dashboard" class="active-section">
-      <h1 style="font-weight:700;letter-spacing:-1px;">Tổng Quan</h1>
-      <div class="quick-stats">
-        <div class="quick-stat">
-          <div class="icon"><i class="fas fa-star"></i></div>
-          <div>
-            <div class="label">Sản Phẩm Bán Chạy</div>
-            <div class="value" id="bestSeller">N/A</div>
-          </div>
-        </div>
-        <div class="quick-stat">
-          <div class="icon"><i class="fas fa-percentage"></i></div>
-          <div>
-            <div class="label">Mã Giảm Giá Đang Hoạt Động</div>
-            <div class="value" id="activePromotions">0</div>
-          </div>
-        </div>
-        <div class="quick-stat">
-          <div class="icon"><i class="fas fa-truck"></i></div>
-          <div>
-            <div class="label">Đơn Đang Giao</div>
-            <div class="value" id="shippingOrders">0</div>
-          </div>
+  <!-- Dashboard Section -->
+  <section id="dashboard" class="active-section">
+    <h1 style="font-weight:700;letter-spacing:-1px;">Tổng Quan</h1>
+    <div class="quick-stats">
+      <div class="quick-stat">
+        <div class="icon"><i class="fas fa-star"></i></div>
+        <div>
+          <div class="label">Sản Phẩm Bán Chạy</div>
+          <div class="value" id="bestSeller">N/A</div>
         </div>
       </div>
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Xuất Báo Cáo Tháng</h5>
-              <div class="row align-items-end">
-                <div class="col-md-4">
-                  <label for="reportMonth" class="form-label">Chọn tháng</label>
-                  <input type="month" class="form-control" id="reportMonth">
-                </div>
-                <div class="col-md-8">
-                  <div class="d-flex gap-2">
-                    <button class="btn btn-success" onclick="exportMonthlyReport('excel')">
-                      <i class="fas fa-file-excel me-2"></i>Xuất Excel
-                    </button>
-                  </div>
+      <div class="quick-stat">
+        <div class="icon"><i class="fas fa-percentage"></i></div>
+        <div>
+          <div class="label">Mã Giảm Giá Đang Hoạt Động</div>
+          <div class="value" id="activePromotions">0</div>
+        </div>
+      </div>
+      <div class="quick-stat">
+        <div class="icon"><i class="fas fa-truck"></i></div>
+        <div>
+          <div class="label">Đơn Đang Giao</div>
+          <div class="value" id="shippingOrders">0</div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Xuất Báo Cáo Tháng</h5>
+            <div class="row align-items-end">
+              <div class="col-md-4">
+                <label for="reportMonth" class="form-label">Chọn tháng</label>
+                <input type="month" class="form-control" id="reportMonth">
+              </div>
+              <div class="col-md-8">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-success" onclick="exportMonthlyReport('excel')">
+                    <i class="fas fa-file-excel me-2"></i>Xuất Excel
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="stat-card">
-            <span class="stat-icon"><i class="fas fa-box"></i></span>
-            <h5><i class="fas fa-box me-2"></i> Tổng Sản Phẩm</h5>
-            <h3 id="totalProducts">0</h3>
-          </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="stat-card">
+          <span class="stat-icon"><i class="fas fa-box"></i></span>
+          <h5><i class="fas fa-box me-2"></i> Tổng Sản Phẩm</h5>
+          <h3 id="totalProducts">0</h3>
         </div>
-        <div class="col-md-4">
-          <div class="stat-card">
-            <span class="stat-icon"><i class="fas fa-coins"></i></span>
-            <h5><i class="fas fa-coins me-2"></i> Doanh Thu Hôm Nay</h5>
-            <h3 id="dailyRevenue">0 VND</h3>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card">
+          <span class="stat-icon"><i class="fas fa-coins"></i></span>
+          <h5><i class="fas fa-coins me-2"></i> Doanh Thu Hôm Nay</h5>
+          <h3 id="dailyRevenue">0 VND</h3>
         </div>
-        <div class="col-md-4">
-          <div class="stat-card">
-            <span class="stat-icon"><i class="fas fa-hourglass-half"></i></span>
-            <h5><i class="fas fa-hourglass-half me-2"></i> Đơn Hàng Đang Chờ</h5>
-            <h3 id="pendingOrders">0</h3>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card">
+          <span class="stat-icon"><i class="fas fa-hourglass-half"></i></span>
+          <h5><i class="fas fa-hourglass-half me-2"></i> Đơn Hàng Đang Chờ</h5>
+          <h3 id="pendingOrders">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5><i class="fas fa-chart-line me-2"></i> Doanh Thu 7 Ngày Gần Nhất</h5>
+          <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="card p-3">
-            <h5><i class="fas fa-chart-line me-2"></i> Doanh Thu 7 Ngày Gần Nhất</h5>
-            <div class="chart-container">
-              <canvas id="revenueChart"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card p-3">
-            <h5><i class="fas fa-chart-pie me-2"></i> Trạng Thái Đơn Hàng</h5>
-            <div class="chart-container">
-              <canvas id="orderStatusChart"></canvas>
-            </div>
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5><i class="fas fa-chart-pie me-2"></i> Trạng Thái Đơn Hàng</h5>
+          <div class="chart-container">
+            <canvas id="orderStatusChart"></canvas>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-8">
-          <div class="card p-3">
-            <h5><i class="fas fa-bell me-2"></i> Thông Báo</h5>
-            <ul class="list-group" id="notificationsList"></ul>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card p-3">
-            <h5><i class="fas fa-history me-2"></i> Hoạt Động Gần Đây</h5>
-            <ul class="timeline" id="activityTimeline"></ul>
-          </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-8">
+        <div class="card p-3">
+          <h5><i class="fas fa-bell me-2"></i> Thông Báo</h5>
+          <ul class="list-group" id="notificationsList"></ul>
         </div>
       </div>
-    </section>
+      <div class="col-md-4">
+        <div class="card p-3">
+          <h5><i class="fas fa-history me-2"></i> Hoạt Động Gần Đây</h5>
+          <ul class="timeline" id="activityTimeline"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Product Management Section -->
-    <section id="productManagement">
-      <h2>Quản Lý Sản Phẩm</h2>
-      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
-        <i class="fas fa-plus me-2"></i> Thêm Sản Phẩm
+  <!-- Product Management Section -->
+  <section id="productManagement">
+    <h2>Quản Lý Sản Phẩm</h2>
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+      <i class="fas fa-plus me-2"></i> Thêm Sản Phẩm
+    </button>
+    <form id="productSearchForm" class="mb-3">
+      <div class="row">
+        <div class="col-md-6">
+          <input type="text" id="productSearch" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+        </div>
+        <div class="col-md-4">
+          <select id="productCategoryFilter" class="form-select">
+            <option value="">Tất cả danh mục</option>
+            <option value="Thức Uống">Thức Uống</option>
+            <option value="Bánh">Bánh</option>
+            <option value="Gọi Thêm">Gọi Thêm</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+          <button type="button" id="refreshData" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
+        </div>
+      </div>
+    </form>
+    <table class="table table-bordered align-middle">
+      <thead>
+        <tr>
+          <th>Hình Ảnh</th>
+          <th>Sản Phẩm</th>
+          <th>Giá</th>
+          <th>Danh Mục</th>
+          <th>Mô Tả</th>
+          <th>Hành Động</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody"></tbody>
+    </table>
+  </section>
+
+  <!-- Promotion Management Section -->
+  <section id="promotionManagement">
+    <h2>Quản Lý Mã Giảm Giá</h2>
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
+      <i class="fas fa-plus me-2"></i> Thêm Mã Giảm Giá
+    </button>
+    <form id="promotionSearchForm" class="mb-3">
+      <div class="row">
+        <div class="col-md-6">
+          <input type="text" id="promotionSearch" class="form-control" placeholder="Tìm kiếm mã giảm giá...">
+        </div>
+        <div class="col-md-4">
+          <select id="promotionStatusFilter" class="form-select">
+            <option value="">Tất cả trạng thái</option>
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Không hoạt động</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+          <button type="button" id="refreshPromotions" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
+        </div>
+      </div>
+    </form>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Mã</th>
+          <th>Giảm Giá (%)</th>
+          <th>Ngày Bắt Đầu</th>
+          <th>Ngày Kết Thúc</th>
+          <th>Trạng Thái</th>
+          <th>Hành Động</th>
+        </tr>
+      </thead>
+      <tbody id="promotionTableBody"></tbody>
+    </table>
+  </section>
+
+  <!-- Order Management Section -->
+  <section id="orderManagement">
+    <h2>Quản Lý Đơn Hàng</h2>
+    <div class="mb-3 d-flex gap-2">
+      <button class="btn btn-success" id="openOrderPOS"><i class="fas fa-plus"></i> Tạo Order mới</button>
+      <button class="btn btn-secondary" id="openOrderHistory"><i class="fas fa-history"></i> Lịch sử đơn</button>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Doanh Thu Hôm Nay</h6>
+            <h3 class="text-primary" id="todayRevenue">0 đ</h3>
+            <small class="text-muted">So với hôm qua: <span id="revenueChange" class="ms-1">0%</span></small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Doanh Thu Tuần Này</h6>
+            <h3 class="text-success" id="weekRevenue">0 đ</h3>
+            <small class="text-muted">So với tuần trước: <span id="weekRevenueChange" class="ms-1">0%</span></small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Tỷ Lệ Hoàn Thành</h6>
+            <h3 class="text-info" id="completionRate">0%</h3>
+            <small class="text-muted">Đơn hoàn thành/Tổng đơn</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Tỷ Lệ Hủy Đơn</h6>
+            <h3 class="text-danger" id="cancellationRate">0%</h3>
+            <small class="text-muted">Đơn hủy/Tổng đơn</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="order-tabs">
+      <button class="order-tab active" data-status="all">
+        Tất cả
+        <span class="order-count">0</span>
       </button>
-      <form id="productSearchForm" class="mb-3">
+      <button class="order-tab" data-status="pending">
+        Chờ xác nhận
+        <span class="order-count">0</span>
+      </button>
+      <button class="order-tab" data-status="confirmed">
+        Đang xử lý
+        <span class="order-count">0</span>
+      </button>
+      <button class="order-tab" data-status="shipped">
+        Đang vận chuyển
+        <span class="order-count">0</span>
+      </button>
+      <button class="order-tab" data-status="delivered">
+        Đã giao
+        <span class="order-count">0</span>
+      </button>
+      <button class="order-tab" data-status="cancelled">
+        Đã hủy
+        <span class="order-count">0</span>
+      </button>
+      <button class="order-tab" data-status="pending-make">
+        Đơn chờ pha chế
+        <span class="order-count">0</span>
+      </button>
+    </div>
+    <div class="order-filters">
+      <div class="order-search flex-grow-1">
+        <input type="text" id="orderSearch" class="form-control" placeholder="Nhập ID đơn hàng hoặc tên khách hàng...">
+      </div>
+      <button type="button" id="refreshOrders" class="btn btn-secondary">
+        <i class="fas fa-sync-alt"></i> Làm mới
+      </button>
+    </div>
+    <div class="table-container">
+      <table class="table order-table mb-0">
+        <thead>
+          <tr>
+            <th>Mã đơn hàng</th>
+            <th>Tên món hàng đặt</th>
+            <th>Tên người đặt</th>
+            <th>Trạng thái</th>
+            <th>Số lượng</th>
+            <th>Khách hàng phải trả</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="orderTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Message Management Section -->
+  <section id="messageManagement">
+    <h2>Quản Lý Tin Nhắn</h2>
+    <div class="card p-3">
+      <h5><i class="fas fa-envelope me-2"></i> Tin Nhắn Từ Người Dùng</h5>
+      <form id="messageSearchForm" class="mb-3">
         <div class="row">
           <div class="col-md-6">
-            <input type="text" id="productSearch" class="form-control" placeholder="Tìm kiếm sản phẩm...">
-          </div>
-          <div class="col-md-4">
-            <select id="productCategoryFilter" class="form-select">
-              <option value="">Tất cả danh mục</option>
-              <option value="Thức Uống">Thức Uống</option>
-              <option value="Bánh">Bánh</option>
-              <option value="Gọi Thêm">Gọi Thêm</option>
-            </select>
+            <input type="text" id="messageSearch" class="form-control" placeholder="Tìm kiếm tin nhắn theo người gửi hoặc nội dung...">
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
-            <button type="button" id="refreshData" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
           </div>
         </div>
       </form>
-      <table class="table table-bordered align-middle">
-        <thead>
-          <tr>
-            <th>Hình Ảnh</th>
-            <th>Sản Phẩm</th>
-            <th>Giá</th>
-            <th>Danh Mục</th>
-            <th>Mô Tả</th>
-            <th>Hành Động</th>
-          </tr>
-        </thead>
-        <tbody id="productTableBody"></tbody>
-      </table>
-    </section>
-
-    <!-- Promotion Management Section -->
-    <section id="promotionManagement">
-      <h2>Quản Lý Mã Giảm Giá</h2>
-      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
-        <i class="fas fa-plus me-2"></i> Thêm Mã Giảm Giá
-      </button>
-      <form id="promotionSearchForm" class="mb-3">
-        <div class="row">
-          <div class="col-md-6">
-            <input type="text" id="promotionSearch" class="form-control" placeholder="Tìm kiếm mã giảm giá...">
-          </div>
-          <div class="col-md-4">
-            <select id="promotionStatusFilter" class="form-select">
-              <option value="">Tất cả trạng thái</option>
-              <option value="active">Hoạt động</option>
-              <option value="inactive">Không hoạt động</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
-            <button type="button" id="refreshPromotions" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
-          </div>
+      <div class="message-container" id="messageContainer">
+        <div class="text-center text-muted">Đang tải tin nhắn...</div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card p-3">
+          <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
+          <ul class="list-group" id="userReviewsList">
+            <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
+          </ul>
         </div>
-      </form>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Mã</th>
-            <th>Giảm Giá (%)</th>
-            <th>Ngày Bắt Đầu</th>
-            <th>Ngày Kết Thúc</th>
-            <th>Trạng Thái</th>
-            <th>Hành Động</th>
-          </tr>
-        </thead>
-        <tbody id="promotionTableBody"></tbody>
-      </table>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Order Management Section -->
-    <section id="orderManagement">
-      <h2>Quản Lý Đơn Hàng</h2>
-      <div class="row mb-4">
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body">
-              <h6 class="card-title">Doanh Thu Hôm Nay</h6>
-              <h3 class="text-primary" id="todayRevenue">0 đ</h3>
-              <small class="text-muted">So với hôm qua: <span id="revenueChange" class="ms-1">0%</span></small>
+  <!-- Add Product Modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProductModalLabel">Thêm Sản Phẩm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addProductForm">
+            <div class="mb-3">
+              <label for="productName" class="form-label">Tên Sản Phẩm</label>
+              <input type="text" class="form-control" id="productName" required>
+            </div>
+            <div class="mb-3">
+              <label for="productPrice" class="form-label">Giá</label>
+              <input type="number" class="form-control" id="productPrice" required>
+            </div>
+            <div class="mb-3">
+              <label for="productCategory" class="form-label">Danh Mục</label>
+              <select class="form-select" id="productCategory" required>
+                <option value="Thức Uống">Thức Uống</option>
+                <option value="Bánh">Bánh</option>
+                <option value="Gọi Thêm">Gọi Thêm</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="productImage" class="form-label">URL Hình Ảnh</label>
+              <input type="url" class="form-control" id="productImage">
+            </div>
+            <div class="mb-3">
+              <label for="productAttributes" class="form-label">Mô Tả</label>
+              <textarea class="form-control" id="productAttributes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProductModalLabel">Sửa Sản Phẩm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProductForm">
+            <input type="hidden" id="editProductId">
+            <div class="mb-3">
+              <label for="editProductName" class="form-label">Tên Sản Phẩm</label>
+              <input type="text" class="form-control" id="editProductName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editProductPrice" class="form-label">Giá</label>
+              <input type="number" class="form-control" id="editProductPrice" required>
+            </div>
+            <div class="mb-3">
+              <label for="editProductCategory" class="form-label">Danh Mục</label>
+              <select class="form-select" id="editProductCategory" required>
+                <option value="Thức Uống">Thức Uống</option>
+                <option value="Bánh">Bánh</option>
+                <option value="Gọi Thêm">Gọi Thêm</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editProductImage" class="form-label">URL Hình Ảnh</label>
+              <input type="url" class="form-control" id="editProductImage">
+            </div>
+            <div class="mb-3">
+              <label for="editProductAttributes" class="form-label">Mô Tả</label>
+              <textarea class="form-control" id="editProductAttributes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Promotion Modal -->
+  <div class="modal fade" id="addPromotionModal" tabindex="-1" aria-labelledby="addPromotionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPromotionModalLabel">Thêm Mã Giảm Giá</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addPromotionForm">
+            <div class="mb-3">
+              <label for="promotionCode" class="form-label">Mã Giảm Giá</label>
+              <input type="text" class="form-control" id="promotionCode" required>
+            </div>
+            <div class="mb-3">
+              <label for="promotionDiscount" class="form-label">Giảm Giá (%)</label>
+              <input type="number" class="form-control" id="promotionDiscount" min="1" max="100" required>
+            </div>
+            <div class="mb-3">
+              <label for="promotionStartDate" class="form-label">Ngày Bắt Đầu</label>
+              <input type="date" class="form-control" id="promotionStartDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="promotionEndDate" class="form-label">Ngày Kết Thúc</label>
+              <input type="date" class="form-control" id="promotionEndDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="promotionStatus" class="form-label">Trạng Thái</label>
+              <select class="form-select" id="promotionStatus" required>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Promotion Modal -->
+  <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editPromotionModalLabel">Sửa Mã Giảm Giá</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editPromotionForm">
+            <input type="hidden" id="editPromotionId">
+            <div class="mb-3">
+              <label for="editPromotionCode" class="form-label">Mã Giảm Giá</label>
+              <input type="text" class="form-control" id="editPromotionCode" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPromotionDiscount" class="form-label">Giảm Giá (%)</label>
+              <input type="number" class="form-control" id="editPromotionDiscount" min="1" max="100" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPromotionStartDate" class="form-label">Ngày Bắt Đầu</label>
+              <input type="date" class="form-control" id="editPromotionStartDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPromotionEndDate" class="form-label">Ngày Kết Thúc</label>
+              <input type="date" class="form-control" id="editPromotionEndDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPromotionStatus" class="form-label">Trạng Thái</label>
+              <select class="form-select" id="editPromotionStatus" required>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Order Modal -->
+  <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editOrderModalLabel">Cập Nhật Đơn Hàng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editOrderForm">
+            <input type="hidden" id="editOrderId">
+            <div class="mb-3">
+              <label for="editOrderStatus" class="form-label">Trạng Thái</label>
+              <select class="form-select" id="editOrderStatus" required>
+                <option value="pending">Đang chờ</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="shipped">Đang giao</option>
+                <option value="delivered">Đã giao</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderDetailModalLabel">Chi Tiết Đơn Hàng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body" id="orderDetailBody">
+          <!-- Nội dung chi tiết sẽ được render bằng JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reply Message Modal -->
+  <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="replyMessageModalLabel">Trả Lời Tin Nhắn</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="replyMessageForm">
+            <input type="hidden" id="replyMessageId">
+            <div class="mb-3">
+              <label for="replyMessageContent" class="form-label">Nội Dung Trả Lời</label>
+              <textarea class="form-control" id="replyMessageContent" rows="4" required maxlength="500"></textarea>
+              <small class="form-text text-muted">Tối đa 500 ký tự</small>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i> Gửi</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal POS Order -->
+  <div class="modal fade" id="orderPOSModal" tabindex="-1" aria-labelledby="orderPOSModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen">
+      <div class="modal-content" style="min-height:600px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderPOSModalLabel">Tạo Order Mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body d-flex flex-row gap-3" style="min-height:500px; height:calc(100vh - 120px);">
+          <!-- Menu bên trái -->
+          <div style="flex:2;min-width:320px;display:flex;flex-direction:column;">
+            <div class="mb-2">
+              <select id="posCategoryFilter" class="form-select w-auto d-inline-block">
+                <option value="">Tất cả</option>
+                <option value="Thức Uống">Cafe/Thức Uống</option>
+                <option value="Trà">Trà</option>
+                <option value="Bánh">Bánh</option>
+                <option value="Combo">Combo</option>
+                <option value="Gọi Thêm">Gọi Thêm</option>
+              </select>
+              <input type="text" id="posMenuSearch" class="form-control d-inline-block w-auto ms-2" placeholder="Tìm món..." style="width:180px;display:inline-block;">
+            </div>
+            <div id="posMenuList" class="row row-cols-2 row-cols-md-3 g-2" style="flex:1 1 0;overflow-y:auto;">
+              <!-- JS render menu -->
+            </div>
+          </div>
+          <!-- Giỏ hàng bên phải -->
+          <div style="flex:1;min-width:320px;">
+            <h6>Giỏ hàng</h6>
+            <div id="posCartList" style="min-height:180px;max-height:220px;overflow-y:auto;border:1px solid #eee;border-radius:8px;padding:8px;background:#fafbfc;"></div>
+            <div class="mt-2">
+              <label>Ghi chú món (chọn món trước):</label>
+              <input type="text" id="posItemNote" class="form-control mb-2" placeholder="Ít đá, ít đường...">
+              <button class="btn btn-outline-secondary btn-sm mb-2" id="posApplyNote">Áp dụng ghi chú</button>
+            </div>
+            <div class="mb-2">
+              <label>Ghi chú chung order:</label>
+              <input type="text" id="posOrderNote" class="form-control" placeholder="mang đi, giao bàn 5, cho ly nhựa...">
+            </div>
+            <div class="mb-2">
+              <label>Hình thức thanh toán:</label>
+              <select id="posPaymentMethod" class="form-select">
+                <option value="cash">Tiền mặt 💵</option>
+                <option value="momo">Momo</option>
+                <option value="zalopay">ZaloPay</option>
+                <option value="vnpay">VNPay</option>
+              </select>
+            </div>
+            <div class="mb-2" id="posCashInputDiv">
+              <label>Tiền khách đưa:</label>
+              <input type="number" id="posCashGiven" class="form-control" min="0" value="0">
+            </div>
+            <div class="mb-2">
+              <b>Tổng tiền: <span id="posTotalAmount">0</span> VND</b>
+            </div>
+            <div class="mb-2" id="posChangeDiv" style="display:none;">
+              <b>Tiền thối: <span id="posChangeAmount">0</span> VND</b>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-success flex-fill" id="posConfirmOrder"><i class="fas fa-print"></i> Xác nhận & In Bill</button>
+              <button class="btn btn-danger flex-fill" id="posCancelOrder"><i class="fas fa-times"></i> Hủy order</button>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body">
-              <h6 class="card-title">Doanh Thu Tuần Này</h6>
-              <h3 class="text-success" id="weekRevenue">0 đ</h3>
-              <small class="text-muted">So với tuần trước: <span id="weekRevenueChange" class="ms-1">0%</span></small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body">
-              <h6 class="card-title">Tỷ Lệ Hoàn Thành</h6>
-              <h3 class="text-info" id="completionRate">0%</h3>
-              <small class="text-muted">Đơn hoàn thành/Tổng đơn</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body">
-              <h6 class="card-title">Tỷ Lệ Hủy Đơn</h6>
-              <h3 class="text-danger" id="cancellationRate">0%</h3>
-              <small class="text-muted">Đơn hủy/Tổng đơn</small>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="order-tabs">
-        <button class="order-tab active" data-status="all">
-          Tất cả
-          <span class="order-count">0</span>
-        </button>
-        <button class="order-tab" data-status="pending">
-          Chờ xác nhận
-          <span class="order-count">0</span>
-        </button>
-        <button class="order-tab" data-status="confirmed">
-          Đang xử lý
-          <span class="order-count">0</span>
-        </button>
-        <button class="order-tab" data-status="shipped">
-          Đang vận chuyển
-          <span class="order-count">0</span>
-        </button>
-        <button class="order-tab" data-status="delivered">
-          Đã giao
-          <span class="order-count">0</span>
-        </button>
-        <button class="order-tab" data-status="cancelled">
-          Đã hủy
-          <span class="order-count">0</span>
-        </button>
-      </div>
-      <div class="order-filters">
-        <div class="order-search flex-grow-1">
-          <input type="text" id="orderSearch" class="form-control" placeholder="Nhập ID đơn hàng hoặc tên khách hàng...">
-        </div>
-        <button type="button" id="refreshOrders" class="btn btn-secondary">
-          <i class="fas fa-sync-alt"></i> Làm mới
-        </button>
-      </div>
-      <div class="table-container">
-        <table class="table order-table mb-0">
-          <thead>
-            <tr>
-              <th>Mã đơn hàng</th>
-              <th>Tên món hàng đặt</th>
-              <th>Tên người đặt</th>
-              <th>Trạng thái</th>
-              <th>Số lượng</th>
-              <th>Khách hàng phải trả</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody id="orderTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- Message Management Section -->
-    <section id="messageManagement">
-      <h2>Quản Lý Tin Nhắn</h2>
-      <div class="card p-3">
-        <h5><i class="fas fa-envelope me-2"></i> Tin Nhắn Từ Người Dùng</h5>
-        <form id="messageSearchForm" class="mb-3">
-          <div class="row">
-            <div class="col-md-6">
-              <input type="text" id="messageSearch" class="form-control" placeholder="Tìm kiếm tin nhắn theo người gửi hoặc nội dung...">
-            </div>
-            <div class="col-md-2">
-              <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
-            </div>
-          </div>
-        </form>
-        <div class="message-container" id="messageContainer">
-          <div class="text-center text-muted">Đang tải tin nhắn...</div>
+  <!-- Modal Lịch sử đơn gần nhất -->
+  <div class="modal fade" id="orderHistoryModal" tabindex="-1" aria-labelledby="orderHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderHistoryModalLabel">Lịch sử đơn gần nhất</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body">
+          <div id="orderHistoryList" style="max-height:400px;overflow-y:auto;"></div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <div class="card p-3">
-            <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
-            <ul class="list-group" id="userReviewsList">
-              <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- Add Product Modal -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addProductModalLabel">Thêm Sản Phẩm</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="addProductForm">
-              <div class="mb-3">
-                <label for="productName" class="form-label">Tên Sản Phẩm</label>
-                <input type="text" class="form-control" id="productName" required>
-              </div>
-              <div class="mb-3">
-                <label for="productPrice" class="form-label">Giá</label>
-                <input type="number" class="form-control" id="productPrice" required>
-              </div>
-              <div class="mb-3">
-                <label for="productCategory" class="form-label">Danh Mục</label>
-                <select class="form-select" id="productCategory" required>
-                  <option value="Thức Uống">Thức Uống</option>
-                  <option value="Bánh">Bánh</option>
-                  <option value="Gọi Thêm">Gọi Thêm</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="productImage" class="form-label">URL Hình Ảnh</label>
-                <input type="url" class="form-control" id="productImage">
-              </div>
-              <div class="mb-3">
-                <label for="productAttributes" class="form-label">Mô Tả</label>
-                <textarea class="form-control" id="productAttributes"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
-            </form>
-          </div>
+  <!-- Modal Hóa đơn POS -->
+  <div class="modal fade" id="posBillModal" tabindex="-1" aria-labelledby="posBillModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" id="posBillContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="posBillModalLabel">HÓA ĐƠN THANH TOÁN</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body print-bill-area" id="posBillBody">
+          <!-- Nội dung bill sẽ được render bằng JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button class="btn btn-primary" onclick="printPOSBill()">In hóa đơn</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Edit Product Modal -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editProductModalLabel">Sửa Sản Phẩm</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editProductForm">
-              <input type="hidden" id="editProductId">
-              <div class="mb-3">
-                <label for="editProductName" class="form-label">Tên Sản Phẩm</label>
-                <input type="text" class="form-control" id="editProductName" required>
-              </div>
-              <div class="mb-3">
-                <label for="editProductPrice" class="form-label">Giá</label>
-                <input type="number" class="form-control" id="editProductPrice" required>
-              </div>
-              <div class="mb-3">
-                <label for="editProductCategory" class="form-label">Danh Mục</label>
-                <select class="form-select" id="editProductCategory" required>
-                  <option value="Thức Uống">Thức Uống</option>
-                  <option value="Bánh">Bánh</option>
-                  <option value="Gọi Thêm">Gọi Thêm</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="editProductImage" class="form-label">URL Hình Ảnh</label>
-                <input type="url" class="form-control" id="editProductImage">
-              </div>
-              <div class="mb-3">
-                <label for="editProductAttributes" class="form-label">Mô Tả</label>
-                <textarea class="form-control" id="editProductAttributes"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
-            </form>
-          </div>
+  <div class="footer">
+    <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+  </div>
+  <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
+    <i class="fas fa-moon"></i>
+  </div>
+  <!-- Nút chuông thông báo -->
+  <div id="notificationBell" title="Xem lịch sử thông báo"
+    style="position:fixed;bottom:90px;right:32px;z-index:2001;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;color:#A67C52;border-radius:50%;box-shadow:0 2px 12px rgba(166,124,82,0.13);font-size:1.5rem;">
+    <i class="fas fa-bell"></i>
+    <span id="notificationBellDot" style="position:absolute;top:10px;right:10px;width:10px;height:10px;background:#dc3545;border-radius:50%;display:none;"></span>
+  </div>
+  <!-- Modal lịch sử thông báo -->
+  <div class="modal fade" id="notificationHistoryModal" tabindex="-1" aria-labelledby="notificationHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notificationHistoryModalLabel">Lịch sử thông báo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
         </div>
-      </div>
-    </div>
-
-    <!-- Add Promotion Modal -->
-    <div class="modal fade" id="addPromotionModal" tabindex="-1" aria-labelledby="addPromotionModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addPromotionModalLabel">Thêm Mã Giảm Giá</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="addPromotionForm">
-              <div class="mb-3">
-                <label for="promotionCode" class="form-label">Mã Giảm Giá</label>
-                <input type="text" class="form-control" id="promotionCode" required>
-              </div>
-              <div class="mb-3">
-                <label for="promotionDiscount" class="form-label">Giảm Giá (%)</label>
-                <input type="number" class="form-control" id="promotionDiscount" min="1" max="100" required>
-              </div>
-              <div class="mb-3">
-                <label for="promotionStartDate" class="form-label">Ngày Bắt Đầu</label>
-                <input type="date" class="form-control" id="promotionStartDate" required>
-              </div>
-              <div class="mb-3">
-                <label for="promotionEndDate" class="form-label">Ngày Kết Thúc</label>
-                <input type="date" class="form-control" id="promotionEndDate" required>
-              </div>
-              <div class="mb-3">
-                <label for="promotionStatus" class="form-label">Trạng Thái</label>
-                <select class="form-select" id="promotionStatus" required>
-                  <option value="active">Hoạt động</option>
-                  <option value="inactive">Không hoạt động</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Promotion Modal -->
-    <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editPromotionModalLabel">Sửa Mã Giảm Giá</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editPromotionForm">
-              <input type="hidden" id="editPromotionId">
-              <div class="mb-3">
-                <label for="editPromotionCode" class="form-label">Mã Giảm Giá</label>
-                <input type="text" class="form-control" id="editPromotionCode" required>
-              </div>
-              <div class="mb-3">
-                <label for="editPromotionDiscount" class="form-label">Giảm Giá (%)</label>
-                <input type="number" class="form-control" id="editPromotionDiscount" min="1" max="100" required>
-              </div>
-              <div class="mb-3">
-                <label for="editPromotionStartDate" class="form-label">Ngày Bắt Đầu</label>
-                <input type="date" class="form-control" id="editPromotionStartDate" required>
-              </div>
-              <div class="mb-3">
-                <label for="editPromotionEndDate" class="form-label">Ngày Kết Thúc</label>
-                <input type="date" class="form-control" id="editPromotionEndDate" required>
-              </div>
-              <div class="mb-3">
-                <label for="editPromotionStatus" class="form-label">Trạng Thái</label>
-                <select class="form-select" id="editPromotionStatus" required>
-                  <option value="active">Hoạt động</option>
-                  <option value="inactive">Không hoạt động</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Order Modal -->
-    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editOrderModalLabel">Cập Nhật Đơn Hàng</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editOrderForm">
-              <input type="hidden" id="editOrderId">
-              <div class="mb-3">
-                <label for="editOrderStatus" class="form-label">Trạng Thái</label>
-                <select class="form-select" id="editOrderStatus" required>
-                  <option value="pending">Đang chờ</option>
-                  <option value="confirmed">Đã xác nhận</option>
-                  <option value="shipped">Đang giao</option>
-                  <option value="delivered">Đã giao</option>
-                  <option value="cancelled">Đã hủy</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập Nhật</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Detail Modal -->
-    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="orderDetailModalLabel">Chi Tiết Đơn Hàng</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-          </div>
-          <div class="modal-body" id="orderDetailBody">
-            <!-- Nội dung chi tiết sẽ được render bằng JS -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Reply Message Modal -->
-    <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="replyMessageModalLabel">Trả Lời Tin Nhắn</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="replyMessageForm">
-              <input type="hidden" id="replyMessageId">
-              <div class="mb-3">
-                <label for="replyMessageContent" class="form-label">Nội Dung Trả Lời</label>
-                <textarea class="form-control" id="replyMessageContent" rows="4" required maxlength="500"></textarea>
-                <small class="form-text text-muted">Tối đa 500 ký tự</small>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i> Gửi</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
-    </div>
-    <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
-      <i class="fas fa-moon"></i>
-    </div>
-    <!-- Nút chuông thông báo -->
-    <div id="notificationBell" title="Xem lịch sử thông báo"
-      style="position:fixed;bottom:90px;right:32px;z-index:2001;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;color:#A67C52;border-radius:50%;box-shadow:0 2px 12px rgba(166,124,82,0.13);font-size:1.5rem;">
-      <i class="fas fa-bell"></i>
-      <span id="notificationBellDot" style="position:absolute;top:10px;right:10px;width:10px;height:10px;background:#dc3545;border-radius:50%;display:none;"></span>
-    </div>
-    <!-- Modal lịch sử thông báo -->
-    <div class="modal fade" id="notificationHistoryModal" tabindex="-1" aria-labelledby="notificationHistoryModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="notificationHistoryModalLabel">Lịch sử thông báo</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-          </div>
-          <div class="modal-body" style="max-height:400px;overflow-y:auto;">
-            <ul class="list-group" id="notificationHistoryList">
-              <li class="list-group-item text-center text-muted">Chưa có thông báo nào.</li>
-            </ul>
+        <div class="modal-body" style="max-height:400px;overflow-y:auto;">
+          <ul class="list-group" id="notificationHistoryList">
+            <li class="list-group-item text-center text-muted">Chưa có thông báo nào.</li>
+          </ul>
           </div>
         </div>
       </div>
@@ -1464,6 +1638,9 @@
       });
     }
 
+    // Thêm biến kiểm tra tài khoản nhân viên
+    let isOrderStaff = false;
+
     // Check Admin Access
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -1474,7 +1651,37 @@
         }).then(() => {
           window.location.href = 'index.html';
         });
-      } else if (user.email !== 'quantri1amcoffeeandcake@gmail.com' && user.email !== 'nhanvienorders@gmail.com') {
+      } else if (user.email === 'nhanvienorders@gmail.com') {
+        isOrderStaff = true;
+        document.querySelector('.user-name').textContent = 'Nhân viên đơn hàng';
+        // Ẩn các nav-link không phải đơn hàng và tin nhắn
+        document.querySelectorAll('.nav-link').forEach(link => {
+          const href = link.getAttribute('href');
+          if (
+            href !== '#orderManagement' &&
+            href !== '#messageManagement' &&
+            link.id !== 'logout'
+          ) {
+            link.style.display = 'none';
+          } else {
+            link.style.display = '';
+          }
+        });
+        // Ẩn các section không phải đơn hàng và tin nhắn
+        document.querySelectorAll('section').forEach(section => {
+          if (
+            section.id !== 'orderManagement' &&
+            section.id !== 'messageManagement'
+          ) {
+            section.style.display = 'none';
+          } else {
+            section.style.display = '';
+          }
+        });
+        // Chuyển sang section đơn hàng
+        switchSection('orderManagement');
+        setupEventListeners();
+      } else if (user.email !== 'quantri1amcoffeeandcake@gmail.com') {
         Swal.fire({
           icon: 'error',
           title: 'Truy cập bị từ chối!',
@@ -1484,21 +1691,10 @@
         });
       } else {
         console.log('User logged in:', user.email, 'UID:', user.uid);
-        // Set user name based on role
-        const userName = user.email === 'quantri1amcoffeeandcake@gmail.com' ? 'Quản trị viên' : 'Nhân viên';
-        document.querySelector('.user-name').textContent = userName;
-        // Set initial visibility based on user role
-        if (user.email === 'nhanvienorders@gmail.com') {
-          // Hide admin-only sections
-          document.querySelector('.nav-link[href="#dashboard"]').style.display = 'none';
-          document.querySelector('.nav-link[href="#productManagement"]').style.display = 'none';
-          document.querySelector('.nav-link[href="#promotionManagement"]').style.display = 'none';
-          // Make Order Management the default active section
-          switchSection('orderManagement');
-        } else {
-          // For admin, show everything and start with dashboard
-          initializeDashboard();
-        }
+        // Set user name
+        document.querySelector('.user-name').textContent = 'Quản trị viên';
+        // For admin, show everything and start with dashboard
+        initializeDashboard();
       }
     });
 
@@ -1564,10 +1760,27 @@
       document.getElementById('refreshData')?.addEventListener('click', loadProducts);
       document.getElementById('refreshPromotions')?.addEventListener('click', loadPromotions);
       document.getElementById('refreshOrders')?.addEventListener('click', loadOrders);
+
+      // POS Order - mở modal
+      document.getElementById('openOrderPOS')?.addEventListener('click', async () => {
+        await loadPOSMenu();
+        resetPOSCart();
+        new bootstrap.Modal(document.getElementById('orderPOSModal')).show();
+      });
+
+      // Lịch sử đơn - mở modal
+      document.getElementById('openOrderHistory')?.addEventListener('click', async () => {
+        await renderOrderHistory();
+        new bootstrap.Modal(document.getElementById('orderHistoryModal')).show();
+      });
     }
 
     // Navigation
     function switchSection(sectionId) {
+      // Nếu là nhân viên chỉ cho phép 2 section
+      if (isOrderStaff && sectionId !== 'orderManagement' && sectionId !== 'messageManagement') {
+        sectionId = 'orderManagement';
+      }
       const sections = document.querySelectorAll('section');
       const navLinks = document.querySelectorAll('.nav-link');
       
@@ -1593,25 +1806,16 @@
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
-        });
-
-        // Only allow order and message management for nhanvienorders@gmail.com
-        if (auth.currentUser?.email === 'nhanvienorders@gmail.com') {
-          if (sectionId !== 'orderManagement' && sectionId !== 'messageManagement') {
-            switchSection('orderManagement');
-            return;
-          }
-        }
-        
+        });   
         switch(sectionId) {
           case 'dashboard':
-            loadDashboardData();
+            if (!isOrderStaff) loadDashboardData();
             break;
           case 'productManagement':
-            loadProducts();
+            if (!isOrderStaff) loadProducts();
             break;
           case 'promotionManagement':
-            loadPromotions();
+            if (!isOrderStaff) loadPromotions();
             break;
           case 'orderManagement':
             loadOrders();
@@ -1664,6 +1868,22 @@
 
         switchSection(sectionId);
       });
+    });
+
+    // Khi là nhân viên, ẩn các section không liên quan khi trang vừa load lại
+    document.addEventListener('DOMContentLoaded', () => {
+      if (isOrderStaff) {
+        document.querySelectorAll('section').forEach(section => {
+          if (
+            section.id !== 'orderManagement' &&
+            section.id !== 'messageManagement'
+          ) {
+            section.style.display = 'none';
+          } else {
+            section.style.display = '';
+          }
+        });
+      }
     });
 
     // Dashboard Functions
@@ -3252,6 +3472,377 @@
           text: `Không thể tạo báo cáo: ${error.message}`
         });
       }
+    };
+
+    // ==== BEGIN: POS functions lấy dữ liệu từ Firebase ====
+
+    // Lưu menu POS vào biến toàn cục để không phải load lại nhiều lần
+    let posMenuData = [];
+    let posCart = [];
+
+    // Load menu POS từ Firebase
+    async function loadPOSMenu() {
+      if (!db) return;
+      posMenuData = [];
+      const categories = [
+        { key: 'drinks', label: 'Thức Uống' },
+        { key: 'cakes', label: 'Bánh' },
+        { key: 'toppings', label: 'Gọi Thêm' }
+      ];
+      for (const cat of categories) {
+        const snap = await get(ref(db, `products/${cat.key}`));
+        if (snap.exists()) {
+          const items = snap.val();
+          Object.keys(items).forEach(itemId => {
+            posMenuData.push({
+              id: `${cat.key}-${itemId.replace('item', '')}`,
+              name: items[itemId].name,
+              price: items[itemId].price,
+              image: items[itemId].image || 'https://via.placeholder.com/120',
+              category: cat.label
+            });
+          });
+        }
+      }
+      renderPOSMenu();
+    }
+
+    // Render menu POS
+    function renderPOSMenu() {
+      const list = document.getElementById('posMenuList');
+      if (!list) return;
+      const catFilter = document.getElementById('posCategoryFilter')?.value || '';
+      const search = document.getElementById('posMenuSearch')?.value?.toLowerCase() || '';
+      let filtered = posMenuData;
+      if (catFilter) filtered = filtered.filter(i => i.category === catFilter || (catFilter === 'Trà' && i.name.toLowerCase().includes('trà')) || (catFilter === 'Combo' && i.name.toLowerCase().includes('combo')));
+      if (search) filtered = filtered.filter(i => i.name.toLowerCase().includes(search));
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="text-muted text-center">Không có món nào.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'col';
+        div.innerHTML = `
+          <div class="card h-100" style="cursor:pointer;">
+            <img src="${item.image}" class="card-img-top" style="height:90px;object-fit:cover;">
+            <div class="card-body p-2">
+              <div style="font-weight:600">${item.name}</div>
+              <div style="color:#A67C52;font-weight:500">${item.price.toLocaleString('vi-VN')} đ</div>
+            </div>
+          </div>
+        `;
+        div.onclick = () => addToPOSCart(item);
+        list.appendChild(div);
+      });
+    }
+
+    // Thêm món vào giỏ hàng POS
+    function addToPOSCart(item) {
+      const idx = posCart.findIndex(i => i.id === item.id);
+      if (idx >= 0) {
+        posCart[idx].quantity += 1;
+      } else {
+        posCart.push({ ...item, quantity: 1, note: '' });
+      }
+      renderPOSCart();
+    }
+
+    // Reset giỏ hàng POS
+    function resetPOSCart() {
+      posCart = [];
+      renderPOSCart();
+      document.getElementById('posOrderNote').value = '';
+      document.getElementById('posCashGiven').value = 0;
+      document.getElementById('posChangeDiv').style.display = 'none';
+      document.getElementById('posChangeAmount').textContent = '0';
+    }
+
+    // Render giỏ hàng POS
+    function renderPOSCart() {
+      const list = document.getElementById('posCartList');
+      if (!list) return;
+      if (posCart.length === 0) {
+        list.innerHTML = '<div class="text-muted text-center">Chưa có món nào.</div>';
+        document.getElementById('posTotalAmount').textContent = '0';
+        return;
+      }
+      let total = 0;
+      list.innerHTML = '';
+      posCart.forEach((item, idx) => {
+        total += item.price * item.quantity;
+        const div = document.createElement('div');
+        div.className = 'd-flex align-items-center mb-1';
+        div.innerHTML = `
+          <img src="${item.image}" style="width:36px;height:36px;object-fit:cover;border-radius:6px;margin-right:8px;">
+          <div style="flex:1;">
+            <b>${item.name}</b> <span class="text-muted">x${item.quantity}</span>
+            <div style="font-size:12px;color:#888;">${item.note || ''}</div>
+          </div>
+          <div style="min-width:70px;text-align:right;">${(item.price * item.quantity).toLocaleString('vi-VN')} đ</div>
+          <button class="btn btn-sm btn-danger ms-2" style="font-size:12px;" onclick="removePOSCartItem(${idx})"><i class="fas fa-trash"></i></button>
+        `;
+        list.appendChild(div);
+      });
+      document.getElementById('posTotalAmount').textContent = total.toLocaleString('vi-VN');
+    }
+
+    // Xóa món khỏi giỏ hàng POS
+    window.removePOSCartItem = function(idx) {
+      posCart.splice(idx, 1);
+      renderPOSCart();
+    };
+
+    // Lắng nghe filter và search menu POS
+    document.getElementById('posCategoryFilter')?.addEventListener('change', renderPOSMenu);
+    document.getElementById('posMenuSearch')?.addEventListener('input', renderPOSMenu);
+
+    // Lịch sử đơn lấy từ Firebase (hiển thị 20 đơn gần nhất)
+    async function renderOrderHistory() {
+      if (!db) return;
+      const list = document.getElementById('orderHistoryList');
+      list.innerHTML = '<div class="text-muted text-center">Đang tải...</div>';
+      const snap = await get(ref(db, 'orders'));
+      if (!snap.exists()) {
+        list.innerHTML = '<div class="text-muted text-center">Chưa có lịch sử đơn.</div>';
+        return;
+      }
+      const orders = Object.entries(snap.val())
+        .map(([id, o]) => ({ id, ...o }))
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 20);
+      if (orders.length === 0) {
+        list.innerHTML = '<div class="text-muted text-center">Chưa có lịch sử đơn.</div>';
+        return;
+      }
+      list.innerHTML = orders.map(order => `
+        <div class="border rounded p-2 mb-2">
+          <b>Mã đơn: #${order.id}</b> - <span class="badge bg-${order.status === 'delivered' ? 'success' : order.status === 'pending' ? 'warning' : order.status === 'cancelled' ? 'danger' : 'info'}">${order.status}</span>
+          <br>
+          <span>Khách: ${order.fullName || 'N/A'}</span> | <span>Ngày: ${order.createdAt ? new Date(order.createdAt).toLocaleString('vi-VN') : ''}</span>
+          <br>
+          <span>Tổng tiền: ${(order.grandTotal || 0).toLocaleString('vi-VN')} đ</span>
+          <br>
+          <button class="btn btn-sm btn-primary mt-1" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem chi tiết</button>
+        </div>
+      `).join('');
+    }
+
+    // ==== END: POS functions lấy dữ liệu từ Firebase ====
+
+    // Sự kiện cho nút Xác nhận & In Bill và Hủy order POS
+    document.getElementById('posConfirmOrder')?.addEventListener('click', async () => {
+      if (!db) return;
+      if (posCart.length === 0) {
+        Swal.fire({ icon: 'warning', title: 'Chưa chọn món!', text: 'Vui lòng chọn ít nhất 1 món.' });
+        return;
+      }
+      const total = posCart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const paymentMethod = document.getElementById('posPaymentMethod').value;
+      let cashGiven = parseInt(document.getElementById('posCashGiven').value) || 0;
+      let change = 0;
+      if (paymentMethod === 'cash') {
+        if (cashGiven < total) {
+          Swal.fire({ icon: 'warning', title: 'Chưa đủ tiền!', text: 'Tiền khách đưa chưa đủ.' });
+          return;
+        }
+        change = cashGiven - total;
+        document.getElementById('posChangeDiv').style.display = '';
+        document.getElementById('posChangeAmount').textContent = change.toLocaleString('vi-VN');
+      }
+      // Tạo đơn hàng mới với đủ trường để pass Firebase Rules
+      const now = new Date();
+      const order = {
+        items: posCart.map((i, idx) => ({
+          productId: i.id || `item${idx+1}`,
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+          note: i.note || ''
+        })),
+        grandTotal: total,
+        status: 'delivered',
+        createdAt: now.toISOString(),
+        paymentMethod,
+        orderNote: document.getElementById('posOrderNote').value || '',
+        cashGiven: paymentMethod === 'cash' ? cashGiven : undefined,
+        change: paymentMethod === 'cash' ? change : undefined,
+        fullName: 'Khách tại quầy',
+        userId: auth.currentUser?.uid || '',
+        // Các trường tối thiểu để pass validate rule
+        billingInfo: {
+          address: '',
+          email: auth.currentUser?.email || '',
+          fullName: 'Khách tại quầy',
+          phone: ''
+        },
+        customerInfo: {
+          address: '',
+          email: auth.currentUser?.email || '',
+          fullName: 'Khách tại quầy',
+          name: 'Khách tại quầy',
+          phone: ''
+        },
+        shippingInfo: {
+          address: '',
+          receiverName: 'Khách tại quầy',
+          receiverPhone: ''
+        },
+        subtotal: total,
+        shippingFee: 0,
+        discount: 0,
+        deliveryMethod: '',
+      };
+      try {
+        const newOrderRef = push(ref(db, 'orders'));
+        await set(newOrderRef, order);
+        // Hiển thị hóa đơn ra modal
+        showPOSBill(order);
+        resetPOSCart();
+        bootstrap.Modal.getInstance(document.getElementById('orderPOSModal')).hide();
+      } catch (e) {
+        Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Không thể lưu đơn. ' + (e?.message || '') });
+      }
+    });
+
+    document.getElementById('posCancelOrder')?.addEventListener('click', () => {
+      resetPOSCart();
+      bootstrap.Modal.getInstance(document.getElementById('orderPOSModal')).hide();
+    });
+
+    // Hiển thị hóa đơn POS ra modal (giao diện giống checkout.html)
+    window.showPOSBill = function(order) {
+      // Tính tổng phụ, giảm giá, phí ship nếu có (ở POS thường là 0)
+      const subtotal = order.subtotal || order.grandTotal || 0;
+      const discount = order.discount || 0;
+      const shippingFee = order.shippingFee || 0;
+      const grandTotal = order.grandTotal || 0;
+      const paymentText = order.paymentMethod === 'cash' ? 'Tiền mặt' :
+        order.paymentMethod === 'momo' ? 'Momo' :
+        order.paymentMethod === 'zalopay' ? 'ZaloPay' :
+        order.paymentMethod === 'vnpay' ? 'VNPay' : '';
+      const itemsHtml = order.items.map(item => `
+        <tr>
+          <td>
+            <div style="font-weight:600">${item.name}</div>
+            ${item.note ? `<div style="font-size:12px;color:#888;">${item.note}</div>` : ''}
+          </td>
+          <td class="text-center">${item.quantity}</td>
+          <td class="text-end">${item.price.toLocaleString('vi-VN')} đ</td>
+          <td class="text-end">${(item.price * item.quantity).toLocaleString('vi-VN')} đ</td>
+        </tr>
+      `).join('');
+      document.getElementById('posBillBody').innerHTML = `
+        <div class="text-center mb-2">
+          <img src="images/logo.png" alt="Logo" style="height:48px;margin-bottom:8px;">
+          <h5 style="font-weight:700;color:#A67C52;">ẤM - COFFEE & CAKE</h5>
+          <div>ĐC: 123 Đường ABC, Quận 1, TP.HCM</div>
+          <div>ĐT: 0123 456 789</div>
+          <hr>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6"><b>Ngày:</b> ${new Date(order.createdAt).toLocaleString('vi-VN')}</div>
+          <div class="col-6 text-end"><b>Mã đơn:</b> ${order.id ? '#' + order.id : '(POS)'}</div>
+        </div>
+        <div><b>Khách:</b> ${order.fullName || ''}</div>
+        ${order.orderNote ? `<div><b>Ghi chú:</b> ${order.orderNote}</div>` : ''}
+        <table class="table table-bordered table-sm mt-2 mb-2">
+          <thead class="table-light">
+            <tr>
+              <th>Món</th>
+              <th class="text-center">SL</th>
+              <th class="text-end">Đơn giá</th>
+              <th class="text-end">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-7 text-end"><b>Tạm tính:</b></div>
+          <div class="col-5 text-end">${subtotal.toLocaleString('vi-VN')} đ</div>
+        </div>
+        <div class="row">
+          <div class="col-7 text-end"><b>Giảm giá:</b></div>
+          <div class="col-5 text-end">${discount ? '-' + discount.toLocaleString('vi-VN') : '0'} đ</div>
+        </div>
+        <div class="row">
+          <div class="col-7 text-end"><b>Phí giao hàng:</b></div>
+          <div class="col-5 text-end">${shippingFee ? shippingFee.toLocaleString('vi-VN') : '0'} đ</div>
+        </div>
+        <hr class="my-2">
+        <div class="row">
+          <div class="col-7 text-end" style="font-size:1.1em;"><b>Tổng cộng:</b></div>
+          <div class="col-5 text-end" style="font-size:1.1em;"><b>${grandTotal.toLocaleString('vi-VN')} đ</b></div>
+        </div>
+        <div class="row">
+          <div class="col-7 text-end"><b>Thanh toán:</b></div>
+          <div class="col-5 text-end">${paymentText}</div>
+        </div>
+        ${order.paymentMethod === 'cash' ? `
+        <div class="row">
+          <div class="col-7 text-end"><b>Tiền khách đưa:</b></div>
+          <div class="col-5 text-end">${order.cashGiven?.toLocaleString('vi-VN') || 0} đ</div>
+        </div>
+        <div class="row">
+          <div class="col-7 text-end"><b>Tiền thối lại:</b></div>
+          <div class="col-5 text-end">${order.change?.toLocaleString('vi-VN') || 0} đ</div>
+        </div>
+        ` : ''}
+        <div class="text-center mt-3" style="font-size:13px;color:#888;">Cảm ơn quý khách! Hẹn gặp lại.</div>
+      `;
+      new bootstrap.Modal(document.getElementById('posBillModal')).show();
+    };
+
+    // Tính tiền thối lại khi nhập số tiền khách đưa
+    document.getElementById('posCashGiven')?.addEventListener('input', () => {
+      const total = posCart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const paymentMethod = document.getElementById('posPaymentMethod').value;
+      let cashGiven = parseInt(document.getElementById('posCashGiven').value) || 0;
+      if (paymentMethod === 'cash') {
+        if (cashGiven >= total) {
+          document.getElementById('posChangeDiv').style.display = '';
+          document.getElementById('posChangeAmount').textContent = (cashGiven - total).toLocaleString('vi-VN');
+        } else {
+          document.getElementById('posChangeDiv').style.display = 'none';
+          document.getElementById('posChangeAmount').textContent = '0';
+        }
+      } else {
+        document.getElementById('posChangeDiv').style.display = 'none';
+        document.getElementById('posChangeAmount').textContent = '0';
+      }
+    });
+
+    // Khi đổi phương thức thanh toán, ẩn/hiện input tiền mặt
+    document.getElementById('posPaymentMethod')?.addEventListener('change', () => {
+      const method = document.getElementById('posPaymentMethod').value;
+      document.getElementById('posCashInputDiv').style.display = (method === 'cash') ? '' : 'none';
+      document.getElementById('posChangeDiv').style.display = 'none';
+      document.getElementById('posChangeAmount').textContent = '0';
+    });
+
+    // Thay đổi: Thêm hàm chỉ in phần hóa đơn
+    window.printPOSBill = function() {
+      const billArea = document.querySelector('.print-bill-area');
+      if (!billArea) {
+        window.print();
+        return;
+      }
+      // Lưu html gốc
+      const originalContents = document.body.innerHTML;
+      // Lấy html hóa đơn
+      const printContents = billArea.outerHTML;
+      // Thay body chỉ còn hóa đơn
+      document.body.innerHTML = printContents;
+      window.print();
+      // Sau khi in xong, khôi phục lại body
+      setTimeout(() => {
+        document.body.innerHTML = originalContents;
+        // Reload lại script để các sự kiện hoạt động lại
+        window.location.reload();
+      }, 100);
     };
 
     // Initialize on page load
