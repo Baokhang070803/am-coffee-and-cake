@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Ấm - Coffee and Cake, nơi mang đến những ly cà phê thơm ngon và bánh ngọt tinh tế trong không gian ấm cúng.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Thanh Toán - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+    <!-- VNPAY Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <style>
+        .auth-modal {   
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        .auth-modal-content h2 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .auth-modal-content .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4A2F1A;
+        }
+        .auth-modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .auth-modal-content input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .auth-modal-content button {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+            background: #da2a20;
+        }
+        .auth-modal-content .switch {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+            color: #f7544a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+            color: #f7544a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .usermenu li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li a:hover {
+            color: #A63C3C;
+        }
+        .step-description { display: none; }
+        .steps.active .step-description { display: block; }
+        #confirmationMessage { display: none; }
+        .loading-overlay.hidden { display: none; }
+        .cart-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .cart-item .image img { width: 50px; height: auto; margin-right: 10px; }
+        .cart-item .right { text-align: right; }
+        .cart-item .remove img { width: 20px; height: auto; }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body id="home">
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+            <p>Chờ Ấm Một chút nhé...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="topmenu">
+                                        <li><a href="policy.html">Chính Sách</a></li>
+                                        <li><a href="member.html">Thành Viên</a></li>
+                                     </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <ul class="usermenu">
+                                        <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">0</span></a>
+                                    <!-- <ul class="option-cart-item"></ul> -->
+                                </li>
+                            </ul>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active dropdown">
+                                        <a href="index.html">Trang Chủ</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                                        <div class="dropdown-menu mega-menu">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Thức Uống</h4>
+                                                    <ul class="mega-menu-links" id="dropdown-drinks">
+                                                        <li><a href="menu.html">Cà Phê Đen Đá</a></li>
+                                                        <li><a href="menu.html">Cappuccino</a></li>
+                                                        <li><a href="menu.html">Latte</a></li>
+                                                        <li><a href="menu.html">Espresso</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Bánh</h4>
+                                                    <ul class="mega-menu-links" id="dropdown-cakes">
+                                                        <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                                        <li><a href="menu.html">Cheesecake</a></li>
+                                                        <li><a href="menu.html">Bánh Mì</a></li>
+                                                        <li><a href="menu.html">Tiramisu</a></li>
+                                                        <li><a href="menu.html">Mousse Cake</a></li>
+                                                        <li><a href="menu.html">Cupcake</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Gọi Thêm</h4>
+                                                    <ul class="mega-menu-links" id="dropdown-toppings">
+                                                        <li><a href="menu.html#pho-mai">Phô Mai</a></li>
+                                                        <li><a href="menu.html">Socola</a></li>
+                                                        <li><a href="menu.html">Mật Ong</a></li>
+                                                        <li><a href="menu.html">Kem</a></li>
+                                                        <li><a href="menu.html">Trái Cây</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li><a href="promotions.html">Khuyến Mãi</a></li>
+                                    <li><a href="news.html">Tin Tức</a></li>
+                                    <li><a href="event.html">Sự Kiện</a></li>
+                                    <li><a href="about.html">Về Chúng Tôi</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="hom-slider">
+            <div class="container">
+                <div id="sequence">
+                    <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                    <ul class="sequence-canvas">
+                        <li class="animate-in">
+                            <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                            <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400">
+                                <h1>Khuyến Mãi Đặc Biệt</h1>
+                            </div>   
+                            <div class="flat-caption caption3 formLeft delay500">
+                                <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                            </div>
+                            <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Bánh Ngọt Tươi Mới</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promotion-banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                         </div>
+                         <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                         </div>
+                         <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="special-deal leftbar" style="margin-top:0;">
+                            <h4 class="title">Ưu Đãi <strong>Đặc Biệt</strong></h4>
+                            <div class="special-item">
+                                <div class="product-image"><a href="details.html"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Cappuccino"></a></div>
+                                <div class="product-info">
+                                    <p><a href="details.html">Cappuccino</a></p>
+                                    <h5 class="price">45.000 VND</h5>
+                                </div>
+                            </div>
+                            <div class="special-item">
+                                <div class="product-image"><a href="details.html"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt="Bánh Red Velvet"></a></div>
+                                <div class="product-info">
+                                    <p><a href="details.html">Bánh Red Velvet</a></p>
+                                    <h5 class="price">55.000 VND</h5>
+                                </div>
+                            </div>
+                            <div class="special-item">
+                                <div class="product-image"><a href="details.html"><img src="https://img.freepik.com/free-photo/tiramisu-cake-with-cacao-powder-top-served-with-tea_140725-8829.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Tiramisu"></a></div>
+                                <div class="product-info">
+                                    <p><a href="details.html">Tiramisu</a></p>
+                                    <h5 class="price">65.000 VND</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-tag leftbar">
+                            <h3 class="title">Thẻ <strong>Sản Phẩm</strong></h3>
+                            <ul>
+                                <li><a href="#">Cà Phê</a></li>
+                                <li><a href="#">Bánh Ngọt</a></li>
+                                <li><a href="#">Latte</a></li>
+                                <li><a href="#">Cheesecake</a></li>
+                                <li><a href="#">Tiramisu</a></li>
+                                <li><a href="#">Mousse Cake</a></li>
+                            </ul>
+                        </div>
+                        <div class="get-newsletter leftbar">
+                            <h3 class="title">Đăng Ký <strong>Bản Tin</strong></h3>
+                            <p>Nhận thông tin mới nhất về ưu đãi và sản phẩm từ Đặt Bánh.</p>
+                            <form>
+                                <input class="email" type="email" name="email" placeholder="Email của bạn...">
+                                <input class="submit" type="submit" value="Gửi">
+                            </form>
+                        </div>
+                        <div class="fbl-box leftbar">
+                            <h3 class="title">Facebook</h3>
+                            <span class="likebutton"><a href="#"><img src="images/fblike.png" alt="Thích trang"></a></span>
+                            <p>12k người thích Đặt Bánh - Coffee and Cake.</p>
+                            <div class="fbplug"><a href="#"><span><img src="images/fbicon.png" alt="Facebook"></span>Plugin mạng xã hội Facebook</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="checkout-page">
+                            <ol class="checkout-steps">
+                                <!-- Bước 1: Đăng nhập -->
+                                <li class="steps active" id="step-1">
+                                    <a href="javascript:void(0);" class="step-title" onclick="toggleStep(1)">01. Đăng Nhập</a>
+                                    <div class="step-description">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="new-customer">
+                                                    <h5 id="customer-title">Thông Tin Khách Hàng</h5>
+                                                    <div id="userInfoDisplay" style="display: none;">
+                                                        <p><strong>Họ và Tên:</strong> <span id="display-fullname"></span></p>
+                                                        <p><strong>Ngày Sinh:</strong> <span id="display-dob"></span></p>
+                                                        <p><strong>Giới tính:</strong> <span id="display-gender"></span></p>
+                                                        <p><strong>Địa Chỉ:</strong> <span id="display-address"></span></p>
+                                                        <p><strong>Số Điện Thoại:</strong> <span id="display-phone"></span></p>
+                                                        <p><strong>Email:</strong> <span id="display-email"></span></p>
+                                                    </div>
+                                                    <div id="guestInput">
+                                                        <h5>Nhập Thông Tin (Nếu chưa đăng nhập)</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-fullname" placeholder="Nhập họ và tên" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-phone" placeholder="Nhập số điện thoại" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Email <strong class="red">*</strong></label>
+                                                            <input type="email" class="input namefild" id="guest-email" placeholder="Nhập email" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="guest-address" placeholder="Nhập địa chỉ" required>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" onclick="nextStep()">Tiếp Tục</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- Bước 2: Thông tin thanh toán -->
+                                <li class="steps disabled" id="step-2">
+                                    <a href="javascript:void(0);" class="step-title" onclick="toggleStep(2)">02. Thanh Toán</a>
+                                    <div class="step-description">
+                                        <form id="billing-form">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="your-details">
+                                                        <h5>Thông Tin Cá Nhân</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="full_name" placeholder="Nhập họ và tên" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="phone" placeholder="Nhập số điện thoại" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Email <strong class="red">*</strong></label>
+                                                            <input type="email" class="input namefild" id="email" placeholder="Nhập email" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="your-details">
+                                                        <h5>Địa Chỉ Thanh Toán</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="billing_address" placeholder="Nhập địa chỉ thanh toán" required>
+                                                        </div>
+                                                        <p class="privacy">
+                                                            <span class="input-radio"><input type="checkbox" name="privacy" checked></span>
+                                                            <span class="text">Tôi đã đọc và đồng ý với <a href="policy.html" class="red">Chính Sách Bảo Mật</a></span>
+                                                        </p>
+                                                        <button type="submit">Tiếp Tục</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                                <!-- Bước 3: Thông tin giao hàng -->
+                                <li class="steps disabled" id="step-3">
+                                    <a href="javascript:void(0);" class="step-title" onclick="toggleStep(3)">03. Giao Hàng</a>
+                                    <div class="step-description">
+                                        <form id="shipping-form">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="your-details">
+                                                        <h5>Thông Tin Liên Hệ</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Họ và Tên <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="receiver_name" placeholder="Nhập họ và tên" required>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Số Điện Thoại <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="receiver_phone" placeholder="Nhập số điện thoại" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="your-details">
+                                                        <h5>Địa Chỉ Giao Hàng</h5>
+                                                        <div class="form-row">
+                                                            <label class="lebel-abs">Địa Chỉ <strong class="red">*</strong></label>
+                                                            <input type="text" class="input namefild" id="shipping_address" placeholder="Nhập địa chỉ giao hàng" required>
+                                                        </div>
+                                                        <div class="payment-method">
+                                                            <h5>Phương Thức Thanh Toán</h5>
+                                                            <p class="privacy">
+                                                                <span class="input-radio">
+                                                                    <input type="radio" name="payment_method" value="cod" checked>
+                                                                </span>
+                                                                <span class="text">Thanh toán khi nhận hàng</span>
+                                                            </p>
+                                                            <p class="privacy">
+                                                                <span class="input-radio">
+                                                                    <input type="radio" name="payment_method" value="vnpay">
+                                                                </span>
+                                                                <span class="text">Thanh toán qua VNPAY</span>
+                                                                <img src="https://sandbox.vnpayment.vn/paymentv2/Images/brands/logo.svg" alt="VNPAY Logo" style="height: 20px; margin-left: 10px; vertical-align: middle;">
+                                                            </p>
+                                                            <!-- <p class="privacy">
+                                                                <span class="input-radio">
+                                                                    <input type="radio" name="payment_method" value="bank">
+                                                                </span>
+                                                                <span class="text">Thanh toán qua ngân hàng</span>
+                                                            </p> -->
+                                                        </div>
+                                                        <div class="delivery-method">
+                                                            <h5>Phương Thức Giao Hàng</h5>
+                                                            <div class="form-row">
+                                                                <!-- <label class="lebel-abs">Phương thức</label> -->
+                                                                <p class="privacy">
+                                                                    <span class="input-radio">
+                                                                        <input type="radio" name="delivery_method" value="standard" checked>
+                                                                    </span>
+                                                                    <span class="text">Giao Hàng Tiêu Chuẩn</span>
+                                                                </p>
+                                                                <p class="privacy">
+                                                                    <span class="input-radio">
+                                                                        <input type="radio" name="delivery_method" value="express">
+                                                                    </span>
+                                                                    <span class="text">Giao Hàng Nhanh</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="order-note">
+                                                            <h5>Ghi Chú Đơn Hàng</h5>
+                                                            <div class="form-row">
+                                                                <label class="lebel-abs">Ghi chú</label>
+                                                                <textarea class="input namefild" id="order_note" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit">Tiếp Tục</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                                <!-- Bước 4: Xem lại đơn hàng -->
+                                <li class="steps disabled" id="step-4">
+                                    <a href="javascript:void(0);" class="step-title" onclick="toggleStep(4)">04. Xác Nhận</a>
+                                    <div class="step-description">
+                                        <div id="orderDetails">
+                                            <h6>Thông Tin Khách Hàng</h6><br>
+                                            <p><strong>Họ và Tên:</strong> <span id="order-fullname"></span></p>
+                                            <p><strong>Ngày Sinh:</strong> <span id="order-dob"></span></p>
+                                            <p><strong>Giới Tính:</strong> <span id="order-gender"></span></p>
+                                            <p><strong>Địa Chỉ:</strong> <span id="order-address"></span></p>
+                                            <p><strong>Số Điện Thoại:</strong> <span id="order-phone"></span></p>
+                                            <p><strong>Email:</strong> <span id="order-email"></span></p>
+                                            <h6>Thông Tin Thanh Toán</h6>
+                                            <p><strong>Địa Chỉ Thanh Toán:</strong> <span id="order-billing"></span></p>
+                                            <h6>Thông Tin Giao Hàng</h6>
+                                            <p><strong>Phương Thức Thanh Toán:</strong> <span id="order-payment"></span></p>
+                                            <p><strong>Phương Thức Giao Hàng:</strong> <span id="order-delivery"></span></p>
+                                            <p><strong>Ghi Chú Đơn Hàng:</strong> <span id="order-note"></span></p>
+                                            <h6>Sản Phẩm</h6>
+                                            <table class="table table-bordered" id="order-items">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Hình Ảnh</th>
+                                                        <th>Sản Phẩm</th>
+                                                        <th>Số Lượng</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng</th>
+                                                        <th>Hành Động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="order-items-body"></tbody>
+                                            </table>
+                                            <p><strong>Mã Giảm Giá:</strong> <span id="order-coupon">Không áp dụng</span></p>
+                                            <p><strong>Tạm Tính:</strong> <span id="order-subtotal">0 VND</span></p>
+                                            <p><strong>Giảm Giá:</strong> <span id="order-discount">0 VND</span></p>
+                                            <p><strong>Phí Giao Hàng:</strong> <span id="order-shipping">0 VND</span></p>
+                                            <p><strong>Tổng Số Tiền:</strong> <span id="order-total">0 VND</span></p>
+                                        </div>
+                                        <div class="confirmation-message" id="confirmationMessage">
+                                            <h6>Xác Nhận Đơn Hàng</h6>
+                                            <p>Đơn hàng của bạn đã được xác nhận thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
+                                            <a href="index.html">Quay về Trang Chủ</a>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" onclick="prevStep()">Quay Lại</button>
+                                        <button type="button" class="btn btn-primary" onclick="placeOrder()">Xác Nhận Đơn Hàng</button>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="our-brand">
+                    <h3 class="title"><strong>Đối Tác</strong> Của Chúng Tôi</h3>
+                    <div class="control">
+                        <a id="prev_brand" class="prev" href="#"><</a>
+                        <a id="next_brand" class="next" href="#">></a>
+                    </div>
+                    <ul id="braldLogo">
+                        <li>
+                            <ul class="brand_item">
+                                <li><a href="#"><div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div></a></li>
+                                <li><a href="#"><div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div></a></li>
+                                <li><a href="#"><div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div></a></li>
+                                <li><a href="#"><div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div></a></li>
+                                <li><a href="#"><div class="brand-logo"><img src="images/vina.jpg" alt=""></div></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                <input type="submit" value="Đăng Ký" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Đăng Nhập -->
+        <div id="loginModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Đăng Nhập</h2>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button type="submit" id="loginBtn">
+                        Đăng Nhập
+                        <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch">
+                    Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Đăng Ký -->
+        <div id="registerModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Đăng Ký</h2>
+                <form id="registerForm">
+                    <input type="text" id="registerName" placeholder="Họ và Tên" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button type="submit" id="registerBtn">
+                        Đăng Ký
+                        <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch">
+                    Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Quên Mật Khẩu -->
+        <div id="forgotPasswordModal" class="auth-modal">
+            <div class="auth-modal-content">
+                <span class="close">×</span>
+                <h2>Quên Mật Khẩu</h2>
+                <form id="forgotPasswordForm">
+                    <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+                    <button type="submit" id="forgotBtn">
+                        Gửi Yêu Cầu
+                        <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch">
+                    Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        let timer; // Khai báo biến timer để tránh lỗi ReferenceError
+
+        function updateTime() {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                // Cập nhật thời gian hoặc thực hiện hành động khác
+            }, 1000);
+        }
+
+        // Khởi tạo Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        let currentStep = 1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const step = parseInt(urlParams.get('step')) || 1;
+            currentStep = step;
+            toggleStep(step);
+            if (step === 4) updateOrderDetails();
+
+            auth.onAuthStateChanged((user) => {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
+                const guestInput = document.getElementById('guestInput');
+                const customerTitle = document.getElementById('customer-title');
+
+                if (user) {
+                    userInfo.style.display = 'inline-block';
+                    loginLink.style.display = 'none';
+                    registerLink.style.display = 'none';
+                    userInfoDisplay.style.display = 'block';
+                    guestInput.style.display = 'none';
+                    customerTitle.textContent = 'Thông Tin Khách Hàng (Đã Đăng Nhập)';
+
+                    document.getElementById('display-fullname').textContent = user.displayName || 'Chưa cập nhật';
+                    document.getElementById('display-email').textContent = user.email || 'Chưa cập nhật';
+                    document.getElementById('display-phone').textContent = user.phoneNumber || 'Chưa cập nhật';
+                    document.getElementById('display-address').textContent = 'Chưa cập nhật';
+                    document.getElementById('display-dob').textContent = 'Chưa cập nhật';
+                    document.getElementById('display-gender').textContent = 'Chưa cập nhật';
+
+                    db.ref('users/' + user.uid).once('value').then((snapshot) => {
+                        const userData = snapshot.val();
+                        if (userData) {
+                            document.getElementById('display-fullname').textContent = userData.fullName || user.displayName || 'Chưa cập nhật';
+                            document.getElementById('display-address').textContent = userData.address || 'Chưa cập nhật';
+                            document.getElementById('display-dob').textContent = userData.dob || 'Chưa cập nhật';
+                            document.getElementById('display-gender').textContent = userData.gender || 'Chưa cập nhật';
+                            document.getElementById('display-phone').textContent = userData.phone || user.phoneNumber || 'Chưa cập nhật';
+                        }
+                        syncCustomerInfo(user, userData);
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không thể lấy thông tin người dùng.',
+                            showConfirmButton: true
+                        });
+                    });
+                } else {
+                    userInfo.style.display = 'none';
+                    loginLink.style.display = 'inline-block';
+                    registerLink.style.display = 'inline-block';
+                    userInfoDisplay.style.display = 'none';
+                    guestInput.style.display = 'block';
+                    customerTitle.textContent = 'Thông Tin Khách Hàng (Khách Vãng Lai)';
+                }
+            });
+
+            loadDropdownMenu();
+            updateCartCount();
+            updateCartDropdown();
+            bindModalEvents();
+
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const btn = document.getElementById('loginBtn');
+                const spinner = document.getElementById('loginSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    document.getElementById('loginModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const btn = document.getElementById('registerBtn');
+                const spinner = document.getElementById('registerSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await userCredential.user.updateProfile({ displayName: name });
+                    await auth.sendEmailVerification(userCredential.user);
+                    await db.ref('users/' + userCredential.user.uid).set({
+                        fullName: name,
+                        email: email
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('registerModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgotPasswordEmail').value;
+                const btn = document.getElementById('forgotBtn');
+                const spinner = document.getElementById('forgotSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                if (!email) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                    });
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    return;
+                }
+                try {
+                    await auth.sendPasswordResetEmail(email);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A63C3C',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Đăng Xuất',
+                    cancelButtonText: 'Hủy'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await auth.signOut();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đã có lỗi xảy ra khi đăng xuất.',
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('hidden');
+                }
+            }, 1000);
+        });
+
+        function syncCustomerInfo(user, userData) {
+            let fullName, email, phone, address, dob, gender;
+            if (user && userData) {
+                fullName = userData.fullName || user.displayName || 'Chưa cập nhật';
+                email = user.email || 'Chưa cập nhật';
+                phone = userData.phone || user.phoneNumber || 'Chưa cập nhật';
+                address = userData.address || 'Chưa cập nhật';
+                dob = userData.dob || 'Chưa cập nhật';
+                gender = userData.gender || 'Chưa cập nhật';
+            } else {
+                fullName = document.getElementById('guest-fullname').value || 'Chưa nhập';
+                email = document.getElementById('guest-email').value || 'Chưa nhập';
+                phone = document.getElementById('guest-phone').value || 'Chưa nhập';
+                address = document.getElementById('guest-address').value || 'Chưa nhập';
+                dob = 'Chưa nhập';
+                gender = 'Chưa nhập';
+            }
+
+            document.getElementById('full_name').value = fullName;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('billing_address').value = address;
+            document.getElementById('receiver_name').value = fullName;
+            document.getElementById('receiver_phone').value = phone;
+            document.getElementById('shipping_address').value = address;
+            document.getElementById('order-fullname').textContent = fullName;
+            document.getElementById('order-email').textContent = email;
+            document.getElementById('order-phone').textContent = phone;
+            document.getElementById('order-address').textContent = address;
+            document.getElementById('order-dob').textContent = dob;
+            document.getElementById('order-gender').textContent = gender;
+        }
+
+        function loadDropdownMenu() {
+            const dropdownDrinks = document.getElementById('dropdown-drinks');
+            const dropdownCakes = document.getElementById('dropdown-cakes');
+            const dropdownToppings = document.getElementById('dropdown-toppings');
+            if (!dropdownDrinks || !dropdownCakes || !dropdownToppings) return;
+
+            dropdownDrinks.innerHTML = '';
+            dropdownCakes.innerHTML = '';
+            dropdownToppings.innerHTML = '';
+
+            const drinks = ['Cà Phê Đen Đá', 'Cappuccino', 'Latte', 'Espresso'];
+            const cakes = ['Bánh Bông Lan', 'Cheesecake', 'Bánh Mì', 'Tiramisu', 'Mousse Cake', 'Cupcake'];
+            const toppings = ['Phô Mai', 'Socola', 'Mật Ong', 'Kem', 'Trái Cây'];
+
+            drinks.forEach(item => dropdownDrinks.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
+            cakes.forEach(item => dropdownCakes.innerHTML += `<li><a href="menu.html">${item}</a></li>`);
+            toppings.forEach(item => dropdownToppings.innerHTML += `<li><a href="menu.html#${item.toLowerCase().replace(/\s/g, '-')}"">${item}</a></li>`);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            const cartNo = document.querySelector('.cart_no');
+            if (cartNo) cartNo.textContent = count;
+        }
+
+        function updateCartDropdown() {
+            const dropdown = document.querySelector('.option-cart-item');
+            if (!dropdown) return;
+
+            dropdown.innerHTML = '';
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+
+            if (cart.length === 0) {
+                dropdown.innerHTML = '<li>Giỏ hàng trống!</li>';
+                return;
+            }
+
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (!product) return;
+
+                let cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <div class="cart-item">
+                        <div class="image"><img src="${product.image}" alt="${product.name}" loading="lazy"></div>
+                        <div class="item-description">
+                            <p class="name">${product.name}</p>
+                            <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                        </div>
+                        <div class="right">
+                            <p class="price">${(product.price * item.quantity).toLocaleString('vi-VN')} VND</p>
+                            <a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa"></a>
+                        </div>
+                    </div>
+                `;
+                dropdown.appendChild(cartItem);
+            });
+
+            document.querySelectorAll('.option-cart-item .remove').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = button.getAttribute('data-product-id');
+                    removeItem(productId);
+                });
+            });
+
+            let totalPrice = cart.reduce((total, item) => {
+                let product = products.find(p => p.id === item.productId);
+                return total + (product ? product.price * item.quantity : 0);
+            }, 0);
+            let totalLi = document.createElement('li');
+            totalLi.innerHTML = `<span class="total">Tổng <strong>${totalPrice.toLocaleString('vi-VN')} VND</strong></span><button class="checkout" onclick="window.location.href='checkout.html?step=1'">Thanh Toán</button>`;
+            dropdown.appendChild(totalLi);
+        }
+
+        function removeItem(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const item = cart.find(i => i.productId === productId);
+            cart = cart.filter(item => item.productId !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartDropdown();
+            updateOrderDetails();
+            Swal.fire({
+                icon: 'success',
+                title: 'Đã xóa!',
+                text: `${item ? (products.find(p => p.id === item.productId)?.name || 'Sản phẩm') : 'Sản phẩm'} đã được xóa khỏi giỏ hàng.`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        async function fetchPromotions() {
+            try {
+                const promotionsRef = db.ref('promotions');
+                const snapshot = await promotionsRef.once('value');
+                return snapshot.val() || {};
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function isValidPromotion(promo, code) {
+            if (!promo || promo.status !== 'active') return false;
+            if (promo.code !== code) return false;
+            const today = new Date();
+            const startDate = new Date(promo.startDate);
+            const endDate = new Date(promo.endDate);
+            return today >= startDate && today <= endDate;
+        }
+
+        function toggleStep(step) {
+            if (step < 1 || step > 4 || step > currentStep) return;
+            const steps = document.querySelectorAll('.steps');
+            steps.forEach(s => s.classList.remove('active'));
+            const targetStep = document.getElementById(`step-${step}`);
+            if (targetStep) targetStep.classList.add('active');
+            for (let i = 1; i <= step; i++) {
+                const stepElement = document.getElementById(`step-${i}`);
+                if (stepElement) stepElement.classList.remove('disabled');
+            }
+            if (step >= 2) {
+                document.getElementById('order-billing').textContent = document.getElementById('billing_address').value || 'Chưa nhập địa chỉ thanh toán';
+            }
+            if (step >= 3) {
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+                const deliveryMethod = document.querySelector('input[name="delivery_method"]:checked')?.value;
+                document.getElementById('order-payment').textContent = paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : paymentMethod === 'bank' ? 'Thanh toán qua ngân hàng' : 'Chưa chọn phương thức';
+                document.getElementById('order-delivery').textContent = deliveryMethod === 'standard' ? 'Giao Hàng Tiêu Chuẩn Miễn Phí' : deliveryMethod === 'express' ? 'Giao Hàng Nhanh (1-2 ngày) - 30.000 VND' : 'Chưa chọn phương thức';
+                document.getElementById('order-note').textContent = document.getElementById('order_note').value || 'Không có ghi chú';
+            }
+            if (step === 4) updateOrderDetails();
+        }
+
+        function nextStep() {
+            if (currentStep === 1) {
+                if (!auth.currentUser) {
+                    const fullName = document.getElementById('guest-fullname').value;
+                    const email = document.getElementById('guest-email').value;
+                    const phone = document.getElementById('guest-phone').value;
+                    const address = document.getElementById('guest-address').value;
+                    if (!fullName || !email || !phone || !address) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Vui lòng điền đầy đủ thông tin khách hàng.',
+                            showConfirmButton: true
+                        });
+                        return;
+                    }
+                    syncCustomerInfo(null, null);
+                }
+            } else if (currentStep === 2) {
+                const fullName = document.getElementById('full_name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const billingAddress = document.getElementById('billing_address').value;
+                if (!fullName || !email || !phone || !billingAddress) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng điền đầy đủ thông tin thanh toán.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+            } else if (currentStep === 3) {
+                const receiverName = document.getElementById('receiver_name').value;
+                const receiverPhone = document.getElementById('receiver_phone').value;
+                const shippingAddress = document.getElementById('shipping_address').value;
+                if (!receiverName || !receiverPhone || !shippingAddress) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng điền đầy đủ thông tin giao hàng.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+            }
+            currentStep++;
+            if (currentStep <= 4) toggleStep(currentStep);
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                toggleStep(currentStep);
+            }
+        }
+
+        document.getElementById('billing-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            nextStep();
+        });
+
+        document.getElementById('shipping-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            nextStep();
+        });
+
+        async function updateOrderDetails() {
+            const tbody = document.getElementById('order-items-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let subtotal = 0;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">Giỏ hàng trống!</td></tr>';
+                document.getElementById('order-subtotal').textContent = '0 VND';
+                document.getElementById('order-discount').textContent = '0 VND';
+                document.getElementById('order-shipping').textContent = '0 VND';
+                document.getElementById('order-total').textContent = '0 VND';
+                document.getElementById('order-coupon').textContent = 'Không áp dụng';
+                return;
+            }
+
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (!product) return;
+
+                const price = Number(product.price);
+                const quantity = Number(item.quantity);
+                if (isNaN(price) || isNaN(quantity)) return;
+
+                const itemTotal = price * quantity;
+                subtotal += itemTotal;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${product.image}" alt="${product.name}" style="width: 50px; height: auto;"></td>
+                    <td>${product.name}</td>
+                    <td>${quantity}</td>
+                    <td>${price.toLocaleString('vi-VN')} VND</td>
+                    <td>${itemTotal.toLocaleString('vi-VN')} VND</td>
+                    <td><a href="#" class="remove" data-product-id="${product.id}"><img src="images/remove.png" alt="Xóa" style="width: 20px;"></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.querySelectorAll('#order-items-body .remove').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = button.getAttribute('data-product-id');
+                    removeItem(productId);
+                });
+            });
+
+            let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon')) || {};
+            let discount = 0;
+            let couponText = 'Không áp dụng';
+            let shippingFee = document.querySelector('input[name="delivery_method"]:checked')?.value === 'express' ? 30000 : 0;
+
+            if (appliedCoupon.code) {
+                const promotions = await fetchPromotions();
+                const promo = Object.values(promotions).find(p => p.code === appliedCoupon.code);
+                if (isValidPromotion(promo, appliedCoupon.code)) {
+                    discount = (subtotal * promo.discount) / 100;
+                    couponText = `<span style="color: green; font-weight: bold;">${appliedCoupon.code} (${promo.discount}%)</span>`;
+                } else {
+                    localStorage.removeItem('appliedCoupon');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Mã giảm giá không hợp lệ',
+                        text: 'Mã giảm giá đã hết hạn hoặc không tồn tại.',
+                        showConfirmButton: true
+                    });
+                }
+            }
+
+            let grandtotal = subtotal - discount + shippingFee;
+            document.getElementById('order-subtotal').textContent = `${subtotal.toLocaleString('vi-VN')} VND`;
+            document.getElementById('order-discount').textContent = `${discount.toLocaleString('vi-VN')} VND`;
+            document.getElementById('order-shipping').textContent = `${shippingFee.toLocaleString('vi-VN')} VND`;
+            document.getElementById('order-total').textContent = `${grandtotal.toLocaleString('vi-VN')} VND`;
+            document.getElementById('order-coupon').innerHTML = couponText;
+        }
+
+        async function processVNPayPayment(order, orderKey) {
+            const vnp_TmnCode = "2Q01AVYB";
+            const vnp_HashSecret = "U3I3A1Q4G3Z3MNNJ2NODFKA7G3CBU27P";
+            const vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            const vnp_ReturnUrl = window.location.origin + "/vnpay_return.html";
+
+            // Lấy địa chỉ IP của người dùng
+            async function getClientIp() {
+                try {
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    return data.ip || '127.0.0.1';
+                } catch (error) {
+                    console.error('Error fetching IP:', error);
+                    return '127.0.0.1';
+                }
+            }
+
+            const vnp_Params = {
+                vnp_Version: '2.1.0',
+                vnp_Command: 'pay',
+                vnp_TmnCode: vnp_TmnCode,
+                vnp_Locale: 'vn',
+                vnp_CurrCode: 'VND',
+                vnp_TxnRef: orderKey.slice(-8).toUpperCase(),
+                vnp_OrderInfo: `Thanh toan don hang ${orderKey.slice(-8).toUpperCase()}`,
+                vnp_OrderType: 'other',
+                vnp_Amount: Math.round(order.grandTotal * 100),
+                vnp_ReturnUrl: vnp_ReturnUrl,
+                vnp_IpAddr: await getClientIp(),
+                vnp_CreateDate: moment().format('YYYYMMDDHHmmss')
+            };
+
+            // Sắp xếp tham số
+            const sortedParams = Object.keys(vnp_Params).sort().reduce((acc, key) => {
+                acc[key] = vnp_Params[key];
+                return acc;
+            }, {});
+
+            // Tạo chuỗi ký tự cần mã hóa
+            const signData = Object.keys(sortedParams)
+                .map(key => `${key}=${encodeURIComponent(sortedParams[key]).replace(/%20/g, '+')}`)
+                .join('&');
+
+            // Debug
+            console.log('vnp_Params:', vnp_Params);
+            console.log('signData:', signData);
+
+            // Tạo chữ ký
+            const hmac = CryptoJS.HmacSHA512(signData, vnp_HashSecret);
+            const vnp_SecureHash = hmac.toString(CryptoJS.enc.Hex);
+
+            console.log('vnp_SecureHash:', vnp_SecureHash);
+
+            // Thêm chữ ký vào tham số
+            sortedParams.vnp_SecureHash = vnp_SecureHash;
+
+            // Tạo URL thanh toán
+            const paymentUrl = vnp_Url + '?' + Object.keys(sortedParams)
+                .map(key => `${key}=${encodeURIComponent(sortedParams[key]).replace(/%20/g, '+')}`)
+                .join('&');
+
+            console.log('paymentUrl:', paymentUrl);
+
+            // Chuyển hướng
+            window.location.href = paymentUrl;
+        }
+
+        async function placeOrder() {
+            // Kiểm tra đăng nhập
+            if (!auth.currentUser) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng đăng nhập để đặt hàng.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Đăng nhập',
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'login.html';
+                    }
+                });
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+
+            // Kiểm tra giỏ hàng
+            if (cart.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Giỏ hàng trống!',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            // Kiểm tra danh sách sản phẩm
+            if (!products.length) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Danh sách sản phẩm không khả dụng.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            // Lấy và kiểm tra địa chỉ giao hàng
+            const shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress || typeof shippingAddress !== 'string' || shippingAddress.trim().length < 5) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng điền địa chỉ giao hàng hợp lệ (tối thiểu 5 ký tự).',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            // Lấy thông tin người dùng
+            let userData = {};
+            try {
+                const userRef = db.ref('users/' + auth.currentUser.uid);
+                const snapshot = await userRef.once('value');
+                userData = snapshot.val() || {};
+                userData.email = userData.email || auth.currentUser.email;
+                userData.fullName = userData.fullName || auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                userData.phone = userData.phone || '';
+                userData.address = userData.address || shippingAddress;
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể lấy thông tin người dùng.',
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            // Tính subtotal
+            const productMap = products.reduce((map, p) => ({ ...map, [p.id]: p }), {});
+            let subtotal = cart.reduce((total, item) => {
+                const product = productMap[item.productId];
+                return total + (product ? product.price * item.quantity : 0);
+            }, 0);
+
+            // Lấy thông tin giảm giá và phương thức giao hàng
+            let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon')) || {};
+            let discountAmount = 0;
+            let couponCode = '';
+            let deliveryMethod = document.querySelector('input[name="delivery_method"]:checked')?.value || 'standard';
+            let shippingFee = deliveryMethod === 'express' ? 30000 : 0;
+            let paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'cod';
+
+            if (appliedCoupon.code) {
+                const promotions = await fetchPromotions();
+                const promo = Object.values(promotions).find(p => p.code === appliedCoupon.code);
+                if (isValidPromotion(promo, appliedCoupon.code)) {
+                    discountAmount = (subtotal * promo.discount) / 100;
+                    couponCode = appliedCoupon.code;
+                }
+            }
+
+            let discountedTotal = subtotal - discountAmount + shippingFee;
+            let grandTotal = discountedTotal;
+
+            // Tạo ngày và giờ
+            const createdAt = new Date();
+            const date = createdAt.toLocaleDateString('vi-VN');
+            const time = createdAt.toLocaleTimeString('vi-VN', { hour12: false });
+
+            // Tạo đối tượng đơn hàng
+            const order = {
+                userId: auth.currentUser.uid,
+                customerInfo: {
+                    name: userData.fullName,
+                    fullName: userData.fullName,
+                    email: userData.email,
+                    phone: userData.phone,
+                    address: userData.address
+                },
+                billingInfo: {
+                    fullName: userData.fullName,
+                    email: userData.email,
+                    phone: userData.phone,
+                    address: shippingAddress
+                },
+                shippingInfo: {
+                    receiverName: userData.fullName,
+                    receiverPhone: userData.phone,
+                    address: shippingAddress
+                },
+                items: cart.map(item => ({
+                    productId: item.productId,
+                    name: productMap[item.productId]?.name || 'Unknown Product',
+                    quantity: Number(item.quantity) || 1
+                })),
+                subtotal,
+                discountAmount,
+                couponCode,
+                shippingFee,
+                deliveryMethod,
+                paymentMethod,
+                discountedTotal,
+                grandTotal,
+                createdAt: createdAt.toISOString(),
+                status: 'pending',
+                date,
+                time,
+                fullName: userData.fullName
+            };
+
+            // Hiển thị loading
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                // Lưu đơn hàng
+                const orderRef = await db.ref('orders').push(order);
+                const orderKey = orderRef.key;
+
+                // Nếu thanh toán qua VNPAY
+                if (paymentMethod === 'vnpay') {
+                    await processVNPayPayment(order, orderKey);
+                    return;
+                }
+
+                // Xử lý cho các phương thức thanh toán khác
+                await generateAndShowBill(order, orderKey, productMap);
+
+                // Xóa giỏ hàng và coupon
+                localStorage.removeItem('cart');
+                localStorage.removeItem('appliedCoupon');
+                updateCartCount();
+                updateCartDropdown();
+
+                // Hiển thị thông báo thành công
+                document.getElementById('orderDetails').style.display = 'none';
+                document.getElementById('confirmationMessage').style.display = 'block';
+                document.querySelector('button[onclick="placeOrder()"]').style.display = 'none';
+                document.querySelector('button[onclick="prevStep()"]').style.display = 'none';
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Đơn hàng của bạn đã được đặt thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (error) {
+                console.error('Error saving order:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền lưu đơn hàng. Vui lòng kiểm tra quy tắc bảo mật Firebase.' : 'Không thể lưu đơn hàng.',
+                    showConfirmButton: true
+                });
+            }
+        }
+
+        async function generateAndShowBill(order, orderKey, productMap) {
+            // ==== Tạo layout hóa đơn kiểu siêu thị ====
+            const storeName = "Ấm - Coffee and Cake";
+            const storeAddress = "Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh";
+            const storePhone = "(028) 1234 5678";
+            const logoUrl = "images/logo.png";
+
+            // Tạo div tạm thời
+            const billDiv = document.createElement('div');
+            billDiv.style.width = '350px';
+            billDiv.style.background = '#fff';
+            billDiv.style.padding = '16px 12px';
+            billDiv.style.fontFamily = 'monospace, Arial, sans-serif';
+            billDiv.style.fontSize = '15px';
+            billDiv.style.color = '#222';
+            billDiv.style.border = '1px solid #eee';
+            billDiv.style.margin = '0 auto';
+
+            billDiv.innerHTML = `
+                <div style="text-align:center;">
+                    <img src="${logoUrl}" alt="logo" style="height:48px;margin-bottom:8px;">
+                    <div style="font-weight:bold;font-size:18px;">${storeName}</div>
+                    <div style="font-size:13px;">${storeAddress}</div>
+                    <div style="font-size:13px;">${storePhone}</div>
+                    <hr style="margin:8px 0;">
+                    <div style="font-size:14px;">Mã đơn: <b>${orderKey.slice(-8).toUpperCase()}</b></div>
+                    <div style="font-size:13px;">Ngày: ${order.date} &nbsp; ${order.time}</div>
+                </div>
+                <hr style="margin:8px 0;">
+                <div>
+                    <div>Khách: <b>${order.customerInfo.fullName}</b></div>
+                    <div>ĐT: ${order.customerInfo.phone}</div>
+                    <div>Địa chỉ: ${order.customerInfo.address}</div>
+                </div>
+                <hr style="margin:8px 0;">
+                <table style="width:100%;font-size:14px;">
+                    <thead>
+                        <tr>
+                            <th align="left">SP</th>
+                            <th align="center">SL</th>
+                            <th align="right">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${order.items.map(item => {
+                            const p = productMap[item.productId] || {};
+                            return `
+                            <tr>
+                                <td>${p.name || item.name}</td>
+                                <td align="center">${item.quantity}</td>
+                                <td align="right">${((p.price || 0) * item.quantity).toLocaleString('vi-VN')}đ</td>
+                            </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+                <hr style="margin:8px 0;">
+                <div style="display:flex;justify-content:space-between;">
+                    <span>Tạm tính:</span>
+                    <span>${order.subtotal.toLocaleString('vi-VN')}đ</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;">
+                    <span>Giảm giá:</span>
+                    <span style="color:#0a0;">-${order.discountAmount.toLocaleString('vi-VN')}đ</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;">
+                    <span>Phí giao hàng:</span>
+                    <span>${order.shippingFee ? order.shippingFee.toLocaleString('vi-VN') + 'đ' : 'Miễn phí'}</span>
+                </div>
+                ${order.couponCode ? `<div style="display:flex;justify-content:space-between;"><span>Mã KM:</span><span>${order.couponCode}</span></div>` : ''}
+                <hr style="margin:8px 0;">
+                <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:17px;">
+                    <span>TỔNG CỘNG:</span>
+                    <span>${order.grandTotal.toLocaleString('vi-VN')}đ</span>
+                </div>
+                <hr style="margin:8px 0;">
+                <div style="text-align:center;font-size:14px;margin-top:10px;">
+                    <b>Cảm ơn quý khách!</b><br>
+                    Hẹn gặp lại tại <span style="color:#4A2F1A;">Ấm - Coffee and Cake</span>
+                </div>
+            `;
+
+            // Thêm vào body để html2canvas render được
+            billDiv.style.position = 'fixed';
+            billDiv.style.left = '-9999px';
+            document.body.appendChild(billDiv);
+
+            // Render hóa đơn thành ảnh
+            const canvas = await html2canvas(billDiv, { backgroundColor: "#fff", scale: 2 });
+            const billImage = canvas.toDataURL("image/png");
+            document.body.removeChild(billDiv);
+
+            // Hiển thị ảnh hóa đơn cho người dùng
+            const confirmationMsg = document.getElementById('confirmationMessage');
+            if (confirmationMsg) {
+                confirmationMsg.querySelectorAll('img').forEach(img => img.remove());
+                const img = document.createElement('img');
+                img.src = billImage;
+                img.alt = "Hóa đơn";
+                img.style.maxWidth = "100%";
+                img.style.margin = "20px 0";
+                img.style.display = "block";
+                img.style.border = "1px solid #eee";
+                img.style.background = "#fff";
+                confirmationMsg.insertBefore(img, confirmationMsg.firstChild);
+            }
+        }
+
+        // Kiểm tra trạng thái đăng nhập khi tải trang
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.onAuthStateChanged(user => {
+                if (!user) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa đăng nhập',
+                        text: 'Bạn sẽ được chuyển về trang chủ.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Đăng nhập',
+                        showCancelButton: true,
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'index.html';
+                        }
+                    });
+                } else {
+                    console.log('User logged in:', { uid: user.uid, email: user.email }); // Debug
+                }
+            });
+        });
+
+        function bindModalEvents() {
+            document.querySelector('.log').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelector('.reg').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('forgotPasswordModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => {
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('registerModal').style.display = 'none';
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('.auth-modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.style.display = 'none';
+                });
+            });
+        }
+
+        $(document).ready(() => {
+            const selectors = ['#featured', '#hot', '#gallery_01'];
+            selectors.forEach(selector => {
+                if (!$(selector).length) {
+                    console.log(`No ${selector} element found, skipping carouFredSel`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

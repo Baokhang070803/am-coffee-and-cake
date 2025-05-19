@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Ấm - Coffee and Cake, nơi mang đến những ly cà phê thơm ngon và bánh ngọt tinh tế trong không gian ấm cúng.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Kết Quả Thanh Toán - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+        }
+        .payment-result {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .payment-header img {
+            max-width: 180px;
+            margin-bottom: 15px;
+        }
+        .payment-header h2 {
+            color: #4A2F1A;
+            font-size: 28px;
+            margin: 10px 0;
+        }
+        .payment-status {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .error-icon {
+            color: #dc3545;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .payment-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .payment-details h3 {
+            color: #4A2F1A;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+        .payment-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #f7544a;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #da2a20;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        .payment-message {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .payment-message.success {
+            color: #28a745;
+        }
+        .payment-message.error {
+            color: #dc3545;
+        }
+        .order-summary {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .order-summary h4 {
+            color: #4A2F1A;
+            margin-bottom: 15px;
+        }
+        .order-items {
+            margin: 15px 0;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .order-total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .invoice-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .customer-info {
+            flex: 1;
+        }
+        .customer-info h4 {
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .order-items {
+            flex: 1;
+        }
+        .order-items h4 {
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+        .text-end {
+            text-align: right;
+        }
+        @media (max-width: 768px) {
+            .payment-result {
+                margin: 15px;
+                padding: 20px;
+            }
+            .btn {
+                display: block;
+                margin: 10px 0;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-value {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo">
+                            <a href="index.html">
+                                <img src="images/logo.png" alt="Ấm - Coffee and Cake">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="payment-result">
+                <div class="payment-header">
+                    <img src="images/logo.png" alt="Ấm - Coffee and Cake">
+                    <h2>Kết Quả Thanh Toán</h2>
+                </div>
+                <div id="resultContent">
+                    <!-- Nội dung sẽ được điền bởi JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khởi tạo Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Hàm để lấy tham số từ URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Hàm format thời gian
+        function formatDateTime(dateStr) {
+            if (!dateStr) return 'N/A';
+            const year = dateStr.substring(0, 4);
+            const month = dateStr.substring(4, 6);
+            const day = dateStr.substring(6, 8);
+            const hour = dateStr.substring(8, 10);
+            const minute = dateStr.substring(10, 12);
+            const second = dateStr.substring(12, 14);
+            return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+        }
+
+        // Hàm xóa giỏ hàng và chuyển hướng
+        function clearCartAndRedirect() {
+            // Xóa giỏ hàng
+            localStorage.removeItem('cart');
+            localStorage.removeItem('appliedCoupon');
+            
+            // Chuyển hướng về trang chủ
+            window.location.href = 'index.html';
+        }
+
+        // Hàm xóa giỏ hàng và chuyển hướng đến trang member
+        function clearCartAndRedirectToMember() {
+            // Xóa giỏ hàng
+            localStorage.removeItem('cart');
+            localStorage.removeItem('appliedCoupon');
+            
+            // Chuyển hướng đến trang member
+            window.location.href = 'member.html';
+        }
+
+        // Hàm lấy thông tin đơn hàng từ Firebase
+        async function getOrderDetails(orderKey) {
+            try {
+                const orderRef = db.ref('orders/' + orderKey);
+                const snapshot = await orderRef.once('value');
+                const orderData = snapshot.val();
+                
+                if (!orderData) {
+                    console.error('Không tìm thấy thông tin đơn hàng');
+                    return null;
+                }
+
+                // Đảm bảo cấu trúc dữ liệu đúng
+                return {
+                    items: orderData.items || [],
+                    customerInfo: orderData.customerInfo || {},
+                    totalAmount: orderData.totalAmount || 0,
+                    discount: orderData.discount || 0,
+                    finalAmount: orderData.finalAmount || 0,
+                    orderDate: orderData.orderDate || '',
+                    orderId: orderKey
+                };
+            } catch (error) {
+                console.error('Error getting order details:', error);
+                return null;
+            }
+        }
+
+        // Hàm hiển thị hóa đơn
+        function displayInvoice(orderDetails) {
+            const invoiceContent = document.getElementById('invoiceContent');
+            if (!orderDetails) {
+                invoiceContent.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        Không thể tải thông tin hóa đơn. Vui lòng kiểm tra lại sau.
+                    </div>`;
+                return;
+            }
+
+            const { items, customerInfo, totalAmount, discount, finalAmount, orderDate, orderId } = orderDetails;
+            
+            let invoiceHTML = `
+                <div class="invoice-details">
+                    <div class="customer-info">
+                        <h4>Thông Tin Khách Hàng</h4>
+                        <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
+                        <p><strong>Ngày đặt:</strong> ${orderDate}</p>
+                        <p><strong>Tên:</strong> ${customerInfo.name || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${customerInfo.email || 'N/A'}</p>
+                        <p><strong>Số điện thoại:</strong> ${customerInfo.phone || 'N/A'}</p>
+                        <p><strong>Địa chỉ:</strong> ${customerInfo.address || 'N/A'}</p>
+                    </div>
+                    <div class="order-items">
+                        <h4>Chi Tiết Đơn Hàng</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th>Số Lượng</th>
+                                    <th>Đơn Giá</th>
+                                    <th>Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            if (items && items.length > 0) {
+                items.forEach(item => {
+                    invoiceHTML += `
+                        <tr>
+                            <td>${item.name || 'N/A'}</td>
+                            <td>${item.quantity || 0}</td>
+                            <td>${(item.price || 0).toLocaleString('vi-VN')} VND</td>
+                            <td>${((item.price || 0) * (item.quantity || 0)).toLocaleString('vi-VN')} VND</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                invoiceHTML += `
+                    <tr>
+                        <td colspan="4" class="text-center">Không có sản phẩm nào trong đơn hàng</td>
+                    </tr>
+                `;
+            }
+
+            invoiceHTML += `
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Tổng tiền hàng:</strong></td>
+                                    <td>${(totalAmount || 0).toLocaleString('vi-VN')} VND</td>
+                                </tr>
+                                ${discount ? `
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Giảm giá:</strong></td>
+                                    <td>-${discount.toLocaleString('vi-VN')} VND</td>
+                                </tr>
+                                ` : ''}
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Thành tiền:</strong></td>
+                                    <td><strong>${(finalAmount || 0).toLocaleString('vi-VN')} VND</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            invoiceContent.innerHTML = invoiceHTML;
+        }
+
+        // Xử lý kết quả thanh toán
+        async function handlePaymentResult() {
+            const vnp_ResponseCode = getUrlParameter('vnp_ResponseCode');
+            const vnp_TransactionNo = getUrlParameter('vnp_TransactionNo');
+            const vnp_OrderInfo = getUrlParameter('vnp_OrderInfo');
+            const vnp_Amount = getUrlParameter('vnp_Amount');
+            const vnp_TxnRef = getUrlParameter('vnp_TxnRef');
+            const vnp_PayDate = getUrlParameter('vnp_PayDate');
+
+            const resultContent = document.getElementById('resultContent');
+            let orderKey = '';
+
+            // Tìm orderKey từ vnp_TxnRef
+            if (vnp_TxnRef) {
+                orderKey = vnp_TxnRef;
+            }
+
+            if (vnp_ResponseCode === '00') {
+                // Xóa giỏ hàng khi thanh toán thành công
+                localStorage.removeItem('cart');
+                localStorage.removeItem('appliedCoupon');
+
+                // Lấy thông tin đơn hàng từ Firebase
+                const orderDetails = await getOrderDetails(orderKey);
+                console.log('Order Details:', orderDetails); // Debug log
+
+                // Thanh toán thành công
+                resultContent.innerHTML = `
+                    <div class="payment-status">
+                        <div class="success-icon">
+                            <i class="fa fa-check-circle"></i>
+                        </div>
+                        <h2>Thanh Toán Thành Công!</h2>
+                        <p class="payment-message success">Cảm ơn bạn đã đặt hàng tại Ấm - Coffee and Cake!</p>
+                    </div>
+                    <div class="payment-details">
+                        <h3>Thông Tin Giao Dịch</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Mã giao dịch:</span>
+                            <span class="detail-value">${vnp_TransactionNo}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Nội dung:</span>
+                            <span class="detail-value">${vnp_OrderInfo}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Số tiền:</span>
+                            <span class="detail-value">${(parseInt(vnp_Amount) / 100).toLocaleString('vi-VN')} VND</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Thời gian:</span>
+                            <span class="detail-value">${formatDateTime(vnp_PayDate)}</span>
+                        </div>
+                    </div>
+                    <div class="payment-actions">
+                        <a href="index.html" class="btn btn-primary" onclick="clearCartAndRedirect()">Về Trang Chủ</a>
+                        <a href="member.html" class="btn btn-secondary" onclick="clearCartAndRedirectToMember()">Xem Đơn Hàng</a>
+                    </div>
+                `;
+
+                // Hiển thị hóa đơn
+                displayInvoice(orderDetails);
+
+                // Cập nhật trạng thái đơn hàng trong Firebase
+                if (orderKey) {
+                    try {
+                        const orderRef = db.ref('orders/' + orderKey);
+                        await orderRef.update({
+                            status: 'paid',
+                            paymentStatus: 'success',
+                            paymentDetails: {
+                                transactionNo: vnp_TransactionNo,
+                                amount: parseInt(vnp_Amount) / 100,
+                                payDate: formatDateTime(vnp_PayDate),
+                                responseCode: vnp_ResponseCode
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error updating order status:', error);
+                    }
+                }
+            } else {
+                // Thanh toán thất bại
+                resultContent.innerHTML = `
+                    <div class="payment-status">
+                        <div class="error-icon">
+                            <i class="fa fa-times-circle"></i>
+                        </div>
+                        <h2>Thanh Toán Thất Bại</h2>
+                        <p class="payment-message error">Vui lòng thử lại hoặc liên hệ với chúng tôi để được hỗ trợ.</p>
+                    </div>
+                    <div class="payment-details">
+                        <h3>Thông Tin Lỗi</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Mã lỗi:</span>
+                            <span class="detail-value">${vnp_ResponseCode}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Nội dung:</span>
+                            <span class="detail-value">${vnp_OrderInfo}</span>
+                        </div>
+                    </div>
+                    <div class="payment-actions">
+                        <a href="checkout.html" class="btn btn-primary">Thử Lại</a>
+                        <a href="index.html" class="btn btn-secondary">Về Trang Chủ</a>
+                    </div>
+                `;
+
+                // Cập nhật trạng thái đơn hàng trong Firebase
+                if (orderKey) {
+                    try {
+                        const orderRef = db.ref('orders/' + orderKey);
+                        await orderRef.update({
+                            status: 'payment_failed',
+                            paymentStatus: 'failed',
+                            paymentDetails: {
+                                responseCode: vnp_ResponseCode,
+                                errorMessage: 'Thanh toán thất bại'
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error updating order status:', error);
+                    }
+                }
+            }
+        }
+
+        // Xử lý khi trang được tải
+        document.addEventListener('DOMContentLoaded', handlePaymentResult);
+    </script>
+</body>
+</html>

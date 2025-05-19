@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Tham gia chương trình hội viên của Ấm - Coffee and Cake để nhận ưu đãi độc quyền và tích lũy điểm thưởng!"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="images/favicon.png"/>
+    <title>Thành Viên - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'/>
+    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="css/mobile.css" rel="stylesheet"/>
+    <!-- Chart.js cho biểu đồ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 cho thông báo -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom styles cho trang Membership */
+        .membership-section {
+            padding: 60px 0;
+            background: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+        .membership-title {
+            font-size: 36px;
+            color: #4A2F1A;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            animation: slideIn 0.8s ease;
+        }
+        .membership-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #f7544a;
+            margin: 10px auto;
+        }
+        .membership-subtitle {
+            font-size: 18px;
+            color: #666666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .membership-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .membership-info {
+            flex: 1;
+            min-width: 300px;
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .membership-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .membership-info h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 15px;
+        }
+        /* Cập nhật phần Thông tin thành viên */
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f7544a;
+            transition: transform 0.3s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+        .user-details p {
+            font-size: 16px;
+            color: #333333;
+            margin: 5px 0;
+        }
+        .user-details .edit-btn {
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+        .user-details .edit-btn:hover {
+            background: #d63c32;
+        }
+        /* Biểu đồ mua hàng */
+        .purchase-chart {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .purchase-chart h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        canvas#purchaseChart {
+            max-height: 300px;
+        }
+        /* Cập nhật Lịch sử giao dịch */
+        .transaction-history {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 40px;
+            overflow-x: auto; /* Thêm để tránh tràn bảng */
+        }
+        .transaction-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: auto; /* Đổi từ fixed sang auto để bảng tự co giãn */
+            min-width: 800px; /* Đảm bảo đủ rộng cho 5 cột */
+            background: #fff;
+        }
+        .transaction-table th, .transaction-table td {
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+            word-break: break-word;
+            min-width: 110px;
+            max-width: 260px;
+            box-sizing: border-box;
+        }
+        .transaction-table th {
+            background: #FFCC99;
+            color: #4A2F1A;
+            /* Không dùng sticky để tránh lỗi lệch */
+        }
+        .transaction-table td {
+            color: #333333;
+        }
+        .transaction-table tbody tr {
+            transition: background 0.3s ease;
+        }
+        .transaction-table tbody tr:hover {
+            background: #FFF5E6;
+        }
+        /* Style cho cột Tình trạng */
+        .transaction-table td:nth-child(5) {
+            font-weight: 500;
+        }
+        .transaction-table td:nth-child(5):before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .transaction-table td:nth-child(5)[data-status="Đang xử lý"]:before {
+            background: #ffc107; /* Màu vàng */
+        }
+        .transaction-table td:nth-child(5)[data-status="Đã xác nhận"]:before {
+            background: #17a2b8; /* Màu xanh dương */
+        }
+        .transaction-table td:nth-child(5)[data-status="Đang giao"]:before {
+            background: #007bff; /* Màu xanh dương nhạt */
+        }
+        .transaction-table td:nth-child(5)[data-status="Đã giao"]:before {
+            background: #28a745; /* Màu xanh lá */
+        }
+        .transaction-table td:nth-child(5)[data-status="Hủy"]:before {
+            background: #dc3545; /* Màu đỏ */
+        }
+        .transaction-table td:nth-child(5)[data-status="Không xác định"]:before {
+            background: #6c757d; /* Màu xám */
+        }
+        .transaction-table td[data-status] {
+            vertical-align: middle;
+            position: relative;
+        }
+        .transaction-table .cancel-btn {
+            display: inline-block;
+            margin-left: 8px;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            vertical-align: middle;
+            box-shadow: none;
+        }
+        .transaction-table .cancel-btn:hover {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+        .transaction-table td[data-status] {
+            white-space: nowrap;
+        }
+        /* Phân trang */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .pagination button {
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .pagination button:hover {
+            background: #d63c32;
+        }
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        /* Animation */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsive */
+        @media (max-width: 767px) {
+            .membership-title {
+                font-size: 28px;
+            }
+            .membership-subtitle {
+                font-size: 16px;
+            }
+            .membership-container {
+                flex-direction: column;
+            }
+            .membership-info {
+                min-width: 100%;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .transaction-table th, .transaction-table td {
+                font-size: 14px;
+                padding: 8px;
+            }
+            canvas#purchaseChart {
+                max-height: 200px;
+            }
+        }
+        @media (max-width: 480px) {
+            .membership-title {
+                font-size: 24px;
+            }
+            .membership-info h3, .purchase-chart h3, .transaction-history h3 {
+                font-size: 20px;
+            }
+            .transaction-table {
+                font-size: 12px;
+            }
+        }
+        /* Hiệu ứng cuộn */
+        .membership-info, .purchase-chart, .transaction-history {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .membership-info.visible, .purchase-chart.visible, .transaction-history.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Style cho user-info */
+        .usermenu li.user-info {
+            display: none;
+            margin-right: 10px;
+        }
+        .usermenu li.user-info a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li.user-info a:hover {
+            color: #A63C3C;
+        }
+        /* Style cho modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        .modal-content h2 {
+            text-align: center;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .modal-content button {
+            padding: 10px;
+            background-color: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-content button:hover {
+            background-color: #A63C3C;
+        }
+        .modal-content .switch-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .modal-content .switch-form a {
+            color: #f7544a;
+            text-decoration: none;
+        }
+        .modal-content .switch-form a:hover {
+            text-decoration: underline;
+        }
+        /* CSS cho loading overlay
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-content {
+            text-align: center;
+        }
+        .loading-logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f7544a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        } */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* CSS cho tải lên ảnh đại diện */
+        .avatar-upload {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .avatar-upload label {
+            display: block;
+            font-size: 16px;
+            color: #4A2F1A;
+            margin-bottom: 5px;
+        }
+        .avatar-upload input[type="file"] {
+            display: block;
+            margin: 0 auto;
+            padding: 5px;
+            font-size: 14px;
+        }
+        #avatarPreview {
+            display: none;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-top: 10px;
+            object-fit: cover;
+            border: 2px solid #f7544a;
+        }
+        /* --- Thêm vào cuối thẻ <style> hoặc trong file CSS chính --- */
+        .account-page-layout .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .account-sidebar {
+            /* background: #FFF5E6; */ /* Xóa màu nền */
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 25px 15px 15px 15px;
+            min-height: 100%;
+            margin-bottom: 30px;
+            background: none; /* Đảm bảo không có màu nền */
+        }
+        .account-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .account-menu ul li {
+            margin-bottom: 15px;
+        }
+        .account-menu ul li a {
+            color: #4A2F1A;
+            font-size: 16px;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .account-menu ul li.active a,
+        .account-menu ul li a:hover {
+            background: #f7544a;
+            color: #fff;
+        }
+        .sidebar-avatar img {
+            border: 2px solid #f7544a;
+        }
+        .account-main-content {
+            padding-left: 30px;
+            padding-right: 0;
+        }
+        @media (max-width: 991px) {
+            .account-main-content {
+                padding-left: 0;
+            }
+            .account-sidebar {
+                margin-bottom: 20px;
+            }
+            .transaction-table th, .transaction-table td {
+                min-width: 90px;
+                max-width: 160px;
+                font-size: 14px;
+            }
+            .transaction-history {
+                padding: 10px 2px;
+            }
+        }
+        @media (max-width: 767px) {
+            .account-page-layout .row {
+                flex-direction: column;
+            }
+            .account-sidebar, .account-main-content {
+                padding: 0;
+            }
+            .transaction-history {
+                padding: 5px 0;
+            }
+            .transaction-table th, .transaction-table td {
+                min-width: 80px;
+                max-width: 120px;
+                font-size: 13px;
+                padding: 6px 4px;
+            }
+            .transaction-table {
+                min-width: 600px;
+            }
+        }
+        @media (max-width: 480px) {
+            .transaction-table th, .transaction-table td {
+                min-width: 70px;
+                max-width: 90px;
+                font-size: 11px;
+                padding: 4px 2px;
+            }
+            .transaction-table {
+                min-width: 400px;
+            }
+        }
+        .account-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .account-section.active-section {
+            display: block;
+            opacity: 1;
+            animation: fadeInTab 0.4s;
+        }
+        @keyframes fadeInTab {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .account-menu ul li.active a {
+            background: #f7544a;
+            color: #fff;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body id="home">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+            <p>Chờ Ấm Một chút nhé...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+    <!-- Nội dung trang hiện tại -->
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="topmenu">
+                                        <li><a href="policy.html">Chính Sách</a></li>
+                                        <li><a href="member.html">Thành Viên</a></li>
+                                     </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <ul class="usermenu">
+                                        <li id="loginLink"><a href="#" class="log" onclick="openModal('loginModal')"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="#" class="reg" onclick="openModal('registerModal')"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li class="user-info"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                                </li>
+                            </ul>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <a href="index.html">Trang Chủ</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                                        <div class="dropdown-menu mega-menu">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Thức Uống</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html">Cà phê đen đá</a></li>
+                                                        <li><a href="menu.html">Cappuccino</a></li>
+                                                        <li><a href="menu.html">Latte</a></li>
+                                                        <li><a href="menu.html">Espresso</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Bánh</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                                        <li><a href="menu.html">Cheesecake</a></li>
+                                                        <li><a href="menu.html">Bánh Mì</a></li>
+                                                        <li><a href="menu.html">Tiramisu</a></li>
+                                                        <li><a href="menu.html">Mousse Cake</a></li>
+                                                        <li><a href="menu.html">Cupcake</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <h4 class="menu-title">Gọi Thêm</h4>
+                                                    <ul class="mega-menu-links">
+                                                        <li><a href="menu.html#pho-mai">Phô Mai</a></li>
+                                                        <li><a href="menu.html">Socola</a></li>
+                                                        <li><a href="menu.html">Mật Ong</a></li>
+                                                        <li><a href="menu.html">Kem</a></li>
+                                                        <li><a href="menu.html">Trái Cây</a></li>
+                                                    </ul>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li><a href="promotions.html">Khuyến Mãi</a></li>
+                                    <li><a href="news.html">Tin Tức</a></li>
+                                    <li><a href="event.html">Sự Kiện</a></li>
+                                    <li><a href="about.html">Về Chúng Tôi</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="hom-slider">
+            <div class="container">
+                <div id="sequence">
+                    <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                    <ul class="sequence-canvas">
+                        <li class="animate-in">
+                            <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                            <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400">
+                                <h1>Khuyến Mãi Đặc Biệt</h1>
+                            </div>   
+                            <div class="flat-caption caption3 formLeft delay500">
+                                <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                            </div>
+                            <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Bánh Ngọt Tươi Mới</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promotion-banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                         </div>
+                         <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                         </div>
+                         <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="clearfix"></div>
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="membership-section account-page-layout">
+                    <div class="row">
+                        <!-- Sidebar tài khoản -->
+                        <div class="col-md-3 col-sm-12 account-sidebar">
+                            <div class="account-menu">
+                                <div class="sidebar-avatar text-center">
+                                    <img src="images/nguoidung.png" alt="Avatar" class="avatar" id="sidebarAvatar" style="width:80px;height:80px;margin-bottom:10px;">
+                                    <div style="font-weight:600;margin-bottom:5px;" id="sidebarUserName">Chưa đăng nhập</div>
+                                </div>
+                                <ul>
+                                    <li class="active"><a href="#" data-section="profileSection">Thông Tin Cá Nhân</a></li>
+                                    <li><a href="#" data-section="chartSection">Thống Kê Mua Hàng</a></li>
+                                    <li><a href="#" data-section="ordersSection">Lịch Sử Đặt Hàng</a></li>
+                                    <li><a href="#" id="sidebarLogout">Đăng Xuất</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Nội dung chính -->
+                        <div class="col-md-9 col-sm-12 account-main-content">
+                            <h2 class="membership-title">Thông Tin Thành Viên</h2>
+                            <p class="membership-subtitle">Xem thông tin cá nhân và lịch sử mua sắm của bạn tại Ấm - Coffee and Cake!</p>
+                            <div id="profileSection" class="account-section active-section">
+                                <div class="membership-container">
+                                    <div class="membership-info">
+                                        <h3>Thông Tin Cá Nhân</h3>
+                                        <div class="avatar-container">
+                                            <img src="images/nguoidung.png" alt="Avatar" class="avatar" id="profileAvatar"/>
+                                        </div>
+                                        <div class="user-details">
+                                            <p><strong>Họ và Tên:</strong> <span id="userName">Chưa đăng nhập</span></p>
+                                            <p><strong>Email:</strong> <span id="userEmail">Chưa đăng nhập</span></p>
+                                            <p><strong>Số Điện Thoại:</strong> <span id="userPhone">Chưa đăng nhập</span></p>
+                                            <p><strong>Địa Chỉ:</strong> <span id="userAddress">Chưa có địa chỉ</span></p>
+                                            <button class="edit-btn" onclick="openEditModal()">Chỉnh Sửa Thông Tin</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chartSection" class="account-section" style="display:none;">
+                                <div class="purchase-chart">
+                                    <h3>Thống Kê Mua Hàng</h3>
+                                    <canvas id="purchaseChart"></canvas>
+                                </div>
+                            </div>
+                            <div id="ordersSection" class="account-section" style="display:none;">
+                                <div class="transaction-history">
+                                    <h3>Lịch Sử Đặt Hàng</h3>
+                                    <table class="transaction-table" id="transactionTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày Giờ</th>
+                                                <th>Sản Phẩm</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Tổng Tiền</th>
+                                                <th>Tình Trạng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transactionTableBody">
+                                            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button onclick="prevPage()" id="prevBtn">Trước</button>
+                                        <button onclick="nextPage()" id="nextBtn">Tiếp</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="our-brand">
+                    <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
+                    <ul id="braldLogo">
+                        <li>
+                            <ul class="brand_item">
+                                <li>
+                                    <a href="#">
+                                        <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"/></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn..."/>
+                                <input type="submit" value="Đăng Ký" class="button"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modals -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('loginModal')">×</span>
+                <h2>Đăng Nhập</h2>
+                <form>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button type="button" id="loginBtn" onclick="handleLogin()">
+                        Đăng Nhập
+                        <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch-form">
+                    <p>Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng Ký</a></p>
+                    <p><a href="#" onclick="switchToForgotPassword()">Quên mật khẩu?</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('registerModal')">×</span>
+                <h2>Đăng Ký</h2>
+                <form>
+                    <input type="text" id="registerName" placeholder="Họ và Tên" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu (ít nhất 8 ký tự)" required>
+                    <button type="button" id="registerBtn" onclick="handleRegister()">
+                        Đăng Ký
+                        <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch-form">
+                    <p>Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng Nhập</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="forgotPasswordModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('forgotPasswordModal')">×</span>
+                <h2>Quên Mật Khẩu</h2>
+                <form>
+                    <input type="email" id="forgotPasswordEmail" placeholder="Nhập email của bạn" required>
+                    <button type="button" id="forgotBtn" onclick="handleForgotPassword()">
+                        Gửi Email Đặt Lại
+                        <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                    </button>
+                </form>
+                <div class="switch-form">
+                    <p>Quay lại <a href="#" onclick="switchToLogin()">Đăng Nhập</a></p>
+                </div>
+            </div>
+        </div>
+        <div id="editProfileModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('editProfileModal')">×</span>
+                <h2>Chỉnh Sửa Thông Tin</h2>
+                <form>
+                    <div class="avatar-upload">
+                        <label for="editAvatar">Hình Đại Diện:</label>
+                        <input type="file" id="editAvatar" accept="image/*">
+                        <img id="avatarPreview" src="" alt="Avatar Preview">
+                    </div>
+                    <input type="text" id="editName" placeholder="Họ và Tên" required>
+                    <input type="email" id="editEmail" placeholder="Email" required>
+                    <input type="text" id="editPhone" placeholder="Số Điện Thoại">
+                    <input type="text" id="editAddress" placeholder="Địa Chỉ">
+                    <button type="button" onclick="handleEditProfile()">Lưu Thay Đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, onValue, update, query, orderByChild, equalTo, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.firebasestorage.app",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        // Pagination Variables
+        let orders = [];
+        const itemsPerPage = 2;
+        let currentPage = 1;
+
+        // Map Firebase status to display status
+        const statusMap = {
+            'pending': 'Đang xử lý',
+            'confirmed': 'Đã xác nhận',
+            'shipped': 'Đang giao',
+            'delivered': 'Đã giao',
+            'cancelled': 'Hủy'
+        };
+
+        // Display Orders
+        function displayTransactions(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedOrders = orders.slice(start, end);
+
+            const tbody = document.getElementById('transactionTableBody');
+            tbody.innerHTML = '';
+            if (paginatedOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Không có đơn hàng nào.</td></tr>';
+                return;
+            }
+            paginatedOrders.forEach(order => {
+                const firebaseStatus = order.status || 'Không xác định';
+                const displayStatus = statusMap[firebaseStatus] || 'Không xác định';
+                const cancelButton = firebaseStatus === 'pending'
+                    ? `<button class="cancel-btn" onclick="cancelOrder('${order.id}')"><i class="fa fa-times"></i> Hủy</button>`
+                    : '';
+                const productNames = order.items && order.items.length > 0
+                    ? order.items.map(item => `${item.name} (${item.quantity})`).join(', ')
+                    : 'Không có sản phẩm';
+                const address = order.billingInfo?.address || order.shippingInfo?.address || 'N/A';
+                const dateTime = (order.date && order.time) ? `${order.date} ${order.time}` : new Date(order.createdAt).toLocaleString('vi-VN');
+                const row = `
+                    <tr>
+                        <td>${dateTime}</td>
+                        <td>${productNames}</td>
+                        <td>${address}</td>
+                        <td>${order.grandTotal.toLocaleString('vi-VN')} VND</td>
+                        <td data-status="${displayStatus}"><span>${displayStatus}</span> ${cancelButton}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            // Update pagination buttons
+            document.getElementById('prevBtn').disabled = page === 1;
+            document.getElementById('nextBtn').disabled = end >= orders.length;
+        }
+
+        // Pagination Functions
+        window.prevPage = function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayTransactions(currentPage);
+            }
+        };
+
+        window.nextPage = function() {
+            if (currentPage < Math.ceil(orders.length / itemsPerPage)) {
+                currentPage++;
+                displayTransactions(currentPage);
+            }
+        };
+
+        // Cancel Order
+        window.cancelOrder = async function(orderId) {
+            Swal.fire({
+                title: 'Hủy đơn hàng?',
+                text: 'Bạn có chắc muốn hủy đơn hàng này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#A63C3C',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Hủy Đơn',
+                cancelButtonText: 'Quay Lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const orderRef = ref(database, `orders/${orderId}`);
+                    update(orderRef, { status: 'cancelled' }).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã hủy đơn hàng!',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        // Reload orders
+                        const ordersRef = query(ref(database, 'orders'), orderByChild('userId'), equalTo(auth.currentUser.uid));
+                        onValue(ordersRef, (snapshot) => {
+                            const data = snapshot.val();
+                            if (data) {
+                                orders = Object.entries(data).map(([id, order]) => ({ id, ...order }));
+                                orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                                displayTransactions(currentPage);
+                            }
+                        });
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể hủy đơn hàng: ${error.message}`,
+                            showConfirmButton: true
+                        });
+                    });
+                }
+            });
+        };
+
+        // Preview avatar when selected
+        document.getElementById('editAvatar').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('avatarPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Open Edit Profile Modal
+        window.openEditModal = function() {
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = ref(database, `users/${user.uid}`);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        document.getElementById('editName').value = data.name || '';
+                        document.getElementById('editEmail').value = data.email || user.email || '';
+                        document.getElementById('editPhone').value = data.phone || '';
+                        document.getElementById('editAddress').value = data.address || '';
+                        const preview = document.getElementById('avatarPreview');
+                        if (data.avatarUrl) {
+                            preview.src = data.avatarUrl;
+                            preview.style.display = 'block';
+                        } else {
+                            preview.src = '';
+                            preview.style.display = 'none';
+                        }
+                    } else {
+                        document.getElementById('editName').value = user.displayName || '';
+                        document.getElementById('editEmail').value = user.email || '';
+                        document.getElementById('editPhone').value = '';
+                        document.getElementById('editAddress').value = '';
+                        document.getElementById('avatarPreview').style.display = 'none';
+                    }
+                }, (error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Không thể tải thông tin: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                });
+                document.getElementById('editProfileModal').style.display = 'block';
+            }
+        };
+
+        // Handle Edit Profile
+        window.handleEditProfile = async function() {
+            const user = auth.currentUser;
+            if (user) {
+                const newName = document.getElementById('editName').value;
+                const newEmail = document.getElementById('editEmail').value;
+                const newPhone = document.getElementById('editPhone').value;
+                const newAddress = document.getElementById('editAddress').value;
+                const avatarFile = document.getElementById('editAvatar').files[0];
+
+                try {
+                    // Validate file size (max 1MB for base64)
+                    if (avatarFile && avatarFile.size > 1 * 1024 * 1024) {
+                        throw new Error('Kích thước ảnh không được vượt quá 1MB');
+                    }
+
+                    // Validate file type
+                    if (avatarFile && !['image/jpeg', 'image/png', 'image/gif'].includes(avatarFile.type)) {
+                        throw new Error('Chỉ chấp nhận file ảnh (JPEG, PNG, GIF)');
+                    }
+
+                    // Update email and profile name
+                    await updateEmail(user, newEmail);
+                    await updateProfile(user, { displayName: newName });
+
+                    const userData = {
+                        name: newName,
+                        email: newEmail,
+                        phone: newPhone,
+                        address: newAddress
+                    };
+
+                    // Handle avatar upload
+                    if (avatarFile) {
+                        try {
+                            // Convert image to base64
+                            const reader = new FileReader();
+                            reader.readAsDataURL(avatarFile);
+                            
+                            await new Promise((resolve, reject) => {
+                                reader.onload = () => {
+                                    // Compress image if needed
+                                    const img = new Image();
+                                    img.src = reader.result;
+                                    img.onload = () => {
+                                        const canvas = document.createElement('canvas');
+                                        const MAX_WIDTH = 200;
+                                        const MAX_HEIGHT = 200;
+                                        let width = img.width;
+                                        let height = img.height;
+                                        
+                                        if (width > height) {
+                                            if (width > MAX_WIDTH) {
+                                                height *= MAX_WIDTH / width;
+                                                width = MAX_WIDTH;
+                                            }
+                                        } else {
+                                            if (height > MAX_HEIGHT) {
+                                                width *= MAX_HEIGHT / height;
+                                                height = MAX_HEIGHT;
+                                            }
+                                        }
+                                        
+                                        canvas.width = width;
+                                        canvas.height = height;
+                                        const ctx = canvas.getContext('2d');
+                                        ctx.drawImage(img, 0, 0, width, height);
+                                        
+                                        // Convert to base64 with reduced quality
+                                        const base64String = canvas.toDataURL('image/jpeg', 0.7);
+                                        userData.avatarUrl = base64String;
+                                        resolve();
+                                    };
+                                    img.onerror = reject;
+                                };
+                                reader.onerror = reject;
+                            });
+                        } catch (uploadError) {
+                            console.error('Avatar conversion error:', uploadError);
+                            throw new Error('Không thể xử lý ảnh đại diện');
+                        }
+                    }
+
+                    // Update user data in database
+                    const userRef = ref(database, `users/${user.uid}`);
+                    await update(userRef, userData);
+
+                    // Update UI
+                    document.getElementById('userName').textContent = newName || "Người dùng chưa đặt tên";
+                    document.getElementById('userEmail').textContent = newEmail || "Chưa có email";
+                    document.getElementById('userPhone').textContent = newPhone || "Chưa có số điện thoại";
+                    document.getElementById('userAddress').textContent = newAddress || "Chưa có địa chỉ";
+                    
+                    // Update avatar images
+                    if (userData.avatarUrl) {
+                        document.querySelector('.avatar').src = userData.avatarUrl;
+                        document.getElementById('sidebarAvatar').src = userData.avatarUrl;
+                        document.getElementById('profileAvatar').src = userData.avatarUrl;
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cập nhật thành công!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        closeModal('editProfileModal');
+                    });
+                } catch (error) {
+                    console.error('Profile update error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.message || 'Không thể cập nhật thông tin',
+                        showConfirmButton: true
+                    });
+                }
+            }
+        };
+
+        // Check Auth State and Load Data
+        onAuthStateChanged(auth, (user) => {
+            const logoutLink = document.getElementById('logoutLink');
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const userInfo = document.querySelector('.user-info');
+            const userNameElement = document.getElementById('userName');
+            const userEmailElement = document.getElementById('userEmail');
+            const userPhoneElement = document.getElementById('userPhone');
+            const userAddressElement = document.getElementById('userAddress');
+            const avatarElement = document.querySelector('.avatar');
+            const sidebarAvatar = document.getElementById('sidebarAvatar');
+            const sidebarUserName = document.getElementById('sidebarUserName');
+            const profileAvatar = document.getElementById('profileAvatar');
+
+            if (user) {
+                userInfo.style.display = 'inline-block';
+                loginLink.style.display = 'none';
+                registerLink.style.display = 'none';
+
+                // Load user info
+                const userRef = ref(database, `users/${user.uid}`);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        userNameElement.textContent = data.name || "Người dùng chưa đặt tên";
+                        userEmailElement.textContent = data.email || user.email || "Chưa có email";
+                        userPhoneElement.textContent = data.phone || "Chưa có số điện thoại";
+                        userAddressElement.textContent = data.address || "Chưa có địa chỉ";
+                        const avatarUrl = data.avatarUrl || "images/nguoidung.png";
+                        avatarElement.src = avatarUrl;
+                        sidebarAvatar.src = avatarUrl;
+                        profileAvatar.src = avatarUrl;
+                        sidebarUserName.textContent = data.name || user.displayName || "Người dùng";
+                    } else {
+                        userNameElement.textContent = user.displayName || "Người dùng chưa đặt tên";
+                        userEmailElement.textContent = user.email || "Chưa có email";
+                        userPhoneElement.textContent = "Chưa có số điện thoại";
+                        userAddressElement.textContent = "Chưa có địa chỉ";
+                        const defaultAvatar = "images/nguoidung.png";
+                        avatarElement.src = defaultAvatar;
+                        sidebarAvatar.src = defaultAvatar;
+                        profileAvatar.src = defaultAvatar;
+                        sidebarUserName.textContent = user.displayName || "Người dùng";
+                    }
+                }, (error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Không thể tải thông tin người dùng: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                });
+
+                // Load orders
+                const ordersRef = query(ref(database, 'orders'), orderByChild('userId'), equalTo(user.uid));
+                onValue(ordersRef, (snapshot) => {
+                    const data = snapshot.val();
+                    console.log('Loaded orders:', data); // Debug log
+                    if (data) {
+                        orders = Object.entries(data).map(([id, order]) => ({ id, ...order }));
+                        orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        displayTransactions(currentPage);
+
+                        // Process data for chart
+                        const monthlyData = {};
+                        orders.forEach(order => {
+                            const date = new Date(order.createdAt);
+                            const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                            if (!monthlyData[monthYear]) {
+                                monthlyData[monthYear] = { quantity: 0, amount: 0 };
+                            }
+                            order.items.forEach(item => {
+                                monthlyData[monthYear].quantity += item.quantity;
+                            });
+                            monthlyData[monthYear].amount += order.grandTotal;
+                        });
+
+                        const labels = Object.keys(monthlyData);
+                        const quantities = labels.map(label => monthlyData[label].quantity);
+                        const amounts = labels.map(label => monthlyData[label].amount);
+
+                        renderPurchaseChart(labels, quantities, amounts);
+                    } else {
+                        orders = [];
+                        displayTransactions(currentPage);
+
+                        renderPurchaseChart(['Không có dữ liệu'], [0], [0]);
+                    }
+                }, (error) => {
+                    console.error('Error loading orders:', error); // Debug log
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi tải đơn hàng!',
+                        text: `Không thể tải đơn hàng: ${error.code} - ${error.message}. Vui lòng kiểm tra quyền truy cập hoặc liên hệ quản trị viên.`,
+                        showConfirmButton: true
+                    });
+                });
+            } else {
+                userInfo.style.display = 'none';
+                loginLink.style.display = 'inline-block';
+                registerLink.style.display = 'inline-block';
+                sidebarUserName.textContent = "Chưa đăng nhập";
+                sidebarAvatar.src = "images/nguoidung.png";
+                profileAvatar.src = "images/nguoidung.png";
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Chưa đăng nhập!',
+                    text: 'Vui lòng đăng nhập để xem thông tin thành viên.',
+                    showConfirmButton: true
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+
+        // Handle Logout
+        document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Bạn có chắc?',
+                text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#A63C3C',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đăng Xuất',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    signOut(auth).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng xuất thành công!',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'index.html';
+                        });
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể đăng xuất: ${error.message}.`,
+                            showConfirmButton: true
+                        });
+                    });
+                }
+            });
+        });
+
+        // Đăng xuất từ sidebar
+        document.getElementById('sidebarLogout')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('logoutLink')?.click();
+        });
+
+        // Modal Functions
+        window.openModal = function(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        };
+
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        };
+
+        window.switchToRegister = function() {
+            closeModal('loginModal');
+            openModal('registerModal');
+        };
+
+        window.switchToLogin = function() {
+            closeModal('registerModal');
+            closeModal('forgotPasswordModal');
+            openModal('loginModal');
+        };
+
+        window.switchToForgotPassword = function() {
+            closeModal('loginModal');
+            openModal('forgotPasswordModal');
+        };
+
+        // Handle Login
+        window.handleLogin = function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loginSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        closeModal('loginModal');
+                        window.location.reload();
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Đăng nhập thất bại: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        };
+
+        // Handle Register
+        window.handleRegister = function() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const spinner = document.getElementById('registerSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            if (password.length < 8) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Mật khẩu phải có ít nhất 8 ký tự.',
+                    showConfirmButton: true
+                });
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                return;
+            }
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    const userRef = ref(database, `users/${user.uid}`);
+                    set(userRef, {
+                        name: name,
+                        email: email,
+                        phone: '',
+                        address: '',
+                        role: 'user',
+                        created_at: new Date().toISOString().split('T')[0],
+                        emailVerified: false,
+                        deleted: false
+                    }).then(() => {
+                        updateProfile(user, { displayName: name }).then(() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng ký thành công!',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                closeModal('registerModal');
+                                window.location.reload();
+                            });
+                        });
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể lưu thông tin: ${error.message}`,
+                            showConfirmButton: true
+                        });
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Đăng ký thất bại: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        };
+
+        // Handle Forgot Password
+        window.handleForgotPassword = function() {
+            const email = document.getElementById('forgotPasswordEmail').value;
+            const btn = document.getElementById('forgotBtn');
+            const spinner = document.getElementById('forgotSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                    }).then(() => {
+                        closeModal('forgotPasswordModal');
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Không thể gửi email: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        };
+
+        // Hide loading overlay
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loading-overlay').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Scroll animation
+        const elements = document.querySelectorAll('.membership-info, .purchase-chart, .transaction-history');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        elements.forEach(el => observer.observe(el));
+
+        // Tab chuyển đổi vùng nội dung tài khoản
+        document.querySelectorAll('.account-menu ul li a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Xóa active ở sidebar
+                document.querySelectorAll('.account-menu ul li').forEach(li => li.classList.remove('active'));
+                this.parentElement.classList.add('active');
+                // Ẩn tất cả section
+                document.querySelectorAll('.account-section').forEach(sec => {
+                    sec.classList.remove('active-section');
+                    sec.style.display = 'none';
+                });
+                // Hiện section được chọn
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.style.display = 'block';
+                    setTimeout(() => section.classList.add('active-section'), 10);
+                }
+            });
+        });
+        // Khi load trang, chỉ hiện section đầu tiên
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.account-section').forEach((sec, idx) => {
+                if(idx === 0) {
+                    sec.style.display = 'block';
+                    sec.classList.add('active-section');
+                } else {
+                    sec.style.display = 'none';
+                    sec.classList.remove('active-section');
+                }
+            });
+        });
+
+        // Thay đổi biểu đồ sang histogram (bar chart)
+        function renderPurchaseChart(labels, quantities, amounts) {
+            const ctx = document.getElementById('purchaseChart').getContext('2d');
+            // Xóa chart cũ nếu có
+            if (window.purchaseChartInstance) {
+                window.purchaseChartInstance.destroy();
+            }
+            window.purchaseChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Số Lượng Sản Phẩm',
+                            data: quantities,
+                            backgroundColor: 'rgba(247, 84, 74, 0.6)',
+                            borderColor: '#f7544a',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Tổng Số Tiền (VND)',
+                            data: amounts,
+                            backgroundColor: 'rgba(74, 47, 26, 0.6)',
+                            borderColor: '#4A2F1A',
+                            borderWidth: 1,
+                            yAxisID: 'y2'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y1: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: 'Số Lượng' },
+                            beginAtZero: true
+                        },
+                        y2: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: 'Tổng Tiền (VND)' },
+                            beginAtZero: true,
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: { title: { display: true, text: 'Tháng' } }
+                    },
+                    plugins: { legend: { display: true } },
+                    animation: { duration: 2000, easing: 'easeOutBounce' }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

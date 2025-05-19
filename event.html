@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Khám phá các sự kiện đặc biệt tại Ấm - Coffee and Cake: workshop, khuyến mãi, biểu diễn âm nhạc và nhiều hoạt động thú vị đang chờ bạn!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Sự Kiện - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+           apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+           authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+           databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "coffee-and-cake-e2f5d",
+           storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+           messagingSenderId: "453243002159",
+           appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+           measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <style>
+        .auth-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.7);
+           z-index: 10000;
+           align-items: center;
+           justify-content: center;
+        }
+        .auth-modal-content {
+           background: #fff;
+           padding: 30px;
+           border-radius: 10px;
+           width: 100%;
+           max-width: 400px;
+           position: relative;
+        }
+        .auth-modal-content h2 {
+           font-size: 24px;
+           color: #4A2F1A;
+           margin-bottom: 20px;
+           text-align: center;
+        }
+        .auth-modal-content .close {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           font-size: 20px;
+           cursor: pointer;
+           color: #4A2F1A;
+        }
+        .auth-modal-content form {
+           display: flex;
+           flex-direction: column;
+        }
+        .auth-modal-content input {
+           margin-bottom: 15px;
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           font-size: 16px;
+        }
+        .auth-modal-content button {
+           background: #f7544a;
+           color: #fff;
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+           background: #da2a20;
+        }
+        .auth-modal-content .switch {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .usermenu li {
+           display: inline-block;
+           margin-right: 10px;
+        }
+        .usermenu li a {
+           color: #000000;
+           text-decoration: none;
+        }
+        .usermenu li a:hover {
+           color: #A63C3C;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+    </style>
+    <style>
+        /* Custom styles cho trang Event */
+        .event-section {
+            padding: 60px 0;
+            background: #FFFFFF;
+        }
+        .event-title {
+            font-size: 36px;
+            color: #4A2F1A;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .event-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #f7544a;
+            margin: 10px auto;
+        }
+        .event-subtitle {
+            font-size: 18px;
+            color: #666666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .event-card {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 450px; /* Chiều cao cố định để ô bằng nhau */
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .event-image {
+            position: relative;
+            overflow: hidden;
+            height: 250px; /* Chiều cao cố định cho hình ảnh */
+        }
+        .event-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; /* Đảm bảo hình ảnh bằng nhau, cắt nếu cần */
+            transition: transform 0.5s ease;
+        }
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+        .event-date {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .event-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .event-content h3 {
+            font-size: 22px;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .event-content p {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .event-cta {
+            display: inline-block;
+            background: #f7544a;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            align-self: flex-start;
+        }
+        .event-cta:hover {
+            background: #d63c32;
+        }
+        /* .upcoming-events {
+            padding: 40px 0;
+            background: #FFCC99;
+        } */
+        .upcoming-events h3 {
+            font-size: 32px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .past-events {
+            padding: 40px 0;
+            background: #FFFFFF;
+        }
+        .past-events h3 {
+            font-size: 32px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .event-title {
+                font-size: 28px;
+            }
+            .event-subtitle {
+                font-size: 16px;
+            }
+            .event-card {
+                min-height: 400px; /* Giảm chiều cao cho mobile */
+                margin-bottom: 20px;
+            }
+            .event-image {
+                height: 200px;
+            }
+            .event-image img {
+                height: 200px;
+            }
+            .event-content h3 {
+                font-size: 20px;
+            }
+            .event-content p {
+                font-size: 14px;
+            }
+            .upcoming-events h3, .past-events h3 {
+                font-size: 26px;
+            }
+        }
+        @media (max-width: 480px) {
+            .event-title {
+                font-size: 24px;
+            }
+            .event-card {
+                min-height: 360px;
+            }
+            .event-image {
+                height: 180px;
+            }
+            .event-image img {
+                height: 180px;
+            }
+            .event-cta {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Hiệu ứng cuộn */
+        .event-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .event-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body id="home">
+    <div class="wrapper">
+       <div class="header">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-2 col-sm-2">
+                   <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                   <div class="header_top">
+                      <div class="row">
+                         <div class="col-md-3">
+                         </div>
+                         <div class="col-md-6">
+                           <ul class="topmenu">
+                              <li><a href="policy.html">Chính Sách</a></li>
+                              <li><a href="member.html">Thành Viên</a></li>
+                           </ul>
+                         </div>
+                         <div class="col-md-3">
+                            <ul class="usermenu">
+                                <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                             </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="header_bottom">
+                      <ul class="option">
+                         <li id="search" class="search">
+                            <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                         </li>
+                         <li class="option-cart">
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <!-- <ul class="option-cart-item">
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Cappuccino</p>
+                                        <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">45.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Bánh Red Velvet</p>
+                                        <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">55.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                            </ul> -->
+                         </li>
+                      </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                      <div class="navbar-collapse collapse">
+                         <ul class="nav navbar-nav">
+                            <li >
+                               <a href="index.html">Trang Chủ</a>
+                            </li>
+                            <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                               <div class="dropdown-menu mega-menu">
+                                  <div class="row">
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Thức Uống</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu.html">Cà phê đen đá</a></li>
+                                              <li><a href="menu.html">Cappuccino</a></li>
+                                              <li><a href="menu.html">Latte</a></li>
+                                              <li><a href="menu.html">Espresso</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Bánh</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                              <li><a href="menu.html">Cheesecake</a></li>
+                                              <li><a href="menu.html">Bánh Mì</a></li>
+                                              <li><a href="menu.html">Tiramisu</a></li>
+                                              <li><a href="menu.html">Mousse Cake</a></li>
+                                              <li><a href="menu.html">Cupcake</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Gọi Thêm</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu.html"#pho-mai">Phô Mai</a></li>
+                                     <li><a href="menu.html">Socola</a></li>
+                                     <li><a href="menu.html">Mật Ong</a></li>
+                                     <li><a href="menu.html">Kem</a></li>
+                                     <li><a href="menu.html">Trái Cây</a></li>
+                                        </ul>
+                                  </div> 
+                               </div>
+                         </li>
+                            <li><a href="promotions.html">Khuyến Mãi</a></li>
+                            <li><a href="news.html">Tin Tức</a></li>
+                            <li class="active dropdown" ><a href="event.html">Sự Kiện</a></li>
+                            <li><a href="about.html">Về Chúng Tôi</a></li>
+                         </ul>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="hom-slider">
+          <div class="container">
+             <div id="sequence">
+                <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                <ul class="sequence-canvas">
+                   <li class="animate-in">
+                      <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                      </div>
+                      
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400">
+                         <h1>Khuyến Mãi Đặc Biệt</h1>
+                      </div>   
+                      <div class="flat-caption caption3 formLeft delay500">
+                         <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                      </div>
+                      <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Bánh Ngọt Tươi Mới</h1>
+                      </div>
+                      <div class="flat-caption caption3 formLeft delay500 text-center">
+                         <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                   </li>
+                </ul>
+             </div>
+          </div>
+          <div class="promotion-banner">
+             <div class="container">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                  </div>
+                </div>
+             </div>
+          </div>
+       </div>
+            <div class="clearfix"></div>
+            <div class="container_fullwidth">
+                <div class="container">
+                    <!-- Phần sự kiện sắp diễn ra -->
+                    <div class="event-section upcoming-events">
+                        <h3 class="event-title">Sự Kiện Sắp Diễn Ra</h3>
+                        <p class="event-subtitle">Tham gia những hoạt động thú vị tại Ấm - Coffee and Cake để tận hưởng những khoảnh khắc đáng nhớ!</p>
+                        <div class="row">
+                          
+                            <div class="col-md-4 col-sm-6">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="https://img.freepik.com/premium-photo/midsection-man-playing-guitar-stage_1048944-7811849.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Đêm Nhạc Acoustic">
+                                        <span class="event-date">25/04/2025</span>
+                                    </div>
+                                    <div class="event-content">
+                                        <h3>Đêm Nhạc Acoustic</h3>
+                                        <p>Thưởng thức âm nhạc mộc mạc cùng ly cà phê thơm ngon. Miễn phí một phần bánh ngọt cho khách tham gia!</p>
+                                        <a href="#register" class="event-cta">Đặt Vé</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 col-sm-6">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="https://img.freepik.com/free-photo/strawberry-dessert-cream-chocolate-cookies-side-view_140725-11354.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Ra Mắt Menu Mới">
+                                        <span class="event-date">01/05/2025</span>
+                                    </div>
+                                    <div class="event-content">
+                                        <h3>Ra Mắt Menu Mùa Hè</h3>
+                                        <p>Khám phá các món mới như Trà Đào Cam Sả và Bánh Mousse Dâu. Mua 1 tặng 1 trong ngày ra mắt!</p>
+                                        <a href="#register" class="event-cta">Tham Gia</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                       
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="https://img.freepik.com/free-photo/male-barista-pouring-boiling-water-coffee-filter_23-2148824409.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740   " alt="Workshop Pha Cà Phê">                                       
+                                        <span class="event-date">01/05/2025</span>
+                                    </div>
+                                    <div class="event-content">
+                                        <h3>Workshop Pha Cà Phê</h3>
+                                        <p>Học cách pha chế cà phê phin và pour-over cùng barista chuyên nghiệp. Nhận ưu đãi 20% cho đơn hàng tại quán sau workshop!</p>
+                                        <a href="#register" class="event-cta">Tham Gia</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phần sự kiện đã qua -->
+                    <div class="event-section past-events">
+                        <h3 class="event-title">Sự Kiện Đã Qua</h3>
+                        <p class="event-subtitle">Nhìn lại những khoảnh khắc tuyệt vời tại Ấm - Coffee and Cake!</p>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="https://img.freepik.com/free-photo/overhead-view-female-pottery-measuring-color-powder_23-2148155124.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Workshop Làm Bánh">
+                                        <span class="event-date">15/03/2025</span>
+                                    </div>
+                                    <div class="event-content">
+                                        <h3>Workshop Làm Bánh </h3>
+                                        <p>Khách tham gia đã tự tay làm những chiếc bánh Red Velvet thơm ngon dưới sự hướng dẫn của đầu bếp Ấm.</p>
+                                        <a href="#gallery" class="event-cta">Xem Hình Ảnh</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="https://img.freepik.com/free-photo/close-up-hands-with-coffee-beans_23-2148551565.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Thử Nếm Cà Phê">
+                                        <span class="event-date">10/02/2025</span>
+                                    </div>
+                                    <div class="event-content">
+                                        <h3>Buổi Thử Nếm Cà Phê</h3>
+                                        <p>Một hành trình khám phá hương vị cà phê từ Đắk Lắk, với các loại hạt nguyên chất được rang xay tại chỗ.</p>
+                                        <a href="#gallery" class="event-cta">Xem Hình Ảnh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                   <div class="our-brand">
+                     <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
+                     <!-- <div class="control"><a id="prev_brand" class="prev" href="#">&lt;</a><a id="next_brand" class="next" href="#">&gt;</a></div> -->
+                     <ul id="braldLogo">
+                        <li>
+                           <ul class="brand_item">
+                              <li>
+                                 <a href="#">
+                                    <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                    <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                    <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                    <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                    <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                                 </a>
+                              </li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="footer">
+                <div class="footer-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                                <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                                <p>Hotline: (028) 1234 5678</p>
+                                <p>Email: contact@amcoffee.vn</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                                <ul class="support">
+                                    <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                    <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                    <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                    <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                    <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                                <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                                <form class="newsletter">
+                                    <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                    <input type="submit" value="Đăng Ký" class="button">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="social-icon2">
+                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Đăng Nhập -->
+<div id="loginModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Nhập</h2>
+       <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="loginBtn">
+            Đăng Nhập
+            <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+       </div>
+       <div class="forgot-password">
+          <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Đăng Ký -->
+ <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Ký</h2>
+       <form id="registerForm">
+          <input type="text" id="registerName" placeholder="Họ và Tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="registerBtn">
+            Đăng Ký
+            <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Quên Mật Khẩu -->
+ <div id="forgotPasswordModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Quên Mật Khẩu</h2>
+       <form id="forgotPasswordForm">
+          <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+          <button type="submit" id="forgotBtn">
+            Gửi Yêu Cầu
+            <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+        </div>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+        <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script defer src="js/jquery.flexslider.js"></script>
+        <script type="text/javascript" src="js/script.min.js"></script>
+        <script type="module">
+            import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+         
+            document.addEventListener('DOMContentLoaded', () => {
+               // Kiểm tra trạng thái đăng nhập
+               onAuthStateChanged(auth, (user) => {
+                  const loginLink = document.getElementById('loginLink');
+                  const registerLink = document.getElementById('registerLink');
+                  const userInfo = document.getElementById('userInfo');
+         
+                  if (user) {
+                     userInfo.style.display = 'inline-block';
+                     loginLink.style.display = 'none';
+                     registerLink.style.display = 'none';
+                  } else {
+                     userInfo.style.display = 'none';
+                     loginLink.style.display = 'inline-block';
+                     registerLink.style.display = 'inline-block';
+                  }
+               });
+         
+               // Xử lý modal đăng nhập/đăng ký
+               bindModalEvents();
+         
+               // Xử lý form đăng nhập
+               document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('loginEmail').value;
+                  const password = document.getElementById('loginPassword').value;
+                  const btn = document.getElementById('loginBtn');
+                  const spinner = document.getElementById('loginSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  try {
+                     await signInWithEmailAndPassword(auth, email, password);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                     });
+                     document.getElementById('loginModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý form đăng ký
+               document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const name = document.getElementById('registerName').value;
+                  const email = document.getElementById('registerEmail').value;
+                  const password = document.getElementById('registerPassword').value;
+                  const btn = document.getElementById('registerBtn');
+                  const spinner = document.getElementById('registerSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  try {
+                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                     await updateProfile(userCredential.user, { displayName: name });
+                     await sendEmailVerification(userCredential.user);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('registerModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý form quên mật khẩu
+               document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('forgotPasswordEmail').value;
+                  const btn = document.getElementById('forgotBtn');
+                  const spinner = document.getElementById('forgotSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  if (!email) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                     });
+                     btn.disabled = false;
+                     spinner.style.display = 'none';
+                     return;
+                  }
+                  try {
+                     await sendPasswordResetEmail(auth, email);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý đăng xuất
+               document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                  e.preventDefault();
+                  Swal.fire({
+                     title: 'Bạn có chắc?',
+                     text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                     icon: 'warning',
+                     showCancelButton: true,
+                     confirmButtonColor: '#A63C3C',
+                     cancelButtonColor: '#6c757d',
+                     confirmButtonText: 'Đăng Xuất',
+                     cancelButtonText: 'Hủy'
+                  }).then(async (result) => {
+                     if (result.isConfirmed) {
+                        try {
+                           await signOut(auth);
+                           Swal.fire({
+                              icon: 'success',
+                              title: 'Đăng xuất thành công!',
+                              showConfirmButton: false,
+                              timer: 1500
+                           });
+                        } catch (error) {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Lỗi!',
+                              text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                              showConfirmButton: true
+                           });
+                        }
+                     }
+                  });
+               });
+            });
+         
+            function bindModalEvents() {
+               // Mở modal đăng nhập
+               document.querySelector('.log').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Mở modal đăng ký
+               document.querySelector('.reg').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Mở modal quên mật khẩu
+               document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('forgotPasswordModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng nhập sang đăng ký
+               document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng ký sang đăng nhập
+               document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ quên mật khẩu về đăng nhập
+               document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('forgotPasswordModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Đóng modal
+               document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                  closeBtn.addEventListener('click', () => {
+                     document.getElementById('loginModal').style.display = 'none';
+                     document.getElementById('registerModal').style.display = 'none';
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  });
+               });
+         
+               // Đóng modal khi click bên ngoài
+               document.querySelectorAll('.auth-modal').forEach(modal => {
+                  modal.addEventListener('click', (e) => {
+                     if (e.target === modal) {
+                        modal.style.display = 'none';
+                     }
+                  });
+               });
+            }
+         </script>
+        <script>
+            // Ẩn loading overlay sau khi trang tải xong
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.querySelector('.loading-overlay').classList.add('hidden');
+                }, 1000);
+            });
+
+            // Hiệu ứng cuộn để làm nổi bật các thẻ sự kiện
+            const eventCards = document.querySelectorAll('.event-card');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            eventCards.forEach(card => observer.observe(card));
+        </script>
+    </body>
+    <body id="home">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay">
+           <div class="loading-content">
+              <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+              <p>Chờ Ấm Một chút nhé...</p>
+              <div class="loading-spinner"></div>
+           </div>
+        </div>
+        <!-- Nội dung trang hiện tại -->
+        <div class="wrapper">
+           <!-- Phần còn lại của trang -->
+        </div>
+     </body>
+</html>

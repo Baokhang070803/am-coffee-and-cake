@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Tìm hiểu các chính sách của Ấm - Coffee and Cake về đổi trả, giao hàng, thanh toán, bảo mật thông tin và hỗ trợ khách hàng. Chúng tôi cam kết mang đến trải nghiệm tốt nhất cho bạn!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Chính Sách - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+           apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+           authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+           databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "coffee-and-cake-e2f5d",
+           storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+           messagingSenderId: "453243002159",
+           appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+           measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <style>
+        .auth-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.7);
+           z-index: 10000;
+           align-items: center;
+           justify-content: center;
+        }
+        .auth-modal-content {
+           background: #fff;
+           padding: 30px;
+           border-radius: 10px;
+           width: 100%;
+           max-width: 400px;
+           position: relative;
+        }
+        .auth-modal-content h2 {
+           font-size: 24px;
+           color: #4A2F1A;
+           margin-bottom: 20px;
+           text-align: center;
+        }
+        .auth-modal-content .close {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           font-size: 20px;
+           cursor: pointer;
+           color: #4A2F1A;
+        }
+        .auth-modal-content form {
+           display: flex;
+           flex-direction: column;
+        }
+        .auth-modal-content input {
+           margin-bottom: 15px;
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           font-size: 16px;
+        }
+        .auth-modal-content button {
+           background: #f7544a;
+           color: #fff;
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+           background: #da2a20;
+        }
+        .auth-modal-content .switch {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .usermenu li {
+           display: inline-block;
+           margin-right: 10px;
+        }
+        .usermenu li a {
+           color: #000000;
+           text-decoration: none;
+        }
+        .usermenu li a:hover {
+           color: #A63C3C;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+     </style>
+    <style>
+        /* Custom styles cho trang Policy */
+        .policy-section {
+            padding: 60px 0;
+            background: #FFFFFF; /* Nền trắng theo yêu cầu trước */
+        }
+        .policy-title {
+            font-size: 36px;
+            color: #4A2F1A;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .policy-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #f7544a;
+            margin: 10px auto;
+        }
+        .policy-subtitle {
+            font-size: 18px;
+            color: #666666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .policy-content {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        .policy-item {
+            margin-bottom: 30px;
+        }
+        .policy-item h3 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .policy-item h3:hover {
+            color: #f7544a;
+        }
+        .policy-item h3 i {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            font-size: 24px;
+            color: #f7544a;
+        }
+        .policy-item p, .policy-item ul {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .policy-item ul {
+            padding-left: 20px;
+        }
+        .policy-item ul li {
+            margin-bottom: 10px;
+        }
+        .faq-section h3 {
+            font-size: 32px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .faq-item {
+            background: #FFFFFF;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .faq-question {
+            font-size: 18px;
+            color: #4A2F1A;
+            padding: 15px 20px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+        }
+        .faq-question::after {
+            content: '\f107';
+            font-family: 'FontAwesome';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-question::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .faq-answer {
+            font-size: 16px;
+            color: #333333;
+            padding: 0 20px 15px;
+            display: none;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .policy-title {
+                font-size: 28px;
+            }
+            .policy-content {
+                padding: 20px;
+            }
+            .policy-item h3 {
+                font-size: 20px;
+                padding-left: 35px;
+            }
+            .policy-item h3 i {
+                font-size: 20px;
+            }
+            .faq-section h3 {
+                font-size: 26px;
+            }
+            .faq-question {
+                font-size: 16px;
+            }
+            .faq-answer {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            .policy-title {
+                font-size: 24px;
+            }
+            .policy-subtitle {
+                font-size: 16px;
+            }
+            .policy-item h3 {
+                font-size: 18px;
+            }
+            .faq-section h3 {
+                font-size: 22px;
+            }
+        }
+
+        /* Hiệu ứng cuộn */
+        .policy-item, .faq-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .policy-item.visible, .faq-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body id="home">
+    <div class="wrapper">
+       <div class="header">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-2 col-sm-2">
+                   <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                   <div class="header_top">
+                      <div class="row">
+                         <div class="col-md-3">
+                           
+                         </div>
+                         <div class="col-md-6">
+                           <ul class="topmenu">
+                              <li><a href="policy.html">Chính Sách</a></li>
+                              <li><a href="member.html">Thành Viên</a></li>
+                           </ul>
+                         </div>
+                         <div class="col-md-3">
+                            <ul class="usermenu">
+                                <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                             </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="header_bottom">
+                      <ul class="option">
+                         <li id="search" class="search">
+                            <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                         </li>
+                         <li class="option-cart">
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <!-- <ul class="option-cart-item">
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Cappuccino</p>
+                                        <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">45.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Bánh Red Velvet</p>
+                                        <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">55.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                            </ul> -->
+                         </li>
+                      </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                      <div class="navbar-collapse collapse">
+                         <ul class="nav navbar-nav">
+                            <li >
+                               <a href="index.html">Trang Chủ</a>
+                            </li>
+                            <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                               <div class="dropdown-menu mega-menu">
+                                  <div class="row">
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Thức Uống</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu.html">Cà phê đen đá</a></li>
+                                              <li><a href="menu.html">Cappuccino</a></li>
+                                              <li><a href="menu.html">Latte</a></li>
+                                              <li><a href="menu.html">Espresso</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                           <h4 class="menu-title">Bánh</h4>
+                                           <ul class="mega-menu-links">
+                                              <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                              <li><a href="menu.html">Cheesecake</a></li>
+                                              <li><a href="menu.html">Bánh Mì</a></li>
+                                              <li><a href="menu.html">Tiramisu</a></li>
+                                              <li><a href="menu.html">Mousse Cake</a></li>
+                                              <li><a href="menu.html">Cupcake</a></li>
+                                           </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Gọi Thêm</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu.html"#pho-mai">Phô Mai</a></li>
+                                     <li><a href="menu.html">Socola</a></li>
+                                     <li><a href="menu.html">Mật Ong</a></li>
+                                     <li><a href="menu.html">Kem</a></li>
+                                     <li><a href="menu.html">Trái Cây</a></li>
+                                        </ul>
+                                  </div> 
+                               </div>
+                         </li>
+                            <li><a href="promotions.html">Khuyến Mãi</a></li>
+                            <li><a href="news.html">Tin Tức</a></li>
+                            <li><a href="event.html">Sự Kiện</a></li>
+                            <li><a href="about.html">Về Chúng Tôi</a></li>
+                         </ul>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="hom-slider">
+          <div class="container">
+             <div id="sequence">
+                <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                <ul class="sequence-canvas">
+                   <li class="animate-in">
+                      <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                      </div>
+                      
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400">
+                         <h1>Khuyến Mãi Đặc Biệt</h1>
+                      </div>   
+                      <div class="flat-caption caption3 formLeft delay500">
+                         <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                      </div>
+                      <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Bánh Ngọt Tươi Mới</h1>
+                      </div>
+                      <div class="flat-caption caption3 formLeft delay500 text-center">
+                         <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                   </li>
+                </ul>
+             </div>
+          </div>
+          <div class="promotion-banner">
+             <div class="container">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                  </div>
+                </div>
+             </div>
+          </div>
+       </div>
+            <div class="clearfix"></div>
+            <div class="container_fullwidth">
+                <div class="container">
+                    <!-- Phần chính sách chính -->
+                    <div class="policy-section">
+                        <h3 class="policy-title">Chính Sách Của <strong>Ấm</strong></h3>
+                        <p class="policy-subtitle">Chúng tôi cam kết mang đến trải nghiệm mua sắm và thưởng thức cà phê, bánh ngọt tốt nhất cho bạn. Dưới đây là các chính sách chi tiết để đảm bảo quyền lợi của bạn.</p>
+                        <div class="policy-content">
+                            <div class="policy-item" id="delivery">
+                                <h3><i class="fa fa-truck"></i> Chính Sách Giao Hàng</h3>
+                                <p>Ấm - Coffee and Cake cung cấp dịch vụ giao hàng nhanh chóng và tiện lợi tại TP. Hồ Chí Minh.</p>
+                                <ul>
+                                    <li><strong>Phạm vi giao hàng:</strong> Hiện tại áp dụng cho các quận nội thành (Quận 1, 3, 5, 7, 10).</li>
+                                    <li><strong>Thời gian giao hàng:</strong> Trong vòng 60 phút kể từ khi xác nhận đơn hàng (7:00 - 21:00).</li>
+                                    <li><strong>Phí giao hàng:</strong> Miễn phí cho đơn hàng từ 200.000 VND trở lên; 30.000 VND cho đơn dưới 200.000 VND.</li>
+                                    <li><strong>Lưu ý:</strong> Vui lòng kiểm tra sản phẩm ngay khi nhận. Chúng tôi không chịu trách nhiệm nếu sản phẩm bị hư hỏng sau khi giao.</li>
+                                </ul>
+                            </div>
+                            <div class="policy-item" id="payment">
+                                <h3><i class="fa fa-credit-card"></i> Phương Thức Thanh Toán</h3>
+                                <p>Chúng tôi hỗ trợ nhiều hình thức thanh toán để bạn dễ dàng lựa chọn:</p>
+                                <ul>
+                                    <li><strong>Tiền mặt:</strong> Thanh toán khi nhận hàng hoặc tại quán.</li>
+                                    <li><strong>Chuyển khoản ngân hàng:</strong> Thông tin tài khoản được gửi qua email sau khi đặt hàng.</li>
+                                    <li><strong>Thẻ ngân hàng:</strong> Chấp nhận Visa, MasterCard, và thẻ nội địa tại quán.</li>
+                                    <li><strong>Ví điện tử:</strong> Momo, ZaloPay, ShopeePay.</li>
+                                </ul>
+                            </div>
+                            <div class="policy-item" id="returns">
+                                <h3><i class="fa fa-undo"></i> Chính Sách Đổi Trả</h3>
+                                <p>Chúng tôi muốn bạn hoàn toàn hài lòng với sản phẩm của Ấm.</p>
+                                <ul>
+                                    <li><strong>Điều kiện đổi trả:</strong> Sản phẩm lỗi do sản xuất (ví dụ: bánh bị hỏng, cà phê không đúng mô tả) và được báo cáo trong vòng 24 giờ kể từ khi nhận.</li>
+                                    <li><strong>Thời gian xử lý:</strong> Trong vòng 48 giờ sau khi nhận yêu cầu.</li>
+                                    <li><strong>Cách thức:</strong> Liên hệ qua hotline (028) 1234 5678 hoặc email contact@amcoffee.vn để được hướng dẫn.</li>
+                                    <li><strong>Lưu ý:</strong> Không áp dụng đổi trả cho sản phẩm đã sử dụng hoặc do lỗi từ phía khách hàng.</li>
+                                </ul>
+                            </div>
+                            <div class="policy-item" id="privacy">
+                                <h3><i class="fa fa-lock"></i> Chính Sách Bảo Mật</h3>
+                                <p>Thông tin của bạn được bảo vệ nghiêm ngặt tại Ấm - Coffee and Cake.</p>
+                                <ul>
+                                    <li><strong>Thu thập thông tin:</strong> Chỉ thu thập thông tin cần thiết (tên, email, số điện thoại, địa chỉ) để xử lý đơn hàng.</li>
+                                    <li><strong>Sử dụng thông tin:</strong> Dùng để giao hàng, gửi thông báo khuyến mãi (nếu bạn đồng ý), và cải thiện dịch vụ.</li>
+                                    <li><strong>Bảo mật:</strong> Áp dụng mã hóa SSL và không chia sẻ thông tin với bên thứ ba, trừ trường hợp pháp luật yêu cầu.</li>
+                                    <li><strong>Quyền của bạn:</strong> Yêu cầu xóa hoặc chỉnh sửa thông tin cá nhân bất kỳ lúc nào qua email contact@amcoffee.vn.</li>
+                                </ul>
+                            </div>
+                            <div class="policy-item" id="support">
+                                <h3><i class="fa fa-headphones"></i> Hỗ Trợ Khách Hàng</h3>
+                                <p>Đội ngũ Ấm - Coffee and Cake luôn sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi.</p>
+                                <ul>
+                                    <li><strong>Hotline:</strong> Gọi <a href="tel:+842812345678">(028) 1234 5678</a> từ 7:00 - 22:00, Thứ Hai đến Chủ Nhật.</li>
+                                    <li><strong>Email:</strong> Gửi thắc mắc đến <a href="mailto:support@amcoffee.vn">support@amcoffee.vn</a>, phản hồi trong 24 giờ.</li>
+                                    <li><strong>Chat trực tuyến:</strong> Truy cập website để chat với nhân viên hỗ trợ từ 8:00 - 21:00.</li>
+                                    <li><strong>Mạng xã hội:</strong> Liên hệ qua <a href="#">Facebook</a> hoặc <a href="#">Instagram</a> để được hỗ trợ nhanh chóng.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phần FAQ -->
+                    <div class="faq-section">
+                        <h3>Câu Hỏi Thường Gặp</h3>
+                        <div class="faq-item">
+                            <div class="faq-question">Tôi có thể đặt hàng trước và nhận tại quán không?</div>
+                            <div class="faq-answer">Có, bạn có thể đặt hàng qua website hoặc gọi hotline (028) 1234 5678. Chúng tôi sẽ chuẩn bị sẵn và bạn chỉ cần đến nhận.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">Làm sao để kiểm tra trạng thái đơn hàng giao?</div>
+                            <div class="faq-answer">Sau khi đặt hàng, bạn sẽ nhận email hoặc SMS với mã đơn hàng. Liên hệ hotline để kiểm tra trạng thái giao hàng bất kỳ lúc nào.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">Sản phẩm có đảm bảo tươi ngon không?</div>
+                            <div class="faq-answer">Tất cả bánh ngọt được làm mới mỗi ngày, và cà phê được pha từ hạt rang xay chất lượng cao. Nếu có vấn đề, chúng tôi cam kết đổi trả ngay.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">Tôi có thể hủy đơn hàng không?</div>
+                            <div class="faq-answer">Bạn có thể hủy đơn hàng trước khi chúng tôi bắt đầu chuẩn bị (thường trong 30 phút sau khi đặt). Vui lòng liên hệ hotline để được hỗ trợ.</div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="our-brand">
+                      <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
+                      <!-- <div class="control"><a id="prev_brand" class="prev" href="#">&lt;</a><a id="next_brand" class="next" href="#">&gt;</a></div> -->
+                      <ul id="braldLogo">
+                         <li>
+                            <ul class="brand_item">
+                               <li>
+                                  <a href="#">
+                                     <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                                  </a>
+                               </li>
+                               <li>
+                                  <a href="#">
+                                     <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                                  </a>
+                               </li>
+                               <li>
+                                  <a href="#">
+                                     <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                                  </a>
+                               </li>
+                               <li>
+                                  <a href="#">
+                                     <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                                  </a>
+                               </li>
+                               <li>
+                                  <a href="#">
+                                     <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                                  </a>
+                               </li>
+                            </ul>
+                         </li>
+                      </ul>
+                   </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="footer">
+                <div class="footer-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                                <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                                <p>Hotline: (028) 1234 5678</p>
+                                <p>Email: contact@amcoffee.vn</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                                <ul class="support">
+                                    <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                    <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                    <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                    <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                    <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                                <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                                <form class="newsletter">
+                                    <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                    <input type="submit" value="Đăng Ký" class="button">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright-info">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="social-icon2">
+                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Đăng Nhập -->
+<div id="loginModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Nhập</h2>
+       <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="loginBtn">
+            Đăng Nhập
+            <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+       </div>
+       <div class="forgot-password">
+          <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Đăng Ký -->
+ <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Ký</h2>
+       <form id="registerForm">
+          <input type="text" id="registerName" placeholder="Họ và Tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="registerBtn">
+            Đăng Ký
+            <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Quên Mật Khẩu -->
+ <div id="forgotPasswordModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Quên Mật Khẩu</h2>
+       <form id="forgotPasswordForm">
+          <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+          <button type="submit" id="forgotBtn">
+            Gửi Yêu Cầu
+            <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+        </div>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+        <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script defer src="js/jquery.flexslider.js"></script>
+        <script type="text/javascript" src="js/script.min.js"></script>
+        <script type="module">
+            import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+         
+            document.addEventListener('DOMContentLoaded', () => {
+               // Kiểm tra trạng thái đăng nhập
+               onAuthStateChanged(auth, (user) => {
+                  const loginLink = document.getElementById('loginLink');
+                  const registerLink = document.getElementById('registerLink');
+                  const userInfo = document.getElementById('userInfo');
+         
+                  if (user) {
+                     userInfo.style.display = 'inline-block';
+                     loginLink.style.display = 'none';
+                     registerLink.style.display = 'none';
+                  } else {
+                     userInfo.style.display = 'none';
+                     loginLink.style.display = 'inline-block';
+                     registerLink.style.display = 'inline-block';
+                  }
+               });
+         
+               // Xử lý modal đăng nhập/đăng ký
+               bindModalEvents();
+         
+               // Xử lý form đăng nhập
+               document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('loginEmail').value;
+                  const password = document.getElementById('loginPassword').value;
+                  const btn = document.getElementById('loginBtn');
+                  const spinner = document.getElementById('loginSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  try {
+                     await signInWithEmailAndPassword(auth, email, password);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                     });
+                     document.getElementById('loginModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý form đăng ký
+               document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const name = document.getElementById('registerName').value;
+                  const email = document.getElementById('registerEmail').value;
+                  const password = document.getElementById('registerPassword').value;
+                  const btn = document.getElementById('registerBtn');
+                  const spinner = document.getElementById('registerSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  try {
+                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                     await updateProfile(userCredential.user, { displayName: name });
+                     await sendEmailVerification(userCredential.user);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('registerModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý form quên mật khẩu
+               document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const email = document.getElementById('forgotPasswordEmail').value;
+                  const btn = document.getElementById('forgotBtn');
+                  const spinner = document.getElementById('forgotSpinner');
+                  btn.disabled = true;
+                  spinner.style.display = 'inline-block';
+                  if (!email) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                     });
+                     btn.disabled = false;
+                     spinner.style.display = 'none';
+                     return;
+                  }
+                  try {
+                     await sendPasswordResetEmail(auth, email);
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                     });
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  } catch (error) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                     });
+                  }
+                  btn.disabled = false;
+                  spinner.style.display = 'none';
+               });
+         
+               // Xử lý đăng xuất
+               document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                  e.preventDefault();
+                  Swal.fire({
+                     title: 'Bạn có chắc?',
+                     text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                     icon: 'warning',
+                     showCancelButton: true,
+                     confirmButtonColor: '#A63C3C',
+                     cancelButtonColor: '#6c757d',
+                     confirmButtonText: 'Đăng Xuất',
+                     cancelButtonText: 'Hủy'
+                  }).then(async (result) => {
+                     if (result.isConfirmed) {
+                        try {
+                           await signOut(auth);
+                           Swal.fire({
+                              icon: 'success',
+                              title: 'Đăng xuất thành công!',
+                              showConfirmButton: false,
+                              timer: 1500
+                           });
+                        } catch (error) {
+                           Swal.fire({
+                              icon: 'error',
+                              title: 'Lỗi!',
+                              text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                              showConfirmButton: true
+                           });
+                        }
+                     }
+                  });
+               });
+            });
+         
+            function bindModalEvents() {
+               // Mở modal đăng nhập
+               document.querySelector('.log').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Mở modal đăng ký
+               document.querySelector('.reg').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Mở modal quên mật khẩu
+               document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('forgotPasswordModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng nhập sang đăng ký
+               document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('loginModal').style.display = 'none';
+                  document.getElementById('registerModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ đăng ký sang đăng nhập
+               document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('registerModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Chuyển từ quên mật khẩu về đăng nhập
+               document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                  e.preventDefault();
+                  document.getElementById('forgotPasswordModal').style.display = 'none';
+                  document.getElementById('loginModal').style.display = 'flex';
+               });
+         
+               // Đóng modal
+               document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                  closeBtn.addEventListener('click', () => {
+                     document.getElementById('loginModal').style.display = 'none';
+                     document.getElementById('registerModal').style.display = 'none';
+                     document.getElementById('forgotPasswordModal').style.display = 'none';
+                  });
+               });
+         
+               // Đóng modal khi click bên ngoài
+               document.querySelectorAll('.auth-modal').forEach(modal => {
+                  modal.addEventListener('click', (e) => {
+                     if (e.target === modal) {
+                        modal.style.display = 'none';
+                     }
+                  });
+               });
+            }
+         </script>
+        <script>
+            // Ẩn loading overlay sau khi trang tải xong
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.querySelector('.loading-overlay').classList.add('hidden');
+                }, 1000);
+            });
+
+            // Xử lý accordion cho FAQ
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.querySelector('.faq-question').addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(i => {
+                        i.classList.remove('active');
+                        i.querySelector('.faq-answer').style.display = 'none';
+                    });
+                    if (!isActive) {
+                        item.classList.add('active');
+                        item.querySelector('.faq-answer').style.display = 'block';
+                    }
+                });
+            });
+
+            // Hiệu ứng cuộn để làm nổi bật các mục chính sách
+            const policyItems = document.querySelectorAll('.policy-item, .faq-item');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            policyItems.forEach(item => observer.observe(item));
+        </script>
+    </body>
+    <body id="home">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay">
+           <div class="loading-content">
+              <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+              <p>Chờ Ấm Một chút nhé...</p>
+              <div class="loading-spinner"></div>
+           </div>
+        </div>
+        <!-- Nội dung trang hiện tại -->
+        <div class="wrapper">
+           <!-- Phần còn lại của trang -->
+        </div>
+     </body>
+</html>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Tìm hiểu về Ấm - Coffee and Cake, câu chuyện thương hiệu, sứ mệnh và những giá trị chúng tôi mang đến cho bạn.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Về Chúng Tôi - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <!-- Thêm SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom styles cho trang About */
+        .about-title {
+            font-size: 36px;
+            color: #4A2F1A;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .about-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #f7544a;
+            margin: 10px auto;
+        }
+        .about-subtitle {
+            font-size: 18px;
+            color: #666666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .about-story {
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+        .about-story:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .about-story h3 {
+            font-size: 28px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .about-story p {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.8;
+        }
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        .about-values {
+            padding: 40px 0;
+            background: #FFCC99;
+            text-align: center;
+        }
+        .about-values h3 {
+            font-size: 32px;
+            color: #4A2F1A;
+            margin-bottom: 40px;
+        }
+        .value-item {
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .value-item:hover {
+            transform: scale(1.05);
+        }
+        .value-item i {
+            font-size: 40px;
+            color: #f7544a;
+            margin-bottom: 15px;
+        }
+        .value-item h4 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .value-item p {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .about-timeline {
+            padding: 60px 0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 60px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 25px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #f7544a;
+        }
+        .timeline-item .timeline-icon {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #FFFFFF;
+            border: 3px solid #f7544a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timeline-item h4 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+        .timeline-item p {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .about-title {
+                font-size: 28px;
+            }
+            .about-story {
+                padding: 20px;
+            }
+            .about-story h3 {
+                font-size: 24px;
+            }
+            .about-values h3 {
+                font-size: 26px;
+            }
+            .value-item i {
+                font-size: 30px;
+            }
+            .value-item h4 {
+                font-size: 18px;
+            }
+            .timeline-item {
+                padding-left: 50px;
+            }
+            .timeline-item::before {
+                left: 20px;
+            }
+            .timeline-item .timeline-icon {
+                left: 5px;
+                width: 25px;
+                height: 25px;
+            }
+        }
+        @media (max-width: 480px) {
+            .about-title {
+                font-size: 24px;
+            }
+            .about-subtitle {
+                font-size: 16px;
+            }
+            .about-story h3 {
+                font-size: 20px;
+            }
+            .about-values h3 {
+                font-size: 22px;
+            }
+        }
+
+        /* Style cho user-info (chỉ hiển thị nút Đăng Xuất) */
+        .usermenu li.user-info {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li.user-info a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li.user-info a:hover {
+            color: #A63C3C;
+        }
+
+        /* Style cho modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        .modal-content h2 {
+            text-align: center;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .modal-content button {
+            padding: 10px;
+            background-color: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-content button:hover {
+            background-color: #A63C3C;
+        }
+        .modal-content .switch-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .modal-content .switch-form a {
+            color: #f7544a;
+            text-decoration: none;
+        }
+        .modal-content .switch-form a:hover {
+            text-decoration: underline;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body id="home">
+    <div class="wrapper">
+       <div class="header">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-2 col-sm-2">
+                   <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                   <div class="header_top">
+                      <div class="row">
+                         <div class="col-md-3">
+                         </div>
+                         <div class="col-md-6">
+                            <ul class="topmenu">
+                                <li><a href="policy.html">Chính Sách</a></li>
+                                <li><a href="member.html">Thành Viên</a></li>
+                             </ul>
+                         </div>
+                         <div class="col-md-3">
+                            <ul class="usermenu">
+                               <li id="loginLink"><a href="#" class="log" onclick="openModal('loginModal')"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                               <li id="registerLink"><a href="#" class="reg" onclick="openModal('registerModal')"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                               <li class="user-info" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                            </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="header_bottom">
+                      <ul class="option">
+                         <li id="search" class="search">
+                            <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                         </li>
+                         <li class="option-cart">
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">0</span></a>
+                            <!-- <ul class="option-cart-item"></ul> -->
+                        </li>
+                      </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                      <div class="navbar-collapse collapse">
+                         <ul class="nav navbar-nav">
+                            <li>
+                               <a href="index.html">Trang Chủ</a>
+                            </li>
+                            <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                               <div class="dropdown-menu mega-menu">
+                                  <div class="row">
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Thức Uống</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu.html">Cà phê đen đá</a></li>
+                                           <li><a href="menu.html">Cappuccino</a></li>
+                                           <li><a href="menu.html">Latte</a></li>
+                                           <li><a href="menu.html">Espresso</a></li>
+                                        </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Bánh</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu.html">Bánh Bông Lan</a></li>
+                                           <li><a href="menu.html">Cheesecake</a></li>
+                                           <li><a href="menu.html">Bánh Mì</a></li>
+                                           <li><a href="menu.html">Tiramisu</a></li>
+                                           <li><a href="menu.html">Mousse Cake</a></li>
+                                           <li><a href="menu.html">Cupcake</a></li>
+                                        </ul>
+                                     </div>
+                                     <div class="col-md-6 col-sm-6">
+                                        <h4 class="menu-title">Gọi Thêm</h4>
+                                        <ul class="mega-menu-links">
+                                           <li><a href="menu.html#pho-mai">Phô Mai</a></li>
+                                           <li><a href="menu.html">Socola</a></li>
+                                           <li><a href="menu.html">Mật Ong</a></li>
+                                           <li><a href="menu.html">Kem</a></li>
+                                           <li><a href="menu.html">Trái Cây</a></li>
+                                        </ul>
+                                     </div> 
+                                  </div>
+                               </div>
+                            </li>
+                            <li><a href="promotions.html">Khuyến Mãi</a></li>
+                            <li><a href="news.html">Tin Tức</a></li>
+                            <li><a href="event.html">Sự Kiện</a></li>
+                            <li class="active dropdown"><a href="about.html">Về Chúng Tôi</a></li>
+                         </ul>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="hom-slider">
+          <div class="container">
+             <div id="sequence">
+                <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                <ul class="sequence-canvas">
+                   <li class="animate-in">
+                      <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400">
+                         <h1>Khuyến Mãi Đặc Biệt</h1>
+                      </div>   
+                      <div class="flat-caption caption3 formLeft delay500">
+                         <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                      </div>
+                      <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Bánh Ngọt Tươi Mới</h1>
+                      </div>
+                      <div class="flat-caption caption3 formLeft delay500 text-center">
+                         <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                   </li>
+                </ul>
+             </div>
+          </div>
+          <div class="promotion-banner">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                   </div>
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                   </div>
+                   <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="container_fullwidth">
+          <div class="container">
+             <!-- Phần giới thiệu chính -->
+             <div class="about-section">
+                <h3 class="about-title">Câu Chuyện Của <strong>Ấm</strong></h3>
+                <p class="about-subtitle">Ấm - Coffee and Cake không chỉ là một quán cà phê, mà là nơi lưu giữ những khoảnh khắc yêu thương, nơi bạn tìm thấy sự bình yên giữa nhịp sống hối hả.</p>
+                <div class="row">
+                   <div class="col-md-6 col-sm-12">
+                      <div class="about-story">
+                         <h3>Về Chúng Tôi</h3>
+                         <p>Ra đời từ niềm đam mê với cà phê và bánh ngọt, Ấm được thành lập vào năm 2020 tại TP. Hồ Chí Minh. Chúng tôi mang đến những ly cà phê được pha chế tỉ mỉ từ hạt cà phê chất lượng cao, kết hợp cùng các món bánh ngọt tinh tế, được làm thủ công mỗi ngày.</p>
+                         <p>Với không gian ấm cúng và đội ngũ nhân viên thân thiện, Ấm muốn trở thành "ngôi nhà thứ hai" của bạn, nơi bạn có thể thư giãn, làm việc hoặc chia sẻ những câu chuyện cùng bạn bè.</p>
+                         <br><br>
+                      </div>
+                   </div>
+                   <div class="col-md-6 col-sm-12">
+                      <div class="about-image">
+                         <img src="https://img.freepik.com/premium-photo/barista-makes-coffee-customers-cafe-restaurant_124463-4951.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Không gian Ấm - Coffee and Cake">
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+             <!-- Phần giá trị cốt lõi -->
+             <div class="about-values">
+                <h3>Giá Trị Cốt Lõi</h3>
+                <div class="row">
+                   <div class="col-md-4 col-sm-6">
+                      <div class="value-item">
+                         <i class="fa fa-coffee"></i>
+                         <h4>Chất Lượng</h4>
+                         <p>Cam kết sử dụng nguyên liệu tươi ngon, từ hạt cà phê nguyên chất đến bột mì cao cấp, để mang đến trải nghiệm tuyệt vời nhất.</p>
+                      </div>
+                   </div>
+                   <div class="col-md-4 col-sm-6">
+                      <div class="value-item">
+                         <i class="fa fa-heart"></i>
+                         <h4>Ấm Áp</h4>
+                         <p>Không gian và dịch vụ được thiết kế để bạn cảm thấy như ở nhà, với sự chân thành và thân thiện từ đội ngũ Ấm.</p>
+                      </div>
+                   </div>
+                   <div class="col-md-4 col-sm-12">
+                      <div class="value-item">
+                         <i class="fa fa-leaf"></i>
+                         <h4>Bền Vững</h4>
+                         <p>Hỗ trợ nông dân địa phương và sử dụng bao bì thân thiện với môi trường để bảo vệ hành tinh xanh của chúng ta.</p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+             <!-- Phần hành trình -->
+             <div class="about-section about-timeline">
+                <h3 class="about-title">Hành Trình Của Ấm</h3>
+                <div class="row">
+                   <div class="col-md-12">
+                      <div class="timeline-item">
+                         <div class="timeline-icon"></div>
+                         <h4>2020 - Khởi đầu</h4>
+                         <p>Ấm - Coffee and Cake ra mắt cửa hàng đầu tiên tại Nguyễn Trãi, Quận 5, mang đến phong cách cà phê mới mẻ cho TP. Hồ Chí Minh.</p>
+                      </div>
+                      <div class="timeline-item">
+                         <div class="timeline-icon"></div>
+                         <h4>2022 - Phát triển</h4>
+                         <p>Mở thêm hai chi nhánh tại Quận 1 và Quận 7, đồng thời ra mắt dòng bánh ngọt đặc trưng như Red Velvet và Tiramisu.</p>
+                      </div>
+                      <div class="timeline-item">
+                         <div class="timeline-icon"></div>
+                         <h4>2024 - Cam kết bền vững</h4>
+                         <p>Hợp tác với nông dân Đắk Lắk để cung cấp cà phê sạch và khởi động chương trình tái chế bao bì.</p>
+                      </div>
+                      <div class="timeline-item">
+                         <div class="timeline-icon"></div>
+                         <h4>2025 - Hôm nay</h4>
+                         <p>Trở thành điểm đến yêu thích của hàng nghìn khách hàng, với sứ mệnh lan tỏa sự ấm áp qua từng ly cà phê và miếng bánh.</p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="clearfix"></div>
+             <div class="our-brand">
+                <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
+                <!-- <div class="control"><a id="prev_brand" class="prev" href="#"><</a><a id="next_brand" class="next" href="#">></a></div> -->
+                <ul id="braldLogo">
+                   <li>
+                      <ul class="brand_item">
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
+                            </a>
+                         </li>
+                         <li>
+                            <a href="#">
+                               <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
+                            </a>
+                         </li>
+                      </ul>
+                   </li>
+                </ul>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="footer">
+          <div class="footer-info">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-3">
+                      <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                   </div>
+                   <div class="col-md-3 col-sm-6">
+                      <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                      <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                      <p>Hotline: (028) 1234 5678</p>
+                      <p>Email: contact@amcoffee.vn</p>
+                   </div>
+                   <div class="col-md-3 col-sm-6">
+                      <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                      <ul class="support">
+                         <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                         <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                         <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                         <li><a href="policy.html#returns">Đổi Trả</a></li>
+                      </ul>
+                   </div>
+                   <div class="col-md-3">
+                      <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                      <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                      <form class="newsletter">
+                         <input type="email" name="email" placeholder="Nhập email của bạn...">
+                         <input type="submit" value="Đăng Ký" class="button">
+                      </form>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="copyright-info">
+             <div class="container">
+                <div class="row">
+                   <div class="col-md-6">
+                      <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                   </div>
+                   <div class="col-md-6">
+                      <ul class="social-icon2">
+                         <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                         <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                         <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+
+    <!-- Modal cho Đăng Nhập -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">×</span>
+            <h2>Đăng Nhập</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                <button type="button" id="loginBtn" onclick="handleLogin()">
+                    Đăng Nhập
+                    <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch-form">
+                <p>Quên mật khẩu? <a href="#" onclick="switchToForgotPassword()">Đặt lại mật khẩu</a></p>
+                <p>Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal cho Đăng Ký -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">×</span>
+            <h2>Đăng Ký</h2>
+            <form id="registerForm">
+                <input type="text" id="registerName" placeholder="Họ và tên" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Mật khẩu (tối thiểu 8 ký tự)" required>
+                <button type="button" id="registerBtn" onclick="handleRegister()">
+                    Đăng Ký
+                    <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch-form">
+                <p>Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập ngay</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal cho Quên Mật Khẩu -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('forgotPasswordModal')">×</span>
+            <h2>Quên Mật Khẩu</h2>
+            <form id="forgotPasswordForm">
+                <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+                <button type="button" id="forgotBtn" onclick="handleForgotPassword()">
+                    Gửi Yêu Cầu
+                    <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch-form">
+                <p>Quay lại <a href="#" onclick="switchToLogin()">Đăng nhập</a></p>
+        </div>
+    </div>
+</div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.firebasestorage.app",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Check Auth State
+        onAuthStateChanged(auth, (user) => {
+            const logoutLink = document.getElementById('logoutLink');
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const userInfo = document.querySelector('.user-info');
+
+            if (user) {
+                // User is logged in
+                userInfo.style.display = 'inline-block';
+                loginLink.style.display = 'none';
+                registerLink.style.display = 'none';
+            } else {
+                // User is not logged in
+                userInfo.style.display = 'none';
+                loginLink.style.display = 'inline-block';
+                registerLink.style.display = 'inline-block';
+            }
+        });
+
+        // Handle Logout
+        document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Bạn có chắc?',
+                text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#A63C3C',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đăng Xuất',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    signOut(auth).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng xuất thành công!',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'index.html'; // Redirect to index.html after logout
+                        });
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: `Không thể đăng xuất: ${error.message}.`,
+                            showConfirmButton: true
+                        });
+                    });
+                }
+            });
+        });
+
+        // Modal Functions
+        window.openModal = function(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.switchToRegister = function() {
+            closeModal('loginModal');
+            openModal('registerModal');
+        }
+
+        window.switchToLogin = function() {
+            closeModal('registerModal');
+            closeModal('forgotPasswordModal');
+            openModal('loginModal');
+        }
+
+        window.switchToForgotPassword = function() {
+            closeModal('loginModal');
+            openModal('forgotPasswordModal');
+        }
+
+        // Handle Login
+        window.handleLogin = function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loginSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        closeModal('loginModal');
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Đăng nhập thất bại: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        }
+
+        // Handle Register
+        window.handleRegister = function() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const spinner = document.getElementById('registerSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            if (password.length < 8) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Mật khẩu phải có ít nhất 8 ký tự.',
+                    showConfirmButton: true
+                });
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                return;
+            }
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // Save user info to Realtime Database
+                    return set(ref(db, 'users/' + user.uid), {
+                        name: name,
+                        email: email,
+                        createdAt: new Date().toISOString()
+                    });
+                })
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        closeModal('registerModal');
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Đăng ký thất bại: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        }
+
+        // Handle Forgot Password
+        window.handleForgotPassword = function() {
+            const email = document.getElementById('forgotPasswordEmail').value;
+            const btn = document.getElementById('forgotBtn');
+            const spinner = document.getElementById('forgotSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                    }).then(() => {
+                        closeModal('forgotPasswordModal');
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: `Không thể gửi email: ${error.message}`,
+                        showConfirmButton: true
+                    });
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                });
+        }
+    </script>
+    <script>
+        // Ẩn loading overlay sau khi trang tải xong
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loading-overlay').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Hiệu ứng cuộn để làm nổi bật các mục
+        const sections = document.querySelectorAll('.about-story, .value-item, .timeline-item');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        sections.forEach(section => observer.observe(section));
+
+        // Hiệu ứng hover cho giá trị cốt lõi
+        document.querySelectorAll('.value-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'scale(1.05)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'scale(1)';
+            });
+        });
+
+        // Hàm hiển thị giỏ hàng từ localStorage
+        function displayCartItems() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItems = document.getElementById('cart-items');
+            let cartCount = document.querySelector('.cart_no');
+            let totalPrice = 0;
+
+            // Nếu giỏ hàng trống
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Giỏ hàng trống</p>';
+                cartCount.textContent = 0;
+                document.getElementById('total-price').textContent = '0 VND';
+                return;
+            }
+
+            // Xóa tất cả sản phẩm hiện có trong giỏ hàng
+            cartItems.innerHTML = '';
+
+            // Thêm lại tất cả các sản phẩm vào giỏ hàng
+            cart.forEach(item => {
+                totalPrice += item.price * item.quantity;
+                let cartItem = document.createElement('li');
+                cartItem.innerHTML = `
+                    <div class="cart-item">
+                        <div class="image"><img src="${item.imageUrl}" alt="${item.name}" style="width: 60px;"></div>
+                        <div class="item-description">
+                            <p class="name">${item.name}</p>
+                            <p>Số lượng: <span class="light-red">${item.quantity}</span></p>
+                        </div>
+                        <div class="right">
+                            <p class="price">${(item.price * item.quantity).toLocaleString()} VND</p>
+                            <a href="#" class="remove" onclick="removeItem('${item.name}')"><img src="images/remove.png" alt="Xóa"></a>
+                        </div>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+
+            // Cập nhật tổng tiền giỏ hàng
+            document.getElementById('total-price').textContent = totalPrice.toLocaleString() + ' VND';
+            cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+        }
+
+        // Hàm xóa sản phẩm khỏi giỏ
+        function removeItem(productName) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.name !== productName); // Xóa sản phẩm khỏi giỏ
+
+            localStorage.setItem('cart', JSON.stringify(cart)); // Lưu lại giỏ hàng
+            displayCartItems(); // Hiển thị lại giỏ hàng
+        }
+
+        // Khi trang được tải, hiển thị giỏ hàng
+        window.addEventListener('load', displayCartItems);
+    </script>
+    <style>
+        /* Hiệu ứng cuộn */
+        .about-story, .value-item, .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .about-story.visible, .value-item.visible, .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</body>
+<body id="home">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+       <div class="loading-content">
+          <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+          <p>Chờ Ấm Một chút nhé...</p>
+          <div class="loading-spinner"></div>
+       </div>
+    </div>
+    <!-- Nội dung trang hiện tại -->
+    <div class="wrapper">
+       <!-- Phần còn lại của trang -->
+    </div>
+</body>
+</html>

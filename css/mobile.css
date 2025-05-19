@@ -1,0 +1,232 @@
+/* Mobile Styles - For screens smaller than 768px */
+@media screen and (max-width: 767px) {
+    /* Header optimization */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .header-top {
+        padding: 5px 0;
+    }
+    
+    .logo img {
+        max-height: 40px;
+        width: auto;
+        transition: all 0.3s ease;
+    }
+
+    /* Navigation menu */
+    .nav-menu {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu.active {
+        display: block;
+    }
+    
+    .nav-menu li {
+        display: block;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-menu li a {
+        padding: 15px;
+        display: block;
+    }
+
+    /* Mobile menu toggle */
+    .mobile-menu-toggle {
+        display: block;
+        font-size: 24px;
+        padding: 10px;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    /* Content sections */
+    .section {
+        padding: 20px 10px;
+        margin-top: 60px; /* Account for fixed header */
+    }
+
+    /* Product cards */
+    .product-card {
+        width: calc(50% - 10px);
+        margin: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px 8px 0 0;
+    }
+
+    /* Footer optimization */
+    footer {
+        padding: 20px 10px;
+        background: #333;
+        color: white;
+    }
+
+    .footer-logo img {
+        max-height: 35px;
+        width: auto;
+        transition: all 0.3s ease;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-column {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Cart and checkout optimizations */
+    .cart-item {
+        flex-direction: column;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .cart-item-image {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .cart-item-details {
+        width: 100%;
+    }
+
+    /* Form elements */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Buttons */
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    /* Social icons */
+    .social-icons {
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .social-icons img {
+        width: 30px;
+        height: 30px;
+    }
+
+    /* Search bar */
+    .search-bar {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .search-bar input {
+        width: calc(100% - 40px);
+        padding: 10px;
+    }
+}
+
+/* Tablet Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .logo img {
+        max-height: 50px;
+    }
+
+    .product-card {
+        width: calc(33.33% - 20px);
+    }
+
+    .footer-logo img {
+        max-height: 45px;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+/* Loading animation */
+.loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+}
+
+.loading.active {
+    display: block;
+}
+
+/* Smooth transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
