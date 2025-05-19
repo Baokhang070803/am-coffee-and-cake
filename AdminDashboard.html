@@ -960,7 +960,14 @@
       <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</span></a>
       <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> <span>Quản Lý Mã Giảm Giá</span></a>
       <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> <span>Quản Lý Đơn Hàng</span></a>
-      <a class="nav-link" href="#messageManagement"><i class="fas fa-envelope"></i> <span>Quản Lý Tin Nhắn</span></a>
+      <a href="#messageManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-comments"></i>
+        <span>Quản lý tin nhắn</span>
+      </a>
+      <a href="#userManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-users"></i>
+        <span>Quản lý người dùng</span>
+      </a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
   </div>
@@ -1280,6 +1287,33 @@
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- User Management Section -->
+  <section id="userManagement">
+    <h2>Quản Lý Người Dùng</h2>
+    <button class="btn btn-primary mb-3" onclick="showAddUserModal()">
+      <i class="fas fa-user-plus me-2"></i> Thêm người dùng
+    </button>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Ảnh đại diện</th>
+            <th>Email</th>
+            <th>Họ tên</th>
+            <th>Địa chỉ</th>
+            <th>Vai trò</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="usersList">
+          <tr>
+            <td colspan="6" class="text-center text-muted">Đang tải...</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -1731,6 +1765,8 @@
         setupEventListeners();
       } else if (user.email !== 'quantri1amcoffeeandcake@gmail.com') {
         Swal.fire({
+
+
           icon: 'error',
           title: 'Truy cập bị từ chối!',
           text: 'Chỉ quản trị viên mới có thể truy cập trang này.'
@@ -1871,10 +1907,14 @@
           case 'messageManagement':
             loadMessages();
             break;
+          case 'userManagement':
+            loadUsers(); // <-- Thêm dòng này để luôn load danh sách user khi chuyển tab
+            break;
         }
       }
     }
 
+    // Navigation click event
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -3670,7 +3710,7 @@
           <br>
           <span>Khách: ${order.fullName || 'N/A'}</span> | <span>Ngày: ${order.createdAt ? new Date(order.createdAt).toLocaleString('vi-VN') : ''}</span>
           <br>
-          <span>Tổng tiền: ${(order.grandTotal || 0).toLocaleString('vi-VN')} đ</span>
+          <span>Tổng tiền: ${(order.grandTotal || 0).toLocaleString('vi-VN') + ' đ'}</span>
           <br>
           <button class="btn btn-sm btn-primary mt-1" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem chi tiết</button>
         </div>
@@ -3918,6 +3958,281 @@
 
     // Initialize on page load
     switchSection('dashboard');
+
+    // Load users
+    function loadUsers() {
+      console.log('Starting to load users...');
+      if (!db) {
+        console.error('Firebase database is not initialized');
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Không thể kết nối Firebase.</td></tr>`;
+        return;
+      }
+
+      const usersRef = ref(db, 'users');
+      console.log('Fetching users from:', usersRef);
+      
+      get(usersRef)
+        .then((snapshot) => {
+          console.log('Received snapshot:', snapshot);
+          const usersObj = snapshot.val() || {};
+          console.log('Users data:', usersObj);
+          
+          const usersList = document.getElementById('usersList');
+          if (!usersList) {
+            console.error('usersList element not found');
+            return;
+          }
+
+          if (Object.keys(usersObj).length === 0) {
+            console.log('No users found');
+            usersList.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Không có người dùng nào.</td></tr>`;
+            return;
+          }
+
+          const usersHTML = Object.entries(usersObj).map(([id, user]) => {
+            console.log('Processing user:', id, user);
+            return `
+              <tr>
+                <td>
+                  ${
+                    user.avatarUrl
+                      ? `<img src="${user.avatarUrl}" alt="avatar" style="width:40px;height:40px;object-fit:cover;border-radius:50%;border:1px solid #eee;">`
+                      : `<i class="fas fa-user-circle" style="font-size:2em;color:#A67C52;"></i>`
+                  }
+                </td>
+                <td>${user.email || 'N/A'}</td>
+                <td>${user.name || 'N/A'}</td>
+                <td>${user.address || 'N/A'}</td>
+                <td>${user.role === 'admin' ? 'Admin' : 'User'}</td>
+                <td>
+                  <button class="btn btn-sm btn-info" onclick="editUser('${id}')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteUser('${id}')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+
+          usersList.innerHTML = usersHTML;
+          console.log('Users list updated successfully');
+        })
+        .catch((error) => {
+          console.error('Error loading users:', error);
+          const usersList = document.getElementById('usersList');
+          if (usersList) {
+            let msg = 'Không thể tải dữ liệu người dùng.';
+            if (error && error.code === 'PERMISSION_DENIED') {
+              msg += '<br>Không có quyền truy cập dữ liệu. Vui lòng kiểm tra Firebase Rules.';
+            } else if (error && error.message) {
+              msg += `<br>${error.message}`;
+            }
+            usersList.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${msg}</td></tr>`;
+          }
+        });
+    }
+
+    // Show add user modal
+    function showAddUserModal() {
+      Swal.fire({
+        title: 'Thêm người dùng mới',
+        html: `
+          <form id="addUserForm">
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="userEmail" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Họ tên</label>
+              <input type="text" class="form-control" id="userName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Địa chỉ</label>
+              <input type="text" class="form-control" id="userAddress">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Vai trò</label>
+              <select class="form-control" id="userRole">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Thêm',
+        cancelButtonText: 'Hủy',
+        preConfirm: () => {
+          const email = document.getElementById('userEmail').value;
+          const name = document.getElementById('userName').value;
+          const address = document.getElementById('userAddress').value;
+          const role = document.getElementById('userRole').value;
+          
+          if (!email || !name) {
+            Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
+            return false;
+          }
+          
+          return { email, name, address, role };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          addUser(result.value);
+        }
+      });
+    }
+    window.showAddUserModal = showAddUserModal; // <-- Thêm dòng này
+
+    // Add new user
+    async function addUser(userData) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, userData.email, 'password123');
+        await set(ref(db, `users/${userCredential.user.uid}`), {
+          ...userData,
+          created_at: new Date().toISOString(),
+          status: 'active'
+        });
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Đã thêm người dùng mới',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.message
+        });
+      }
+    }
+
+    // Edit user
+    function editUser(userId) {
+      const userRef = ref(db, `users/${userId}`);
+      get(userRef).then((snapshot) => {
+        const user = snapshot.val();
+        Swal.fire({
+          title: 'Sửa thông tin người dùng',
+          html: `
+            <form id="editUserForm">
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="userEmail" value="${user.email || ''}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Họ tên</label>
+                <input type="text" class="form-control" id="userName" value="${user.name || ''}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="userAddress" value="${user.address || ''}">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Vai trò</label>
+                <select class="form-control" id="userRole">
+                  <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+                  <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Trạng thái</label>
+                <select class="form-control" id="userStatus">
+                  <option value="active" ${user.status === 'active' ? 'selected' : ''}>Active</option>
+                  <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                </select>
+              </div>
+            </form>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Lưu',
+          cancelButtonText: 'Hủy',
+          preConfirm: () => {
+            const email = document.getElementById('userEmail').value;
+            const name = document.getElementById('userName').value;
+            const address = document.getElementById('userAddress').value;
+            const role = document.getElementById('userRole').value;
+            const status = document.getElementById('userStatus').value;
+            
+            if (!email || !name) {
+              Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
+              return false;
+            }
+            
+            return { email, name, address, role, status };
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            updateUser(userId, result.value);
+          }
+        });
+      });
+    }
+    window.editUser = editUser; // <-- Thêm dòng này
+
+    // Update user
+    async function updateUser(userId, userData) {
+      try {
+        await set(ref(db, `users/${userId}`), {
+          ...userData,
+          updated_at: new Date().toISOString()
+        });
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Đã cập nhật thông tin người dùng',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.message
+        });
+      }
+    }
+
+    // Delete user
+    async function deleteUser(userId) {
+      try {
+        const result = await Swal.fire({
+          title: 'Xác nhận xóa',
+          text: 'Bạn có chắc chắn muốn xóa người dùng này?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Xóa',
+          cancelButtonText: 'Hủy'
+        });
+
+        if (result.isConfirmed) {
+          await remove(ref(db, `users/${userId}`));
+          await loadUsers(); // Load lại dữ liệu sau khi xóa
+          Swal.fire({
+            icon: 'success',
+            title: 'Đã xóa!',
+            text: 'Người dùng đã được xóa thành công',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: error.message
+        });
+      }
+    }
+    window.deleteUser = deleteUser; // <-- Thêm dòng này
   </script>
 </body>
 </html>
