@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Sitemap: https://amcoffeeandcake.netlify.app/sitemap.xml
+
+Disallow: /AdminDashboard.html
+Disallow: /member.html
+Disallow: /checkout.html
+Disallow: /cart.html
+Disallow: /vnpay_return.html 
