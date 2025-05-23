@@ -457,8 +457,8 @@
         /* Chatbox Messenger Style - LUXURY A67C52 */
         .chatbox-messenger {
             position: fixed;
-            bottom: 32px;
-            right: 32px;
+            bottom: 100px;
+            right: 26px;
             z-index: 9999;
             font-family: 'Roboto', Arial, sans-serif;
         }
@@ -1622,7 +1622,7 @@
             }
         });
 
-        // Xử lý gửi tin nhắn
+        // Xử lý gửi tin nhắn   
         chatboxForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const message = chatboxInput.value.trim();
@@ -1653,6 +1653,12 @@
                 chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
             }
         });
+    </script>
+    <!-- Chatbox Messenger -->
+    <script src="https://app.tudongchat.com/js/chatbox.js"></script>
+    <script>
+        const tudong_chatbox = new TuDongChat('IMIhJ_eLGJvQhxhSC5-hW')
+        tudong_chatbox.initial()
     </script>
 </body>
 </html>
