@@ -1,9 +1,29 @@
+# Cấu hình cho tất cả các robot
 User-agent: *
-Allow: /
-Sitemap: https://amcoffeeandcake.netlify.app/sitemap.xml
 
-Disallow: /AdminDashboard.html
-Disallow: /member.html
-Disallow: /checkout.html
-Disallow: /cart.html
-Disallow: /vnpay_return.html 
+# Cho phép truy cập các trang công khai
+Allow: /
+Allow: /index.html
+Allow: /menu.html
+Allow: /about.html
+Allow: /event.html
+Allow: /news.html
+Allow: /promotions.html
+Allow: /policy.html
+
+# Chặn truy cập các trang nhạy cảm
+Disallow: /AdminDashboard.html    # Trang quản trị
+Disallow: /member.html            # Trang thành viên
+Disallow: /checkout.html          # Trang thanh toán
+Disallow: /cart.html              # Trang giỏ hàng
+Disallow: /vnpay_return.html      # Trang xử lý thanh toán
+Disallow: /*?*                    # Chặn các URL có query parameters
+Disallow: /js/                    # Thư mục JavaScript
+Disallow: /css/                   # Thư mục CSS
+Disallow: /fonts/                 # Thư mục fonts
+
+# Tốc độ thu thập
+Crawl-delay: 10
+
+# Sitemap
+Sitemap: https://amcoffeeandcake.netlify.app/sitemap.xml 
