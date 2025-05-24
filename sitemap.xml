@@ -1,75 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/menu.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/about.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/checkout.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/cart.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/event.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/policy.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/news.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/promotions.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/vnpay_return.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/member.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://amcoffeeandcake.netlify.app/AdminDashboard.html</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
+    <!-- Trang chủ -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Menu -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/menu.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Về chúng tôi -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/about.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Giỏ hàng -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/cart.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Thanh toán -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/checkout.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- VNPay Return -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/vnpay_return.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Sự kiện -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/event.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Chính sách -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/policy.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Tin tức -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/news.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Khuyến mãi -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/promotions.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Thành viên -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/member.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Admin -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/AdminDashboard.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
 </urlset> 
