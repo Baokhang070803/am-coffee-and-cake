@@ -1709,12 +1709,12 @@
         <input type="text" id="newsSearch" class="form-control" placeholder="Tìm kiếm tin tức...">
       </div>
       <div class="col-md-4">
-        <select id="newsCategoryFilter" class="form-select">
+        <!-- <select id="newsCategoryFilter" class="form-select">
           <option value="">Tất cả danh mục</option>
           <option value="Khuyến mãi">Khuyến mãi</option>
           <option value="Sự kiện">Sự kiện</option>
           <option value="Tin tức">Tin tức</option>
-        </select>
+        </select> -->
       </div>
       <div class="col-md-2">
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
@@ -4467,7 +4467,13 @@
       if (newsToRender.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="text-center">Không có tin tức nào</td>
+            <td colspan="5" class="text-center">
+              <div class="py-4">
+                <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                <h5 class="text-muted">Không tìm thấy tin tức nào</h5>
+                <p class="text-muted">Vui lòng thử lại với từ khóa hoặc danh mục khác</p>
+              </div>
+            </td>
           </tr>
         `;
         return;
@@ -4728,15 +4734,24 @@
       e.preventDefault();
       const searchTerm = document.getElementById('newsSearch').value.toLowerCase();
       const categoryFilter = document.getElementById('newsCategoryFilter').value;
+      const refreshButton = document.getElementById('refreshNews');
 
       const filteredNews = newsList.filter(news => {
         const matchesSearch = news.title.toLowerCase().includes(searchTerm) ||
-                            news.content.toLowerCase().includes(searchTerm);
-        const matchesCategory = !categoryFilter || news.category === categoryFilter;
+                            news.summary.toLowerCase().includes(searchTerm) ||
+                            news.content.join(' ').toLowerCase().includes(searchTerm);
+        const matchesCategory = !categoryFilter || news.title === categoryFilter;
         return matchesSearch && matchesCategory;
       });
 
       renderNewsTable(filteredNews);
+      
+      // Hiển thị nút làm mới nếu có bộ lọc đang được áp dụng
+      if (searchTerm || categoryFilter) {
+        refreshButton.style.display = 'block';
+      } else {
+        refreshButton.style.display = 'none';
+      }
     });
 
     // Refresh News
@@ -4744,6 +4759,7 @@
       loadNews();
       document.getElementById('newsSearch').value = '';
       document.getElementById('newsCategoryFilter').value = '';
+      this.style.display = 'none';
     });
 
     // Initialize News Management
