@@ -17,6 +17,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
         const firebaseConfig = {
            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
@@ -29,6 +30,9 @@
         };
         const app = initializeApp(firebaseConfig);
         window.auth = getAuth(app);
+        window.db = getDatabase(app);
+        window.ref = ref; // Thêm ref vào window để có thể sử dụng ở các script khác
+        window.get = get; // Thêm get vào window để có thể sử dụng ở các script khác
      </script>
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      <style>
@@ -146,186 +150,287 @@
         }
      </style>
     <style>
-        /* Custom CSS cho trang tin tức */
-        .news-banner {
-            position: relative;
+        /* Modern News Page CSS */
+        .news-section {
+            padding: 50px 0;
+            background: linear-gradient(to bottom, #fff, #ffffff);
+        }
+        .news-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .news-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #3a2317;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .news-header p {
+            font-size: 18px;
+            color: #6a4a3a;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .news-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .news-card img {
             width: 100%;
-            height: 400px;
-            background: url('https://img.freepik.com/free-photo/coffee-cup-cake-plate_1203-1694.jpg') center/cover no-repeat;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .news-card:hover img {
+            transform: scale(1.05);
+        }
+        .news-card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card-content h3 {
+            font-size: 22px;
+            color: #3a2317;
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+        .news-card-content .date {
+            font-size: 14px;
+            color: #a07a6b;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f5e9e2;
+            border-radius: 5px;
+        }
+        .news-card-content p {
+            font-size: 16px;
+            color: #5a3a2a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .news-card-content .btn-read {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+        .news-card-content .btn-read:hover {
+            background: #d6342a;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .news-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .news-pagination a {
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            color: #fff;
-            margin-bottom: 40px;
-            overflow: hidden;
-        }
-        .news-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(74, 47, 26, 0.6);
-            z-index: 1;
-        }
-        .news-banner-content {
-            position: relative;
-            z-index: 2;
-            max-width: 700px;
-        }
-        .news-banner-content h1 {
-            font-size: 42px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: fadeInDown 1s ease;
-        }
-        .news-banner-content p {
-            font-size: 18px;
-            animation: fadeInUp 1s ease 0.3s;
-            animation-fill-mode: both;
-        }
-
-        /* News Content */
-        .news-content {
-            display: flex;
-            gap: 30px;
-        }
-        .news-main {
-            flex: 3;
-        }
-        .news-sidebar {
-            flex: 1;
-            background: #f8f8f8;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .news-item {
-            display: flex;
-            margin-bottom: 30px;
             background: #fff;
+            color: #3a2317;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .news-pagination a:hover, .news-pagination a.active {
+            background: #f7544a;
+            color: #fff;
+            box-shadow: 0 5px 10px rgba(247, 84, 74, 0.3);
+        }
+        .news-pagination a.next {
+            font-size: 20px;
+        }
+        .news-sidebar-modern {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-left: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #f7544a #f5e9e2;
+        }
+
+        /* Tùy chỉnh thanh cuộn cho Chrome/Safari */
+        .news-sidebar-modern::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-track {
+            background: #f5e9e2;
+            border-radius: 10px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-thumb {
+            background: #f7544a;
+            border-radius: 10px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-thumb:hover {
+            background: #d6342a;
+        }
+
+        /* Hiệu ứng khi hover vào các phần tử trong sidebar */
+        .news-sidebar-modern h4 {
+            font-size: 20px;
+            color: #3a2317;
+            margin-bottom: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #f7544a;
+            padding-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .search-box {
+            display: flex;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        .news-item img {
-            width: 200px;
-            height: 150px;
-            object-fit: cover;
-        }
-        .news-item-content {
-            padding: 20px;
-            flex: 1;
-        }
-        .news-item-content h3 {
-            font-size: 20px;
-            color: #4A2F1A;
-            margin: 0 0 10px;
-        }
-        .news-item-content .date {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-        .news-item-content p {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        .news-item-content .btn-readmore {
-            background: #f7544a;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
             transition: all 0.3s ease;
         }
-        .news-item-content .btn-readmore:hover {
-            background: #da2a20;
-            transform: scale(1.05);
+
+        .news-sidebar-modern .search-box:focus-within {
+            box-shadow: 0 5px 15px rgba(247, 84, 74, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 40px 0;
-        }
-        .pagination a {
-            padding: 10px 15px;
-            background: #f8f8f8;
-            color: #4A2F1A;
-            border-radius: 5px;
-            text-decoration: none;
+        .news-sidebar-modern .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            font-size: 15px;
+            outline: none;
+            background: #f9f9f9;
             transition: all 0.3s ease;
         }
-        .pagination a:hover, .pagination a.active {
-            background: #f7544a;
-            color: #fff;
+
+        .news-sidebar-modern .search-box input:focus {
+            background: #fff;
         }
 
-        /* Sidebar */
-        .news-sidebar h4 {
-            font-size: 18px;
-            color: #4A2F1A;
-            margin-bottom: 20px;
-        }
-        .news-sidebar .search-form {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        .news-sidebar .search-form input[type="text"] {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px 0 0 5px;
-        }
-        .news-sidebar .search-form button {
-            padding: 10px;
+        .news-sidebar-modern .search-box button {
+            padding: 12px 20px;
             background: #f7544a;
             color: #fff;
             border: none;
-            border-radius: 0 5px 5px 0;
             cursor: pointer;
-        }
-        .news-sidebar .search-form button:hover {
-            background: #da2a20;
-        }
-        .news-sidebar .related-news li {
-            display: flex;
-            margin-bottom: 15px;
-        }
-        .news-sidebar .related-news img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        .news-sidebar .related-news h5 {
-            font-size: 14px;
-            color: #4A2F1A;
-            margin: 0;
-        }
-        .news-sidebar .categories li {
-            margin-bottom: 10px;
-        }
-        .news-sidebar .categories a {
-            color: #333;
-            text-decoration: none;
-        }
-        .news-sidebar .categories a:hover {
-            color: #f7544a;
+            transition: all 0.3s ease;
         }
 
-        /* Modal Popup */
+        .news-sidebar-modern .search-box button:hover {
+            background: #d6342a;
+        }
+
+        .news-sidebar-modern .categories-modern {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .news-sidebar-modern .categories-modern li {
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .categories-modern a {
+            display: block;
+            padding: 12px 15px;
+            background: #f9f9f9;
+            color: #5a3a2a;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .news-sidebar-modern .categories-modern a:hover {
+            background: #fff;
+            color: #f7544a;
+            transform: translateX(5px);
+            border-color: #f7544a;
+            box-shadow: 0 2px 8px rgba(247, 84, 74, 0.1);
+        }
+
+        .news-sidebar-modern .categories-modern a.active {
+            background: #f7544a;
+            color: #fff;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(247, 84, 74, 0.2);
+        }
+
+        /* Responsive cho sidebar */
+        @media (max-width: 991px) {
+            .news-sidebar-modern {
+                position: relative;
+                top: 0;
+                margin-left: 0;
+                margin-top: 30px;
+                max-height: none;
+            }
+        }
+
+        /* Animation cho sidebar khi load trang */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .news-sidebar-modern {
+            animation: slideInRight 0.5s ease-out;
+        }
+        .news-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+        }
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -333,117 +438,124 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             z-index: 10000;
             align-items: center;
             justify-content: center;
         }
         .modal-content {
             background: #fff;
-            max-width: 800px;
+            max-width: 850px;
             width: 90%;
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 35px;
             position: relative;
-            animation: slideIn 0.5s ease;
+            animation: slideIn 0.4s ease;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
         .modal-content h2 {
-            font-size: 28px;
-            color: #4A2F1A;
+            font-size: 30px;
+            color: #3a2317;
             margin-bottom: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #f7544a;
+            padding-bottom: 10px;
         }
         .modal-content .date {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 20px;
+            font-size: 15px;
+            color: #a07a6b;
+            margin-bottom: 25px;
+            display: inline-block;
+            background: #f5e9e2;
+            padding: 5px 10px;
+            border-radius: 8px;
         }
         .modal-content img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         .modal-content p {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
+            font-size: 17px;
+            color: #4a2f1a;
+            line-height: 1.8;
             margin-bottom: 20px;
+            min-height: 60px; /* Đảm bảo các đoạn văn có chiều cao tối thiểu đồng nhất */
         }
         .modal-content .btn-close {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: #f7544a;
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 16px;
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(247, 84, 74, 0.3);
         }
         .modal-content .btn-close:hover {
-            background: #da2a20;
+            background: #d6342a;
+            transform: scale(1.1);
         }
-
         /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.8); }
+            from { opacity: 0; transform: scale(0.85); }
             to { opacity: 1; transform: scale(1); }
         }
-
         /* Responsive */
         @media (max-width: 991px) {
-            .news-content {
-                flex-direction: column;
+            .news-container {
+                grid-template-columns: 1fr;
             }
-            .news-sidebar {
+            .news-sidebar-modern {
+                margin-left: 0;
                 margin-top: 30px;
-            }
-            .news-item {
-                flex-direction: column;
-            }
-            .news-item img {
-                width: 100%;
-                height: 200px;
             }
         }
         @media (max-width: 767px) {
-            .news-banner {
-                height: 300px;
+            .news-header h1 {
+                font-size: 36px;
             }
-            .news-banner-content h1 {
-                font-size: 32px;
-            }
-            .news-banner-content p {
+            .news-header p {
                 font-size: 16px;
             }
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
             .modal-content {
-                padding: 20px;
+                padding: 25px;
+            }
+            .modal-content img {
+                height: 250px;
             }
         }
         @media (max-width: 480px) {
-            .news-banner {
-                height: 250px;
+            .news-header h1 {
+                font-size: 28px;
             }
-            .news-banner-content h1 {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-card img {
+                height: 180px;
+            }
+            .modal-content h2 {
                 font-size: 24px;
             }
-            .news-banner-content p {
-                font-size: 14px;
-            }
-            .news-item img {
-                height: 150px;
+            .modal-content img {
+                height: 200px;
             }
         }
     </style>
@@ -558,9 +670,7 @@
                                   </div> 
                                </div>
                          </li>
-                            <li><a href="promotions.html">Khuyến Mãi</a></li>
-                            <li class="active dropdown" ><a href="news.html">Tin Tức</a></li>
-                            <li  ><a href="event.html">Sự Kiện</a></li>
+                            <li class="active dropdown" ><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
                             <li><a href="about.html">Về Chúng Tôi</a></li>
                          </ul>
                       </div>
@@ -629,138 +739,50 @@
         <!-- Nội dung trang tin tức -->
         <div class="container_fullwidth">
             <div class="container">
-                <!-- Banner tin tức -->
-                <div class="news-banner">
-                    <div class="news-banner-content">
-                        <h1>Tin Tức</h1>
-                        <p>Cập nhật những câu chuyện mới nhất từ Ấm - Coffee and Cake, từ chương trình khuyến mãi đến mẹo pha chế độc đáo!</p>
+                <div class="news-section">
+                    <div class="news-header">
+                        <h1>Tin Tức & Sự Kiện</h1>
+                        <p>Khám phá những câu chuyện mới nhất từ Ấm - Coffee and Cake. Từ các chương trình khuyến mãi hấp dẫn đến những mẹo pha chế độc đáo, tất cả đều có tại đây.</p>
+                    </div>
+                    
+                    <div class="news-container">
+                        <div class="news-grid">
+                            <!-- Nội dung tin tức sẽ được thêm vào đây từ Firebase -->
+                        </div>
+
+                        <div class="news-sidebar-modern">
+                            <h4>Tìm Kiếm Tin Tức</h4>
+                            <div class="search-box">
+                                <input type="text" placeholder="Nhập từ khóa...">
+                                <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
+                                <button type="button" class="clear-filter" style="display: none; margin-left: 10px; background: #6c757d;">
+                                    <i class="fa fa-times"></i> Bỏ Lọc
+                                </button>
+                            </div>
+
+                            
+
+                            <h4>Danh Mục Tin Tức</h4>
+                            <ul class="categories-modern">
+                                <li><a href="#" class="active" data-category="all">Tất Cả</a></li>
+                                <li><a href="#" data-category="Khuyến Mãi">Khuyến Mãi</a></li>
+                                <li><a href="#" data-category="Mẹo Pha Chế">Mẹo Pha Chế</a></li>
+                                <li><a href="#" data-category="Sự Kiện">Sự Kiện</a></li>
+                                <li><a href="#" data-category="Sản Phẩm Mới">Sản Phẩm Mới</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="news-pagination">
+                        <a href="#" class="page-link" data-page="1">1</a>
+                        <a href="#" class="page-link" data-page="2">2</a>
+                        <a href="#" class="page-link" data-page="3">3</a>
+                        <a href="#" class="page-link next" data-page="next">›</a>
                     </div>
                 </div>
-
-                <!-- Nội dung tin tức -->
-                <div class="news-content">
-                    <!-- Danh sách bài viết -->
-                    <div class="news-main">
-                        <div class="news-item" data-modal="modal1">
-                            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi tháng 4">
-                            <div class="news-item-content">
-                                <h3>Khuyến Mãi Tháng 4: Mua 1 Tặng 1 Đồ Uống</h3>
-                                <div class="date">15/04/2025</div>
-                                <p>Chào đón tháng 4 với chương trình đặc biệt: Mua 1 tặng 1 tất cả đồ uống tại Ấm - Coffee and Cake. Nhanh tay đến quán từ 15-17/04!</p>
-                                <a href="#" class="btn-readmore">Đọc Thêm</a>
-                            </div>
-                        </div>
-                        <div class="news-item" data-modal="modal2">
-                            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
-                            <div class="news-item-content">
-                                <h3>Ra Mắt Bánh Cheesecake Sakura Mới</h3>
-                                <div class="date">10/04/2025</div>
-                                <p>Thưởng thức hương vị độc đáo của Cheesecake Sakura, lấy cảm hứng từ mùa hoa anh đào. Có mặt tại tất cả chi nhánh từ 10/04!</p>
-                                <a href="#" class="btn-readmore">Đọc Thêm</a>
-                            </div>
-                        </div>
-                        <div class="news-item" data-modal="modal3">
-                            <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
-                            <div class="news-item-content">
-                                <h3>Mẹo Pha Chế Latte Art Tại Nhà</h3>
-                                <div class="date">05/04/2025</div>
-                                <p>Học cách tạo hình latte art đẹp mắt với hướng dẫn chi tiết từ các barista của Ấm. Chỉ cần vài bước đơn giản, bạn sẽ có ly cà phê nghệ thuật!</p>
-                                <a href="#" class="btn-readmore">Đọc Thêm</a>
-                            </div>
-                        </div>
-                        <div class="news-item" data-modal="modal4">
-                            <img src="https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg" alt="Sự kiện cộng đồng">
-                            <div class="news-item-content">
-                                <h3>Sự Kiện Cộng Đồng: Ngày Cà Phê Miễn Phí</h3>
-                                <div class="date">01/04/2025</div>
-                                <p>Tham gia Ngày Cà Phê Miễn Phí tại Ấm để giao lưu, thưởng thức cà phê miễn phí và nhận quà tặng độc quyền. Đừng bỏ lỡ!</p>
-                                <a href="#" class="btn-readmore">Đọc Thêm</a>
-                            </div>
-                        </div>
-
-                        <!-- Phân trang -->
-                        <div class="pagination">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">></a>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar -->
-                    <div class="news-sidebar">
-                        <h4>Tìm Kiếm</h4>
-                        <form class="search-form">
-                            <input type="text" placeholder="Tìm bài viết...">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
-
-                        <h4>Bài Viết Nổi Bật</h4>
-                        <ul class="related-news">
-                            <li>
-                                <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi">
-                                <h5>Khuyến Mãi Tháng 4: Mua 1 Tặng 1</h5>
-                            </li>
-                            <li>
-                                <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
-                                <h5>Cheesecake Sakura Mới</h5>
-                            </li>
-                            <li>
-                                <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
-                                <h5>Mẹo Pha Chế Latte Art</h5>
-                            </li>
-                        </ul>
-
-                        <h4>Danh Mục</h4>
-                        <ul class="categories">
-                            <li><a href="#">Khuyến Mãi</a></li>
-                            <li><a href="#">Sản Phẩm Mới</a></li>
-                            <li><a href="#">Mẹo Pha Chế</a></li>
-                            <li><a href="#">Sự Kiện</a></li>
-                            <li><a href="#">Cộng Đồng</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="our-brand">
-                  <h3 class="title"><strong>Đối Tác </strong> Của Chúng Tôi</h3>
-                  <!-- <div class="control"><a id="prev_brand" class="prev" href="#">&lt;</a><a id="next_brand" class="next" href="#">&gt;</a></div> -->
-                  <ul id="braldLogo">
-                     <li>
-                        <ul class="brand_item">
-                           <li>
-                              <a href="#">
-                                 <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
-                              </a>
-                           </li>
-                           <li>
-                              <a href="#">
-                                 <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
-                              </a>
-                           </li>
-                        </ul>
-                     </li>
-                  </ul>
-               </div>
             </div>
         </div>
         <div class="clearfix"></div>
-
         <!-- Footer (giữ nguyên từ file gốc) -->
         <div class="footer">
             <div class="footer-info">
@@ -871,6 +893,7 @@
     </div>
  </div>
     <!-- Modal Popups -->
+    <div class="modals-container">
     <div class="modal" id="modal1">
         <div class="modal-content">
             <button class="btn-close">×</button>
@@ -912,43 +935,67 @@
             <p>Để tri ân khách hàng, Ấm - Coffee and Cake tổ chức Ngày Cà Phê Miễn Phí vào 01/04/2025. Tham gia để thưởng thức cà phê miễn phí, giao lưu với các barista, và nhận quà tặng độc quyền như túi vải, ly tái chế.</p>
             <p>Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!</p>
         </div>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div class="loading-overlay">
-        <div class="loading-content">
-            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
-            <p>Chờ Ấm Một chút nhé...</p>
-            <div class="loading-spinner"></div>
         </div>
     </div>
 
     <!-- JavaScript -->
     <script>
         // Modal Popup
-        document.querySelectorAll('.news-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const modalId = item.getAttribute('data-modal');
-                const modal = document.getElementById(modalId);
-                modal.style.display = 'flex';
+        function attachModalEvents() {
+            console.log('Attaching modal events');
+            
+            // Xử lý mở modal
+            document.querySelectorAll('.news-card, .btn-read').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const modalId = item.getAttribute('data-modal') || item.closest('.news-card').getAttribute('data-modal');
+                    console.log('Opening modal:', modalId);
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
             });
-        });
 
-        document.querySelectorAll('.btn-close').forEach(button => {
-            button.addEventListener('click', () => {
-                button.closest('.modal').style.display = 'none';
-            });
-        });
-
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
+            // Xử lý đóng modal bằng nút close - Cập nhật cách gắn sự kiện
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-close')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const modal = e.target.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
                 }
             });
-        });
+
+            // Xử lý đóng modal khi click bên ngoài
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Thêm xử lý đóng modal bằng phím ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal[style*="display: flex"]');
+                    if (openModal) {
+                        openModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+        }
 
         // Scroll Animation
+        function setupScrollAnimation() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -957,10 +1004,472 @@
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.news-item, .news-banner').forEach(el => {
+            document.querySelectorAll('.news-card, .news-section').forEach(el => {
             el.classList.add('animate-hidden');
             observer.observe(el);
         });
+        }
+
+        // Biến toàn cục để lưu trữ dữ liệu tin tức
+        let allNewsData = [];
+        let currentFilteredNews = [];
+
+        // Cập nhật hàm loadNewsFromFirebase
+        async function loadNewsFromFirebase() {
+            console.log('Starting to load news from Firebase...');
+            try {
+                const newsRef = window.ref(window.db, 'news');
+                const snapshot = await window.get(newsRef);
+                
+                if (snapshot.exists()) {
+                    let newsData = snapshot.val();
+                    console.log('Raw news data:', newsData);
+
+                    // Chuyển đổi dữ liệu thành mảng
+                    allNewsData = Array.isArray(newsData) ? newsData : Object.values(newsData);
+                    console.log('Processed news array:', allNewsData);
+                    console.log('Number of news items:', allNewsData.length);
+
+                    // Sắp xếp tin tức theo ngày mới nhất
+                    allNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    currentFilteredNews = [...allNewsData];
+
+                    // Hiển thị tin tức
+                    displayNews(currentFilteredNews);
+                    displayModals(currentFilteredNews);
+                    setupCategoryFilter();
+                    setupSearchFunction();
+                } else {
+                    console.log("No news data available in Firebase");
+                    showNoNewsMessage();
+                }
+            } catch (error) {
+                console.error("Error loading news:", error);
+                showErrorMessage(error);
+            }
+        }
+
+        function showNoNewsMessage() {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = `
+                <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                    <h3 style="color: #3a2317; margin-bottom: 10px;">Chưa có tin tức</h3>
+                    <p style="color: #6a4a3a;">Vui lòng quay lại sau</p>
+                </div>
+            `;
+        }
+
+        function showErrorMessage(error) {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = `
+                <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                    <h3 style="color: #3a2317; margin-bottom: 10px;">Có lỗi xảy ra</h3>
+                    <p style="color: #6a4a3a;">Không thể tải tin tức. Vui lòng thử lại sau.</p>
+                    <p style="color: #6a4a3a; font-size: 12px;">Chi tiết: ${error.message}</p>
+                </div>
+            `;
+        }
+
+        function displayNews(newsArray) {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = '';
+            
+            if (newsArray.length === 0) {
+                newsGrid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                        <h3 style="color: #3a2317; margin-bottom: 10px;">Không tìm thấy tin tức</h3>
+                        <p style="color: #6a4a3a;">Vui lòng thử lại với từ khóa khác</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            newsArray.forEach((news, index) => {
+                const formattedDate = formatDate(news.date);
+                const newsCard = `
+                    <div class="news-card" data-modal="modal${index + 1}" data-category="${news.title}">
+                        <img src="${news.image}" alt="${news.alt}">
+                        <div class="news-card-content">
+                            <h3>${news.title}</h3>
+                            <div class="date">${formattedDate}</div>
+                            <p>${news.summary}</p>
+                            <a href="#" class="btn-read" data-modal="modal${index + 1}">Đọc Thêm</a>
+                        </div>
+                    </div>
+                `;
+                newsGrid.innerHTML += newsCard;
+            });
+            
+            attachModalEvents();
+            setupScrollAnimation();
+        }
+
+        function displayModals(newsArray) {
+            let modalsContainer = document.querySelector('.modals-container');
+            if (!modalsContainer) {
+                modalsContainer = document.createElement('div');
+                modalsContainer.className = 'modals-container';
+                document.body.appendChild(modalsContainer);
+            }
+            
+            modalsContainer.innerHTML = '';
+            newsArray.forEach((news, index) => {
+                const formattedDate = formatDate(news.date);
+                const modalContent = Array.isArray(news.content) 
+                    ? news.content.map(paragraph => `<p>${paragraph}</p>`).join('')
+                    : `<p>${news.content}</p>`;
+                
+                const modal = `
+                    <div class="modal" id="modal${index + 1}">
+                        <div class="modal-content">
+                            <button type="button" class="btn-close" aria-label="Close">×</button>
+                            <h2>${news.title}</h2>
+                            <div class="date">${formattedDate}</div>
+                            <img src="${news.image}" alt="${news.alt}">
+                            ${modalContent}
+                        </div>
+                    </div>
+                `;
+                modalsContainer.innerHTML += modal;
+            });
+            
+            // Thêm style cho modal và nút đóng
+            const style = document.createElement('style');
+            style.textContent = `
+                .modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.75);
+                    z-index: 10000;
+                    align-items: center;
+                    justify-content: center;
+                    overflow-y: auto;
+                    padding: 20px;
+                }
+                .modal-content {
+                    background: #fff;
+                    max-width: 850px;
+                    width: 90%;
+                    border-radius: 20px;
+                    padding: 35px;
+                    position: relative;
+                    animation: slideIn 0.4s ease;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+                }
+                .modal .btn-close {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: #f7544a;
+                    color: #fff;
+                    border: none;
+                    border-radius: 50%;
+                    width: 35px;
+                    height: 35px;
+                    font-size: 18px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(247, 84, 74, 0.3);
+                    z-index: 1;
+                    padding: 0;
+                    line-height: 1;
+                }
+                .modal .btn-close:hover {
+                    background: #d6342a;
+                    transform: scale(1.1);
+                }
+                .modal .btn-close:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(247, 84, 74, 0.3);
+                }
+                @keyframes slideIn {
+                    from { opacity: 0; transform: scale(0.85); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            attachModalEvents();
+        }
+
+        // Hàm format ngày tháng
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    throw new Error('Invalid date');
+                }
+                return date.toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return dateString; // Trả về chuỗi gốc nếu có lỗi
+            }
+        }
+
+        // Đảm bảo loadNewsFromFirebase được gọi khi trang đã sẵn sàng
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing news...');
+            loadNewsFromFirebase();
+        });
+
+        // Cập nhật hàm xử lý tìm kiếm
+        function setupSearchFunction() {
+            const searchInput = document.querySelector('.news-sidebar-modern .search-box input');
+            const clearFilterBtn = document.querySelector('.clear-filter');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    // Nếu ô tìm kiếm trống, hiển thị lại tất cả tin tức
+                    currentFilteredNews = [...allNewsData];
+                    displayNews(currentFilteredNews);
+                    clearFilterBtn.style.display = 'none';
+                    return;
+                }
+
+                // Lọc tin tức dựa trên từ khóa tìm kiếm
+                currentFilteredNews = allNewsData.filter(news => {
+                    const title = news.title.toLowerCase();
+                    const summary = news.summary.toLowerCase();
+                    const content = news.content.join(' ').toLowerCase();
+                    return title.includes(searchTerm) || 
+                           summary.includes(searchTerm) || 
+                           content.includes(searchTerm);
+                });
+
+                // Hiển thị kết quả tìm kiếm
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = 'inline-block';
+            }
+
+            // Xử lý sự kiện tìm kiếm khi nhấn Enter
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+
+            // Xử lý sự kiện khi xóa hết text trong ô tìm kiếm
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() === '') {
+                    performSearch();
+                }
+            });
+
+            // Xử lý nút bỏ lọc
+            clearFilterBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentFilteredNews = [...allNewsData];
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = 'none';
+                
+                // Reset danh mục về "Tất cả"
+                const categoryLinks = document.querySelectorAll('.categories-modern a');
+                categoryLinks.forEach(link => link.classList.remove('active'));
+                categoryLinks[0].classList.add('active');
+            });
+        }
+
+        // Cập nhật hàm xử lý danh mục
+        function setupCategoryFilter() {
+            const categoryLinks = document.querySelectorAll('.categories-modern a');
+            const clearFilterBtn = document.querySelector('.clear-filter');
+
+            function filterByCategory(category) {
+                if (category === 'all') {
+                    currentFilteredNews = [...allNewsData];
+                } else {
+                    currentFilteredNews = allNewsData.filter(news => 
+                        news.title === category
+                    );
+                }
+                
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = category === 'all' ? 'none' : 'inline-block';
+            }
+
+            // Thêm sự kiện click cho các danh mục
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Xóa active class từ tất cả các link
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Thêm active class cho link được click
+                    link.classList.add('active');
+                    
+                    // Lọc tin tức theo danh mục
+                    const category = link.getAttribute('data-category');
+                    filterByCategory(category);
+                });
+            });
+        }
+
+        // Thêm hàm xử lý phân trang
+        function setupPagination() {
+            const newsGrid = document.querySelector('.news-grid');
+            const pageLinks = document.querySelectorAll('.page-link');
+            const originalNewsCards = Array.from(newsGrid.children);
+            const itemsPerPage = 4; // Số tin tức hiển thị trên mỗi trang
+            let currentPage = 1;
+            let filteredCards = [...originalNewsCards]; // Lưu trữ danh sách tin tức đã lọc
+
+            function updatePagination() {
+                const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+                
+                // Cập nhật trạng thái active của các nút phân trang
+                pageLinks.forEach(link => {
+                    const pageNum = link.getAttribute('data-page');
+                    if (pageNum === 'next') {
+                        link.style.display = currentPage < totalPages ? 'flex' : 'none';
+                    } else {
+                        const page = parseInt(pageNum);
+                        link.style.display = page <= totalPages ? 'flex' : 'none';
+                        link.classList.toggle('active', page === currentPage);
+                    }
+                });
+
+                // Hiển thị tin tức cho trang hiện tại
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const currentPageCards = filteredCards.slice(startIndex, endIndex);
+
+                newsGrid.innerHTML = '';
+                if (currentPageCards.length > 0) {
+                    currentPageCards.forEach(card => newsGrid.appendChild(card.cloneNode(true)));
+                } else {
+                    newsGrid.innerHTML = `
+                        <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                            <h3 style="color: #3a2317; margin-bottom: 10px;">Không có tin tức</h3>
+                            <p style="color: #6a4a3a;">Vui lòng thử lại sau</p>
+                        </div>
+                    `;
+                }
+                attachModalEvents();
+            }
+
+            // Xử lý sự kiện click cho các nút phân trang
+            pageLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageNum = link.getAttribute('data-page');
+                    
+                    if (pageNum === 'next') {
+                        if (currentPage < Math.ceil(filteredCards.length / itemsPerPage)) {
+                            currentPage++;
+                        }
+                    } else {
+                        currentPage = parseInt(pageNum);
+                    }
+                    
+                    updatePagination();
+                });
+            });
+
+            // Cập nhật hàm filterByCategory để hỗ trợ phân trang
+            const originalFilterByCategory = window.filterByCategory;
+            window.filterByCategory = function(category) {
+                currentPage = 1; // Reset về trang 1 khi lọc
+                if (category === 'all') {
+                    filteredCards = [...originalNewsCards];
+                } else {
+                    filteredCards = originalNewsCards.filter(card => 
+                        card.getAttribute('data-category') === category
+                    );
+                }
+                updatePagination();
+            };
+
+            // Cập nhật hàm performSearch để hỗ trợ phân trang
+            const originalPerformSearch = window.performSearch;
+            window.performSearch = function() {
+                currentPage = 1; // Reset về trang 1 khi tìm kiếm
+                const searchTerm = document.querySelector('.news-sidebar-modern .search-box input').value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    filteredCards = [...originalNewsCards];
+                } else {
+                    filteredCards = originalNewsCards.filter(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const summary = card.querySelector('p').textContent.toLowerCase();
+                        return title.includes(searchTerm) || summary.includes(searchTerm);
+                    });
+                }
+                updatePagination();
+            };
+
+            // Cập nhật hàm resetFilters để hỗ trợ phân trang
+            const originalResetFilters = window.resetFilters;
+            window.resetFilters = function() {
+                currentPage = 1; // Reset về trang 1 khi bỏ lọc
+                filteredCards = [...originalNewsCards];
+                updatePagination();
+            };
+
+            // Thêm style cho phân trang
+            const style = document.createElement('style');
+            style.textContent = `
+                .news-pagination {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 15px;
+                    margin-top: 30px;
+                }
+                .news-pagination a {
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #fff;
+                    color: #3a2317;
+                    border-radius: 50%;
+                    text-decoration: none;
+                    font-weight: 600;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+                .news-pagination a:hover, 
+                .news-pagination a.active {
+                    background: #f7544a;
+                    color: #fff;
+                    box-shadow: 0 5px 10px rgba(247, 84, 74, 0.3);
+                }
+                .news-pagination a.next {
+                    font-size: 20px;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Khởi tạo phân trang
+            updatePagination();
+        }
+
+        // Gọi hàm setup pagination khi trang đã load xong
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setupPagination();
+            });
+        } else {
+            setupPagination();
+        }
     </script>
 
     <!-- Bootstrap core JavaScript -->

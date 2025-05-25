@@ -496,6 +496,25 @@
       "sender": "Admin",
       "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
       "timestamp": "2025-05-23T14:45:28.915Z"
+    },
+    "-OQxh76IBno-9M1EfOhB": {
+      "message": "chào",
+      "sender": "Admin",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-05-23T15:13:06.385Z"
+    },
+    "-OQxlekKriAnDK7ApLK4": {
+      "message": "aaaa",
+      "sender": "SUPPER SIÊU",
+      "senderId": "tXtQMunTghgl8NnrxiOidRmZNYe2",
+      "timestamp": "2025-05-23T15:32:58.161Z"
+    },
+    "-OR6LrmG0ZTDu0EvJZ4z": {
+      "message": "dd",
+      "replyTo": "SUPPER SIÊU",
+      "sender": "quantri1amcoffeeandcake@gmail.com",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-05-25T12:12:05.274Z"
     }
   },
   "contactMessages": {
@@ -583,6 +602,54 @@
       "updatedAt": "2025-05-06T05:08:26.157Z"
     }
   },
+  "news": [
+    {
+      "alt": "Khuyến mãi tháng 4",
+      "content": [
+        "Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt: Mua 1 tặng 1 tất cả đồ uống trong menu! Từ cà phê đen đá đậm đà đến latte nghệ thuật, bạn đều có thể thưởng thức cùng bạn bè mà không lo về giá.",
+        "Thời gian: 15-17/04/2025<br>Địa điểm: Tất cả chi nhánh Ấm - Coffee and Cake<br>Lưu ý: Áp dụng cho đơn hàng tại chỗ và mang về.",
+        "Hãy đến ngay để không bỏ lỡ cơ hội này!"
+      ],
+      "date": "2025-05-25",
+      "image": "https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg",
+      "summary": "Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt cho tất cả đồ uống trong menu...",
+      "title": "Khuyến Mãi"
+    },
+    {
+      "alt": "Bánh mới",
+      "content": [
+        "Lấy cảm hứng từ mùa hoa anh đào Nhật Bản, Cheesecake Sakura của Ấm mang đến hương vị thanh nhẹ, ngọt ngào với lớp kem phô mai mịn màng và chút sắc hồng phấn. Đây là món bánh hoàn hảo cho những buổi chiều thư giãn bên ly cà phê yêu thích.",
+        "Giá: 65.000 VND/lát<br>Có mặt từ: 10/04/2025<br>Đặt hàng ngay để trải nghiệm!"
+      ],
+      "date": "2025-05-25",
+      "image": "https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg",
+      "summary": "Lấy cảm hứng từ mùa hoa anh đào, Cheesecake Sakura mang đến hương vị thanh nhẹ, ngọt ngào...",
+      "title": "Sản Phẩm Mới"
+    },
+    {
+      "alt": "Mẹo pha chế",
+      "content": [
+        "Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà! Các barista của Ấm chia sẻ 5 bước đơn giản:",
+        "1. Chọn cà phê espresso chất lượng.<br>2. Đánh sữa tạo bọt mịn bằng máy hoặc bình French press.<br>3. Đổ sữa từ độ cao 5-10cm để tạo lớp nền.<br>4. Dùng tăm hoặc que khuấy để vẽ hình trái tim, lá cây.<br>5. Thực hành đều đặn để thành thạo!",
+        "Thử ngay và chia sẻ thành quả của bạn với chúng tôi nhé!"
+      ],
+      "date": "2025-05-25",
+      "image": "https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg",
+      "summary": "Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà...",
+      "title": "Mẹo Pha Chế"
+    },
+    {
+      "alt": "Sự kiện cộng đồng",
+      "content": [
+        "Để tri ân khách hàng, Ấm - Coffee and Cake tổ chức Ngày Cà Phê Miễn Phí vào 01/04/2025. Tham gia để thưởng thức cà phê miễn phí, giao lưu với các barista, và nhận quà tặng độc quyền như túi vải, ly tái chế.",
+        "Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!"
+      ],
+      "date": "2025-05-25",
+      "image": "https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg",
+      "summary": "Để tri ân khách hàng, Ấm tổ chức Ngày Cà Phê Miễn Phí với nhiều hoạt động thú vị...",
+      "title": "Sự Kiện"
+    }
+  ],
   "orders": {
     "-OOOkmvXYk9Q2tZSht8f": {
       "billingInfo": {

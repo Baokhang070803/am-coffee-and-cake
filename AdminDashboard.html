@@ -935,6 +935,50 @@
         background: #fff !important;
       }
     }
+
+    .content-section {
+      padding: 20px;
+      margin-bottom: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #newsManagement {
+      margin-top: 20px;
+    }
+
+    #newsManagement .table-responsive {
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #newsManagement .table {
+      margin-bottom: 0;
+    }
+
+    #newsManagement .table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+
+    #newsManagement .table td img {
+      max-width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    #newsManagement .btn-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    #newsManagement .badge {
+      padding: 6px 12px;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -967,6 +1011,10 @@
       <a href="#userManagement" class="nav-link" data-bs-toggle="tab">
         <i class="fas fa-users"></i>
         <span>Quản lý người dùng</span>
+      </a>
+      <a href="#newsManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-newspaper"></i>
+        <span>Quản lý tin tức</span>
       </a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
@@ -1649,6 +1697,146 @@
     </div>
   </div>
 
+ <!-- News Management Section -->
+ <section id="newsManagement" class="content-section">
+  <h2>Quản Lý Tin Tức</h2>
+  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addNewsModal">
+    <i class="fas fa-plus me-2"></i> Thêm Tin Tức
+  </button>
+  <form id="newsSearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-6">
+        <input type="text" id="newsSearch" class="form-control" placeholder="Tìm kiếm tin tức...">
+      </div>
+      <div class="col-md-4">
+        <select id="newsCategoryFilter" class="form-select">
+          <option value="">Tất cả danh mục</option>
+          <option value="Khuyến mãi">Khuyến mãi</option>
+          <option value="Sự kiện">Sự kiện</option>
+          <option value="Tin tức">Tin tức</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+        <button type="button" id="refreshNews" class="btn btn-secondary w-100 mt-2"><i class="fas fa-sync"></i> Làm mới</button>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Hình ảnh</th>
+          <th>Tiêu đề</th>
+          <th>Ngày đăng</th>
+          <th>Tóm tắt</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="newsTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Add News Modal -->
+<div class="modal fade" id="addNewsModal" tabindex="-1" aria-labelledby="addNewsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNewsModalLabel">Thêm Tin Tức</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addNewsForm">
+          <div class="mb-3">
+            <label for="newsTitle" class="form-label">Tiêu đề</label>
+            <select class="form-control" id="newsTitle" required>
+              <option value="">-- Chọn tiêu đề --</option>
+              <option value="Khuyến Mãi">Khuyến Mãi</option>
+              <option value="Mẹo Pha Chế">Mẹo Pha Chế</option>
+              <option value="Sự Kiện">Sự Kiện</option>
+              <option value="Sản Phẩm Mới">Sản Phẩm Mới</option>
+              <option value="other">Khác...</option>
+            </select>
+            <input type="text" class="form-control mt-2" id="newsTitleOther" placeholder="Nhập tiêu đề khác" style="display:none;">
+          </div>
+          <div class="mb-3">
+            <label for="newsDate" class="form-label">Ngày đăng</label>
+            <input type="date" class="form-control" id="newsDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="newsImage" class="form-label">URL Hình ảnh</label>
+            <input type="url" class="form-control" id="newsImage" required>
+          </div>
+          <div class="mb-3">
+            <label for="newsAlt" class="form-label">Alt Text cho hình ảnh</label>
+            <input type="text" class="form-control" id="newsAlt" required>
+          </div>
+          <div class="mb-3">
+            <label for="newsSummary" class="form-label">Tóm tắt</label>
+            <textarea class="form-control" id="newsSummary" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="newsContent" class="form-label">Nội dung (mỗi đoạn văn bản trên một dòng)</label>
+            <textarea class="form-control" id="newsContent" rows="6" required placeholder="Mỗi đoạn văn bản trên một dòng"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit News Modal -->
+<div class="modal fade" id="editNewsModal" tabindex="-1" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editNewsModalLabel">Sửa Tin Tức</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editNewsForm">
+          <input type="hidden" id="editNewsId">
+          <div class="mb-3">
+            <label for="editNewsTitle" class="form-label">Tiêu đề</label>
+            <select class="form-control" id="editNewsTitle" required>
+              <option value="">-- Chọn tiêu đề --</option>
+              <option value="Khuyến Mãi">Khuyến Mãi</option>
+              <option value="Mẹo Pha Chế">Mẹo Pha Chế</option>
+              <option value="Sự Kiện">Sự Kiện</option>
+              <option value="Sản Phẩm Mới">Sản Phẩm Mới</option>
+              <option value="other">Khác...</option>
+            </select>
+            <input type="text" class="form-control mt-2" id="editNewsTitleOther" placeholder="Nhập tiêu đề khác" style="display:none;">
+          </div>
+          <div class="mb-3">
+            <label for="editNewsDate" class="form-label">Ngày đăng</label>
+            <input type="date" class="form-control" id="editNewsDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="editNewsImage" class="form-label">URL Hình ảnh</label>
+            <input type="url" class="form-control" id="editNewsImage" required>
+          </div>
+          <div class="mb-3">
+            <label for="editNewsAlt" class="form-label">Alt Text cho hình ảnh</label>
+            <input type="text" class="form-control" id="editNewsAlt" required>
+          </div>
+          <div class="mb-3">
+            <label for="editNewsSummary" class="form-label">Tóm tắt</label>
+            <textarea class="form-control" id="editNewsSummary" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="editNewsContent" class="form-label">Nội dung (mỗi đoạn văn bản trên một dòng)</label>
+            <textarea class="form-control" id="editNewsContent" rows="6" required placeholder="Mỗi đoạn văn bản trên một dòng"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập nhật</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
   <div class="footer">
     <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
   </div>
@@ -1678,6 +1866,8 @@
       </div>
     </div>
   </div>
+
+ 
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -4233,6 +4423,369 @@
       }
     }
     window.deleteUser = deleteUser; // <-- Thêm dòng này
+
+    // News Management Functions
+    let newsList = [];
+
+    // Load News
+    async function loadNews() {
+      if (!db) {
+        console.error('Database not initialized');
+        return;
+      }
+      try {
+        const snapshot = await get(ref(db, 'news'));
+        if (snapshot.exists()) {
+          newsList = Object.entries(snapshot.val()).map(([id, data]) => ({
+            id,
+            ...data
+          }));
+          renderNewsTable();
+        } else {
+          newsList = [];
+          renderNewsTable();
+        }
+      } catch (error) {
+        console.error('Error loading news:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Không thể tải danh sách tin tức.',
+          showConfirmButton: true
+        });
+      }
+    }
+
+    // Render News Table
+    function renderNewsTable(filteredNews = null) {
+      const tbody = document.getElementById('newsTableBody');
+      if (!tbody) return;
+
+      const newsToRender = filteredNews || newsList;
+      tbody.innerHTML = '';
+
+      if (newsToRender.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center">Không có tin tức nào</td>
+          </tr>
+        `;
+        return;
+      }
+
+      newsToRender.forEach(news => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <img src="${news.image}" alt="${news.alt}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;">
+          </td>
+          <td>${news.title}</td>
+          <td>${news.date}</td>
+          <td>${news.summary}</td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-primary btn-sm" onclick="editNews('${news.id}')">
+                <i class="fas fa-edit"></i> Sửa
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteNews('${news.id}')">
+                <i class="fas fa-trash"></i> Xóa
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Add News
+    document.getElementById('addNewsForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+
+      try {
+        const contentArray = document.getElementById('newsContent').value
+          .split('\n')
+          .filter(paragraph => paragraph.trim() !== '');
+
+        const newNews = {
+          title: document.getElementById('newsTitle').value === 'other'
+            ? document.getElementById('newsTitleOther').value
+            : document.getElementById('newsTitle').value,
+          date: document.getElementById('newsDate').value,
+          image: document.getElementById('newsImage').value,
+          alt: document.getElementById('newsAlt').value,
+          summary: document.getElementById('newsSummary').value,
+          content: contentArray
+        };
+
+        // Lấy số lượng tin hiện tại để tạo key số thứ tự
+        const newsSnapshot = await get(ref(db, 'news'));
+        let newsCount = 0;
+        if (newsSnapshot.exists()) {
+          newsCount = Object.keys(newsSnapshot.val()).length;
+        }
+        const newsId = 'modal' + (newsCount + 1);
+        const newNewsWithId = { id: newsId, ...newNews };
+        await set(ref(db, `news/${newsCount}`), newNewsWithId); // key là số thứ tự
+        
+        await loadNews();
+        bootstrap.Modal.getInstance(document.getElementById('addNewsModal')).hide();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Tin tức đã được thêm.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        
+        document.getElementById('addNewsForm').reset();
+      } catch (error) {
+        console.error('Error adding news:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể thêm tin tức: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    });
+
+    // Edit News
+    window.editNews = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+
+      try {
+        const news = newsList.find(n => n.id === id);
+        if (!news) {
+          throw new Error('Không tìm thấy tin tức');
+        }
+
+        document.getElementById('editNewsId').value = news.id;
+        document.getElementById('editNewsTitle').value = news.title;
+        document.getElementById('editNewsDate').value = news.date;
+        document.getElementById('editNewsImage').value = news.image;
+        document.getElementById('editNewsAlt').value = news.alt;
+        document.getElementById('editNewsSummary').value = news.summary;
+        document.getElementById('editNewsContent').value = news.content.join('\n');
+
+        const editNewsModal = new bootstrap.Modal(document.getElementById('editNewsModal'));
+        editNewsModal.show();
+      } catch (error) {
+        console.error('Error preparing edit news:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể sửa tin tức: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    };
+
+    // Update News
+    document.getElementById('editNewsForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+
+      try {
+        const newsId = document.getElementById('editNewsId').value;
+        const contentArray = document.getElementById('editNewsContent').value
+          .split('\n')
+          .filter(paragraph => paragraph.trim() !== '');
+
+        const updatedNews = {
+          title: document.getElementById('editNewsTitle').value === 'other'
+            ? document.getElementById('editNewsTitleOther').value
+            : document.getElementById('editNewsTitle').value,
+          date: document.getElementById('editNewsDate').value,
+          image: document.getElementById('editNewsImage').value,
+          alt: document.getElementById('editNewsAlt').value,
+          summary: document.getElementById('editNewsSummary').value,
+          content: contentArray
+        };
+
+        await update(ref(db, `news/${newsId}`), updatedNews);
+        await loadNews();
+        
+        bootstrap.Modal.getInstance(document.getElementById('editNewsModal')).hide();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Tin tức đã được cập nhật.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        console.error('Error updating news:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể cập nhật tin tức: ${error.message}.`,
+          showConfirmButton: true
+        });
+      }
+    });
+
+    // Delete News
+    window.deleteNews = async function(id) {
+      if (!db) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Firebase chưa được khởi tạo.',
+          showConfirmButton: true
+        });
+        return;
+      }
+
+      const result = await Swal.fire({
+        title: 'Bạn có chắc?',
+        text: "Tin tức này sẽ bị xóa vĩnh viễn!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#A63C3C',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy'
+      });
+
+      if (result.isConfirmed) {
+        try {
+          // Lấy tất cả tin tức hiện tại
+          const newsSnapshot = await get(ref(db, 'news'));
+          if (!newsSnapshot.exists()) {
+            throw new Error('Không tìm thấy tin tức');
+          }
+
+          const newsData = newsSnapshot.val();
+          const newsArray = Object.entries(newsData);
+          
+          // Tìm index của tin tức cần xóa
+          const deleteIndex = newsArray.findIndex(([_, news]) => news.id === id);
+          if (deleteIndex === -1) {
+            throw new Error('Không tìm thấy tin tức cần xóa');
+          }
+
+          // Xóa tin tức và cập nhật lại key số thứ tự
+          const updatedNews = {};
+          newsArray.forEach(([_, news], index) => {
+            if (index !== deleteIndex) {
+              // Lưu tin tức với key mới (index mới)
+              updatedNews[index > deleteIndex ? index - 1 : index] = news;
+            }
+          });
+
+          // Cập nhật lại toàn bộ dữ liệu tin tức
+          await set(ref(db, 'news'), updatedNews);
+          await loadNews();
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'Đã xóa!',
+            text: 'Tin tức đã được xóa.',
+            timer: 1500,
+            showConfirmButton: false
+          });
+        } catch (error) {
+          console.error('Error deleting news:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: `Không thể xóa tin tức: ${error.message}.`,
+            showConfirmButton: true
+          });
+        }
+      }
+    };
+
+    // Search News
+    document.getElementById('newsSearchForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const searchTerm = document.getElementById('newsSearch').value.toLowerCase();
+      const categoryFilter = document.getElementById('newsCategoryFilter').value;
+
+      const filteredNews = newsList.filter(news => {
+        const matchesSearch = news.title.toLowerCase().includes(searchTerm) ||
+                            news.content.toLowerCase().includes(searchTerm);
+        const matchesCategory = !categoryFilter || news.category === categoryFilter;
+        return matchesSearch && matchesCategory;
+      });
+
+      renderNewsTable(filteredNews);
+    });
+
+    // Refresh News
+    document.getElementById('refreshNews')?.addEventListener('click', function() {
+      loadNews();
+      document.getElementById('newsSearch').value = '';
+      document.getElementById('newsCategoryFilter').value = '';
+    });
+
+    // Initialize News Management
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNews();
+    });
+
+    // Add News Management to Section Switching
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const sectionId = this.getAttribute('href').substring(1);
+        
+        if (sectionId === 'newsManagement') {
+          loadNews();
+        }
+        
+        // ... existing section switching code ...
+      });
+    });
+
+    document.getElementById('newsTitle').addEventListener('change', function() {
+      const otherInput = document.getElementById('newsTitleOther');
+      if (this.value === 'other') {
+        otherInput.style.display = '';
+        otherInput.required = true;
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+      }
+    });
+
+    document.getElementById('editNewsTitle').addEventListener('change', function() {
+      const otherInput = document.getElementById('editNewsTitleOther');
+      if (this.value === 'other') {
+        otherInput.style.display = '';
+        otherInput.required = true;
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+      }
+    });
   </script>
 </body>
 </html>

@@ -719,6 +719,17 @@
             transform: scale(0.96);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+
+        /* Đảm bảo SweetAlert2 hiển thị trên cùng */
+        .swal2-container {
+            z-index: 100000 !important;
+        }
+        .swal2-popup {
+            z-index: 100001 !important;
+        }
+        .swal2-backdrop-show {
+            z-index: 99999 !important;
+        }
     </style>
 </head>
 <body id="home">
@@ -776,7 +787,7 @@
                                         <a href="index.html">Trang Chủ</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                                        <a href="menu.html" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
                                         <div class="dropdown-menu mega-menu">
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-6">
@@ -812,9 +823,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li><a href="promotions.html">Khuyến Mãi</a></li>
-                                    <li><a href="news.html">Tin Tức</a></li>
-                                    <li><a href="event.html">Sự Kiện</a></li>
+                                    <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
                                     <li><a href="about.html">Về Chúng Tôi</a></li>
                                 </ul>
                             </div>
