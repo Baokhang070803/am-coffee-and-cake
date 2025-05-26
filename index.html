@@ -383,62 +383,282 @@
             width: 100%;
             max-width: 400px;
             position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .auth-modal-content h2 {
             font-size: 24px;
             color: #4A2F1A;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
+        }
+        .modal-description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
         .auth-modal-content .close {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
             cursor: pointer;
             color: #4A2F1A;
+            transition: color 0.3s;
         }
-        .auth-modal-content form {
-            display: flex;
-            flex-direction: column;
+        .auth-modal-content .close:hover {
+            color: #f7544a;
         }
-        .auth-modal-content input {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4A2F1A;
+            font-weight: 500;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
+            transition: border-color 0.3s;
         }
-        .auth-modal-content button {
-            background: #f7544a;
+        .form-group input:focus {
+            border-color: #A67C52;
+            outline: none;
+        }
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 12px;
+        }
+        .password-input {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+        .remember-me input[type="checkbox"]:checked {
+            background-color: #A67C52;
+            border-color: #A67C52;
+        }
+        .remember-me input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: #fff;
-            padding: 10px;
+            font-size: 12px;
+        }
+        .remember-me label {
+            margin: 0 0 0 8px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .remember-me label:hover {
+            color: #A67C52;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #A67C52;
+            color: #fff;
             border: none;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #8B6842;
+        }
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .social-login p {
+            color: #666;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+        .social-login p::before {
+            left: 0;
+        }
+        .social-login p::after {
+            right: 0;
+        }
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-google,
+        .btn-facebook {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-google:hover {
+            background: #f1f1f1;
+        }
+        .btn-facebook:hover {
+            background: #f1f1f1;
+        }
+        .switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .switch a {
+            color: #A67C52;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .switch a:hover {
+            text-decoration: underline;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .forgot-password a {
+            color: #A67C52;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .terms {
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .terms input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
-        .auth-modal-content button:hover {
-            background: #da2a20;
+        .terms input[type="checkbox"]:checked {
+            background-color: #A67C52;
+            border-color: #A67C52;
         }
-        .auth-modal-content .switch {
-            text-align: center;
-            margin-top: 10px;
+        .terms input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
         }
-        .auth-modal-content .switch a {
-            color: #f7544a;
-            text-decoration: underline;
+        .terms label {
+            margin: 0;
+            color: #666;
             cursor: pointer;
+            user-select: none;
+            line-height: 1.4;
         }
-        .auth-modal-content .forgot-password {
-            text-align: center;
-            margin-top: 10px;
+        .terms a {
+            color: #A67C52;
+            text-decoration: none;
         }
-        .auth-modal-content .forgot-password a {
-            color: #f7544a;
+        .terms a:hover {
             text-decoration: underline;
-            cursor: pointer;
+        }
+        .forgot-password-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 5px;
+        }
+        .forgot-password-info h4 {
+            color: #4A2F1A;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .forgot-password-info ol {
+            margin: 0;
+            padding-left: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .forgot-password-info .note {
+            margin-top: 10px;
+            color: #f7544a;
+            font-size: 13px;
+            font-style: italic;
+        }
+        @media (max-width: 480px) {
+            .auth-modal-content {
+                padding: 20px;
+                margin: 15px;
+            }
+            .social-buttons {
+                flex-direction: column;
+            }
         }
 
         /* CSS cho usermenu */
@@ -1093,14 +1313,36 @@
         <div class="auth-modal-content">
             <span class="close">×</span>
             <h2>Đăng Nhập</h2>
+            <p class="modal-description">Đăng nhập để trải nghiệm đầy đủ dịch vụ của Ấm - Coffee and Cake</p>
             <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                <button type="submit" id="loginBtn">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự</small>
+                </div>
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+                <button type="submit" id="loginBtn" class="btn-primary">
                     Đăng Nhập
                     <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
                 </button>
             </form>
+            <div class="social-login">
+                <p>Hoặc đăng nhập với</p>
+                <div class="social-buttons">
+                    <button class="btn-google"><i class="fa fa-google"></i> Google</button>
+                </div>
+            </div>
             <div class="switch">
                 Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
             </div>
@@ -1115,11 +1357,38 @@
         <div class="auth-modal-content">
             <span class="close">×</span>
             <h2>Đăng Ký</h2>
+            <p class="modal-description">Tạo tài khoản để nhận nhiều ưu đãi hấp dẫn từ Ấm - Coffee and Cake</p>
             <form id="registerForm">
-                <input type="text" id="registerName" placeholder="Họ và Tên" required>
-                <input type="email" id="registerEmail" placeholder="Email" required>
-                <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                <button type="submit" id="registerBtn">
+                <div class="form-group">
+                    <label for="registerName">Họ và Tên</label>
+                    <input type="text" id="registerName" placeholder="Nhập họ và tên của bạn" required>
+                    <small class="form-text">Ví dụ: Nguyễn Văn A</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="registerPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="form-group terms">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">Tôi đồng ý với <a href="policy.html">Điều khoản sử dụng</a> và <a href="policy.html#privacy">Chính sách bảo mật</a></label>
+                </div>
+                <button type="submit" id="registerBtn" class="btn-primary">
                     Đăng Ký
                     <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
                 </button>
@@ -1135,13 +1404,28 @@
         <div class="auth-modal-content">
             <span class="close">×</span>
             <h2>Quên Mật Khẩu</h2>
+            <p class="modal-description">Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu</p>
             <form id="forgotPasswordForm">
-                <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
-                <button type="submit" id="forgotBtn">
+                <div class="form-group">
+                    <label for="forgotPasswordEmail">Email</label>
+                    <input type="email" id="forgotPasswordEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <button type="submit" id="forgotBtn" class="btn-primary">
                     Gửi Yêu Cầu
                     <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
                 </button>
             </form>
+            <div class="forgot-password-info">
+                <h4>Hướng dẫn đặt lại mật khẩu:</h4>
+                <ol>
+                    <li>Nhập email đã đăng ký tài khoản</li>
+                    <li>Kiểm tra hộp thư email của bạn</li>
+                    <li>Nhấp vào liên kết đặt lại mật khẩu trong email</li>
+                    <li>Tạo mật khẩu mới cho tài khoản của bạn</li>
+                </ol>
+                <p class="note">Lưu ý: Liên kết đặt lại mật khẩu sẽ hết hạn sau 24 giờ</p>
+            </div>
             <div class="switch">
                 Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
             </div>
@@ -1180,10 +1464,206 @@
     <script type="text/javascript" src="js/script.min.js"></script>
 
     <script type="module">
-        import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            });
+
+            // Validate password match
+            const registerForm = document.getElementById('registerForm');
+            const password = document.getElementById('registerPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            function validatePassword() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Mật khẩu không khớp');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            password.addEventListener('change', validatePassword);
+            confirmPassword.addEventListener('keyup', validatePassword);
+
+            // Social login handlers
+            const googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+
+            document.querySelector('.btn-google').addEventListener('click', async () => {
+                try {
+                    const btn = document.querySelector('.btn-google');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang xử lý...';
+                    btn.disabled = true;
+
+                    const result = await signInWithPopup(auth, googleProvider);
+                    const user = result.user;
+                    
+                    try {
+                        // Lưu thông tin người dùng vào Realtime Database nếu chưa tồn tại
+                        const db = getDatabase();
+                        const userRef = ref(db, 'users/' + user.uid);
+
+                        // Kiểm tra user đã tồn tại chưa
+                        const { get } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+                        const userSnap = await get(userRef);
+                        if (!userSnap.exists()) {
+                            // Tạo object user data với cấu trúc phù hợp
+                            const userData = {
+                                name: user.displayName || '',
+                                email: user.email,
+                                phone: user.phoneNumber || '',
+                                avatarUrl: user.photoURL || '',
+                                role: 'user',
+                                status: 'active',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            };
+                            await set(userRef, userData);
+                        }
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công!',
+                            text: `Xin chào ${user.displayName || user.email}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        document.getElementById('loginModal').style.display = 'none';
+                    } catch (dbError) {
+                        console.error('Lỗi khi lưu dữ liệu:', dbError);
+                        // Vẫn cho phép đăng nhập thành công nếu chỉ lỗi lưu dữ liệu
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công!',
+                            text: `Xin chào ${user.displayName || user.email}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        document.getElementById('loginModal').style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Lỗi đăng nhập Google:', error);
+                    let errorMessage = 'Đăng nhập bằng Google thất bại. ';
+                    
+                    switch (error.code) {
+                        case 'auth/operation-not-allowed':
+                            errorMessage = 'Đăng nhập bằng Google chưa được bật. Vui lòng liên hệ admin để được hỗ trợ.';
+                            break;
+                        case 'auth/popup-blocked':
+                            errorMessage += 'Cửa sổ popup bị chặn. Vui lòng cho phép popup cho trang web này.';
+                            break;
+                        case 'auth/popup-closed-by-user':
+                            errorMessage += 'Bạn đã đóng cửa sổ đăng nhập.';
+                            break;
+                        case 'auth/cancelled-popup-request':
+                            errorMessage += 'Yêu cầu đăng nhập đã bị hủy.';
+                            break;
+                        case 'auth/account-exists-with-different-credential':
+                            errorMessage += 'Email này đã được sử dụng với phương thức đăng nhập khác.';
+                            break;
+                        case 'PERMISSION_DENIED':
+                            errorMessage = 'Không có quyền truy cập. Vui lòng liên hệ admin để được hỗ trợ.';
+                            break;
+                        default:
+                            errorMessage += 'Vui lòng thử lại sau.';
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: errorMessage,
+                        showConfirmButton: true
+                    });
+                } finally {
+                    const btn = document.querySelector('.btn-google');
+                    btn.innerHTML = '<i class="fa fa-google"></i> Google';
+                    btn.disabled = false;
+                }
+            });
+
+            // Remember me functionality
+            const rememberMe = document.getElementById('rememberMe');
+            if (localStorage.getItem('rememberMe') === 'true') {
+                rememberMe.checked = true;
+                const savedEmail = localStorage.getItem('savedEmail');
+                if (savedEmail) {
+                    document.getElementById('loginEmail').value = savedEmail;
+                }
+            }
+
+            rememberMe.addEventListener('change', () => {
+                if (rememberMe.checked) {
+                    localStorage.setItem('rememberMe', 'true');
+                    localStorage.setItem('savedEmail', document.getElementById('loginEmail').value);
+                } else {
+                    localStorage.removeItem('rememberMe');
+                    localStorage.removeItem('savedEmail');
+                }
+            });
+
+            // Enhanced form validation
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const password = document.getElementById('registerPassword').value;
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumbers = /\d/.test(password);
+                const hasMinLength = password.length >= 6;
+
+                if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasMinLength) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                // Continue with registration...
+            });
+
+            // Password strength indicator
+            const passwordInput = document.getElementById('registerPassword');
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 6) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+                const strengthText = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'][strength - 1];
+                const strengthColor = ['#ff4444', '#ffbb33', '#ffeb3b', '#00C851', '#007E33'][strength - 1];
+
+                const strengthIndicator = document.createElement('div');
+                strengthIndicator.className = 'password-strength';
+                strengthIndicator.style.color = strengthColor;
+                strengthIndicator.textContent = `Độ mạnh mật khẩu: ${strengthText}`;
+
+                const existingIndicator = this.parentElement.querySelector('.password-strength');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+                this.parentElement.appendChild(strengthIndicator);
+            });
+
             // Kiểm tra trạng thái đăng nhập
             onAuthStateChanged(auth, (user) => {
                 const loginLink = document.getElementById('loginLink');
@@ -1327,6 +1807,8 @@
                     });
                     return;
                 }
+
+                
 
                 try {
                     const db = window.db || getDatabase();
