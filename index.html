@@ -679,7 +679,7 @@
             position: fixed;
             bottom: 100px;
             right: 26px;
-            z-index: 9999;
+            z-index: 2147483647 !important;
             font-family: 'Roboto', Arial, sans-serif;
         }
         .chatbox-toggle {
@@ -696,6 +696,7 @@
             justify-content: center;
             border-radius: 50%;
             transition: box-shadow 0.2s, background 0.2s;
+            z-index: 2147483647 !important;
         }
         .chatbox-toggle img {
             width: 36px;
@@ -723,6 +724,7 @@
             right: 0;
             animation: fadeInUp 0.3s;
             border: 2px solid #A67C52;
+            z-index: 2147483647 !important;
         }
         .chatbox-header {
             background: linear-gradient(90deg, #A67C52 80%, #8B6842 100%);
@@ -873,11 +875,12 @@
             .chatbox-messenger {
                 right: 30px;
                 bottom: 100px;
-                z-index: 99999;
+                z-index: 2147483647 !important;
             }
             .chatbox-toggle {
                 width: 56px !important;
                 height: 56px !important;
+                z-index: 2147483647 !important;
             }
             .chatbox-toggle img {
                 width: 32px;
@@ -886,9 +889,11 @@
             .chatbox-header {
                 padding: 12px 16px;
                 font-size: 16px;
+                z-index: 2147483647 !important;
             }
             .chatbox-messages {
                 padding: 16px 12px;
+                z-index: 2147483647 !important;
             }
             .chatbox-message {
                 max-width: 85%;
@@ -898,6 +903,7 @@
             .chatbox-input-area {
                 padding: 12px;
                 background: #fff;
+                z-index: 2147483647 !important;
             }
             .chatbox-input {
                 padding: 8px 12px;
