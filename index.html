@@ -956,6 +956,229 @@
         .swal2-backdrop-show {
             z-index: 99999 !important;
         }
+
+        .galaxy-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 1100px;
+            height: 600px;
+            padding: 30px;
+            background-color: #f5f5f5;
+            box-shadow: 0 30px 50px #dbdbdb;
+        }
+        #cosmic-slide {
+            width: max-content;
+            margin-top: 50px;
+        }
+        .cosmic-item {
+            width: 190px;
+            height: 300px;
+            background-position: 50% 50%;
+            display: inline-block;
+            transition: 0.5s;
+            background-size: cover;
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 30px 50px #505050;
+        }
+        .cosmic-item:nth-child(1),
+        .cosmic-item:nth-child(2) {
+            left: 0;
+            top: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+        }
+        .cosmic-item:nth-child(3) {
+            left: 50%;
+        }
+        .cosmic-item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+        .cosmic-item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+        .cosmic-item:nth-child(n+6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+        .cosmic-item .nebula-content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            width: 250px;
+            text-align: left;
+            padding: 0;
+            color: #ffffff;
+            transform: translate(0, -50%);
+            display: none;
+            font-family: system-ui;
+        }
+        .cosmic-item:nth-child(2) .nebula-content {
+            display: block;
+            z-index: 1;
+        }
+        .cosmic-item .star-name {
+            font-size: 40px;
+            font-weight: bold;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 1 forwards;
+        }
+        .cosmic-item .star-description {
+            margin: 20px 0;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 0.3s 1 forwards;
+        }
+        .cosmic-item .cosmic-button {
+            padding: 10px 20px;
+            border: none;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 0.6s 1 forwards;
+        }
+        @keyframes cosmic-reveal {
+            from {
+                opacity: 0;
+                transform: translate(0, 100px);
+                filter: blur(33px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0, 0);
+                filter: blur(0);
+            }
+        }
+        .cosmic-controls {
+            position: absolute;
+            bottom: 30px;
+            z-index: 222222;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cosmic-controls .orbit-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cosmic-controls .orbit-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+        .cosmic-controls .orbit-button:active {
+            transform: scale(0.95);
+        }
+        .cosmic-controls .orbit-button i {
+            line-height: 1;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 10px 0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #A67C52;
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* CSS cho điện thoại */
+        @media (max-width: 768px) {
+            .cosmic-item .nebula-content {
+                position: absolute;
+                top: 50%;
+                left: 10px;
+                width: 200px;
+                padding: 10px;
+               
+                border-radius: 10px;
+            }
+            .cosmic-item .star-name {
+                font-size: 24px;
+            }
+            .cosmic-item .star-description {
+                font-size: 14px;
+                margin: 10px 0;
+            }
+            .price {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cosmic-item .nebula-content {
+                width: 180px;
+                left: 5px;
+                padding: 8px;
+            }
+            .cosmic-item .star-name {
+                font-size: 20px;
+            }
+            .cosmic-item .star-description {
+                font-size: 12px;
+                margin: 8px 0;
+            }
+            .price {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body id="home">
@@ -1121,27 +1344,18 @@
                     <a href="about.html" class="btn-about">Khám Phá Thêm</a>
                 </div>
                 <div class="hot-products">
-                    <h3 class="title"><strong>Đồ Uống</strong> Nổi Bật</h3>
-                    <div class="control"><a id="prev_hot" class="prev" href="#"><</a><a id="next_hot" class="next" href="#">></a></div>
-                    <ul id="hot">
-                        <li>
-                            <div class="row" id="drinksContainer">
-                                <!-- Đồ uống sẽ được thêm vào đây bằng JavaScript -->
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="clearfix"></div>
-                <div class="featured-products">
-                    <h3 class="title"><strong>Bánh Ngọt</strong> Đặc Biệt</h3>
-                    <div class="control"><a id="prev_featured" class="prev" href="#"><</a><a id="next_featured" class="next" href="#">></a></div>
-                    <ul id="featured">
-                        <li>
-                            <div class="row" id="cakesContainer">
-                                <!-- Bánh sẽ được thêm vào đây bằng JavaScript -->
-                            </div>
-                        </li>
-                    </ul>
+                
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        <div id="cosmic-slide">
+                            <!-- Products will be loaded here dynamically -->
+                        </div>
+                        <div class="cosmic-controls">
+                            <button id="prev" class="orbit-button"><i class="fa fa-angle-left"></i></button>
+                            <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
+                        </div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
                 </div>
                 <div class="clearfix"></div>
                 <div class="news-highlight">
@@ -1468,7 +1682,16 @@
     <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
-
+    <script>
+        document.getElementById('next').onclick = function() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').appendChild(lists[0]);
+        }
+        document.getElementById('prev').onclick = function() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+        }
+    </script>
     <script type="module">
         import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
         import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
@@ -2107,139 +2330,80 @@
     <script type="module">
         import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-        // Hàm để lấy và hiển thị sản phẩm
+        // Function to load products from Firebase
         async function loadProducts() {
             try {
-                console.log('Bắt đầu tải sản phẩm...');
                 const db = getDatabase();
                 const productsRef = ref(db, 'products');
-                console.log('Đang lấy dữ liệu từ Firebase...');
-                
                 const snapshot = await get(productsRef);
-                console.log('Dữ liệu nhận được:', snapshot.val());
-                
+                const cosmicSlide = document.getElementById('cosmic-slide');
+                cosmicSlide.innerHTML = ''; // Clear existing content
+
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     
-                    // Hiển thị đồ uống
-                    const drinksContainer = document.getElementById('drinksContainer');
-                    if (!drinksContainer) {
-                        console.error('Không tìm thấy container đồ uống!');
-                        return;
-                    }
-                    drinksContainer.innerHTML = '';
-                    
-                    if (data.drinks) {
-                        console.log('Đang xử lý đồ uống:', data.drinks);
-                        Object.entries(data.drinks).forEach(([key, drink]) => {
-                            const drinkItem = document.createElement('div');
-                            drinkItem.className = 'col-md-3 col-sm-6';
-                            drinkItem.innerHTML = `
-                                <div class="products">
-                                    <div class="thumbnail">
-                                        <a href="menu.html#${key}">
-                                            <img src="${drink.image}" alt="${drink.name}" style="width: 100%; height: 200px; object-fit: cover;">
-                                        </a>
-                                    </div>
-                                    <div class="productname">${drink.name}</div>
-                                    <h4 class="price">${drink.price.toLocaleString('vi-VN')} VND</h4>
-                                </div>
-                            `;
-                            drinksContainer.appendChild(drinkItem);
-                        });
-                    } else {
-                        console.log('Không có dữ liệu đồ uống');
-                    }
+                    // Combine drinks and cakes into one array
+                    const allProducts = [
+                        ...Object.entries(data.drinks || {}).map(([id, item]) => ({...item, id, type: 'drinks'})),
+                        ...Object.entries(data.cakes || {}).map(([id, item]) => ({...item, id, type: 'cakes'}))
+                    ];
 
-                    // Hiển thị bánh
-                    const cakesContainer = document.getElementById('cakesContainer');
-                    if (!cakesContainer) {
-                        console.error('Không tìm thấy container bánh!');
-                        return;
-                    }
-                    cakesContainer.innerHTML = '';
-                    
-                    if (data.cakes) {
-                        console.log('Đang xử lý bánh:', data.cakes);
-                        Object.entries(data.cakes).forEach(([key, cake]) => {
-                            const cakeItem = document.createElement('div');
-                            cakeItem.className = 'col-md-3 col-sm-6';
-                            cakeItem.innerHTML = `
-                                <div class="products">
-                                    <div class="thumbnail">
-                                        <a href="menu.html#${key}">
-                                            <img src="${cake.image}" alt="${cake.name}" style="width: 100%; height: 200px; object-fit: cover;">
-                                        </a>
-                                    </div>
-                                    <div class="productname">${cake.name}</div>
-                                    <h4 class="price">${cake.price.toLocaleString('vi-VN')} VND</h4>
-                                </div>
-                            `;
-                            cakesContainer.appendChild(cakeItem);
-                        });
-                    } else {
-                        console.log('Không có dữ liệu bánh');
-                    }
+                    // Create cosmic items for each product
+                    allProducts.forEach(product => {
+                        const cosmicItem = document.createElement('div');
+                        cosmicItem.className = 'cosmic-item';
+                        cosmicItem.style.backgroundImage = `url(${product.image})`;
+                        
+                        cosmicItem.innerHTML = `
+                            <div class="nebula-content">
+                                <div class="star-name">${product.name}</div>
+                                <div class="star-description">${product.attributes}</div>
+                                <div class="price">${product.price.toLocaleString('vi-VN')} VND</div>
+                                <button class="cosmic-button" onclick="window.location.href='menu.html#${product.id}'">Xem thêm</button>
+                            </div>
+                        `;
+                        
+                        cosmicSlide.appendChild(cosmicItem);
+                    });
 
-                    // Khởi tạo lại carousel sau khi load sản phẩm
-                    initCarousels();
-                } else {
-                    console.log('Không có dữ liệu sản phẩm');
+                    // Initialize slider controls
+                    document.getElementById('next').onclick = function() {
+                        let lists = document.querySelectorAll('.cosmic-item');
+                        document.getElementById('cosmic-slide').appendChild(lists[0]);
+                    }
+                    
+                    document.getElementById('prev').onclick = function() {
+                        let lists = document.querySelectorAll('.cosmic-item');
+                        document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+                    }
                 }
             } catch (error) {
-                console.error('Lỗi khi tải sản phẩm:', error);
+                console.error('Error loading products:', error);
             }
         }
 
-        // Hàm khởi tạo carousel
-        function initCarousels() {
-            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.carouFredSel === 'function') {
-                jQuery('#hot').carouFredSel({
-                    auto: false,
-                    responsive: true,
-                    width: '100%',
-                    scroll: 1,
-                    items: {
-                        visible: {
-                            min: 1,
-                            max: 4
-                        }
-                    }
-                });
-                jQuery('#featured').carouFredSel({
-                    auto: false,
-                    responsive: true,
-                    width: '100%',
-                    scroll: 1,
-                    items: {
-                        visible: {
-                            min: 1,
-                            max: 4
-                        }
-                    }
-                });
-            } else {
-                console.error('jQuery hoặc carouFredSel plugin chưa được tải!');
-            }
+        // Load products when the page loads
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+
+    <script>
+        // Hàm chuyển slide
+        function nextSlide() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').appendChild(lists[0]);
         }
 
-        // Đợi jQuery và các plugin được tải xong
-        function waitForDependencies(callback) {
-            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.carouFredSel === 'function') {
-                callback();
-            } else {
-                setTimeout(() => waitForDependencies(callback), 100);
-            }
+        function prevSlide() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
         }
 
-        // Gọi hàm khi trang được tải
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Trang đã tải xong, đợi dependencies...');
-            waitForDependencies(() => {
-                console.log('Dependencies đã sẵn sàng, bắt đầu tải sản phẩm...');
-                loadProducts();
-            });
-        });
+        // Xử lý nút bấm
+        document.getElementById('next').onclick = nextSlide;
+        document.getElementById('prev').onclick = prevSlide;
+
+        
+        setInterval(nextSlide, 4000);
     </script>
 </body>
 </html>
