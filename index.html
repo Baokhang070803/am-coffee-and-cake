@@ -1141,43 +1141,88 @@
 
         /* CSS cho điện thoại */
         @media (max-width: 768px) {
-            .cosmic-item .nebula-content {
-                position: absolute;
-                top: 50%;
+            html, body {
+                overflow-x: hidden;
+            }
+            .galaxy-container,
+            #cosmic-slide {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow-x: hidden !important;
+            }
+            .cosmic-item {
+                display: none !important;
+            }
+            .cosmic-item:nth-child(2) {
+                display: block !important;
+                position: relative !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 400px !important;
+                left: 0 !important;
+                top: 0 !important;
+                right: 0 !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+                box-shadow: 0 8px 24px #ccc;
+            }
+            .cosmic-item:nth-child(2) .nebula-content {
                 left: 10px;
-                width: 200px;
+                width: 90%;
                 padding: 10px;
-               
+                background: rgba(0,0,0,0.5);
                 border-radius: 10px;
+                display: block !important;
             }
             .cosmic-item .star-name {
-                font-size: 24px;
+                font-size: 22px;
             }
             .cosmic-item .star-description {
-                font-size: 14px;
-                margin: 10px 0;
-            }
-            .price {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .cosmic-item .nebula-content {
-                width: 180px;
-                left: 5px;
-                padding: 8px;
-            }
-            .cosmic-item .star-name {
-                font-size: 20px;
-            }
-            .cosmic-item .star-description {
-                font-size: 12px;
+                font-size: 13px;
                 margin: 8px 0;
             }
             .price {
                 font-size: 16px;
             }
+            .cosmic-controls {
+                position: relative;
+                bottom: 0;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cosmic-item:nth-child(2) {
+                height: 400px !important;
+            }
+            .cosmic-item .nebula-content {
+                padding: 6px;
+                font-size: 12px;
+            }
+            .cosmic-item .star-name {
+                font-size: 16px;
+            }
+            .cosmic-item .star-description {
+                font-size: 11px;
+            }s
+            .price {
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 768px) {
+          .galaxy-container {
+            display: none !important;
+          }
+        }
+        .hot-products {
+          min-height: 380px;
+          margin: 40px 0 40px 0;
+          position: relative;
+        }
+        #cosmic-slide {
+          margin-bottom: 24px;
         }
     </style>
 </head>
@@ -1345,7 +1390,7 @@
                 </div>
                 <div class="hot-products">
                 
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
                         <div id="cosmic-slide">
                             <!-- Products will be loaded here dynamically -->
                         </div>
@@ -1353,7 +1398,7 @@
                             <button id="prev" class="orbit-button"><i class="fa fa-angle-left"></i></button>
                             <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
                         </div>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
 
 
                 </div>
