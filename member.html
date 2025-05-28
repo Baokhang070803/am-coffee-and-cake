@@ -175,47 +175,84 @@
         }
         canvas#purchaseChart {
             max-height: 300px;
+            min-height: 200px;
+            height: 300px !important;
+            width: 100% !important;
+            display: block;
         }
         /* Cập nhật Lịch sử giao dịch */
         .transaction-history {
-            background: #FFFFFF;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+            padding: 28px 18px 32px 18px;
             margin-bottom: 40px;
-            overflow-x: auto; /* Thêm để tránh tràn bảng */
+            overflow-x: auto;
         }
         .transaction-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            table-layout: auto; /* Đổi từ fixed sang auto để bảng tự co giãn */
-            min-width: 800px; /* Đảm bảo đủ rộng cho 5 cột */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(74,47,26,0.06);
             background: #fff;
         }
-        .transaction-table th, .transaction-table td {
-            padding: 12px 8px;
-            text-align: left;
-            font-size: 16px;
-            border-bottom: 1px solid #ddd;
-            word-break: break-word;
-            min-width: 110px;
-            max-width: 260px;
-            box-sizing: border-box;
-        }
         .transaction-table th {
-            background: #FFCC99;
+            background: linear-gradient(90deg, #f7544a 0%, #ffcc99 100%);
             color: #4A2F1A;
-            /* Không dùng sticky để tránh lỗi lệch */
+            font-weight: 700;
+            font-size: 17px;
+            border: none;
+            text-align: center;
+            padding: 14px 8px;
         }
         .transaction-table td {
-            color: #333333;
-        }
-        .transaction-table tbody tr {
-            transition: background 0.3s ease;
+            color: #333;
+            font-size: 15px;
+            border-bottom: 1px solid #f5e6da;
+            padding: 13px 8px;
+            vertical-align: middle;
+            background: #fff;
+            text-align: center;
         }
         .transaction-table tbody tr:hover {
             background: #FFF5E6;
+            transition: background 0.2s;
+        }
+        .transaction-table td[data-status] span {
+            font-weight: 600;
+            padding-left: 6px;
+        }
+        .transaction-table td[data-status]::before {
+            content: '';
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .transaction-table td[data-status="Đang xử lý"]::before { background: #ffc107; }
+        .transaction-table td[data-status="Đã xác nhận"]::before { background: #17a2b8; }
+        .transaction-table td[data-status="Đang giao"]::before { background: #007bff; }
+        .transaction-table td[data-status="Đã giao"]::before { background: #28a745; }
+        .transaction-table td[data-status="Hủy"]::before { background: #dc3545; }
+        .transaction-table td[data-status="Không xác định"]::before { background: #6c757d; }
+        .transaction-table .cancel-btn {
+            margin-left: 8px;
+            background: #fff;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            vertical-align: middle;
+            box-shadow: none;
+        }
+        .transaction-table .cancel-btn:hover {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
         }
         /* Style cho cột Tình trạng */
         .transaction-table td:nth-child(5) {
@@ -299,8 +336,8 @@
         }
         /* Animation */
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 1; transform: none; }
+            to { opacity: 1; transform: none; }
         }
         /* Responsive */
         @media (max-width: 767px) {
@@ -341,13 +378,14 @@
         }
         /* Hiệu ứng cuộn */
         .membership-info, .purchase-chart, .transaction-history {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
+            opacity: 1;
+            transform: none;
+            transition: none;
         }
         .membership-info.visible, .purchase-chart.visible, .transaction-history.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
+            transition: none;
         }
         /* Style cho user-info */
         .usermenu li.user-info {
@@ -592,17 +630,19 @@
         }
         .account-section {
             display: none;
-            opacity: 0;
-            transition: opacity 0.3s;
+            opacity: 1;
+            transform: none;
+            transition: none;
         }
         .account-section.active-section {
             display: block;
             opacity: 1;
-            animation: fadeInTab 0.4s;
+            transform: none;
+            transition: none;
         }
         @keyframes fadeInTab {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
+            from { opacity: 1; transform: none; }
+            to { opacity: 1; transform: none; }
         }
         .account-menu ul li.active a {
             background: #f7544a;
@@ -632,6 +672,123 @@
         .button:active {
             transform: scale(0.96);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        /* Style cho modal chỉnh sửa thông tin */
+        #editProfileModal .modal-content {
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #editProfileModal .modal-content h2 {
+            color: #4A2F1A;
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        #editProfileModal .avatar-upload {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #FFF5E6;
+            border-radius: 10px;
+        }
+
+        #editProfileModal .avatar-upload label {
+            display: block;
+            font-size: 16px;
+            color: #4A2F1A;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        #editProfileModal .avatar-upload input[type="file"] {
+            display: none;
+        }
+
+        #editProfileModal .avatar-upload .upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f7544a;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #editProfileModal .avatar-upload .upload-btn:hover {
+            background: #d63c32;
+        }
+
+        #editProfileModal #avatarPreview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 15px auto;
+            border: 3px solid #f7544a;
+            display: block;
+            object-fit: cover;
+        }
+
+        #editProfileModal .form-group {
+            margin-bottom: 20px;
+        }
+
+        #editProfileModal .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4A2F1A;
+            font-weight: 500;
+        }
+
+        #editProfileModal .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        #editProfileModal .form-group input:focus {
+            border-color: #f7544a;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(247, 84, 74, 0.1);
+        }
+
+        #editProfileModal button[type="button"] {
+            width: 100%;
+            padding: 12px;
+            background: #f7544a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        #editProfileModal button[type="button"]:hover {
+            background: #d63c32;
+        }
+
+        #editProfileModal .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        #editProfileModal .close:hover {
+            color: #f7544a;
         }
     </style>
 </head>
@@ -689,43 +846,7 @@
                                     <li>
                                         <a href="index.html">Trang Chủ</a>
                                     </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu</a>
-                                        <div class="dropdown-menu mega-menu">
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-6">
-                                                    <h4 class="menu-title">Thức Uống</h4>
-                                                    <ul class="mega-menu-links">
-                                                        <li><a href="menu.html">Cà phê đen đá</a></li>
-                                                        <li><a href="menu.html">Cappuccino</a></li>
-                                                        <li><a href="menu.html">Latte</a></li>
-                                                        <li><a href="menu.html">Espresso</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <h4 class="menu-title">Bánh</h4>
-                                                    <ul class="mega-menu-links">
-                                                        <li><a href="menu.html">Bánh Bông Lan</a></li>
-                                                        <li><a href="menu.html">Cheesecake</a></li>
-                                                        <li><a href="menu.html">Bánh Mì</a></li>
-                                                        <li><a href="menu.html">Tiramisu</a></li>
-                                                        <li><a href="menu.html">Mousse Cake</a></li>
-                                                        <li><a href="menu.html">Cupcake</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <h4 class="menu-title">Gọi Thêm</h4>
-                                                    <ul class="mega-menu-links">
-                                                        <li><a href="menu.html#pho-mai">Phô Mai</a></li>
-                                                        <li><a href="menu.html">Socola</a></li>
-                                                        <li><a href="menu.html">Mật Ong</a></li>
-                                                        <li><a href="menu.html">Kem</a></li>
-                                                        <li><a href="menu.html">Trái Cây</a></li>
-                                                    </ul>
-                                                </div> 
-                                            </div>
-                                        </div>
-                                    </li>
+                                    <li><a href="menu.html">Menu</a></li>
                                     <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
                                     <li><a href="about.html">Về Chúng Tôi</a></li>
                                 </ul>
@@ -1010,15 +1131,32 @@
                 <h2>Chỉnh Sửa Thông Tin</h2>
                 <form>
                     <div class="avatar-upload">
-                        <label for="editAvatar">Hình Đại Diện:</label>
+                        <label for="editAvatar">Hình Đại Diện</label>
+                        <label for="editAvatar" class="upload-btn">
+                            <i class="fa fa-upload"></i> Chọn ảnh
+                        </label>
                         <input type="file" id="editAvatar" accept="image/*">
                         <img id="avatarPreview" src="" alt="Avatar Preview">
                     </div>
-                    <input type="text" id="editName" placeholder="Họ và Tên" required>
-                    <input type="email" id="editEmail" placeholder="Email" required>
-                    <input type="text" id="editPhone" placeholder="Số Điện Thoại">
-                    <input type="text" id="editAddress" placeholder="Địa Chỉ">
-                    <button type="button" onclick="handleEditProfile()">Lưu Thay Đổi</button>
+                    <div class="form-group">
+                        <label for="editName">Họ và Tên</label>
+                        <input type="text" id="editName" placeholder="Nhập họ và tên của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" placeholder="Nhập email của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPhone">Số Điện Thoại</label>
+                        <input type="text" id="editPhone" placeholder="Nhập số điện thoại của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAddress">Địa Chỉ</label>
+                        <input type="text" id="editAddress" placeholder="Nhập địa chỉ của bạn">
+                    </div>
+                    <button type="button" onclick="handleEditProfile()">
+                        <i class="fa fa-save"></i> Lưu Thay Đổi
+                    </button>
                 </form>
             </div>
         </div>
@@ -1058,7 +1196,7 @@
 
         // Pagination Variables
         let orders = [];
-        const itemsPerPage = 2;
+        const itemsPerPage = 5;
         let currentPage = 1;
 
         // Map Firebase status to display status
@@ -1664,22 +1802,11 @@
             }, 1000);
         });
 
-        // Scroll animation
+        // Scroll animation - Tắt observer
         const elements = document.querySelectorAll('.membership-info, .purchase-chart, .transaction-history');
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        elements.forEach(el => observer.observe(el));
+        elements.forEach(el => {
+            el.classList.add('visible');
+        });
 
         // Tab chuyển đổi vùng nội dung tài khoản
         document.querySelectorAll('.account-menu ul li a[data-section]').forEach(link => {
@@ -1698,19 +1825,12 @@
                 const section = document.getElementById(sectionId);
                 if (section) {
                     section.style.display = 'block';
-                    setTimeout(() => section.classList.add('active-section'), 10);
-                }
-            });
-        });
-        // Khi load trang, chỉ hiện section đầu tiên
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.account-section').forEach((sec, idx) => {
-                if(idx === 0) {
-                    sec.style.display = 'block';
-                    sec.classList.add('active-section');
-                } else {
-                    sec.style.display = 'none';
-                    sec.classList.remove('active-section');
+                    section.classList.add('active-section');
+                    // Nếu là section biểu đồ, render lại ngay lập tức và resize
+                    if (sectionId === 'chartSection' && window.purchaseChartInstance) {
+                        window.purchaseChartInstance.update('none');
+                        window.purchaseChartInstance.resize();
+                    }
                 }
             });
         });
@@ -1747,24 +1867,70 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    transitions: {
+                        active: {
+                            animation: {
+                                duration: 0
+                            }
+                        }
+                    },
                     scales: {
                         y1: {
                             type: 'linear',
                             position: 'left',
-                            title: { display: true, text: 'Số Lượng' },
-                            beginAtZero: true
+                            title: { 
+                                display: true, 
+                                text: 'Số Lượng',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
                         },
                         y2: {
                             type: 'linear',
                             position: 'right',
-                            title: { display: true, text: 'Tổng Tiền (VND)' },
+                            title: { 
+                                display: true, 
+                                text: 'Tổng Tiền (VND)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
                             beginAtZero: true,
-                            grid: { drawOnChartArea: false }
+                            grid: { 
+                                drawOnChartArea: false 
+                            }
                         },
-                        x: { title: { display: true, text: 'Tháng' } }
+                        x: { 
+                            title: { 
+                                display: true, 
+                                text: 'Tháng',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
                     },
-                    plugins: { legend: { display: true } },
-                    animation: { duration: 2000, easing: 'easeOutBounce' }
+                    plugins: { 
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
