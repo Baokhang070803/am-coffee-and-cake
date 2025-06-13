@@ -1288,20 +1288,42 @@
                 }
             }
 
+            // Tạo mã giao dịch từ orderKey (sử dụng 8 ký tự cuối)
+            const txnRef = orderKey.slice(-8).toUpperCase();
+            console.log('OrderKey:', orderKey);
+            console.log('TxnRef:', txnRef);
+
             const vnp_Params = {
                 vnp_Version: '2.1.0',
                 vnp_Command: 'pay',
                 vnp_TmnCode: vnp_TmnCode,
                 vnp_Locale: 'vn',
                 vnp_CurrCode: 'VND',
-                vnp_TxnRef: orderKey.slice(-8).toUpperCase(),
-                vnp_OrderInfo: `Thanh toan don hang ${orderKey.slice(-8).toUpperCase()}`,
+                vnp_TxnRef: txnRef,
+                vnp_OrderInfo: `Thanh toan don hang ${txnRef}`,
                 vnp_OrderType: 'other',
                 vnp_Amount: Math.round(order.grandTotal * 100),
                 vnp_ReturnUrl: vnp_ReturnUrl,
                 vnp_IpAddr: await getClientIp(),
                 vnp_CreateDate: moment().format('YYYYMMDDHHmmss')
             };
+
+            // Lưu mapping giữa txnRef và orderKey
+            localStorage.setItem('pendingOrderKey', orderKey);
+            localStorage.setItem('vnpayTxnRef', txnRef);
+            
+            // Lưu thêm vào Firebase để backup
+            try {
+                await db.ref('vnpay_transactions/' + txnRef).set({
+                    orderKey: orderKey,
+                    amount: order.grandTotal,
+                    createdAt: new Date().toISOString(),
+                    status: 'pending'
+                });
+                console.log('VNPAY transaction mapping saved to Firebase');
+            } catch (error) {
+                console.error('Error saving VNPAY mapping:', error);
+            }
 
             // Sắp xếp tham số
             const sortedParams = Object.keys(vnp_Params).sort().reduce((acc, key) => {
@@ -1447,6 +1469,14 @@
             const date = createdAt.toLocaleDateString('vi-VN');
             const time = createdAt.toLocaleTimeString('vi-VN', { hour12: false });
 
+            // Xác định trạng thái đơn hàng dựa trên phương thức thanh toán
+            let orderStatus = 'pending';
+            if (paymentMethod === 'cod') {
+                orderStatus = 'confirmed'; // COD thì xác nhận luôn
+            } else if (paymentMethod === 'vnpay') {
+                orderStatus = 'awaiting_payment'; // VNPAY thì chờ thanh toán
+            }
+
             // Tạo đối tượng đơn hàng
             const order = {
                 userId: auth.currentUser.uid,
@@ -1468,11 +1498,16 @@
                     receiverPhone: userData.phone,
                     address: shippingAddress
                 },
-                items: cart.map(item => ({
-                    productId: item.productId,
-                    name: productMap[item.productId]?.name || 'Unknown Product',
-                    quantity: Number(item.quantity) || 1
-                })),
+                items: cart.map(item => {
+                    const product = productMap[item.productId];
+                    return {
+                        productId: item.productId,
+                        name: product?.name || 'Unknown Product',
+                        price: product?.price || 0,
+                        quantity: Number(item.quantity) || 1,
+                        image: product?.image || 'images/default-product.png'
+                    };
+                }),
                 subtotal,
                 discountAmount,
                 couponCode,
@@ -1482,10 +1517,12 @@
                 discountedTotal,
                 grandTotal,
                 createdAt: createdAt.toISOString(),
-                status: 'pending',
+                status: orderStatus,
+                paymentStatus: paymentMethod === 'vnpay' ? 'pending' : 'not_required',
                 date,
                 time,
-                fullName: userData.fullName
+                fullName: userData.fullName,
+                orderNote: document.getElementById('order_note').value || ''
             };
 
             // Hiển thị loading
@@ -1505,11 +1542,13 @@
 
                 // Nếu thanh toán qua VNPAY
                 if (paymentMethod === 'vnpay') {
+                    // Lưu orderKey vào localStorage để có thể truy xuất sau
+                    localStorage.setItem('pendingOrderKey', orderKey);
                     await processVNPayPayment(order, orderKey);
                     return;
                 }
 
-                // Xử lý cho các phương thức thanh toán khác
+                // Xử lý cho COD - xác nhận đơn hàng ngay
                 await generateAndShowBill(order, orderKey, productMap);
 
                 // Xóa giỏ hàng và coupon
