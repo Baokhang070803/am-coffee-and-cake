@@ -1470,10 +1470,8 @@
             const time = createdAt.toLocaleTimeString('vi-VN', { hour12: false });
 
             // Xác định trạng thái đơn hàng dựa trên phương thức thanh toán
-            let orderStatus = 'pending';
-            if (paymentMethod === 'cod') {
-                orderStatus = 'confirmed'; // COD thì xác nhận luôn
-            } else if (paymentMethod === 'vnpay') {
+            let orderStatus = 'pending'; // Mặc định là chờ xác nhận
+            if (paymentMethod === 'vnpay') {
                 orderStatus = 'awaiting_payment'; // VNPAY thì chờ thanh toán
             }
 

@@ -4668,7 +4668,6 @@
 
       try {
         const contentHtml = quillAdd.root.innerHTML;
-        // ... lấy các trường khác như cũ ...
         const newNews = {
           title: document.getElementById('newsTitle').value === 'other' ? document.getElementById('newsTitleOther').value : document.getElementById('newsTitle').value,
           date: document.getElementById('newsDate').value,
@@ -4677,10 +4676,37 @@
           summary: document.getElementById('newsSummary').value,
           content: contentHtml
         };
-        // ... lưu vào Firebase như cũ ...
-        // (phần lưu giữ nguyên, chỉ thay đổi trường content là HTML)
+        // Lấy danh sách tin tức hiện tại
+        const newsSnapshot = await get(ref(db, 'news'));
+        let newsData = [];
+        if (newsSnapshot.exists()) {
+          newsData = Object.values(newsSnapshot.val());
+        }
+        // Thêm tin mới vào cuối mảng
+        newsData.push(newNews);
+        // Ghi lại toàn bộ danh sách tin tức
+        const newNewsObj = {};
+        newsData.forEach((n, i) => { newNewsObj[i] = n; });
+        await set(ref(db, 'news'), newNewsObj);
+        await loadNews();
+        Swal.fire({
+          icon: 'success',
+          title: 'Đã thêm!',
+          text: 'Tin tức đã được thêm thành công.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        // Đóng modal
+        const addNewsModal = bootstrap.Modal.getInstance(document.getElementById('addNewsModal'));
+        if (addNewsModal) addNewsModal.hide();
       } catch (error) {
-        // ... xử lý lỗi như cũ ...
+        console.error('Error adding news:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể thêm tin tức: ${error.message}.`,
+          showConfirmButton: true
+        });
       }
     });
 
