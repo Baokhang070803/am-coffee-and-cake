@@ -185,10 +185,14 @@ function viewOrder(orderId) {
                         <div style="color:#666;">Phí vận chuyển</div>
                         <div>${(order.shippingFee || 0).toLocaleString('vi-VN')}đ</div>
                     </div>
+                    ${order.couponCode ? `
                     <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                        <div style="color:#666;">Giảm giá</div>
-                        <div>-${(order.discount || 0).toLocaleString('vi-VN')}đ</div>
+                        <div style="color:#666;">
+                            Mã giảm giá (${order.couponCode})
+                        </div>
+                        <div class="text-danger">-${(order.discountAmount || 0).toLocaleString('vi-VN')}đ</div>
                     </div>
+                    ` : ''}
                     <div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:1px dashed #eee;">
                         <div style="font-weight:600;font-size:16px;">Tổng cộng</div>
                         <div style="font-weight:600;font-size:16px;color:#f7544a;">
@@ -389,7 +393,15 @@ async function loadOrders() {
                     </div>
                     
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="text-muted">Tổng tiền: <span class="text-dark fw-500">${order.grandTotal?.toLocaleString('vi-VN')}đ</span></div>
+                        <div>
+                            <div class="text-muted">Tổng tiền: <span class="text-dark fw-500">${order.grandTotal?.toLocaleString('vi-VN')}đ</span></div>
+                            ${order.couponCode ? `
+                            <div class="text-muted small">
+                                <i class="fas fa-tag text-success me-1"></i>
+                                Đã áp dụng mã: ${order.couponCode}
+                            </div>
+                            ` : ''}
+                        </div>
                         <button class="btn btn-primary btn-sm" onclick="viewOrderDetail('${order.id}')">
                             Xem chi tiết
                         </button>
@@ -410,6 +422,107 @@ async function loadOrders() {
             icon: 'error',
             title: 'Lỗi!',
             text: 'Không thể tải danh sách đơn hàng. Vui lòng thử lại sau.'
+        });
+    }
+}
+
+async function viewOrderDetail(orderId) {
+    try {
+        const orderRef = ref(database, `orders/${orderId}`);
+        const snapshot = await get(orderRef);
+        
+        if (snapshot.exists()) {
+            const order = snapshot.val();
+            order.id = orderId;
+            
+            // Tính toán giá trị giảm giá
+            const discountAmount = order.subtotal - order.grandTotal;
+            
+            // Tạo nội dung modal
+            const modalContent = `
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết đơn hàng #${orderId}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-info mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Ngày đặt:</span>
+                            <span class="fw-500">${order.date} ${order.time}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Trạng thái:</span>
+                            <span class="badge ${getStatusBadgeClass(order.status)}">${getStatusText(order.status)}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Phương thức thanh toán:</span>
+                            <span class="fw-500">${getPaymentMethodText(order.paymentMethod)}</span>
+                        </div>
+                    </div>
+
+                    <div class="products-list mb-4">
+                        <h6 class="mb-3">Sản phẩm đã đặt</h6>
+                        ${order.items?.map(item => `
+                            <div class="product-item d-flex align-items-center mb-2">
+                                <img src="${item.image || '../images/default-product.png'}" 
+                                     alt="${item.name}" 
+                                     class="product-image me-3">
+                                <div class="flex-grow-1">
+                                    <div class="product-name">${item.name}</div>
+                                    <div class="text-muted small">
+                                        ${item.quantity}x × ${item.price?.toLocaleString('vi-VN')}đ
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    ${(item.price * item.quantity).toLocaleString('vi-VN')}đ
+                                </div>
+                            </div>
+                        `).join('') || '<div class="text-muted">Không có sản phẩm</div>'}
+                    </div>
+
+                    <div class="price-summary">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tạm tính:</span>
+                            <span>${order.subtotal?.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Phí vận chuyển:</span>
+                            <span>${order.shippingFee?.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">
+                                ${order.couponCode ? `Giảm giá (${order.couponCode}):` : 'Giảm giá:'}
+                            </span>
+                            <span class="text-danger">-${discountAmount.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between fw-bold mt-2 pt-2 border-top">
+                            <span>Tổng cộng:</span>
+                            <span class="text-primary">${order.grandTotal?.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                    </div>
+
+                    ${order.status === 'pending' ? `
+                        <div class="mt-4">
+                            <button class="btn btn-danger w-100" onclick="cancelOrder('${orderId}')">
+                                Hủy đơn hàng
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Hiển thị modal
+            const modalElement = document.getElementById('orderDetailModal');
+            modalElement.querySelector('.modal-content').innerHTML = modalContent;
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        }
+    } catch (error) {
+        console.error('Error loading order details:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Không thể tải chi tiết đơn hàng. Vui lòng thử lại sau.'
         });
     }
 } 
