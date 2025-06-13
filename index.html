@@ -15,6 +15,8 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/mobile.css" rel="stylesheet">
     <link href="css/mobile.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A67C52">
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
@@ -1106,6 +1108,13 @@
             justify-content: center;
             align-items: center;
             z-index: 999999;
+            opacity: 1;
+            transition: opacity 0.5s;
+            pointer-events: all;
+        }
+        .loading-overlay.hide {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .loading-content {
@@ -2414,5 +2423,31 @@
         
         setInterval(nextSlide, 4000);
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ẩn overlay loading sau 300ms để đảm bảo hiệu ứng mượt
+        setTimeout(function() {
+            var overlay = document.querySelector('.loading-overlay');
+            if (overlay) {
+                overlay.classList.add('hide');
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                }, 600); // Đợi hiệu ứng mờ dần xong mới ẩn hẳn
+            }
+        }, 300);
+    });
+    </script>
+    <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+  });
+}
+</script>
 </body>
 </html>

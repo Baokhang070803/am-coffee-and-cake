@@ -1,0 +1,21 @@
+{
+  "name": "Ấm - Coffee and Cake",
+  "short_name": "Ấm Coffee",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#A67C52",
+  "theme_color": "#A67C52",
+  "description": "Quán cà phê và bánh ngọt Ấm - Coffee and Cake",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
