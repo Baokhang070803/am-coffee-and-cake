@@ -527,8 +527,8 @@
             font-size: 17px;
             color: #4a2f1a;
             line-height: 1.8;
-            margin-bottom: 20px;
-            min-height: 60px; /* Đảm bảo các đoạn văn có chiều cao tối thiểu đồng nhất */
+            margin-bottom: 10px;
+            /* min-height: 60px; */
         }
         .modal-content .btn-close {
             position: absolute;
@@ -1126,14 +1126,11 @@
                 modalsContainer.className = 'modals-container';
                 document.body.appendChild(modalsContainer);
             }
-            
             modalsContainer.innerHTML = '';
             newsArray.forEach((news, index) => {
                 const formattedDate = formatDate(news.date);
-                const modalContent = Array.isArray(news.content) 
-                    ? news.content.map(paragraph => `<p>${paragraph}</p>`).join('')
-                    : `<p>${news.content}</p>`;
-                
+                // Render trực tiếp HTML nội dung, không bọc thêm <p>
+                const modalContent = `<div class="news-content">${news.content}</div>`;
                 const modal = `
                     <div class="modal" id="modal${index + 1}">
                         <div class="modal-content">
@@ -1147,7 +1144,6 @@
                 `;
                 modalsContainer.innerHTML += modal;
             });
-            
             // Thêm style cho modal và nút đóng
             const style = document.createElement('style');
             style.textContent = `
