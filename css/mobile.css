@@ -1,5 +1,51 @@
 /* Mobile Styles - For screens smaller than 768px */
 @media screen and (max-width: 767px) {
+    /* Ẩn header và footer trên mobile */
+    .header, .footer {
+        display: none !important;
+    }
+    /* Đảm bảo nội dung không bị che bởi bottom nav */
+    body {
+        padding-bottom: 70px !important;
+        padding-top: 54px !important;
+        background: #faf7f2;
+    }
+    /* Tăng kích thước font, nút, icon cho mobile */
+    .section, .about-section, .news-highlight, .gallery-section, .testimonial-section, .cta-section {
+        padding: 18px 8px 18px 8px !important;
+        font-size: 1.08em;
+    }
+    .button, .btn, .btn-primary, .btn-about, .btn-readmore, .btn-cta {
+        font-size: 1.1em !important;
+        padding: 14px 0 !important;
+        border-radius: 8px !important;
+    }
+    /* Bottom nav nổi bật hơn */
+    .bottom-nav {
+        box-shadow: 0 -4px 24px rgba(166,124,82,0.13);
+        background: #fffbe9 !important;
+        border-top: 2px solid #e5d3bc;
+        height: 64px !important;
+    }
+    .bottom-nav a {
+        font-size: 13px !important;
+        padding: 8px 0 2px 0 !important;
+    }
+    .bottom-nav i {
+        font-size: 26px !important;
+        margin-bottom: 2px;
+    }
+    .bottom-nav a.active, .bottom-nav a:active, .bottom-nav a:focus {
+        color: #f7544a !important;
+        font-weight: bold;
+        background: #fff3e0;
+        border-radius: 12px;
+    }
+    /* Hiệu ứng chuyển tab */
+    .bottom-nav a {
+        transition: color 0.2s, background 0.2s;
+    }
+
     /* Header optimization */
     header {
         position: fixed;
@@ -162,10 +208,57 @@
         width: calc(100% - 40px);
         padding: 10px;
     }
+
+    /* App Bar mobile */
+    .appbar-mobile {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 54px;
+        background: #fffbe9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10002;
+        box-shadow: 0 2px 12px rgba(166,124,82,0.10);
+        border-bottom: 1.5px solid #e5d3bc;
+        padding: 0 10px;
+    }
+    .appbar-logo {
+        height: 36px;
+        width: auto;
+        display: block;
+    }
+    .appbar-title {
+        flex: 1;
+        text-align: center;
+        font-size: 1.18em;
+        font-weight: bold;
+        color: #A67C52;
+        letter-spacing: 0.5px;
+    }
+    .appbar-left, .appbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .appbar-right a {
+        color: #A67C52;
+        font-size: 22px;
+        margin-left: 8px;
+        transition: color 0.2s;
+    }
+    .appbar-right a:active, .appbar-right a:focus, .appbar-right a:hover {
+        color: #f7544a;
+    }
+
+    .hom-slider {
+        margin-top: 54px !important;
+    }
 }
 
-/* Tablet Styles */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (min-width: 768px) {
     .logo img {
         max-height: 50px;
     }
@@ -182,6 +275,8 @@
         display: flex;
         flex-wrap: wrap;
     }
+
+    .appbar-mobile { display: none !important; }
 }
 
 /* Loading animation */
@@ -230,3 +325,52 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+        /* Bottom Navigation Bar cho mobile */
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 60px;
+            background: #fff;
+            border-top: 1.5px solid #e5d3bc;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10001;
+            box-shadow: 0 -2px 12px rgba(166,124,82,0.08);
+          }
+          .bottom-nav a {
+            flex: 1;
+            text-align: center;
+            color: #A67C52;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 0 2px 0;
+            transition: color 0.2s;
+          }
+          .bottom-nav a.active,
+          .bottom-nav a:active,
+          .bottom-nav a:hover {
+            color: #f7544a;
+          }
+          .bottom-nav i {
+            font-size: 22px;
+            margin-bottom: 2px;
+          }
+          @media (min-width: 769px) {
+            .bottom-nav { display: none !important; }
+          }
+          @media (max-width: 768px) {
+            .bottom-nav { display: flex !important; }
+            body { padding-bottom: 60px; }
+          }
+          @media screen and (max-width: 767px) {
+            .tudongchat-icon.svelte-g5s9s0.svelte-g5s9s0 {
+              bottom: 50px !important; /* hoặc giá trị bạn muốn, ví dụ 140px */
+            }
+          }

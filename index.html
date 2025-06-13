@@ -876,7 +876,7 @@
             }
             .chatbox-messenger {
                 right: 30px;
-                bottom: 100px;
+                bottom: 150px;
                 z-index: 2147483647 !important;
             }
             .chatbox-toggle {
@@ -1233,6 +1233,50 @@
         #cosmic-slide {
           margin-bottom: 24px;
         }
+        /* Bottom Navigation Bar cho mobile */
+        .bottom-nav {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 60px;
+          background: #fff;
+          border-top: 1.5px solid #e5d3bc;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          z-index: 10001;
+          box-shadow: 0 -2px 12px rgba(166,124,82,0.08);
+        }
+        .bottom-nav a {
+          flex: 1;
+          text-align: center;
+          color: #A67C52;
+          text-decoration: none;
+          font-size: 12px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 0 2px 0;
+          transition: color 0.2s;
+        }
+        .bottom-nav a.active,
+        .bottom-nav a:active,
+        .bottom-nav a:hover {
+          color: #f7544a;
+        }
+        .bottom-nav i {
+          font-size: 22px;
+          margin-bottom: 2px;
+        }
+        @media (min-width: 769px) {
+          .bottom-nav { display: none !important; }
+        }
+        @media (max-width: 768px) {
+          .bottom-nav { display: flex !important; }
+          body { padding-bottom: 60px; }
+        }
     </style>
 </head>
 <body id="home">
@@ -1290,7 +1334,7 @@
                                         <a href="index.html">Trang Chủ</a>
                                     </li>
                                     <li><a href="menu.html">Menu</a></li>
-                                    <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
+                                    <li><a href="news.html"><i class="fa fa-file-text-o"></i> Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
                                     <li><a href="about.html">Về Chúng Tôi</a></li>
                                 </ul>
                             </div>
@@ -2168,6 +2212,20 @@
                     }
                 });
             });
+
+            // Sự kiện cho icon user trên App Bar mobile
+            const appbarAccount = document.querySelector('.appbar-account');
+            if (appbarAccount) {
+                appbarAccount.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Kiểm tra trạng thái đăng nhập
+                    if (window.auth && window.auth.currentUser) {
+                        window.location.href = 'member.html';
+                    } else {
+                        document.getElementById('loginModal').style.display = 'flex';
+                    }
+                });
+            }
         }
     </script>
     <script type="module">
@@ -2449,5 +2507,25 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+                   <!-- Bottom Navigation Bar cho mobile -->
+                   <div class="bottom-nav">
+                    <a href="index.html" class="nav-home"><i class="fa fa-home"></i><span></span>Trang chủ</span></a>
+                    <a href="news.html" class="nav-news"><i class="fa fa-file-text-o"></i><span>Tin tức</span></a>
+                    <a href="menu.html" class="nav-account"><i class="fa fa-coffee"></i><span>Menu</span></a>
+                    <a href="cart.html" class="nav-cart"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span></a>
+                    <a href="policy.html" class="nav-policy"><i class="fa fa-file-text-o"></i><span>Chính sách</span></a>
+                    <a href="about.html" class="nav-about"><i class="fa fa-info-circle"></i><span>Giới thiệu</span></a>
+                  </div>
+              
+                  <div class="appbar-mobile">
+                    <div class="appbar-left">
+                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+                    <div class="appbar-title">Ấm Coffee & Cake</div>
+                    <div class="appbar-right">
+                      <a href="#" class="appbar-account"><i class="fa fa-user"></i></a>
+                      <a href="cart.html" class="appbar-cart"><i class="fa fa-shopping-cart"></i></a>
+                    </div>
+                  </div>
 </body>
 </html>
