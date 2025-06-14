@@ -1,0 +1,788 @@
+
+document.getElementById('next').onclick = function() {
+    let lists = document.querySelectorAll('.cosmic-item');
+    document.getElementById('cosmic-slide').appendChild(lists[0]);
+}
+document.getElementById('prev').onclick = function() {
+    let lists = document.querySelectorAll('.cosmic-item');
+    document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+}
+
+
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+
+    // Validate password match
+    const registerForm = document.getElementById('registerForm');
+    const password = document.getElementById('registerPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    function validatePassword() {
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity('Mật khẩu không khớp');
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    }
+
+    password.addEventListener('change', validatePassword);
+    confirmPassword.addEventListener('keyup', validatePassword);
+
+    // Social login handlers
+    const googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({
+        prompt: 'select_account'
+    });
+
+    document.querySelector('.btn-google').addEventListener('click', async () => {
+        try {
+            const btn = document.querySelector('.btn-google');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang xử lý...';
+            btn.disabled = true;
+
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            
+            try {
+                // Lưu thông tin người dùng vào Realtime Database nếu chưa tồn tại
+                const db = getDatabase();
+                const userRef = ref(db, 'users/' + user.uid);
+
+                // Kiểm tra user đã tồn tại chưa
+                const { get } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+                const userSnap = await get(userRef);
+                if (!userSnap.exists()) {
+                    // Tạo object user data với cấu trúc phù hợp
+                    const userData = {
+                        name: user.displayName || '',
+                        email: user.email,
+                        phone: user.phoneNumber || '',
+                        avatarUrl: user.photoURL || '',
+                        role: 'user',
+                        status: 'active',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    await set(userRef, userData);
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công!',
+                    text: `Xin chào ${user.displayName || user.email}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                document.getElementById('loginModal').style.display = 'none';
+            } catch (dbError) {
+                console.error('Lỗi khi lưu dữ liệu:', dbError);
+                // Vẫn cho phép đăng nhập thành công nếu chỉ lỗi lưu dữ liệu
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công!',
+                    text: `Xin chào ${user.displayName || user.email}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Lỗi đăng nhập Google:', error);
+            let errorMessage = 'Đăng nhập bằng Google thất bại. ';
+            
+            switch (error.code) {
+                case 'auth/operation-not-allowed':
+                    errorMessage = 'Đăng nhập bằng Google chưa được bật. Vui lòng liên hệ admin để được hỗ trợ.';
+                    break;
+                case 'auth/popup-blocked':
+                    errorMessage += 'Cửa sổ popup bị chặn. Vui lòng cho phép popup cho trang web này.';
+                    break;
+                case 'auth/popup-closed-by-user':
+                    errorMessage += 'Bạn đã đóng cửa sổ đăng nhập.';
+                    break;
+                case 'auth/cancelled-popup-request':
+                    errorMessage += 'Yêu cầu đăng nhập đã bị hủy.';
+                    break;
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage += 'Email này đã được sử dụng với phương thức đăng nhập khác.';
+                    break;
+                case 'PERMISSION_DENIED':
+                    errorMessage = 'Không có quyền truy cập. Vui lòng liên hệ admin để được hỗ trợ.';
+                    break;
+                default:
+                    errorMessage += 'Vui lòng thử lại sau.';
+            }
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: errorMessage,
+                showConfirmButton: true
+            });
+        } finally {
+            const btn = document.querySelector('.btn-google');
+            btn.innerHTML = '<i class="fa fa-google"></i> Google';
+            btn.disabled = false;
+        }
+    });
+
+    // Remember me functionality
+    const rememberMe = document.getElementById('rememberMe');
+    if (localStorage.getItem('rememberMe') === 'true') {
+        rememberMe.checked = true;
+        const savedEmail = localStorage.getItem('savedEmail');
+        if (savedEmail) {
+            document.getElementById('loginEmail').value = savedEmail;
+        }
+    }
+
+    rememberMe.addEventListener('change', () => {
+        if (rememberMe.checked) {
+            localStorage.setItem('rememberMe', 'true');
+            localStorage.setItem('savedEmail', document.getElementById('loginEmail').value);
+        } else {
+            localStorage.removeItem('rememberMe');
+            localStorage.removeItem('savedEmail');
+        }
+    });
+
+    // Enhanced form validation
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const password = document.getElementById('registerPassword').value;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasMinLength = password.length >= 6;
+
+        if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasMinLength) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.',
+                showConfirmButton: true
+            });
+            return;
+        }
+
+        // Continue with registration...
+    });
+
+    // Password strength indicator
+    const passwordInput = document.getElementById('registerPassword');
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let strength = 0;
+        
+        if (password.length >= 6) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        const strengthText = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'][strength - 1];
+        const strengthColor = ['#ff4444', '#ffbb33', '#ffeb3b', '#00C851', '#007E33'][strength - 1];
+
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'password-strength';
+        strengthIndicator.style.color = strengthColor;
+        strengthIndicator.textContent = `Độ mạnh mật khẩu: ${strengthText}`;
+
+        const existingIndicator = this.parentElement.querySelector('.password-strength');
+        if (existingIndicator) {
+            existingIndicator.remove();
+        }
+        this.parentElement.appendChild(strengthIndicator);
+    });
+
+    // Kiểm tra trạng thái đăng nhập
+    onAuthStateChanged(auth, (user) => {
+        const loginLink = document.getElementById('loginLink');
+        const registerLink = document.getElementById('registerLink');
+        const userInfo = document.getElementById('userInfo');
+        const appbarLogout = document.querySelector('.appbar-logout');
+        if (user) {
+            userInfo.style.display = 'inline-block';
+            loginLink.style.display = 'none';
+            registerLink.style.display = 'none';
+            if (appbarLogout) appbarLogout.style.display = 'inline-block';
+        } else {
+            userInfo.style.display = 'none';
+            loginLink.style.display = 'inline-block';
+            registerLink.style.display = 'inline-block';
+            if (appbarLogout) appbarLogout.style.display = 'none';
+        }
+    });
+
+    // Xử lý modal đăng nhập/đăng ký
+    bindModalEvents();
+
+    // Xử lý form đăng nhập
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const btn = document.getElementById('loginBtn');
+        const spinner = document.getElementById('loginSpinner');
+        btn.disabled = true;
+        spinner.style.display = 'inline-block';
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            Swal.fire({
+                icon: 'success',
+                title: 'Đăng nhập thành công!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            if (email === 'quantri1amcoffeeandcake@gmail.com' || email === 'nhanvienorders@gmail.com') {
+                window.location.href = 'AdminDashboard.html';
+            } else {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                showConfirmButton: true
+            });
+        }
+        btn.disabled = false;
+        spinner.style.display = 'none';
+    });
+
+    // Xử lý form đăng ký
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const btn = document.getElementById('registerBtn');
+        const spinner = document.getElementById('registerSpinner');
+        btn.disabled = true;
+        spinner.style.display = 'inline-block';
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(userCredential.user, { displayName: name });
+            await sendEmailVerification(userCredential.user);
+            Swal.fire({
+                icon: 'success',
+                title: 'Đăng ký thành công!',
+                text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                showConfirmButton: true
+            });
+            document.getElementById('registerModal').style.display = 'none';
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                showConfirmButton: true
+            });
+        }
+        btn.disabled = false;
+        spinner.style.display = 'none';
+    });
+
+    // Xử lý form quên mật khẩu
+    document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('forgotPasswordEmail').value;
+        const btn = document.getElementById('forgotBtn');
+        const spinner = document.getElementById('forgotSpinner');
+        btn.disabled = true;
+        spinner.style.display = 'inline-block';
+        if (!email) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+            });
+            btn.disabled = false;
+            spinner.style.display = 'none';
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                showConfirmButton: true
+            });
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                showConfirmButton: true
+            });
+        }
+        btn.disabled = false;
+        spinner.style.display = 'none';
+    });
+
+    // Xử lý gửi form liên hệ
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = e.target.name.value.trim();
+        const email = e.target.email.value.trim();
+        const phone = e.target.phone.value.trim();
+        const message = e.target.message.value.trim();
+
+        if (!name || !email || !message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+                showConfirmButton: true
+            });
+            return;
+        }
+
+        
+
+        try {
+            const db = window.db || getDatabase();
+            await push(ref(db, 'contactMessages'), {
+                name,
+                email,
+                phone,
+                message,
+                createdAt: new Date().toISOString()
+            });
+            Swal.fire({
+                icon: 'success',
+                title: 'Gửi thành công!',
+                text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
+                showConfirmButton: true
+            });
+            e.target.reset();
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
+                showConfirmButton: true
+            });
+        }
+    });
+
+    // Xử lý đăng xuất
+    document.getElementById('logoutLink').addEventListener('click', async (e) => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Bạn có chắc?',
+            text: "Bạn muốn đăng xuất khỏi hệ thống?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#A63C3C',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Đăng Xuất',
+            cancelButtonText: 'Hủy'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await signOut(auth);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng xuất thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            }
+        });
+    });
+    // Xử lý đăng xuất appbar mobile
+    const appbarLogout = document.querySelector('.appbar-logout');
+    if (appbarLogout) {
+        appbarLogout.addEventListener('click', async (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Bạn có chắc?',
+                text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#A63C3C',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đăng Xuất',
+                cancelButtonText: 'Hủy'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await signOut(auth);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng xuất thành công!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                            showConfirmButton: true
+                        });
+                    }
+                }
+            });
+        });
+    }
+});
+
+function bindModalEvents() {
+    document.querySelector('.log').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('loginModal').style.display = 'flex';
+    });
+
+    document.querySelector('.reg').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('registerModal').style.display = 'flex';
+    });
+
+    document.getElementById('forgotPassword').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('forgotPasswordModal').style.display = 'flex';
+    });
+
+    document.getElementById('switchToRegister').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('registerModal').style.display = 'flex';
+    });
+
+    document.getElementById('switchToLogin').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('registerModal').style.display = 'none';
+        document.getElementById('loginModal').style.display = 'flex';
+    });
+
+    document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('forgotPasswordModal').style.display = 'none';
+        document.getElementById('loginModal').style.display = 'flex';
+    });
+
+    document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', () => {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+        });
+    });
+
+    document.querySelectorAll('.auth-modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // Sự kiện cho icon user trên App Bar mobile
+    const appbarAccount = document.querySelector('.appbar-account');
+    if (appbarAccount) {
+        appbarAccount.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Kiểm tra trạng thái đăng nhập
+            if (window.auth && window.auth.currentUser) {
+                window.location.href = 'member.html';
+            } else {
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        });
+    }
+}
+import { getDatabase, ref, push, onChildAdded } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+const chatboxToggle = document.getElementById('chatboxToggle');
+const chatboxWindow = document.getElementById('chatboxWindow');
+const chatboxClose = document.getElementById('chatboxClose');
+const chatboxForm = document.getElementById('chatboxForm');
+const chatboxInput = document.getElementById('chatboxInput');
+const chatboxMessages = document.getElementById('chatboxMessages');
+
+let chatboxOpenedAt = null;
+let chatListenerUnsub = null;
+let autoResponseTimeout = null;
+let lastMessageTime = null;
+
+// Function to add auto-response message
+const addAutoResponse = () => {
+    const autoMsg = document.createElement('div');
+    autoMsg.className = 'chatbox-message admin';
+    autoMsg.textContent = 'Hiện tại Ấm đang bận, bạn vui lòng đợi trong giây lát';
+    chatboxMessages.appendChild(autoMsg);
+    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+};
+
+// Function to reset auto-response timer
+const resetAutoResponseTimer = () => {
+    if (autoResponseTimeout) {
+        clearTimeout(autoResponseTimeout);
+    }
+    lastMessageTime = new Date();
+    autoResponseTimeout = setTimeout(addAutoResponse, 30000);
+};
+
+// Mở chatbox
+chatboxToggle.addEventListener('click', () => {
+    chatboxWindow.style.display = 'flex';
+    chatboxToggle.style.display = 'none';
+    chatboxMessages.innerHTML = '';
+    
+    const defaultMsg = document.createElement('div');
+    defaultMsg.className = 'chatbox-message admin';
+    defaultMsg.textContent = 'Xin chào ngài, hạ thần có thể giúp gì cho ngài ạ?';
+    chatboxMessages.appendChild(defaultMsg);
+    
+    setTimeout(() => {
+        chatboxInput.focus();
+    }, 200);
+
+    chatboxOpenedAt = new Date();
+    lastMessageTime = new Date();
+    resetAutoResponseTimer();
+
+    if (chatListenerUnsub) chatListenerUnsub();
+    const db = window.db || getDatabase();
+    const messagesRef = ref(db, 'chatMessages');
+    chatListenerUnsub = onChildAdded(messagesRef, (snapshot) => {
+        const msg = snapshot.val();
+        if (msg && msg.timestamp && new Date(msg.timestamp) > chatboxOpenedAt) {
+            const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
+            const msgElement = document.createElement('div');
+            msgElement.className = `chatbox-message ${isAdmin ? 'admin' : 'user'}`;
+            msgElement.textContent = msg.message;
+            chatboxMessages.appendChild(msgElement);
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            resetAutoResponseTimer();
+        }
+    });
+});
+
+// Đóng chatbox
+chatboxClose.addEventListener('click', () => {
+    chatboxWindow.style.display = 'none';
+    chatboxToggle.style.display = 'flex';
+    if (chatListenerUnsub) {
+        chatListenerUnsub();
+        chatListenerUnsub = null;
+    }
+    if (autoResponseTimeout) {
+        clearTimeout(autoResponseTimeout);
+        autoResponseTimeout = null;
+    }
+});
+
+// Xử lý gửi tin nhắn   
+chatboxForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const message = chatboxInput.value.trim();
+    if (!message) return;
+
+    const user = window.auth && window.auth.currentUser;
+    const sender = user ? user.displayName || user.email : 'Khách';
+    const senderId = user ? user.uid : 'anonymous';
+    const timestamp = new Date().toISOString();
+
+    chatboxInput.value = '';
+    resetAutoResponseTimer();
+
+    try {
+        const db = window.db || getDatabase();
+        await push(ref(db, 'chatMessages'), {
+            sender,
+            senderId,
+            message,
+            timestamp
+        });
+    } catch (error) {
+        console.error('Lỗi khi lưu tin nhắn:', error);
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'chatbox-message admin';
+        errorMsg.textContent = 'Đã có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.';
+        chatboxMessages.appendChild(errorMsg);
+        chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+    }
+});
+
+
+
+
+import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+// Hàm để lấy và hiển thị tin tức nổi bật
+async function loadHighlightNews() {
+    try {
+        const db = getDatabase();
+        const newsRef = ref(db, 'news');
+        
+        const snapshot = await get(newsRef);
+        const newsContainer = document.getElementById('newsHighlightContainer');
+        newsContainer.innerHTML = ''; // Xóa nội dung cũ
+
+        if (snapshot.exists()) {
+            const news = [];
+            snapshot.forEach((childSnapshot) => {
+                news.push({ id: childSnapshot.key, ...childSnapshot.val() });
+            });
+
+            // Sắp xếp tin tức theo ngày mới nhất
+            news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Hiển thị 3 tin tức mới nhất
+            news.slice(0, 3).forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'col-md-4 col-sm-6';
+                newsItem.innerHTML = `
+                    <div class="news-item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="news-item-content">
+                            <h3>${item.title}</h3>
+                            <div class="date">${new Date(item.date).toLocaleDateString('vi-VN')}</div>
+                            <p>${item.summary}</p>
+                            <a href="news.html#${item.id}" class="btn-readmore">Đọc Thêm</a>
+                        </div>
+                    </div>
+                `;
+                newsContainer.appendChild(newsItem);
+            });
+        } else {
+            newsContainer.innerHTML = '<div class="col-12 text-center">Chưa có tin tức nào</div>';
+        }
+    } catch (error) {
+        console.error('Lỗi khi tải tin tức:', error);
+        const newsContainer = document.getElementById('newsHighlightContainer');
+        newsContainer.innerHTML = '<div class="col-12 text-center">Không thể tải tin tức. Vui lòng thử lại sau.</div>';
+    }
+}
+
+// Gọi hàm khi trang được tải
+document.addEventListener('DOMContentLoaded', loadHighlightNews);
+
+import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+// Function to load products from Firebase
+async function loadProducts() {
+    try {
+        const db = getDatabase();
+        const productsRef = ref(db, 'products');
+        const snapshot = await get(productsRef);
+        const cosmicSlide = document.getElementById('cosmic-slide');
+        cosmicSlide.innerHTML = ''; // Clear existing content
+
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            
+            // Combine drinks and cakes into one array
+            const allProducts = [
+                ...Object.entries(data.drinks || {}).map(([id, item]) => ({...item, id, type: 'drinks'})),
+                ...Object.entries(data.cakes || {}).map(([id, item]) => ({...item, id, type: 'cakes'}))
+            ];
+
+            // Create cosmic items for each product
+            allProducts.forEach(product => {
+                const cosmicItem = document.createElement('div');
+                cosmicItem.className = 'cosmic-item';
+                cosmicItem.style.backgroundImage = `url(${product.image})`;
+                
+                cosmicItem.innerHTML = `
+                    <div class="nebula-content">
+                        <div class="star-name">${product.name}</div>
+                        <div class="star-description">${product.attributes}</div>
+                        <div class="price">${product.price.toLocaleString('vi-VN')} VND</div>
+                        <button class="cosmic-button" onclick="window.location.href='menu.html#${product.id}'">Xem thêm</button>
+                    </div>
+                `;
+                
+                cosmicSlide.appendChild(cosmicItem);
+            });
+
+            // Initialize slider controls
+            document.getElementById('next').onclick = function() {
+                let lists = document.querySelectorAll('.cosmic-item');
+                document.getElementById('cosmic-slide').appendChild(lists[0]);
+            }
+            
+            document.getElementById('prev').onclick = function() {
+                let lists = document.querySelectorAll('.cosmic-item');
+                document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading products:', error);
+    }
+}
+
+// Load products when the page loads
+document.addEventListener('DOMContentLoaded', loadProducts);
+
+// Hàm chuyển slide
+function nextSlide() {
+    let lists = document.querySelectorAll('.cosmic-item');
+    document.getElementById('cosmic-slide').appendChild(lists[0]);
+}
+
+function prevSlide() {
+    let lists = document.querySelectorAll('.cosmic-item');
+    document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+}
+
+// Xử lý nút bấm
+document.getElementById('next').onclick = nextSlide;
+document.getElementById('prev').onclick = prevSlide;
+
+
+setInterval(nextSlide, 4000);
+
+document.addEventListener('DOMContentLoaded', function() {
+// Ẩn overlay loading sau 300ms để đảm bảo hiệu ứng mượt
+setTimeout(function() {
+    var overlay = document.querySelector('.loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hide');
+        setTimeout(function() {
+            overlay.style.display = 'none';
+        }, 600); // Đợi hiệu ứng mờ dần xong mới ẩn hẳn
+    }
+}, 300);
+});
+
+
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', function() {
+navigator.serviceWorker.register('/service-worker.js')
+.then(function(registration) {
+console.log('ServiceWorker registration successful with scope: ', registration.scope);
+}, function(err) {
+console.log('ServiceWorker registration failed: ', err);
+});
+});
+}

@@ -1269,6 +1269,22 @@
             font-size: 13px;
           }
         }
+        @media (max-width: 767px) {
+          .logout-mobile-btn {
+            display: block !important;
+            width: 100%;
+            max-width: 320px;
+            margin: 24px auto 0 auto;
+            padding: 14px;
+            background: #fff0f0;
+            color: #f7544a;
+            border: 1px solid #f7544a;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: center;
+          }
+        }
     </style>
 </head>
 <body id="home">
@@ -1425,6 +1441,9 @@
                                             <p><strong>Số Điện Thoại:</strong> <span id="userPhone">Chưa đăng nhập</span></p>
                                             <p><strong>Địa Chỉ:</strong> <span id="userAddress">Chưa có địa chỉ</span></p>
                                             <button class="edit-btn" onclick="openEditModal()">Chỉnh Sửa Thông Tin</button>
+                                            <button class="logout-mobile-btn" id="logoutMobileBtn" style="display:none; margin-top:16px;">
+                                                <i class="fa fa-sign-out"></i> Đăng Xuất
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -2239,6 +2258,17 @@
                     });
                 });
 
+                // Gán lại sự kiện click cho nút đăng xuất mobile (sau khi DOM đã có)
+                setTimeout(() => {
+                    const logoutMobileBtn = document.getElementById('logoutMobileBtn');
+                    if (logoutMobileBtn) {
+                        logoutMobileBtn.onclick = function(e) {
+                            e.preventDefault();
+                            document.getElementById('logoutLink')?.click();
+                        };
+                    }
+                }, 0);
+
                 // Load orders với cải thiện xử lý dữ liệu
                 const ordersRef = query(ref(database, 'orders'), orderByChild('userId'), equalTo(user.uid));
                 onValue(ordersRef, (snapshot) => {
@@ -2851,6 +2881,20 @@
 
         // Thêm hàm xem chi tiết đơn hàng vào window để có thể gọi từ onclick
         window.viewOrderDetail = viewOrderDetail;
+
+        // Hiển thị nút đăng xuất mobile nếu là mobile
+        function showLogoutMobileBtnIfMobile() {
+            const btn = document.getElementById('logoutMobileBtn');
+            if (btn) {
+                if (window.innerWidth <= 767) {
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            }
+        }
+        window.addEventListener('resize', showLogoutMobileBtnIfMobile);
+        window.addEventListener('DOMContentLoaded', showLogoutMobileBtnIfMobile);
     </script>
     <!-- Order Detail Modal -->
     <div class="modal fade" id="orderDetailModal" tabindex="-1">
