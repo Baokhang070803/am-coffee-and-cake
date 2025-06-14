@@ -1680,8 +1680,6 @@
               <label>Hình thức thanh toán:</label>
               <select id="posPaymentMethod" class="form-select">
                 <option value="cash">Tiền mặt 💵</option>
-                <option value="momo">Momo</option>
-                <option value="zalopay">ZaloPay</option>
                 <option value="vnpay">VNPay</option>
               </select>
             </div>
@@ -1905,6 +1903,22 @@
             <li class="list-group-item text-center text-muted">Chưa có thông báo nào.</li>
           </ul>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal QR VNPay -->
+  <div class="modal fade" id="vnpayQRModal" tabindex="-1" aria-labelledby="vnpayQRModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="vnpayQRModalLabel">Quét mã QR VNPay để thanh toán</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="vnpayQRImg" src="" alt="QR VNPay" style="max-width:300px;max-height:300px;">
+          <div class="mt-2"><small id="vnpayQRNote" class="text-muted"></small></div>
         </div>
       </div>
     </div>
@@ -4134,15 +4148,14 @@
           name: i.name,
           price: i.price,
           quantity: i.quantity,
-          note: i.note || ''
+          note: i.note || '',
+          image: i.image || ''
         })),
         grandTotal: total,
         status: 'delivered',
         createdAt: now.toISOString(),
         paymentMethod,
         orderNote: document.getElementById('posOrderNote').value || '',
-        cashGiven: paymentMethod === 'cash' ? cashGiven : undefined,
-        change: paymentMethod === 'cash' ? change : undefined,
         fullName: 'Khách tại quầy',
         userId: auth.currentUser?.uid || '',
         // Các trường tối thiểu để pass validate rule
@@ -4168,6 +4181,8 @@
         shippingFee: 0,
         discount: 0,
         deliveryMethod: '',
+        // Thêm cashGiven và change nếu là tiền mặt
+        ...(paymentMethod === 'cash' ? { cashGiven, change } : {})
       };
       try {
         const newOrderRef = push(ref(db, 'orders'));
@@ -5084,5 +5099,7 @@
       localStorage.setItem('darkMode', isDark);
     });
   }); -->
+
+ 
 </body>
 </html>
