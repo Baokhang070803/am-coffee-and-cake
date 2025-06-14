@@ -975,6 +975,300 @@
         #editProfileModal .close:hover {
             color: #f7544a;
         }
+
+        /* Ẩn avatar và tên ở sidebar trên mobile */
+        @media (max-width: 767px) {
+          .account-sidebar .sidebar-avatar,
+          .account-sidebar #sidebarUserName {
+            display: none !important;
+          }
+          .account-sidebar {
+            padding: 0;
+            box-shadow: none;
+            background: none;
+          }
+          .account-menu ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 0;
+            margin-bottom: 12px;
+          }
+          .account-menu ul li {
+            margin-bottom: 0;
+            flex: 1;
+            text-align: center;
+          }
+          .account-menu ul li a {
+            padding: 10px 0;
+            font-size: 15px;
+            border-radius: 0;
+            border-bottom: 2px solid transparent;
+            background: none;
+          }
+          .account-menu ul li.active a {
+            background: none;
+            color: #f7544a;
+            border-bottom: 2px solid #f7544a;
+          }
+        }
+
+        /* Thu gọn tiêu đề/mô tả trên mobile */
+        @media (max-width: 767px) {
+          .membership-title, .membership-subtitle {
+            font-size: 0;
+            margin: 0;
+            padding: 0;
+            height: 0;
+            line-height: 0;
+            overflow: hidden;
+          }
+        }
+
+        /* Tối ưu avatar, thông tin cá nhân, nút chỉnh sửa */
+        @media (max-width: 767px) {
+          .membership-info {
+            max-width: 380px;
+            margin: 0 auto 16px auto;
+            padding: 16px 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            background: #fff;
+          }
+          .avatar-container {
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+          .avatar {
+            width: 88px;
+            height: 88px;
+            margin-bottom: 8px;
+          }
+          .user-details {
+            align-items: center;
+            margin: 0 auto;
+            max-width: 320px;
+          }
+          .user-details p {
+            font-size: 15px;
+            margin: 4px 0;
+            text-align: center;
+          }
+          .user-details .edit-btn {
+            width: 100%;
+            font-size: 16px;
+            padding: 12px;
+            margin-top: 18px;
+            background: #f7544a;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 500;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          }
+          .account-menu ul {
+            max-width: 380px;
+            margin: 0 auto 12px auto;
+            padding: 0 6px;
+            justify-content: center;
+          }
+          .account-menu ul li {
+            min-width: 90px;
+            text-align: center;
+          }
+          .account-menu ul li a {
+            font-size: 15px;
+            padding: 10px 0;
+          }
+          .account-menu ul li:last-child a {
+            max-width: 120px;
+            margin-left: 8px;
+            margin-right: 0;
+            display: inline-block;
+          }
+          .account-main-content {
+            max-width: 420px;
+            margin: 0 auto;
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .membership-info {
+            max-width: 380px;
+            margin: 0 auto 16px auto;
+            padding: 16px 12px;
+          }
+          .transaction-history {
+            max-width: 420px;
+            margin: 0 auto 24px auto;
+            overflow-x: auto;
+          }
+          .transaction-table {
+            min-width: 600px;
+            max-width: 100%;
+            margin: 0 auto;
+          }
+          .transaction-table th, .transaction-table td {
+            min-width: 90px;
+            max-width: 160px;
+            font-size: 14px;
+            padding: 8px 4px;
+          }
+          .action-buttons {
+            min-width: 80px;
+          }
+        }
+
+        /* Nút đăng xuất nổi bật trên mobile */
+        @media (max-width: 767px) {
+          .account-menu ul li:last-child a {
+            background: #fff0f0;
+            color: #f7544a;
+            border: 1px solid #f7544a;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-weight: 500;
+          }
+        }
+        @media (max-width: 767px) {
+          .account-main-content,
+          .transaction-history,
+          .membership-info {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto 16px auto;
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .transaction-table {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            margin: 0;
+            table-layout: fixed;
+            word-break: break-word;
+          }
+          .transaction-table th,
+          .transaction-table td {
+            min-width: 0;
+            max-width: none;
+            font-size: 13px;
+            padding: 6px 2px;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            text-align: center;
+          }
+          .transaction-table th {
+            font-size: 13px;
+            padding: 6px 2px;
+          }
+          .action-buttons {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            justify-content: center;
+            align-items: center;
+          }
+          .account-menu ul {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto 12px auto;
+            padding: 0 2px;
+            justify-content: center;
+          }
+          .account-menu ul li {
+            min-width: 0;
+            flex: 1 1 0;
+          }
+          .account-menu ul li a {
+            font-size: 14px;
+            padding: 8px 0;
+          }
+          .account-menu ul li:last-child a {
+            max-width: 100px;
+            margin-left: 4px;
+            margin-right: 0;
+            display: inline-block;
+          }
+        }
+        @media (max-width: 767px) {
+          /* Ẩn cột Sản Phẩm trong bảng lịch sử đặt hàng trên mobile */
+          .transaction-table th:nth-child(3),
+          .transaction-table td.products {
+            display: none;
+          }
+        }
+        @media (max-width: 767px) {
+          .user-details, .user-details p {
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            max-width: 100%;
+          }
+          .user-details {
+            text-align: center;
+            padding: 0 8px;
+          }
+        }
+        @media (max-width: 767px) {
+          /* Ẩn nút Đăng Xuất trong tab ngang trên mobile */
+          .account-menu ul li:last-child { display: none !important; }
+          /* Nút Đăng Xuất lớn dưới cùng */
+          .logout-mobile-btn {
+            display: block;
+            width: 90%;
+            max-width: 320px;
+            margin: 24px auto 16px auto;
+            padding: 14px;
+            background: #fff0f0;
+            color: #f7544a;
+            border: 1px solid #f7544a;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: center;
+          }
+        }
+        @media (max-width: 767px) {
+          .transaction-table th,
+          .transaction-table td {
+            word-break: break-all;
+            overflow-wrap: anywhere;
+            white-space: normal;
+            text-align: center;
+            padding: 6px 2px;
+            font-size: 13px;
+            max-width: 1px; /* ép mọi thứ xuống dòng nếu dài */
+          }
+          .transaction-history,
+          .account-main-content,
+          .membership-info {
+            padding-left: 4px;
+            padding-right: 4px;
+          }
+        }
+        @media (max-width: 767px) {
+          .transaction-table td:last-child,
+          .transaction-table .action-buttons {
+            min-height: 32px;
+            word-break: break-word;
+            white-space: normal;
+            text-align: center;
+            padding: 4px 2px;
+          }
+          .transaction-table .action-btn,
+          .transaction-table .cancel-btn {
+            white-space: normal;
+            word-break: break-word;
+            padding: 6px 8px;
+            font-size: 13px;
+          }
+        }
     </style>
 </head>
 <body id="home">
@@ -1122,7 +1416,6 @@
                             <div id="profileSection" class="account-section active-section">
                                 <div class="membership-container">
                                     <div class="membership-info">
-                                        <h3>Thông Tin Cá Nhân</h3>
                                         <div class="avatar-container">
                                             <img src="images/nguoidung.png" alt="Avatar" class="avatar" id="profileAvatar"/>
                                         </div>
@@ -1138,14 +1431,12 @@
                             </div>
                             <div id="chartSection" class="account-section" style="display:none;">
                                 <div class="purchase-chart">
-                                    <h3>Thống Kê Mua Hàng</h3>
                                     <canvas id="purchaseChart"></canvas>
                                 </div>
                             </div>
                             <div id="ordersSection" class="account-section" style="display:none;">
                                 <div class="transaction-history">
                                     <h3>
-                                        Lịch Sử Đặt Hàng
                                         <!-- <button class="filter-btn">
                                             <i class="fa fa-filter"></i> Lọc
                                         </button> -->
@@ -2558,7 +2849,6 @@
                         <div class="appbar-left">
                           <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
                         </div>
-                        <div class="appbar-title">Ấm Coffee & Cake</div>
                         <div class="appbar-right">
                           <a href="member.html" class="appbar-account"><i class="fa fa-user"></i></a>
                         </div>
