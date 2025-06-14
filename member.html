@@ -1779,15 +1779,15 @@
                 }[status] || { text: 'Không xác định', class: '' };
 
                 // Xử lý nút hành động
+                const canCancel = ['pending', 'processing', 'confirmed'].includes(status);
                 const actionButtons = `
                     <div class="action-buttons">
                         <button class="action-btn view-btn" onclick="viewOrder('${order.id}')">
                             <i class="fa fa-eye"></i> Xem
                         </button>
-                        ${(status === 'pending' || status === 'processing') ? 
-                            `<button class="action-btn cancel-btn" onclick="cancelOrder('${order.id}')">
-                                <i class="fa fa-times"></i> Hủy
-                            </button>` : ''}
+                        ${canCancel ? `<button class="action-btn cancel-btn" onclick="cancelOrder('${order.id}')">
+                            <i class="fa fa-times"></i> Hủy
+                        </button>` : ''}
                     </div>`;
 
                 const row = `
@@ -1924,32 +1924,65 @@
         // Cập nhật hàm hủy đơn hàng
         window.cancelOrder = function(orderId) {
             Swal.fire({
-                title: 'Hủy đơn hàng?',
-                text: 'Bạn có chắc muốn hủy đơn hàng này không?',
+                title: 'Bạn muốn hủy đơn hàng này?',
+                html: `
+                    <div style="text-align:left;">
+                        <div style="margin-bottom:15px;">
+                            <label style="display:block;margin-bottom:5px;color:#666;font-weight:500;">Lý do hủy đơn</label>
+                            <select id="cancelReasonSelect" class="swal2-input" style="width:100%;margin-bottom:10px;">
+                                <option value="Đặt nhầm/Không còn nhu cầu">Đặt nhầm/Không còn nhu cầu</option>
+                                <option value="Muốn thay đổi sản phẩm">Muốn thay đổi sản phẩm</option>
+                                <option value="Thay đổi địa chỉ nhận hàng">Thay đổi địa chỉ nhận hàng</option>
+                                <option value="Chờ lâu quá">Chờ lâu quá</option>
+                                <option value="Khác">Khác...</option>
+                            </select>
+                            <textarea id="cancelReasonOther" class="swal2-textarea" style="display:none;" placeholder="Nhập lý do chi tiết..." rows="3"></textarea>
+                        </div>
+                        <div style="color:#ef4444;font-size:14px;margin-top:10px;">
+                            <i class="fa fa-exclamation-triangle"></i> Đơn hàng đã hủy sẽ không thể khôi phục!
+                        </div>
+                    </div>
+                `,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Hủy đơn hàng',
+                confirmButtonText: 'Xác nhận hủy đơn',
                 cancelButtonText: 'Đóng',
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
+                didOpen: () => {
+                    const select = document.getElementById('cancelReasonSelect');
+                    const textarea = document.getElementById('cancelReasonOther');
+                    select.addEventListener('change', function() {
+                        if (this.value === 'Khác') {
+                            textarea.style.display = 'block';
+                        } else {
+                            textarea.style.display = 'none';
+                        }
+                    });
                 },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
+                preConfirm: () => {
+                    const reason = document.getElementById('cancelReasonSelect').value;
+                    const other = document.getElementById('cancelReasonOther').value.trim();
+                    if (reason === 'Khác' && !other) {
+                        Swal.showValidationMessage('Vui lòng nhập lý do chi tiết!');
+                        return false;
+                    }
+                    return reason === 'Khác' ? other : reason;
                 }
             }).then((result) => {
-                if (result.isConfirmed) {
+                if (result.isConfirmed && result.value) {
+                    const reason = result.value;
                     const orderRef = ref(database, `orders/${orderId}`);
-                    update(orderRef, { 
+                    update(orderRef, {
                         status: 'cancelled',
-                        cancelledAt: new Date().toISOString()
+                        cancelledAt: new Date().toISOString(),
+                        cancelReason: reason
                     }).then(() => {
                         Swal.fire({
                             icon: 'success',
                             title: 'Đã hủy đơn hàng',
-                            text: 'Đơn hàng của bạn đã được hủy thành công',
-                            timer: 1500,
+                            text: 'Đơn hàng của bạn đã được hủy thành công!',
+                            timer: 1800,
                             showConfirmButton: false
                         });
                     }).catch(error => {
@@ -2752,14 +2785,6 @@
                                     <span class="text-primary">${order.grandTotal?.toLocaleString('vi-VN')}đ</span>
                                 </div>
                             </div>
-
-                            ${order.status === 'pending' ? `
-                                <div class="mt-4">
-                                    <button class="btn btn-danger w-100" onclick="cancelOrder('${orderId}')">
-                                        Hủy đơn hàng
-                                    </button>
-                                </div>
-                            ` : ''}
                         </div>
                     `;
 
