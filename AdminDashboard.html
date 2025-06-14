@@ -1340,6 +1340,7 @@
             <th>Trạng thái</th>
             <th>Số lượng</th>
             <th>Khách hàng phải trả</th>
+            <th>Lý do hủy</th>
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -3110,6 +3111,7 @@
           </td>
           <td>${totalQuantity}</td>
           <td>${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</td>
+          <td>${order.status === 'cancelled' ? (order.cancelReason || '') : ''}</td>
           <td>
             <div class="d-flex flex-column gap-1">
               <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem</button>
@@ -3219,6 +3221,8 @@
                 }
               </span>
             </p>
+            ${order.status === 'cancelled' ? `<p><strong>Lý do hủy:</strong> ${order.cancelReason || ''}</p>
+            <p><strong>Thời gian hủy:</strong> ${order.cancelledAt ? new Date(order.cancelledAt).toLocaleString('vi-VN') : ''}</p>` : ''}
             <hr>
             <h6>Thông tin khách hàng</h6>
             <p><strong>Họ tên:</strong> ${order.customerInfo?.fullName || order.fullName || 'N/A'}</p>
@@ -3235,7 +3239,6 @@
             <hr>
             <h6>Coupon/Mã giảm giá</h6>
             <p><strong>Mã:</strong> ${order.couponCode || 'Không sử dụng'}</p>
-            <p><strong>Loại:</strong> ${order.couponType || ''}</p>
             <p><strong>Giá trị giảm:</strong> ${order.discountAmount ? order.discountAmount.toLocaleString('vi-VN') + ' đ' : '0 đ'}</p>
             <hr>
             <h6>Danh sách sản phẩm</h6>
@@ -3260,6 +3263,19 @@
             <p><strong>Tạm tính:</strong> ${order.subtotal ? order.subtotal.toLocaleString('vi-VN') + ' đ' : 'N/A'}</p>
             <p><strong>Phí vận chuyển:</strong> ${order.shippingFee ? order.shippingFee.toLocaleString('vi-VN') + ' đ' : '0 đ'}</p>
             <p><strong>Khách phải trả:</strong> <span class="text-primary fw-bold">${order.grandTotal ? order.grandTotal.toLocaleString('vi-VN') + ' đ' : 'N/A'}</span></p>
+            <hr>
+            <h6>Thông tin vận chuyển</h6>
+            <p><strong>Người nhận:</strong> ${order.shippingInfo?.receiverName || 'N/A'}</p>
+            <p><strong>SĐT:</strong> ${order.shippingInfo?.receiverPhone || 'N/A'}</p>
+            <p><strong>Địa chỉ:</strong> ${order.shippingInfo?.address || 'N/A'}</p>
+            <hr>
+            <h6>Thông tin hóa đơn</h6>
+            <p><strong>Họ tên:</strong> ${order.billingInfo?.fullName || 'N/A'}</p>
+            <p><strong>Email:</strong> ${order.billingInfo?.email || 'N/A'}</p>
+            <p><strong>SĐT:</strong> ${order.billingInfo?.phone || 'N/A'}</p>
+            <p><strong>Địa chỉ:</strong> ${order.billingInfo?.address || 'N/A'}</p>
+            <hr>
+            
           `;
           // Hiển thị modal chi tiết đơn hàng
           new bootstrap.Modal(document.getElementById('orderDetailModal')).show();

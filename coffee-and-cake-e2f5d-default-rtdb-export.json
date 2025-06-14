@@ -528,6 +528,44 @@
       "sender": "quantri1amcoffeeandcake@gmail.com",
       "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
       "timestamp": "2025-05-29T01:27:50.291Z"
+    },
+    "-OScp9ltWsUoplSZ_47v": {
+      "message": "hi'",
+      "sender": "Khangg",
+      "senderId": "dovlU9vGCIfzWiqYRjXcOYXHFLv1",
+      "timestamp": "2025-06-13T10:27:37.001Z"
+    },
+    "-OScyNSEx4vo4nuXggcT": {
+      "message": "ôm cc",
+      "replyTo": "Khangg",
+      "sender": "quantri1amcoffeeandcake@gmail.com",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-06-13T11:07:52.714Z"
+    },
+    "-OShUaCHeOqF1EOwgc6-": {
+      "message": "Chaod",
+      "sender": "Võ Trần Hoàng Bảo Khang",
+      "senderId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+      "timestamp": "2025-06-14T08:11:29.547Z"
+    },
+    "-OShUbEYxVUifL8mea63": {
+      "message": "oh shet bro",
+      "sender": "Siuu",
+      "senderId": "tXtQMunTghgl8NnrxiOidRmZNYe2",
+      "timestamp": "2025-06-14T08:11:32.219Z"
+    },
+    "-OShUeMj6Zghkq5yOGOU": {
+      "message": "hello ní",
+      "sender": "Siuu",
+      "senderId": "tXtQMunTghgl8NnrxiOidRmZNYe2",
+      "timestamp": "2025-06-14T08:11:45.042Z"
+    },
+    "-OShx55ZkrL6s0j1PUqd": {
+      "message": "??",
+      "replyTo": "Siuu",
+      "sender": "quantri1amcoffeeandcake@gmail.com",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-06-14T10:20:20.714Z"
     }
   },
   "contactMessages": {
@@ -638,23 +676,8 @@
   },
   "news": [
     {
-      "alt": "Khuyến mãi tháng 4",
-      "content": [
-        "Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt: Mua 1 tặng 1 tất cả đồ uống trong menu! Từ cà phê đen đá đậm đà đến latte nghệ thuật, bạn đều có thể thưởng thức cùng bạn bè mà không lo về giá.",
-        "Thời gian: 15-17/04/2025<br>Địa điểm: Tất cả chi nhánh Ấm - Coffee and Cake<br>Lưu ý: Áp dụng cho đơn hàng tại chỗ và mang về.",
-        "Hãy đến ngay để không bỏ lỡ cơ hội này!"
-      ],
-      "date": "2025-05-25",
-      "image": "https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg",
-      "summary": "Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt cho tất cả đồ uống trong menu...",
-      "title": "Khuyến Mãi"
-    },
-    {
       "alt": "Bánh mới",
-      "content": [
-        "Lấy cảm hứng từ mùa hoa anh đào Nhật Bản, Cheesecake Sakura của Ấm mang đến hương vị thanh nhẹ, ngọt ngào với lớp kem phô mai mịn màng và chút sắc hồng phấn. Đây là món bánh hoàn hảo cho những buổi chiều thư giãn bên ly cà phê yêu thích.",
-        "Giá: 65.000 VND/lát<br>Có mặt từ: 10/04/2025<br>Đặt hàng ngay để trải nghiệm!"
-      ],
+      "content": "<p>Lấy cảm hứng từ mùa hoa anh đào Nhật Bản, Cheesecake Sakura của Ấm mang đến hương vị thanh nhẹ, ngọt ngào với lớp kem phô mai mịn màng và chút sắc hồng phấn. Đây là món bánh hoàn hảo cho những buổi chiều thư giãn bên ly cà phê yêu thích.,Giá: 65.000 VND/lát</p><p><br></p><p>Có mặt từ: 10/04/2025</p><p><br></p><p>Đặt hàng ngay để trải nghiệm!</p>",
       "date": "2025-05-25",
       "image": "https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg",
       "summary": "Lấy cảm hứng từ mùa hoa anh đào, Cheesecake Sakura mang đến hương vị thanh nhẹ, ngọt ngào...",
@@ -662,41 +685,116 @@
     },
     {
       "alt": "Mẹo pha chế",
-      "content": [
-        "Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà! Các barista của Ấm chia sẻ 5 bước đơn giản:",
-        "1. Chọn cà phê espresso chất lượng.<br>2. Đánh sữa tạo bọt mịn bằng máy hoặc bình French press.<br>3. Đổ sữa từ độ cao 5-10cm để tạo lớp nền.<br>4. Dùng tăm hoặc que khuấy để vẽ hình trái tim, lá cây.<br>5. Thực hành đều đặn để thành thạo!",
-        "Thử ngay và chia sẻ thành quả của bạn với chúng tôi nhé!"
-      ],
+      "content": "<p>Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà! Các barista của Ấm chia sẻ 5 bước đơn giản:,1. Chọn cà phê espresso chất lượng.</p><p><br></p><p>2. Đánh sữa tạo bọt mịn bằng máy hoặc bình French press.</p><p><br></p><p>3. Đổ sữa từ độ cao 5-10cm để tạo lớp nền.</p><p><br></p><p>4. Dùng tăm hoặc que khuấy để vẽ hình trái tim, lá cây.</p><p><br></p><p>5. Thực hành đều đặn để thành thạo!,Thử ngay và chia sẻ thành quả của bạn với chúng tôi nhé!</p>",
       "date": "2025-05-25",
       "image": "https://thoidaicoffee.vn/wp-content/uploads/2024/08/nghe-thuat-ve-latte-art-nguon-goc-su-phat-trien-va-dinh-cao-cua-nghe-thuat-am-thuc-2-700x473.jpg",
       "summary": "Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà...",
       "title": "Mẹo Pha Chế"
     },
     {
-      "alt": "Sự kiện cộng đồng",
-      "content": [
-        "Để tri ân khách hàng, Ấm - Coffee and Cake tổ chức Ngày Cà Phê Miễn Phí vào 01/04/2025. Tham gia để thưởng thức cà phê miễn phí, giao lưu với các barista, và nhận quà tặng độc quyền như túi vải, ly tái chế.",
-        "Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!"
-      ],
-      "date": "2025-05-25",
-      "image": "https://kissenglishcenter.com/wp-content/uploads/2022/07/mau-cau-giao-tiep-tieng-anh-cho-nhan-vien-phuc-vu-cafe-1024x576.jpg",
-      "summary": "Để tri ân khách hàng, Ấm tổ chức Ngày Cà Phê Miễn Phí với nhiều hoạt động thú vị...",
+      "alt": "COFFEE EXPO VIETNAM 2025",
+      "content": "<p class=\"ql-align-center\"><strong style=\"color: rgb(128, 0, 0);\">COFFEE EXPO VIETNAM</strong></p><p class=\"ql-align-justify\">Coffee Expo do Coex tổ chức là một trong những triển lãm cà phê lớn nhất tại Hàn Quốc, có tên gọi “Coffee Expo Seoul” với hơn 12 năm tổ chức. Từ năm 2015, Coex đã lựa chọn thị trường Việt Nam và cho ra mắt thành công Triển lãm Quốc tế Cà phê, Trà và Bánh ngọt Việt Nam (Coffee Expo Vietnam). Dưới đây là kết quả của Coffee Expo Vietnam năm gần nhất:</p><ul><li><strong style=\"color: rgb(221, 153, 51);\">400 </strong><strong>GIAN HÀNG</strong></li><li><span style=\"transition-property: all; font-weight: bolder; color: rgb(221, 153, 51);\">240 </span>THƯƠNG HIỆU</li><li><span style=\"transition-property: all; font-weight: bolder; color: rgb(221, 153, 51);\">19210 </span>KHÁCH HÀNG</li><li><span style=\"transition-property: all; font-weight: bolder; color: rgb(221, 153, 51);\">16 </span>QUỐC GIA</li></ul><p><br></p>",
+      "date": "2025-06-13",
+      "image": "https://coffeeexpovietnam.com/wp-content/uploads/2025/01/465567558_946947494131300_5311087632650013570_n-1.jpg",
+      "summary": "Triển lãm coffee - COFFEE EXPO VIETNAM 2025",
       "title": "Sự Kiện"
+    },
+    {
+      "alt": "HCMC FOOD & DRINK SHOW 2025",
+      "content": "<p>\tHCMC FOOD &amp; DRINK SHOW 2025 là hội chợ Thực phẩm và Đồ uống xu hướng mới hàng đầu dành cho giới trẻ TP. Hồ Chí Minh, diễn ra từ ngày 18/07/2025 - 21/07/2025 tại Trung tâm Triễn Lãm và Hội chợ Tân Bình (TBECC) với chủ đề “Hương vị tuổi trẻ”. </p><p><br></p><p>Tiếp nối thành công của sự kiện FOOD &amp; DRINK SHOW tổ chức tại Cần Thơ, HCMC FOOD &amp; DRINK SHOW 2025 quy tụ hơn 600+ thương hiệu hàng đầu ngành F&amp;B với rất nhiều món ngon và thức uống xu hướng mới nhất đến từ nhiều quốc gia sẵn sàng ra mắt. Đây là cơ hội vàng để bạn trải nghiệm và kết nối kinh doanh trực tiếp với đối tác chỉ trong 04 ngày duy nhất.</p>",
+      "date": "2025-06-13",
+      "image": "https://scontent.fsgn2-10.fna.fbcdn.net/v/t39.30808-6/492087938_122126838218777716_1007164561085973741_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGMBmdHjzKjFvmxRMxgxXxYL3ySm_TmOREvfJKb9OY5EUkkM5LSiocdiCY9wEnP7tpp6guUvS9JuA_2TD3PBsmC&_nc_ohc=Hd72vbgL7qwQ7kNvwEa8qsr&_nc_oc=Adn3Wuc-DhD6PLnBRSYCxj4sX-lZPRGmKV9x2Z9QMIZf0dvgKNOvCW7zM2vgD_AtxgI&_nc_zt=23&_nc_ht=scontent.fsgn2-10.fna&_nc_gid=ybwAU84IRlRLQMpthpHfjw&oh=00_AfPxEKe915r4g2t7rCZTua_SEYqdni1DMEnTRXZ1p2GLgg&oe=6851E13B",
+      "summary": "Hội chợ Thực Phẩm và Đồ uống Xu hướng mới dành cho giới trẻ TP. HCM - HCMC FOOD & DRINK SHOW 2025",
+      "title": "Sự Kiện"
+    },
+    {
+      "alt": "Vietnam International Bakery Show ",
+      "content": "<p><strong>Triển Lãm Quốc Tế Ngành Bánh Tại Việt Nam - VIBS 2025</strong></p><p><strong> Thời gian:</strong> 10 - 13 Tháng 12, 2025</p><p> <strong>Địa điểm:</strong> Trung tâm Hội chợ và Triển lãm Sài Gòn (SECC), TP.HCM</p><p>Triển lãm Quốc Tế Ngành Bánh VIBS 2025 là sự kiện không thể bỏ lỡ trong ngành bánh! Hãy chuẩn bị để trải nghiệm một sự kiện ấn tượng, nơi quy tụ những thương hiệu hàng đầu, các sáng tạo đột phá và xu hướng mới nhất trong ngành bánh. Đây là cơ hội tuyệt vời để bạn khám phá, kết nối và mở rộng cơ hội kinh doanh trong một lĩnh vực phát triển mạnh mẽ.</p><p><strong>Điểm nhấn sự kiện:</strong></p><ul><li class=\"ql-indent-1\"><strong>Trưng bày sản phẩm đỉnh cao:</strong> Khám phá những chiếc bánh ngon tuyệt vời, nguyên liệu tinh túy và thiết bị công nghệ hiện đại từ các thương hiệu quốc tế.</li><li class=\"ql-indent-1\"><strong>Cơ hội kết nối:</strong> Gặp gỡ các đối tác, nhà cung cấp và chuyên gia hàng đầu, mở rộng mạng lưới kinh doanh toàn cầu.</li><li class=\"ql-indent-1\"><strong>Học hỏi và cập nhật xu hướng mới:</strong> Tham gia các hội thảo chuyên sâu và trao đổi bổ ích với những người tiên phong trong ngành bánh.</li></ul><p>VIBS 2025 là cầu nối tuyệt vời giữa các doanh nghiệp Việt Nam và quốc tế, nơi bạn có thể tìm kiếm cơ hội hợp tác, nâng cao chất lượng sản phẩm và khám phá các công nghệ sản xuất bánh tiên tiến.</p><p>Đừng bỏ lỡ cơ hội trở thành một phần của sự kiện nổi bật này! Hãy đến và cùng chúng tôi tạo nên một trải nghiệm không giới hạn cho ngành bánh tại Việt Nam.</p><p>Đăng ký ngay để sở hữu vé tham gia và tận dụng cơ hội kinh doanh tuyệt vời tại VIBS 2025!</p>",
+      "date": "2025-06-13",
+      "image": "https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/482222144_972120268342558_2838960719473583626_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGjD3DyGn4_LVntExF-MkXOxldt1T9L_pnGV23VP0v-mVgFMQNVh3KLQ3UWSE7JwpD5Oy3jRyBBtwdWVBIl6ewB&_nc_ohc=m3TBp0ccNiYQ7kNvwFrBNcN&_nc_oc=AdmrBYoLvefXjdzIl2QzCrGa4-dpyLaiK300Ax6QFvhP0GV_Psjj4_EqzoR5jFtN-oQ&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=mqxTVAHVJ5TRsQ2tOoYZTw&oh=00_AfNfPcibWItcQ1vZtJnl1msBrgHGlHPf6IhnTZguvuB5uA&oe=6852034B",
+      "summary": "Triển lãm Quốc tế Ngành Bánh tại Việt Nam - VIBS 2025\n10 Tháng 12 - 13 Tháng 12 năm 2025\nTrung tâm Hội chợ và Triển lãm Sài Gòn (SECC)",
+      "title": "Sự Kiện"
+    },
+    {
+      "alt": "Americano đá (Iced Americano)",
+      "content": "<p><strong>Nguyên liệu</strong></p><ul><li>8-10gr&nbsp;bột cà phê</li><li>60-70ml nước nóng</li><li>Đá viên</li><li>Dụng cụ: Thiết bị ép bột cà phê, 1 cái&nbsp;ly cao, 1 cái&nbsp;ly thấp</li></ul><p><br></p><p><strong>Cách thực hiện</strong></p><p>Cho 8-10gr bột cà phê vào thiết bị ép rồi đổ 60-70ml nước sôi vào. Tiếp đến, dùng tay ấn thiết bị để chắt thành những giọt cà phê vào ly thấp. Lấy ly dài cho đá đầy,&nbsp;<strong>đổ nước lọc vào 80% ly rồi cho phần cà phê vừa chắt vào là hoàn thành.</strong></p><p><br></p><p><strong>Thành phẩm</strong></p><p><span style=\"color: rgb(33, 37, 41);\">Một ly Americano đá đậm đà đã được hoàn thành. Khi uống bạn sẽ cảm nhận được&nbsp;</span><strong style=\"color: rgb(33, 37, 41);\">vị đắng dịu</strong><span style=\"color: rgb(33, 37, 41);\">&nbsp;của cà phê thấm dần đều ở miệng,&nbsp;</span><strong style=\"color: rgb(33, 37, 41);\">giúp cho ngày mới thêm tỉnh táo.</strong></p><p><br></p>",
+      "date": "2025-06-13",
+      "image": "https://cdn.tgdd.vn/Files/2021/09/21/1384536/tong-hop-8-cong-thuc-pha-cafe-pho-bien-nhat-tai-han-quoc-202109212024494821.jpg",
+      "summary": "Cách để pha chế Americano đá - (Iced Americano)",
+      "title": "Mẹo Pha Chế"
+    },
+    {
+      "alt": "Latte đá (Iced Latte)",
+      "content": "<p><strong>Nguyên liệu</strong></p><ul><li>1 hộp&nbsp;sữa tươi không đường&nbsp;180ml</li><li>Đá viên</li><li>8-10gr bột cà phê</li><li>60-70ml nước nóng</li><li>Dụng cụ: Thiết bị ép bột cà phê, 1 cái ly thấp,&nbsp;muỗng</li></ul><p><br></p><p><strong>Cách thực hiện</strong></p><p>Đổ đá vào đầy ly, đổ sữa&nbsp;<strong>khoảng 80% ly.</strong>&nbsp;Cho 8-10gr bột cà phê vào thiết bị ép rồi đổ 60-70ml nước sôi vào. Tiếp đến, dùng tay ấn thiết bị để chắt thành những giọt cà phê vào ly rồi lấy muỗng khuấy đều là hoàn thành.</p><p><br></p><p><strong>Thành phẩm</strong></p><p><span style=\"color: rgb(33, 37, 41);\">Món Latte đá với vị thơm, béo từ sữa kết hợp cùng</span><strong style=\"color: rgb(33, 37, 41);\">&nbsp;1 chút cà phê đậm đà.</strong><span style=\"color: rgb(33, 37, 41);\">&nbsp;Tất cả hòa quyện thành một loại thức uống</span><strong style=\"color: rgb(33, 37, 41);\">&nbsp;thơm ngon cho ngày mới tốt lành.</strong></p><p><br></p>",
+      "date": "2025-06-13",
+      "image": "https://cdn.tgdd.vn/Files/2021/09/21/1384536/tong-hop-8-cong-thuc-pha-cafe-pho-bien-nhat-tai-han-quoc-202109212027174271.jpg",
+      "summary": "Công thức pha chế Latte đá - (Iced Latte)",
+      "title": "Mẹo Pha Chế"
+    },
+    {
+      "alt": "Latte kem đá (Latte with icecream)",
+      "content": "<p><strong>Nguyên liệu</strong></p><ul><li>1 hộp sữa tươi không đường 180ml</li><li>Đá viên</li><li>8-10gr bột cà phê</li><li>0,5gr&nbsp;bột ca cao</li><li>1 viên kem vani</li><li>60-70ml nước nóng</li><li>Dụng cụ: Thiết bị ép bột cà phê, 1 cái ly thấp, 1 cái&nbsp;ly nhỏ</li></ul><p><br></p><p><strong>Cách thực hiện</strong></p><p>1. Cho 8-10gr bột cà phê vào thiết bị ép rồi đổ 60-70ml nước sôi vào. Tiếp đến, dùng tay ấn thiết bị&nbsp;để chắt thành những giọt cà phê vào ly nhỏ.</p><p>2. Đổ đá vào nửa ly, đổ tiếp sữa đến&nbsp;<strong>khoảng 70% ly</strong>&nbsp;rồi cho viên kem lên. Tiếp đến rắc một ít bột ca cao lên bề mặt kem. Cuối cùng, đổ ly cà phê vừa pha&nbsp;<strong>đến 90% ly</strong>&nbsp;là hoàn thành.</p><p><br></p><p><strong>Thành phẩm</strong></p><p><span style=\"color: rgb(33, 37, 41);\">Không chỉ thơm ngon bởi sự hòa quyện của sữa tươi và cà phê, nay đã có thêm&nbsp;</span><strong style=\"color: rgb(33, 37, 41);\">một viên kem lạnh béo mịn cùng 1 chút đắng dịu từ bột ca cao cùng ca phê</strong><span style=\"color: rgb(33, 37, 41);\">, tạo nên một thức uống độc đáo, gây nghiện.</span></p>",
+      "date": "2025-06-13",
+      "image": "https://cdn.tgdd.vn/Files/2021/09/21/1384536/tong-hop-8-cong-thuc-pha-cafe-pho-bien-nhat-tai-han-quoc-202109212029008138.jpg",
+      "summary": "Công thức pha Latte kem đá - (Latte with icecream)",
+      "title": "Mẹo Pha Chế"
+    },
+    {
+      "alt": "SWEET LOVE FESTIVAL",
+      "content": "<p>SWEET LOVE FESTIVAL – CHẠM VỊ NGỌT, ĐÓN YÊU THƯƠNG </p><p>Là một trong những sự kiện ấn tượng của Lễ hội Đèn lồng Quốc tế Ocean 2025, Sweet Love Festival mở ra một thế giới tràn ngập sắc màu, hương vị và những khoảnh khắc ngọt ngào. Đây không chỉ là điểm hẹn hoàn hảo cho các cặp đôi mùa Valentine, mà còn là thiên đường dành cho những ai yêu thích sự lãng mạn và vị ngọt của hạnh phúc.</p><p><br></p><p>-30 gian hàng bánh ngọt, kẹo, chocolate từ Việt Nam, Hàn Quốc, Nhật Bản – một bữa tiệc vị giác dành cho những tín đồ hảo ngọt.</p><p>-Workshop “Làm bánh, kết tình” – tự tay làm nên chiếc bánh ngọt ngào tặng người thương.</p><p>-Minigame ghép đôi “Tìm cặp hoàn hảo” – nơi những trái tim đồng điệu tìm thấy nhau!</p><p>-Cơ hội nhận chuyến du lịch nghỉ dưỡng tại Sunny Camping Mộc Châu hoặc Sunny Camping Sóc Sơn dành cho cặp đôi có ảnh đạt tương tác cao nhất trên fanpage!</p><p>-Đêm nhạc “Sweet Night – Đêm ngọt ngào” (14 &amp; 15/02) – thả mình vào những giai điệu acoustic lãng mạn dưới ánh đèn lồng lung linh.</p><p>-Thời gian: 14-15-16/02/2025 (3 ngày)</p><p>-Địa điểm: Lễ hội Đèn Lồng Quốc tế Ocean, Vinhomes Ocean Park 2</p><p>-Sở hữu ngay tấm vé Lễ hội Đèn lồng Quốc tế Ocean 2025 để tham gia Sweet Love Festival và hàng loạt hoạt động hấp dẫn! Đặt vé ngay: <a href=\"https://tinyurl.com/OceanCity-LHDL?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExR0tGQTVqSDJvZHdNcGVtcQEehNSpRpdwHRGVGuqFnEliCJvJhRQg1wTr6lkjjXOg3FxPHA05ZQ1BCPUPeDM_aem_eZzNiv5Nzfksyv4hGSzYZw\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: transparent; color: rgb(90, 167, 255);\">https://tinyurl.com/OceanCity-LHDL</a></p>",
+      "date": "2025-06-14",
+      "image": "https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/483942645_564625163298902_1875748870839562780_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeG8JWJQSVGgAr169qghPt7LW8ddW4WtykZbx11bha3KRsh4PXCdHbcfncJP1TYYGPHapIL2UO0_H96qkJSA2Wor&_nc_ohc=gewwGtB0dWYQ7kNvwFrFEz6&_nc_oc=AdlP_UwcnWw4CUgmClUWmRq5G4lYaSbq3BamxuEibcqYe8RwflRXXlR1nklcWShRCww&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=kuNYsLs1Cxqc2Ym0yon--w&oh=00_AfPi_sBVbHPaezyLYuvMQKjP_d95k18pNHGrYIj9sl342Q&oe=6851DBFD",
+      "summary": "Sự kiện về bánh ngọt cho các cặp đôi vào sự kiện Valentine - SWEET LOVE FESTIVAL",
+      "title": "Sự Kiện"
+    },
+    {
+      "alt": "Triển lãm Thuỷ tinh",
+      "content": "<p><em>“Thế giới thật đẹp Đôi khi ta có thể gặp những khoảnh khắc như thế Mặt nước đỏ rực lấp lánh, tiếng chim hót, cánh hoa bay tán loạn, Mùi đất sau cơn mưa, giọng hát xa xăm vang vọng dưới bầu trời sao trong trẻo, Ánh trăng trong suốt chiếu sáng tuyết trắng, Giọt mưa lấp lánh trên rêu, sức mạnh của ngọn núi khổng lồ,… Và rồi, cảnh sắc uốn lượn phản chiếu qua khung cửa kính cũng đẹp đẽ làm sao Bóng dáng trong suốt đón nhận ánh sáng, thời gian bị hút vào trong khối thủy tinh,..”</em></p><p>✨Mượn những lời của nghệ nhân thuỷ tinh Imaimichi để giới thiệu cho triển lãm đầu tiên của cô tại Việt Nam, thế giới qua đôi mắt của người nghệ nhân được thể hiện qua từng khối thuỷ tinh lấp lánh, đầy sắc màu.</p><p>✨Ngay từ khi còn bé, cô Imaimichi đã có niềm yêu thích đặc biệt với những khối màu sắc kỳ diệu do thuỷ tinh mang lại, và ấp ủ niềm mong ước sẽ tạo ra thuỷ tinh của mình – để rồi sau nhiều năm nghiên cứu, học hỏi từ kỹ thuật truyền thống kết hợp với những trải nghiệm của bản thân, các tác phẩm thuỷ tinh đã ra đời, tinh tế và kỳ diệu – như những cánh đồng oải hương đang trải dài tít tắp hay sắc đen huyền bí, lấp lánh của dải ngân hà, hoặc có đôi khi lại tĩnh lặng trong suốt như những giọt sương của sớm ban mai.</p><p>✨Thế giới rực rỡ với vô vàn sắc màu, qua mỗi góc nhìn, mỗi lăng kính ta lại được ngắm nhìn thế giới theo những cách khác nhau – nếu như gốm sứ mang vẻ đẹp dịu dàng, ấm áp thì thuỷ tinh lại mang trong mình vẻ lộng lẫy, kiêu sa khó có thể rời mắt.</p><p>✨ Và đến với triển lãm lần này, ta sẽ có cơ hội cùng chiêm ngưỡng những tác phẩm như thế.</p><p>✨&nbsp;Thế giới tươi đẹp vì mỗi người đều có thể tự tìm một bộ môn nghệ thuật cho mình, tìm thấy một cách sống phù hợp với mình nhất, mà thông qua đó chính là quá trình tu tập, giúp ta tịnh tiến hàng ngày, phát triển nội tại, hưởng thụ trọn vẹn ý nghĩa của cuộc sống.</p><p><a href=\"https://www.tita.art/wp-content/uploads/2024/09/z5822055446576_94e0d64d07ed206b2140a2f73fc02204.jpg\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(41, 54, 41); background-color: transparent;\"><img src=\"https://www.tita.art/wp-content/uploads/2024/09/z5822055446576_94e0d64d07ed206b2140a2f73fc02204-755x400.jpg\" height=\"400\" width=\"755\"></a></p><p>Thế giới phản chiếu qua từng mảnh thuỷ tinh trong suốt – có sắc tím của bầu trời sau cơn mưa, có ánh nắng nhuộm vàng nơi đồi cát, có ánh hoàng hôn đỏ rực cuối chân trời, lại có cả những ngọn cỏ xanh lấp lánh đẫm sương…thế giới đẹp đẽ rực rỡ ấy dành cho ta, bởi ta biết cuộc sống ngắn ngủi và trân trọng từng khoảnh khắc.</p><p><em>Triển lãm Thuỷ tinh – Hơi thở của khoảnh khắc:</em></p><p>⭐️&nbsp;<strong>Nghệ nhân Nhật Bản Imaimichi</strong></p><p>🏠<strong>&nbsp;Địa chỉ: 164A Trấn Vũ, Trúc Bạch, Ba Đình, Hà Nội</strong></p><p>🕰️<strong>&nbsp;Thời gian: 14.9.25 – 19.9.25 (10am-6pm)</strong></p>",
+      "date": "2025-06-13",
+      "image": "https://www.tita.art/wp-content/uploads/2024/09/z5822055435814_90384d6e3a0922993b3ae0cad9b4308b-1400x742.jpg",
+      "summary": "Triển lãm Thuỷ tinh - Sự kiện trưng bày các đồ vật thủy tinh, pha lê như ly, cốc ",
+      "title": "Sự Kiện"
+    },
+    {
+      "alt": "Mousse Tiramisu",
+      "content": "<p><span style=\"color: rgb(0, 0, 0);\">Hương vị dễ ghiền được tạo nên bởi chút đắng nhẹ của cà phê, lớp kem trứng béo ngọt dịu hấp dẫn</span></p>",
+      "date": "2025-06-13",
+      "image": "https://product.hstatic.net/1000075078/product/1737355334_tiramisu_02b51263d15e419aa7da19528c369fa3.png",
+      "summary": "Ra mắt món bánh tiramisu mới - Mousse Tiramisu",
+      "title": "Sản Phẩm Mới"
+    },
+    {
+      "alt": "Chocolate Dream Cake",
+      "content": "<p><strong>Hương vị:</strong>&nbsp;Đắng nhẹ – ngọt dịu – đậm vị socola</p><p><strong>Cấu trúc bánh:</strong></p><p>Bánh gồm 5 lớp (từ dưới lên trên):</p><p>+ Bạt bánh socola cake nướng.</p><p>+ Mousse socola đen nguyên chất.</p><p>+ Lớp ganache dẻo socola đen.</p><p>+ Lớp socola nguyên chất.</p><p>+ Bột cacao.</p>",
+      "date": "2025-06-13",
+      "image": "https://cailonuong.com/wp-content/uploads/2024/12/sweetin-21.jpg",
+      "summary": "Ra mắt món bánh kem chocolate trong hộp thiếc - Chocolate Dream Cake",
+      "title": "Sản Phẩm Mới"
+    },
+    {
+      "alt": "Công thức matcha latte",
+      "content": "<p><strong>Nguyên liệu: </strong></p><p><strong>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bột matcha: 3 - 5gr tuỳ khẩu vị</strong></p><p><strong>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Syrup Đường: 10ml hoặc mật ong</strong></p><p><strong>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sữa tươi: 150ml (Tốt nhất bạn nên dùng sữa tươi thanh trùng Dalat Milk không đường)</strong></p><p><strong>·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Syrup vanilla: 10 ml</strong></p><p><strong>Cách pha:</strong></p><p><strong>1.&nbsp;&nbsp;Đổ 5g matcha vào cốc rộng miệng, thêm 40ml nước nóng 80 độ C vào cốc rồi dùng chổi chasen đánh trà cho đến khi lên bọt trà mịn.</strong></p><p><strong>2.&nbsp;&nbsp;Thêm syrup đường và syrup vanilla vào rồi khuấy đều hỗn hợp trên</strong></p><p><strong>3.&nbsp;&nbsp;Cho 350ml đá viên vào cốc thuỷ tinh cao. Rồi từ từ rót 150ml sữa tươi vào cốc.</strong></p>",
+      "date": "2025-06-13",
+      "image": "https://file.hstatic.net/1000135323/file/ice-matcha-latte_f1cad76a47bc453b97b88e83637a9168_1024x1024.jpg",
+      "summary": "Công thức pha chế Matcha latte chuẩn vị",
+      "title": "Mẹo Pha Chế"
     }
   ],
   "orders": {
-    "-OScgZVxkTxW7KWkPKAt": {
+    "-OSi1FqyPWc9J3lPJjhm": {
       "billingInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long",
         "email": "baokhangml99@gmail.com",
         "fullName": "Võ Trần Hoàng Bảo Khang",
         "phone": "0795858581"
       },
-      "confirmedAt": "2025-06-13T09:50:26.987Z",
-      "couponCode": "THAYKIENDEPTRAI",
+      "cancelReason": "Đặt nhầm/Không còn nhu cầu",
+      "cancelledAt": "2025-06-14T10:43:43.963Z",
+      "confirmedAt": "2025-06-14T10:43:21.799Z",
+      "couponCode": "SINHNHATAM",
       "couponDiscount": 0,
       "couponType": "",
-      "createdAt": "2025-06-13T09:50:03.521Z",
+      "createdAt": "2025-06-14T10:42:55.826Z",
       "customerInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long",
         "email": "baokhangml99@gmail.com",
@@ -704,62 +802,76 @@
         "name": "Võ Trần Hoàng Bảo Khang",
         "phone": "0795858581"
       },
-      "date": "13/6/2025",
+      "date": "14/6/2025",
       "deliveryMethod": "standard",
-      "discountAmount": 240500,
+      "discountAmount": 83600,
       "fullName": "Võ Trần Hoàng Bảo Khang",
-      "grandTotal": 240500,
+      "grandTotal": 334400,
       "items": [
         {
-          "image": "https://phela.vn/wp-content/uploads/2023/07/size-vuong-02.jpg",
-          "name": "Phê Truffle",
-          "price": 50000,
-          "productId": "drinks-item6",
-          "quantity": 1
-        },
-        {
-          "image": "https://phela.vn/wp-content/uploads/2023/07/size-vuong-03.jpg",
-          "name": "Phê nâu",
-          "price": 39000,
-          "productId": "drinks-item5",
-          "quantity": 1
-        },
-        {
-          "image": "https://vinbarista.com/uploads/editer/images/blogs/espresso-la-gi.jpg",
-          "name": "espresso",
+          "image": "https://img.freepik.com/free-photo/soft-drink-beverage-with-ice-cubes_116380-115.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+          "name": "Cà Phê Đen Đá",
           "price": 30000,
-          "productId": "drinks-item4",
+          "productId": "drinks-item1",
           "quantity": 1
         },
         {
-          "image": "https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
-          "name": "Cheesecake",
+          "image": "https://cdn.tgdd.vn/Files/2020/04/08/1247674/ca-phe-espresso-cappuccino-hay-macchiato-khac-nhau-nhu-the-nao-202004081943130900.jpg",
+          "name": "Cappuccino đá",
           "price": 55000,
-          "productId": "cakes-item2",
+          "productId": "drinks-item10",
           "quantity": 1
         },
         {
-          "image": "https://product.hstatic.net/1000398438/product/309579546_503758468425458_1014476938877965755_n_3de06d8a44bf490ab91262ba111c1925_grande.jpeg",
-          "name": "Bánh kem màu oreo",
-          "price": 270000,
-          "productId": "cakes-item18",
+          "image": "https://www.starbucks.com.hk/media/catalog/product/c/a/caramel_macchiato_hot.jpg",
+          "name": "Caramel nacchiato nóng",
+          "price": 55000,
+          "productId": "drinks-item11",
           "quantity": 1
         },
         {
-          "image": "https://product.hstatic.net/1000104153/product/banh_donut_chocolate_den_05fa3ff0e45d428d80374c2014958fe1_master.jpg",
-          "name": "Bánh donut chocolate đen",
-          "price": 37000,
-          "productId": "cakes-item20",
+          "image": "https://lh3.googleusercontent.com/proxy/louSyW0X3ipDL39quxzfLQ7nCeyIs9D8LTdfvNsy8qxHxHJEqU4cWsi82Aan03gMkYp2zJWZZ2mI7TwTkekKXeqeCEokKc-w0pRA4EzbXbQVFUUp6gTf-jo",
+          "name": "Caramel macchiato đá",
+          "price": 65000,
+          "productId": "drinks-item12",
+          "quantity": 1
+        },
+        {
+          "image": "https://i0.wp.com/90scoffee.vn/wp-content/uploads/2024/08/ca-phe-latte-1.jpeg?fit=2560%2C1707&ssl=1",
+          "name": "Latte nóng",
+          "price": 59000,
+          "productId": "drinks-item14",
+          "quantity": 1
+        },
+        {
+          "image": "https://cdn1.123job.vn/123job/uploads/2021/09/17/2021_09_17______b7ab5c82e79bbcf8edc2378b102dde66.jpg",
+          "name": "Latte đá",
+          "price": 55000,
+          "productId": "drinks-item15",
+          "quantity": 1
+        },
+        {
+          "image": "https://phachedouong.com/wp-content/uploads/2022/11/word-image-624-1.jpg",
+          "name": "Đường đen sữa đá",
+          "price": 45000,
+          "productId": "drinks-item16",
+          "quantity": 1
+        },
+        {
+          "image": "https://phela.vn/wp-content/uploads/2021/07/14941.jpg",
+          "name": "Trà vỏ cà phê",
+          "price": 54000,
+          "productId": "drinks-item17",
           "quantity": 1
         }
       ],
       "orderNote": "",
       "paymentDetails": {
-        "amount": 240500,
-        "payDate": "13/06/2025 16:51:02",
+        "amount": 334400,
+        "payDate": "14/06/2025 17:43:58",
         "responseCode": "00",
-        "transactionNo": "15016671",
-        "vnp_TxnRef": "7KWKPKAT"
+        "transactionNo": "15018345",
+        "vnp_TxnRef": "J3LPJJHM"
       },
       "paymentMethod": "vnpay",
       "paymentStatus": "paid",
@@ -769,437 +881,88 @@
         "receiverName": "Võ Trần Hoàng Bảo Khang",
         "receiverPhone": "0795858581"
       },
-      "status": "confirmed",
-      "subtotal": 481000,
-      "time": "16:50:03",
-      "updatedAt": "2025-06-13T09:50:26.987Z",
+      "status": "cancelled",
+      "subtotal": 418000,
+      "time": "17:42:55",
+      "updatedAt": "2025-06-14T10:43:21.799Z",
       "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
     }
   },
   "payment_results": {
-    "15016172": {
+    "15018345": {
       "orderInfo": {
         "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OSbxEv9aa2EQO4k6hN6",
-        "totalAmount": 45000
+        "orderKey": "-OSi1FqyPWc9J3lPJjhm",
+        "totalAmount": 334400
       },
-      "orderKey": "-OSbxEv9aa2EQO4k6hN6",
+      "orderKey": "-OSi1FqyPWc9J3lPJjhm",
       "paymentInfo": {
-        "amount": 45000,
+        "amount": 334400,
         "responseCode": "00",
         "responseMessage": "Giao dịch thành công"
       },
       "resultType": "success",
       "timestamps": {
-        "createdAt": "2025-06-13T06:56:14.354Z",
-        "day": 13,
+        "createdAt": "2025-06-14T10:43:21.799Z",
+        "day": 14,
         "month": 6,
         "year": 2025
       },
-      "transactionId": "15016172",
-      "txnRef": "QO4K6HN6",
+      "transactionId": "15018345",
+      "txnRef": "J3LPJJHM",
       "vnpayData": {
-        "amount": "4500000",
+        "amount": "33440000",
         "bankCode": "NCB",
-        "payDate": "20250613132431",
+        "payDate": "20250614174358",
         "responseCode": "00",
-        "transactionNo": "15016172",
-        "txnRef": "QO4K6HN6"
-      }
-    },
-    "15016240": {
-      "orderInfo": {
-        "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OSc4wyBU_6tH7ArdCn2",
-        "totalAmount": 297000
-      },
-      "orderKey": "-OSc4wyBU_6tH7ArdCn2",
-      "paymentInfo": {
-        "amount": 297000,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-06-13T07:03:59.465Z",
-        "day": 13,
-        "month": 6,
-        "year": 2025
-      },
-      "transactionId": "15016240",
-      "txnRef": "H7ARDCN2",
-      "vnpayData": {
-        "amount": "29700000",
-        "bankCode": "NCB",
-        "payDate": "20250613140216",
-        "responseCode": "00",
-        "transactionNo": "15016240",
-        "txnRef": "H7ARDCN2"
-      }
-    },
-    "15016628": {
-      "orderInfo": {
-        "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OSccWT-gXERJ7fO8ZeX",
-        "totalAmount": 148000
-      },
-      "orderKey": "-OSccWT-gXERJ7fO8ZeX",
-      "paymentInfo": {
-        "amount": 148000,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-06-13T09:32:56.809Z",
-        "day": 13,
-        "month": 6,
-        "year": 2025
-      },
-      "transactionId": "15016628",
-      "txnRef": "J7FO8ZEX",
-      "vnpayData": {
-        "amount": "14800000",
-        "bankCode": "NCB",
-        "payDate": "20250613163323",
-        "responseCode": "00",
-        "transactionNo": "15016628",
-        "txnRef": "J7FO8ZEX"
-      }
-    },
-    "15016646": {
-      "orderInfo": {
-        "customerName": "Khangg",
-        "orderKey": "-OScd_ie4WTwNWJsZ4oB",
-        "totalAmount": 315500
-      },
-      "orderKey": "-OScd_ie4WTwNWJsZ4oB",
-      "paymentInfo": {
-        "amount": 315500,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-06-13T09:38:16.809Z",
-        "day": 13,
-        "month": 6,
-        "year": 2025
-      },
-      "transactionId": "15016646",
-      "txnRef": "NWJSZ4OB",
-      "vnpayData": {
-        "amount": "31550000",
-        "bankCode": "NCB",
-        "payDate": "20250613163851",
-        "responseCode": "00",
-        "transactionNo": "15016646",
-        "txnRef": "NWJSZ4OB"
-      }
-    },
-    "15016653": {
-      "orderInfo": {
-        "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OSceoBEPS6ZxIu7iAiK",
-        "totalAmount": 108500
-      },
-      "orderKey": "-OSceoBEPS6ZxIu7iAiK",
-      "paymentInfo": {
-        "amount": 108500,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-06-13T09:42:44.716Z",
-        "day": 13,
-        "month": 6,
-        "year": 2025
-      },
-      "transactionId": "15016653",
-      "txnRef": "XIU7IAIK",
-      "vnpayData": {
-        "amount": "10850000",
-        "bankCode": "NCB",
-        "payDate": "20250613164321",
-        "responseCode": "00",
-        "transactionNo": "15016653",
-        "txnRef": "XIU7IAIK"
-      }
-    },
-    "15016671": {
-      "orderInfo": {
-        "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OScgZVxkTxW7KWkPKAt",
-        "totalAmount": 240500
-      },
-      "orderKey": "-OScgZVxkTxW7KWkPKAt",
-      "paymentInfo": {
-        "amount": 240500,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-06-13T09:50:26.988Z",
-        "day": 13,
-        "month": 6,
-        "year": 2025
-      },
-      "transactionId": "15016671",
-      "txnRef": "7KWKPKAT",
-      "vnpayData": {
-        "amount": "24050000",
-        "bankCode": "NCB",
-        "payDate": "20250613165102",
-        "responseCode": "00",
-        "transactionNo": "15016671",
-        "txnRef": "7KWKPKAT"
+        "transactionNo": "15018345",
+        "txnRef": "J3LPJJHM"
       }
     }
   },
   "payment_results_by_date": {
-    "2025-06-13": {
-      "15016172": {
+    "2025-06-14": {
+      "15018345": {
         "orderInfo": {
           "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OSbxEv9aa2EQO4k6hN6",
-          "totalAmount": 45000
+          "orderKey": "-OSi1FqyPWc9J3lPJjhm",
+          "totalAmount": 334400
         },
-        "orderKey": "-OSbxEv9aa2EQO4k6hN6",
+        "orderKey": "-OSi1FqyPWc9J3lPJjhm",
         "paymentInfo": {
-          "amount": 45000,
+          "amount": 334400,
           "responseCode": "00",
           "responseMessage": "Giao dịch thành công"
         },
         "resultType": "success",
         "timestamps": {
-          "createdAt": "2025-06-13T06:56:14.354Z",
-          "day": 13,
+          "createdAt": "2025-06-14T10:43:21.799Z",
+          "day": 14,
           "month": 6,
           "year": 2025
         },
-        "transactionId": "15016172",
-        "txnRef": "QO4K6HN6",
+        "transactionId": "15018345",
+        "txnRef": "J3LPJJHM",
         "vnpayData": {
-          "amount": "4500000",
+          "amount": "33440000",
           "bankCode": "NCB",
-          "payDate": "20250613132431",
+          "payDate": "20250614174358",
           "responseCode": "00",
-          "transactionNo": "15016172",
-          "txnRef": "QO4K6HN6"
-        }
-      },
-      "15016240": {
-        "orderInfo": {
-          "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OSc4wyBU_6tH7ArdCn2",
-          "totalAmount": 297000
-        },
-        "orderKey": "-OSc4wyBU_6tH7ArdCn2",
-        "paymentInfo": {
-          "amount": 297000,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-06-13T07:03:59.465Z",
-          "day": 13,
-          "month": 6,
-          "year": 2025
-        },
-        "transactionId": "15016240",
-        "txnRef": "H7ARDCN2",
-        "vnpayData": {
-          "amount": "29700000",
-          "bankCode": "NCB",
-          "payDate": "20250613140216",
-          "responseCode": "00",
-          "transactionNo": "15016240",
-          "txnRef": "H7ARDCN2"
-        }
-      },
-      "15016628": {
-        "orderInfo": {
-          "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OSccWT-gXERJ7fO8ZeX",
-          "totalAmount": 148000
-        },
-        "orderKey": "-OSccWT-gXERJ7fO8ZeX",
-        "paymentInfo": {
-          "amount": 148000,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-06-13T09:32:56.809Z",
-          "day": 13,
-          "month": 6,
-          "year": 2025
-        },
-        "transactionId": "15016628",
-        "txnRef": "J7FO8ZEX",
-        "vnpayData": {
-          "amount": "14800000",
-          "bankCode": "NCB",
-          "payDate": "20250613163323",
-          "responseCode": "00",
-          "transactionNo": "15016628",
-          "txnRef": "J7FO8ZEX"
-        }
-      },
-      "15016646": {
-        "orderInfo": {
-          "customerName": "Khangg",
-          "orderKey": "-OScd_ie4WTwNWJsZ4oB",
-          "totalAmount": 315500
-        },
-        "orderKey": "-OScd_ie4WTwNWJsZ4oB",
-        "paymentInfo": {
-          "amount": 315500,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-06-13T09:38:16.809Z",
-          "day": 13,
-          "month": 6,
-          "year": 2025
-        },
-        "transactionId": "15016646",
-        "txnRef": "NWJSZ4OB",
-        "vnpayData": {
-          "amount": "31550000",
-          "bankCode": "NCB",
-          "payDate": "20250613163851",
-          "responseCode": "00",
-          "transactionNo": "15016646",
-          "txnRef": "NWJSZ4OB"
-        }
-      },
-      "15016653": {
-        "orderInfo": {
-          "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OSceoBEPS6ZxIu7iAiK",
-          "totalAmount": 108500
-        },
-        "orderKey": "-OSceoBEPS6ZxIu7iAiK",
-        "paymentInfo": {
-          "amount": 108500,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-06-13T09:42:44.716Z",
-          "day": 13,
-          "month": 6,
-          "year": 2025
-        },
-        "transactionId": "15016653",
-        "txnRef": "XIU7IAIK",
-        "vnpayData": {
-          "amount": "10850000",
-          "bankCode": "NCB",
-          "payDate": "20250613164321",
-          "responseCode": "00",
-          "transactionNo": "15016653",
-          "txnRef": "XIU7IAIK"
-        }
-      },
-      "15016671": {
-        "orderInfo": {
-          "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OScgZVxkTxW7KWkPKAt",
-          "totalAmount": 240500
-        },
-        "orderKey": "-OScgZVxkTxW7KWkPKAt",
-        "paymentInfo": {
-          "amount": 240500,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-06-13T09:50:26.988Z",
-          "day": 13,
-          "month": 6,
-          "year": 2025
-        },
-        "transactionId": "15016671",
-        "txnRef": "7KWKPKAT",
-        "vnpayData": {
-          "amount": "24050000",
-          "bankCode": "NCB",
-          "payDate": "20250613165102",
-          "responseCode": "00",
-          "transactionNo": "15016671",
-          "txnRef": "7KWKPKAT"
+          "transactionNo": "15018345",
+          "txnRef": "J3LPJJHM"
         }
       }
     }
   },
   "payment_statistics": {
     "daily_simple": {
-      "2025-06-13": {
-        "-OSc3mKzVmdU8_sk1UgC": {
-          "amount": 45000,
-          "date": "2025-06-13",
+      "2025-06-14": {
+        "-OSi1MDdCugBKb3t9Mip": {
+          "amount": 334400,
+          "date": "2025-06-14",
           "resultType": "success",
-          "timestamp": "2025-06-13T06:56:14.476Z",
-          "transactionId": "15016172"
-        },
-        "-OSc51XGsPF91NDDl4vh": {
-          "amount": 297000,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T07:01:42.941Z",
-          "transactionId": "15016240"
-        },
-        "-OSc5Ry0ZOnKNK1N8yyC": {
-          "amount": 297000,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T07:03:31.225Z",
-          "transactionId": "15016240"
-        },
-        "-OSc5YuA7k2-5otN8NcE": {
-          "amount": 297000,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T07:03:59.648Z",
-          "transactionId": "15016240"
-        },
-        "-OSccds7gd72OzDj73Yn": {
-          "amount": 148000,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T09:32:56.931Z",
-          "transactionId": "15016628"
-        },
-        "-OScds54_zWP5EEAKHsL": {
-          "amount": 315500,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T09:38:16.916Z",
-          "transactionId": "15016646"
-        },
-        "-OScetPAvhjEUWWU4gix": {
-          "amount": 108500,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T09:42:44.829Z",
-          "transactionId": "15016653"
-        },
-        "-OScgeGFWFAFvsu2uZKZ": {
-          "amount": 240500,
-          "date": "2025-06-13",
-          "resultType": "success",
-          "timestamp": "2025-06-13T09:50:27.105Z",
-          "transactionId": "15016671"
+          "timestamp": "2025-06-14T10:43:21.922Z",
+          "transactionId": "15018345"
         }
       }
     }
@@ -1209,7 +972,7 @@
       "item1": {
         "attributes": "Mềm xốp, ngọt nhẹ, làm từ bột mì cao cấp và trứng tươi mỗi ngày.",
         "image": "https://img.freepik.com/free-photo/closeup-shot-two-delicious-freshly-baked-cupcakes-wooden-box_181624-28095.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
-        "name": "Bánh bông ban",
+        "name": "Bánh bông lan",
         "price": 30000
       },
       "item10": {
@@ -1250,19 +1013,19 @@
       },
       "item16": {
         "attributes": "Bánh mang hương vi matcha thơm lừng cùng với lớp kem béo ngọt nhưng không quá gắt, sẽ hòa dịu cùng hương vị và mùi thơm",
-        "image": "https://product.hstatic.net/1000398438/product/494097923_1247730400694924_5009903609225089179_n_49b25c2b8ccd49d0a59596f845f9037f_grande.jpg",
+        "image": "https://img.freepik.com/free-photo/elegant-sweet-creation_23-2151947955.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
         "name": "Tiramisu matcha",
         "price": 75000
       },
       "item17": {
         "attributes": "Một loại bánh nổi tiếng đến từ Nhật Bản",
-        "image": "https://residence.yamazaki.vn/wp-content/uploads/2020/04/MG_9066-768x768.jpg",
+        "image": "https://img.freepik.com/free-photo/slices-sweet-roll-cake-white-napkin_114579-43453.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
         "name": "Bánh bông lan cuộn",
         "price": 56000
       },
       "item18": {
         "attributes": "Bánh kem oreo là bánh kem sữa tươi gồm có 3 lớp bông lan và 2 lớp nhân kem, là xu hướng với giới trẻ hiện nay",
-        "image": "https://product.hstatic.net/1000398438/product/309579546_503758468425458_1014476938877965755_n_3de06d8a44bf490ab91262ba111c1925_grande.jpeg",
+        "image": "https://cdn.tgdd.vn/2020/12/CookRecipe/Avatar/banh-crepe-oreo-ngan-lop-thumbnail.jpg",
         "name": "Bánh kem màu oreo",
         "price": 270000
       },
@@ -1274,13 +1037,13 @@
       },
       "item20": {
         "attributes": "Bánh Donut chocolate đen khi thưởng thức sẽ cảm nhận vị ngọt vô cùng vừa phải của đường và sữa tươi, chút béo béo của bơ và chút đắng của socola đen. ",
-        "image": "https://product.hstatic.net/1000104153/product/banh_donut_chocolate_den_05fa3ff0e45d428d80374c2014958fe1_master.jpg",
+        "image": "https://img.freepik.com/free-photo/dark-chocolate-doughnut-with-sprinkles-brown-background_23-2147895911.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
         "name": "Bánh donut chocolate đen",
         "price": 37000
       },
       "item21": {
         "attributes": "Bánh Donut trà xanh được kết hợp hoàn hảo giữa bánh donut truyền thống và lớp bột trà xanh thơm lừng",
-        "image": "https://product.hstatic.net/1000104153/product/banh_donut_tra_xanh_568d9d4d9e504af0857ab40982af93f0_master.jpg",
+        "image": "https://img.freepik.com/free-photo/delicious-donuts-with-topping-arrangement_23-2150705225.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
         "name": "Bánh Donut trà xanh",
         "price": 37000
       },
@@ -1309,10 +1072,10 @@
         "price": 17000
       },
       "item26": {
-        "attributes": "Được làm từ bột mì cao cấp và bơ tươi, bánh mang đến hương vị Pháp tinh tế. Kết hợp hoàn hảo với ly cà phê đậm đà cho bữa sáng hoặc bữa xế.",
-        "image": "https://www.highlandscoffee.com.vn/vnt_upload/product/11_2024/2024_Food/Croissant.png",
-        "name": "Bánh Croissant",
-        "price": 29000
+        "attributes": "Hãy bắt đầu hành trình Sweetin với Chocolate Dream Cake – loại bánh trứ danh châu Âu dành cho những tín đồ yêu chocolate. Lớp bánh chocolate đậm vị xen kẽ từng lớp kem mịn màng và phủ ngoài một lớp ganache bóng mượt chính là “giấc mơ” ngọt ngào mà bạn không thể bỏ lỡ.\nTừng lớp bánh chocolate đậm vị xen kẽ lớp kem mịn màng, phủ ngoài một lớp ganache bóng mượt – tất cả hòa quyện để tạo nên một trải nghiệm ngọt ngào đỉnh cao. Với 5 lớp bánh kết cấu khác biệt, cảm giác dùng muỗng “đập” vỡ lớp mặt giòn để khám phá những tầng bánh bên dưới sẽ khiến bạn thích thú. Hương vị đậm đà của chocolate nguyên chất được cân chỉnh hoàn hảo giữa ngọt và đắng, cùng chút hương thơm nồng nàn từ rượu Ruhm trắng Bacardi, mang đến một món tráng miệng đầy thi vị.",
+        "image": "https://cailonuong.com/wp-content/uploads/2024/12/sweetin-21.jpg",
+        "name": "Chocolate Dream Cake ",
+        "price": 200000
       },
       "item3": {
         "attributes": "Vỏ giòn, ruột mềm, nướng mới mỗi ngày, phù hợp mọi bữa ăn.",
@@ -1352,7 +1115,7 @@
       },
       "item9": {
         "attributes": "Ngon nức lòng cùng nhân patê và thịt heo cuộn mình trong vỏ bánh ngàn lớp thơm bơ, giòn rụm.",
-        "image": "https://product.hstatic.net/1000075078/product/1737355241_pate-chaud_0a76009c5cdb47f8a8f19ebd812b2c75.png",
+        "image": "https://lapazfoods.vn/wp-content/uploads/2023/12/single-viet-pate-chaud-340x227@2x.jpg",
         "name": "Pate chaud",
         "price": 39000
       }
@@ -1366,43 +1129,37 @@
       },
       "item10": {
         "attributes": "Capuchino là thức uống hòa quyện giữa hương thơm của sữa, vị béo của bọt kem cùng vị đậm đà từ cà phê Espresso. Tất cả tạo nên một hương vị đặc biệt, một chút nhẹ nhàng, trầm lắng và tinh tế.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357118_cappucio-da_9adfe1f331a348068d265e7ce3f5d35e.png",
+        "image": "https://cdn.tgdd.vn/Files/2020/04/08/1247674/ca-phe-espresso-cappuccino-hay-macchiato-khac-nhau-nhu-the-nao-202004081943130900.jpg",
         "name": "Cappuccino đá",
         "price": 55000
       },
       "item11": {
         "attributes": "Caramel Macchiato sẽ mang đến một sự ngạc nhiên thú vị khi vị thơm béo của bọt sữa, sữa tươi, vị đắng thanh thoát của cà phê Espresso hảo hạng và vị ngọt đậm của sốt caramel được gói gọn trong một tách cà phê.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357126_caramel-macchiato-nong_92ab6d4b88dc4842b42c0ee6ad523392.png",
+        "image": "https://www.starbucks.com.hk/media/catalog/product/c/a/caramel_macchiato_hot.jpg",
         "name": "Caramel nacchiato nóng",
         "price": 55000
       },
       "item12": {
         "attributes": "Khuấy đều trước khi sử dụng Caramel Macchiato sẽ mang đến một sự ngạc nhiên thú vị khi vị thơm béo của bọt sữa, sữa tươi, vị đắng thanh thoát của cà phê Espresso hảo hạng và vị ngọt đậm của sốt caramel được gói gọn trong một tách cà phê.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357135_caramel-macchiato-da_d0a3250162e6427ab8808d8bc35012ec.png",
+        "image": "https://lh3.googleusercontent.com/proxy/louSyW0X3ipDL39quxzfLQ7nCeyIs9D8LTdfvNsy8qxHxHJEqU4cWsi82Aan03gMkYp2zJWZZ2mI7TwTkekKXeqeCEokKc-w0pRA4EzbXbQVFUUp6gTf-jo",
         "name": "Caramel macchiato đá",
         "price": 65000
       },
-      "item13": {
-        "attributes": "Một tách Espresso nguyên bản được bắt đầu bởi những hạt Arabica chất lượng, phối trộn với tỉ lệ cân đối hạt Robusta, cho ra vị ngọt caramel, vị chua dịu và sánh đặc.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357444_espresso-nong_2ac99445a9fc4619a45761a5023b538c.png",
-        "name": "Espresso nóng",
-        "price": 45000
-      },
       "item14": {
         "attributes": "Một sự kết hợp tinh tế giữa vị đắng cà phê Espresso nguyên chất hòa quyện cùng vị sữa nóng ngọt ngào, bên trên là một lớp kem mỏng nhẹ tạo nên một tách cà phê hoàn hảo về hương vị lẫn nhãn quan.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357451_latte-nong_5072d19ea4af4c28a1f9f307e49d3af9.png",
+        "image": "https://i0.wp.com/90scoffee.vn/wp-content/uploads/2024/08/ca-phe-latte-1.jpeg?fit=2560%2C1707&ssl=1",
         "name": "Latte nóng",
         "price": 59000
       },
       "item15": {
         "attributes": "Một sự kết hợp tinh tế giữa vị đắng cà phê Espresso nguyên chất hòa quyện cùng vị sữa nóng ngọt ngào, bên trên là một lớp kem mỏng nhẹ tạo nên một tách cà phê hoàn hảo về hương vị lẫn nhãn quan.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357460_latte-da_9659301f2be54c72b7d6276df2860ee5.png",
+        "image": "https://cdn1.123job.vn/123job/uploads/2021/09/17/2021_09_17______b7ab5c82e79bbcf8edc2378b102dde66.jpg",
         "name": "Latte đá",
         "price": 55000
       },
       "item16": {
         "attributes": "Nếu chuộng vị cà phê đậm đà, bùng nổ và thích vị đường đen ngọt thơm, Đường Đen Sữa Đá đích thị là thức uống dành cho bạn. Không chỉ giúp bạn tỉnh táo buổi sáng, Đường Đen Sữa Đá còn hấp dẫn đến ngụm cuối cùng bởi thạch cà phê giòn dai, nhai cực cuốn. - Khuấy đều trước khi sử dụng",
-        "image": "https://product.hstatic.net/1000075078/product/1737357048_uong-den-sua-da_5876b3829fe94af788996ca234a7894f.png",
+        "image": "https://phachedouong.com/wp-content/uploads/2022/11/word-image-624-1.jpg",
         "name": "Đường đen sữa đá",
         "price": 45000
       },
@@ -1414,15 +1171,9 @@
       },
       "item18": {
         "attributes": "Thức uống Americano nguyên bản từ 100% Arabica, tươi tỉnh tức thì. Uống là mê!",
-        "image": "https://product.hstatic.net/1000075078/product/1744032449_1737354959-ame-classic-400x400_ceed5d016d824a75bcea5645b16758cb.png",
+        "image": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_3_28_638472299342509511_avatar.jpg",
         "name": "Americano classic",
         "price": 39000
-      },
-      "item19": {
-        "attributes": "Mê ly với Americano từ 100% Arabica kết hợp cùng Đào ngọt thanh, dậy vị tươi mát.",
-        "image": "https://product.hstatic.net/1000075078/product/1744032353_1737354990-ame-dao-400x400_f9479fc8e2dd4e9384ae6806aec40ddf.png",
-        "name": "Americano đào ",
-        "price": 49000
       },
       "item2": {
         "attributes": "Hòa quyện cà phê espresso, sữa nóng và bọt sữa mịn, tạo nên hương vị cân bằng.",
@@ -1432,45 +1183,57 @@
       },
       "item20": {
         "attributes": "Matcha Nhật Bản hảo hạng kết hợp sữa tươi mịn màng, cân bằng vị umami thanh nhẹ và độ béo dịu, mang đến thức uống thơm ngon, đầy năng lượng.",
-        "image": "https://product.hstatic.net/1000075078/product/1745246722_matcha-latte_805657f9e18948e6a6218bbce3e8fbe4.png",
+        "image": "https://product.hstatic.net/1000383842/product/matcha_latte_da_b45d14c244a54637ab10f9aedf4b974c_master.jpg",
         "name": "Matcha latte",
         "price": 55000
       },
       "item21": {
         "attributes": "Trà đen được ủ mới mỗi ngày, giữ nguyên được vị chát mạnh mẽ đặc trưng của lá trà, phủ bên trên là lớp Macchiato \"homemade\" bồng bềnh quyến rũ vị phô mai mặn mặn mà béo béo.",
-        "image": "https://product.hstatic.net/1000075078/product/1737356708_tra-den-macchiato_7b9a7c6138ec4b99b666a0bf8612d80c.png",
+        "image": "https://lypham.vn/wp-content/uploads/2025/03/Huong-dan-cac-buoc-pha-tra-den-macchiato.jpg",
         "name": "Trà đen macchiato",
         "price": 55000
       },
       "item22": {
         "attributes": "Từng ngụm trà chuẩn gu ấm áp, đậm đà beo béo bởi lớp sữa tươi chân ái hoà quyện. Trà đen nguyên lá âm ấm dịu nhẹ, quyện cùng lớp sữa thơm béo khó lẫn hương vị ấm áp chuẩn gu trà, cho từng ngụm nhẹ nhàng, ngọt dịu lưu luyến mãi nơi cuống họng.",
-        "image": "https://product.hstatic.net/1000075078/product/1737356747_hong-tra-sua-nong_48e7bdb6ef7b44f28b48412496150d26.png",
+        "image": "https://toiyeutra.vn/upload/files/hongtrasua.jpg",
         "name": "Hồng trà sữa nóng",
         "price": 55000
       },
       "item23": {
         "attributes": "Vị matcha êm mượt nhờ kết hợp với sữa yến mạch. *Khuấy đều để thưởng trọn hương vị.",
-        "image": "https://product.hstatic.net/1000075078/product/1737355652_tx-latte-sym_6b3363267ba344719e7a15d3fb3893dc.png",
-        "name": "Trà xanh latte sữa yến mạch",
+        "image": "https://images.getrecipekit.com/20240226153641-KISSATEN_Matcha_latte_1_Clemence_Sahuc.jpg?aspect_ratio=16:9&quality=90&",
+        "name": "Matcha sữa yến mạch",
         "price": 55000
       },
       "item24": {
         "attributes": "Trà Xanh Latte (Nóng) là phiên bản rõ vị trà nhất. Nhấp một ngụm, bạn chạm ngay vị trà xanh Tây Bắc chát nhẹ hoà cùng sữa nguyên kem thơm béo, đọng lại hậu vị ngọt ngào, êm dịu. Không chỉ là thức uống tốt cho sức khoẻ, Trà Xanh Latte (Nóng) còn là cái ôm ấm áp của đồng bào Tây Bắc gửi cho người miền xuôi.",
-        "image": "https://product.hstatic.net/1000075078/product/1737355604_tx-latte-nong_1de56d94ccf446b9ac8826653bef5842.png",
-        "name": "Trà xanh latte nóng",
+        "image": "https://images.surferseo.art/bdd19516-f46f-4e90-b093-7a143c5ab077.png",
+        "name": "Matcha latte nóng",
         "price": 49000
       },
       "item25": {
         "attributes": "Bột chocolate nguyên chất hoà cùng sữa tươi béo ngậy, ấm nóng. Vị ngọt tự nhiên, không gắt cổ, để lại một chút đắng nhẹ, cay cay trên đầu lưỡi.",
-        "image": "https://product.hstatic.net/1000075078/product/1737355560_chocolate-da_93e902464187494a8d309db309796206.png",
-        "name": ". Chocolate đá",
+        "image": "https://product.hstatic.net/1000383842/product/chocolate_da_1d599deba9974f47b7ea4e0d7d4787b9_master.jpg",
+        "name": "Chocolate đá",
         "price": 55000
       },
       "item26": {
         "attributes": "Bột chocolate nguyên chất hoà cùng sữa tươi béo ngậy. Vị ngọt tự nhiên, không gắt cổ, để lại một chút đắng nhẹ, cay cay trên đầu lưỡi.",
-        "image": "https://product.hstatic.net/1000075078/product/1737355571_chocolate-nong_c7331fe6900b403c83633a435f3527ac.png",
+        "image": "https://media.suckhoecong.vn/thumb_x800x450/Images/Uploaded/Share/2021/12/23/cach-pha-mot-ly-chocolate-nong-thom-ngon-cho-ngay-giang-sinh11640252702.jpg",
         "name": "Chocolate nóng",
         "price": 55000
+      },
+      "item27": {
+        "attributes": "Thơm ngon từ hình thức đến hương vị. Trân châu mềm dai thấm đẫm sốt đường đen ngọt ngào được hòa cùng vị thơm béo của sữa tươi và vị hơi chát, đắng nhẹ matcha sẽ mang đến cho bạn một hương vị ấn tượng khó quên.",
+        "image": "https://assets.aemi.vn/images_resized/2024/8/11/1723384974452-111989",
+        "name": "Matcha trân châu đường đen",
+        "price": 30000
+      },
+      "item28": {
+        "attributes": "Cold brew hương chanh là sự kết hợp giữa cà phê cold brew đậm đà và hương chanh tươi mát, tạo nên một thức uống thanh khiết và sảng khoái. Cà phê ngâm lạnh giữ được độ mượt mà, kết hợp cùng vị chua nhẹ của chanh mang lại cảm giác dễ chịu. Món này là lựa chọn lý tưởng cho những ngày nóng. Vị đắng nhẹ của cà phê hòa quyện hoàn hảo với sự tươi mới của chanh.",
+        "image": "https://phinviet.com.vn/wp-content/uploads/2020/06/Cold-Brew-Green-1.jpg",
+        "name": "Cold brew hương chanh",
+        "price": 39000
       },
       "item3": {
         "attributes": "Cà phê sữa là thức uống đặc trưng của Việt Nam, kết hợp giữa cà phê phin đậm đà và sữa đặc ngọt ngào, thường thêm đá hoặc uống nóng. Hương vị thơm nồng, đắng nhẹ, ngọt béo, tạo cảm giác sảng khoái.",
@@ -1498,19 +1261,19 @@
       },
       "item7": {
         "attributes": "Latte Caramel là sự kết hợp giữa Espresso đậm đà, sữa tươi béo ngậy, và syrup caramel ngọt ngào, mang đến một hương vị thơm lừng, ngọt nhẹ và mát lạnh. Thức uống này tạo nên sự hài hòa giữa cà phê đậm và vị ngọt của caramel, đem lại cảm giác dễ chịu và thú vị.",
-        "image": "https://product.hstatic.net/1000075078/product/1746441451_caramel-coffee_dc2004f6d8144f2f8b7512ba95319ef7.png",
+        "image": "https://images.getrecipekit.com/20231201155655-caramel-20-1.webp?width=650&quality=90&",
         "name": "Latte caramel ",
         "price": 59000
       },
       "item8": {
         "attributes": "Latte Bạc Xỉu là sự kết hợp giữa Espresso, sữa tươi béo ngậy và cà phê phin đậm đà, tạo ra một hương vị vừa ngọt nhẹ, vừa đậm đà, dễ uống và mát lạnh.",
-        "image": "https://product.hstatic.net/1000075078/product/1746441267_latte-bac-xiu_a6fe420fef6f4ec7a2e4f87e9e03ef4b.png",
+        "image": "https://winci.com.vn/wp-content/uploads/2023/12/Cach-Lam-Bac-Xiu-Ngon-Chuan-Vi.jpeg",
         "name": "Latte bạc xỉu",
         "price": 49000
       },
       "item9": {
         "attributes": "Americano được pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.",
-        "image": "https://product.hstatic.net/1000075078/product/1737357102_ame-nong_2988095b141f4f5a8e0eb40be3b43ba6.png",
+        "image": "https://dolo.com.au/cdn/shop/articles/522979505-shutterstock_1973536478.jpg?v=1690528484",
         "name": "Americano nóng",
         "price": 49000
       }
@@ -1549,6 +1312,13 @@
     }
   },
   "promotions": {
+    "-OScmYgmVWhVT92bJkhz": {
+      "code": "BESIUCUTE",
+      "discount": 20,
+      "endDate": "2025-06-30",
+      "startDate": "2025-06-13",
+      "status": "active"
+    },
     "COFFEE15": {
       "code": "COFFEE15",
       "discount": 15,
@@ -1580,7 +1350,7 @@
     "SINHNHATAM": {
       "code": "SINHNHATAM",
       "discount": 20,
-      "endDate": "2025-04-30",
+      "endDate": "2025-06-30",
       "startDate": "2025-04-18",
       "status": "active"
     },
@@ -1685,6 +1455,17 @@
       "name": "Nguyễn Anh Kiệt",
       "phone": "0824603411"
     },
+    "U6o8AjLUThOgAA3Krfqj8DYKbLn1": {
+      "address": "Can tho",
+      "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIs-xib6_WxuPN8a2CkRjj70_4OeD1bV84_KKHE7Cc1HxhGyQ=s96-c",
+      "created_at": "2025-06-14T09:12:05.733Z",
+      "email": "dangchuong200406@gmail.com",
+      "name": "Chuong Dang",
+      "phone": "0847788360",
+      "role": "user",
+      "status": "active",
+      "updated_at": "2025-06-14T09:12:05.733Z"
+    },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
       "address": "Cái Vồn, Bình Minh, Vĩnh Long",
       "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
@@ -1726,6 +1507,17 @@
       "status": "active",
       "updated_at": "2025-05-26T12:02:30.843Z"
     },
+    "jCixnkq916QnOoA1EDa3DM3tWwr2": {
+      "address": "",
+      "avatarUrl": "data:image/jpeg;base64,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",
+      "created_at": "2025-06-14T05:35:24.119Z",
+      "email": "nhom6carrd@gmail.com",
+      "name": "KHÁCH VÃNG LAI",
+      "phone": "",
+      "role": "user",
+      "status": "active",
+      "updated_at": "2025-06-14T05:35:24.119Z"
+    },
     "jjdXoKbp0fUa1E5neR1DN6pQ4f62": {
       "address": "Bình Minh, Vĩnh Long",
       "avatarUrl": "data:image/jpeg;base64,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",
@@ -1749,10 +1541,34 @@
     }
   },
   "vnpay_transactions": {
+    "6K4Y1ATI": {
+      "amount": 202400,
+      "createdAt": "2025-06-14T05:34:24.705Z",
+      "orderKey": "-OSgvdSFEmPf6K4y1ATi",
+      "status": "pending"
+    },
     "7KWKPKAT": {
       "amount": 240500,
       "createdAt": "2025-06-13T09:50:03.984Z",
       "orderKey": "-OScgZVxkTxW7KWkPKAt",
+      "status": "pending"
+    },
+    "DY3UJICB": {
+      "amount": 164000,
+      "createdAt": "2025-06-14T09:13:54.196Z",
+      "orderKey": "-OShhrPwfOsTDy3UJICB",
+      "status": "pending"
+    },
+    "E4CA_I8S": {
+      "amount": 294000,
+      "createdAt": "2025-06-13T10:13:19.067Z",
+      "orderKey": "-OSclt5_hDe6E4ca_i8S",
+      "status": "pending"
+    },
+    "FMBLH18O": {
+      "amount": 144000,
+      "createdAt": "2025-06-14T10:40:45.188Z",
+      "orderKey": "-OSi0kqpS3gfFMbLH18O",
       "status": "pending"
     },
     "H7ARDCN2": {
@@ -1761,10 +1577,28 @@
       "orderKey": "-OSc4wyBU_6tH7ArdCn2",
       "status": "pending"
     },
+    "J3LPJJHM": {
+      "amount": 334400,
+      "createdAt": "2025-06-14T10:42:56.273Z",
+      "orderKey": "-OSi1FqyPWc9J3lPJjhm",
+      "status": "pending"
+    },
     "J7FO8ZEX": {
       "amount": 148000,
       "createdAt": "2025-06-13T09:32:22.951Z",
       "orderKey": "-OSccWT-gXERJ7fO8ZeX",
+      "status": "pending"
+    },
+    "NGHW7VRM": {
+      "amount": 768000,
+      "createdAt": "2025-06-13T10:17:46.254Z",
+      "orderKey": "-OScmuRw-l9HNghw7Vrm",
+      "status": "pending"
+    },
+    "NJ_IYDIR": {
+      "amount": 85000,
+      "createdAt": "2025-06-14T09:16:24.051Z",
+      "orderKey": "-OShiS4WjSZbNJ_IyDir",
       "status": "pending"
     },
     "NWJSZ4OB": {
@@ -1773,10 +1607,34 @@
       "orderKey": "-OScd_ie4WTwNWJsZ4oB",
       "status": "pending"
     },
+    "OR4NHWOA": {
+      "amount": 159200,
+      "createdAt": "2025-06-14T05:37:59.185Z",
+      "orderKey": "-OSgwSqL_fVjor4NHWoA",
+      "status": "pending"
+    },
+    "P5_NKMA6": {
+      "amount": 853600,
+      "createdAt": "2025-06-13T10:22:00.682Z",
+      "orderKey": "-OScnsYvPxnfp5_nkMA6",
+      "status": "pending"
+    },
     "QO4K6HN6": {
       "amount": 45000,
       "createdAt": "2025-06-13T06:23:18.821Z",
       "orderKey": "-OSbxEv9aa2EQO4k6hN6",
+      "status": "pending"
+    },
+    "VU2VY5AX": {
+      "amount": 375000,
+      "createdAt": "2025-06-14T05:16:52.234Z",
+      "orderKey": "-OSgrcVI4weLVU2vy5aX",
+      "status": "pending"
+    },
+    "X0VLUNT8": {
+      "amount": 359200,
+      "createdAt": "2025-06-14T05:36:34.283Z",
+      "orderKey": "-OSgw86er6xdX0VLUnT8",
       "status": "pending"
     },
     "XIU7IAIK": {
