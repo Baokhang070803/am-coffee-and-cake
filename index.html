@@ -1153,13 +1153,28 @@
             html, body {
                 overflow-x: hidden;
             }
+            .hot-products {
+                padding: 40px 15px !important;
+                margin: 40px 0 !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .hot-products h2 {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
             .galaxy-container,
             #cosmic-slide {
-                width: 100vw !important;
-                max-width: 100vw !important;
+                width: 100% !important;
+                max-width: 100% !important;
                 padding: 0 !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
                 overflow-x: hidden !important;
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
             }
             .cosmic-item {
                 display: none !important;
@@ -1167,57 +1182,96 @@
             .cosmic-item:nth-child(2) {
                 display: block !important;
                 position: relative !important;
-                width: 100vw !important;
-                max-width: 100vw !important;
+                width: 100% !important;
+                max-width: 100% !important;
                 height: 400px !important;
                 left: 0 !important;
                 top: 0 !important;
                 right: 0 !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
                 box-sizing: border-box !important;
                 box-shadow: 0 8px 24px #ccc;
+                border-radius: 15px;
             }
             .cosmic-item:nth-child(2) .nebula-content {
-                left: 10px;
-                width: 90%;
-                padding: 10px;
-                background: rgba(0,0,0,0.5);
+                left: 15px;
+                right: 15px;
+                width: calc(100% - 30px);
+                padding: 15px;
+                background: rgba(0,0,0,0.6);
                 border-radius: 10px;
                 display: block !important;
+                box-sizing: border-box;
             }
             .cosmic-item .star-name {
                 font-size: 22px;
             }
             .cosmic-item .star-description {
-                font-size: 13px;
+                font-size: 14px;
+                margin: 10px 0;
+            }
+            .price {
+                font-size: 18px;
+            }
+            .cosmic-controls {
+                position: relative !important;
+                bottom: 0 !important;
+                margin-top: 20px !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                gap: 30px !important;
+            }
+            .cosmic-controls .orbit-button {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                border: 2px solid #A67C52;
+                background: rgba(166, 124, 82, 0.1);
+                color: #A67C52;
+            }
+            .cosmic-controls .orbit-button:hover {
+                background: #A67C52;
+                color: #fff;
+            }
+        }
+        @media (max-width: 480px) {
+            .hot-products {
+                padding: 40px 10px !important;
+            }
+            .hot-products h2 {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+            .cosmic-item:nth-child(2) {
+                height: 350px !important;
+                border-radius: 12px;
+            }
+            .cosmic-item .nebula-content {
+                padding: 12px;
+                font-size: 12px;
+                left: 10px;
+                right: 10px;
+                width: calc(100% - 20px);
+            }
+            .cosmic-item .star-name {
+                font-size: 18px;
+            }
+            .cosmic-item .star-description {
+                font-size: 12px;
                 margin: 8px 0;
             }
             .price {
                 font-size: 16px;
             }
             .cosmic-controls {
-                position: relative;
-                bottom: 0;
-                margin-top: 10px;
+                gap: 25px !important;
+                margin-top: 15px !important;
             }
-        }
-
-        @media (max-width: 480px) {
-            .cosmic-item:nth-child(2) {
-                height: 400px !important;
-            }
-            .cosmic-item .nebula-content {
-                padding: 6px;
-                font-size: 12px;
-            }
-            .cosmic-item .star-name {
-                font-size: 16px;
-            }
-            .cosmic-item .star-description {
-                font-size: 11px;
-            }s
-            .price {
-                font-size: 13px;
+            .cosmic-controls .orbit-button {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
         }
         @media (max-width: 768px) {
@@ -1229,6 +1283,13 @@
           min-height: 380px;
           margin: 40px 0 40px 0;
           position: relative;
+          padding: 60px 0;
+        }
+        .hot-products h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
         }
         #cosmic-slide {
           margin-bottom: 24px;
@@ -1248,34 +1309,39 @@
           z-index: 10001;
           box-shadow: 0 -2px 12px rgba(166,124,82,0.08);
         }
-        .bottom-nav a {
-          flex: 1;
-          text-align: center;
-          color: #A67C52;
+        /* .bottom-nav a {
+          color: #c21d1d;
           text-decoration: none;
+          font-size: 14px;
+          text-align: center;
+          position: relative;
+        } */
+        .bottom-nav a i {
+          display: block;
+          font-size: 18px;
+          margin-bottom: 4px;
+        }
+        .bottom-nav a span {
+          display: block;
           font-size: 12px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 6px 0 2px 0;
-          transition: color 0.2s;
         }
-        .bottom-nav a.active,
-        .bottom-nav a:active,
+        .bottom-nav a.active {
+          color: #A67C52;
+        }
         .bottom-nav a:hover {
-          color: #f7544a;
+          color: #A67C52;
         }
-        .bottom-nav i {
-          font-size: 22px;
-          margin-bottom: 2px;
-        }
-        @media (min-width: 769px) {
-          .bottom-nav { display: none !important; }
-        }
-        @media (max-width: 768px) {
-          .bottom-nav { display: flex !important; }
-          body { padding-bottom: 60px; }
+        /* Ẩn menu chính trên mobile */
+        @media (max-width: 767px) {
+          .navbar-header {
+            display: none;
+          }
+          .navbar-collapse {
+            display: none !important;
+          }
+          .bottom-nav {
+            display: flex;
+          }
         }
     </style>
 </head>
@@ -1327,13 +1393,14 @@
                                     <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
                                 </li>
                             </ul>
-                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
                             <div class="navbar-collapse collapse">
                                 <ul class="nav navbar-nav">
                                     <li class="active dropdown">
                                         <a href="index.html">Trang Chủ</a>
                                     </li>
-                                    <li><a href="menu.html">Menu</a></li>
+                                    <li><a href="menu.html">Menu</a>
+                                    </li>
                                     <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
                                     <li><a href="about.html">Về Chúng Tôi</a></li>
                                 </ul>
@@ -1406,18 +1473,14 @@
                     <a href="about.html" class="btn-about">Khám Phá Thêm</a>
                 </div>
                 <div class="hot-products">
-                
-                    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-                        <div id="cosmic-slide">
-                            <!-- Products will be loaded here dynamically -->
-                        </div>
-                        <div class="cosmic-controls">
-                            <button id="prev" class="orbit-button"><i class="fa fa-angle-left"></i></button>
-                            <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
-                        </div>
-                    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-
-
+                    <h2>Sản Phẩm Nổi Bật</h2>
+                    <div id="cosmic-slide">
+                        <!-- Products will be loaded here dynamically -->
+                    </div>
+                    <div class="cosmic-controls">
+                        <button id="prev" class="orbit-button"><i class="fa fa-angle-left"></i></button>
+                        <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="news-highlight">
@@ -1500,40 +1563,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="our-brand">
-                    <h3 class="title"><strong>Đối Tác</strong> Của Chúng Tôi</h3>
-                    <ul id="braldLogo">
-                        <li>
-                            <ul class="brand_item">
-                                <li>
-                                    <a href="#">
-                                        <div class="brand-logo"><img src="images/Highlands_Coffee_logo.svg.png" alt=""></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="brand-logo"><img src="images/logo-phuc-long-coffee-and-tea-300x225.webp" alt=""></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="brand-logo"><img src="images/Starbucks_Corporation_Logo_2011.svg.png" alt=""></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="brand-logo"><img src="images/TOUSlesJOURSnewlogo.jpg" alt=""></div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="brand-logo"><img src="images/vina.jpg" alt=""></div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -2507,7 +2536,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-                   <!-- Bottom Navigation Bar cho mobile -->
+   <!-- Bottom Navigation Bar cho mobile -->
                    <div class="bottom-nav">
                     <a href="index.html" class="nav-home"><i class="fa fa-home"></i><span></span>Trang chủ</span></a>
                     <a href="news.html" class="nav-news"><i class="fa fa-file-text-o"></i><span>Tin tức</span></a>
@@ -2522,8 +2551,7 @@ if ('serviceWorker' in navigator) {
                       <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
                     </div>
                     <div class="appbar-right">
-                      <a href="#" class="appbar-account"><i class="fa fa-user"></i></a>
-                      <a href="cart.html" class="appbar-cart"><i class="fa fa-shopping-cart"></i></a>
+                      <a href="member.html" class="appbar-account"><i class="fa fa-user"></i></a>
                     </div>
                   </div>
 </body>
