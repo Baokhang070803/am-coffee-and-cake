@@ -23,7 +23,7 @@
     /* Bottom nav nổi bật hơn */
     .bottom-nav {
         box-shadow: 0 -4px 24px rgba(166,124,82,0.13);
-        background: #fffbe9 !important;
+        background: rgba(255,255,255,0.92) !important;
         border-top: 2px solid #e5d3bc;
         height: 64px !important;
     }
@@ -374,3 +374,75 @@
               bottom: 50px !important; /* hoặc giá trị bạn muốn, ví dụ 140px */
             }
           }
+
+/* ============================= */
+/* Giao diện hiện đại, hoành tráng */
+/* ============================= */
+
+/* Appbar hiện đại */
+.appbar-mobile {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-bottom: 1.5px solid #e5d3bc;
+}
+
+
+
+/* ============================= */
+/* Giao diện mobile xịn nhất, hiện đại như web lớn */
+/* ============================= */
+
+
+
+/* Appbar hiện đại */
+.appbar-mobile {
+    background: rgba(255,255,255,0.92) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(166,124,82,0.13);
+    border-bottom: 2px solid #e5d3bc;
+    border-radius: 0 0 18px 18px;
+    height: 58px !important;
+    padding: 0 16px !important;
+    display: flex;
+    align-items: center;
+    z-index: 10002;
+}
+.appbar-logo {
+    height: 38px !important;
+    width: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(166,124,82,0.10);
+}
+.appbar-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.22em;
+    font-weight: 700;
+    color: #A67C52;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(166,124,82,0.08);
+}
+
+/* Bottom nav màu trắng như appbar-mobile */
+.bottom-nav {
+    background: rgba(255,255,255,0.92) !important;
+}
+
+.bottom-nav .nav-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 2px;
+    display: block;
+}
+@media screen and (max-width: 767px) {
+    .loading-overlay {
+        display: none !important;
+    }
+}
+@media (max-width: 767px) {
+    .hom-slider {
+        display: none !important;
+    }
+    }

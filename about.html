@@ -353,6 +353,113 @@
             transform: scale(0.96);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+        .about-founders-section {
+            padding: 60px 0 40px 0;
+            background: #fffbe9;
+            text-align: center;
+        }
+        .about-founders-section .about-title {
+            margin-bottom: 40px;
+        }
+        .founders-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+            gap: 40px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .founder-item {
+            flex: 1 1 0;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            margin-bottom: 0;
+            min-width: 260px;
+        }
+        .founder-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(166,124,82,0.10);
+            padding: 32px 24px 28px 24px;
+            max-width: 350px;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .founder-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .founder-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(166,124,82,0.18);
+        }
+        .founder-avatar {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 18px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #f7544a;
+            box-shadow: 0 2px 12px rgba(247,84,74,0.08);
+            transition: border-color 0.3s;
+        }
+        .founder-card:hover .founder-avatar {
+            border-color: #A67C52;
+        }
+        .founder-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .founder-name {
+            font-size: 22px;
+            color: #4A2F1A;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .founder-role {
+            font-size: 15px;
+            color: #f7544a;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .founder-desc {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.7;
+        }
+        @media (max-width: 600px) {
+            .founders-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+            }
+            .founder-item {
+                flex: none;
+                width: 100%;
+                min-width: 0;
+                margin-bottom: 24px;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .founder-card {
+                padding: 20px 10px 18px 10px;
+            }
+            .founder-avatar {
+                width: 80px;
+                height: 80px;
+            }
+            .founder-name {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body id="home">
@@ -485,6 +592,33 @@
                          <img src="https://img.freepik.com/premium-photo/barista-makes-coffee-customers-cafe-restaurant_124463-4951.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt="Không gian Ấm - Coffee and Cake">
                       </div>
                    </div>
+                </div>
+             </div>
+
+             <!-- Phần Người Sáng Lập -->
+             <div class="about-founders-section">
+                <h3 class="about-title">Người Sáng Lập</h3>
+                <div class="row founders-row">
+                  <div class="col-md-6 col-sm-12 founder-item">
+                    <div class="founder-card">
+                      <div class="founder-avatar">
+                        <img src="images/khang.jpg" alt="Võ Trần Hoàng Bảo Khang">
+                      </div>
+                      <h4 class="founder-name">Võ Trần Hoàng Bảo Khang</h4>
+                      <p class="founder-role">Đồng Sáng Lập & CEO</p>
+                      <p class="founder-desc">Với hơn 10 năm kinh nghiệm trong ngành cà phê, ông Võ Trần Hoàng Bảo Khang là người truyền cảm hứng và dẫn dắt Ấm phát triển bền vững, luôn đặt chất lượng và trải nghiệm khách hàng lên hàng đầu.</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12 founder-item">
+                    <div class="founder-card">
+                      <div class="founder-avatar">
+                        <img src="images/siukhan.jpg" alt="Trần Siêu Hoàng Khang">
+                      </div>
+                      <h4 class="founder-name">Trần Siêu Hoàng Khang</h4>
+                      <p class="founder-role">Đồng Sáng Lập & Giám Đốc Sáng Tạo</p>
+                      <p class="founder-desc">Chị Trần Siêu Hoàng Khang mang đến sự sáng tạo và tinh tế cho từng chiếc bánh, từng góc nhỏ của Ấm, góp phần tạo nên không gian ấm áp và khác biệt cho quán.</p>
+                    </div>
+                  </div>
                 </div>
              </div>
 
@@ -931,7 +1065,7 @@
         });
 
         // Hiệu ứng cuộn để làm nổi bật các mục
-        const sections = document.querySelectorAll('.about-story, .value-item, .timeline-item');
+        const sections = document.querySelectorAll('.about-story, .value-item, .timeline-item, .founder-card');
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -1024,24 +1158,42 @@
             transform: translateY(0);
         }
     </style>
-   <!-- Bottom Navigation Bar cho mobile -->
-                   <div class="bottom-nav">
-                    <a href="index.html" class="nav-home"><i class="fa fa-home"></i><span></span>Trang chủ</span></a>
-                    <a href="news.html" class="nav-news"><i class="fa fa-file-text-o"></i><span>Tin tức</span></a>
-                    <a href="menu.html" class="nav-account"><i class="fa fa-coffee"></i><span>Menu</span></a>
-                    <a href="cart.html" class="nav-cart"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span></a>
-                    <a href="policy.html" class="nav-policy"><i class="fa fa-file-text-o"></i><span>Chính sách</span></a>
-                    <a href="about.html" class="nav-about"><i class="fa fa-info-circle"></i><span>Giới thiệu</span></a>
-                  </div>
-              
-                  <div class="appbar-mobile">
-                    <div class="appbar-left">
-                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
-                    </div>
-                    <div class="appbar-right">
-                      <a href="member.html" class="appbar-account"><i class="fa fa-user"></i></a>
-                    </div>
-                  </div>
+    <!-- Bottom Navigation Bar cho mobile -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-home">
+          <img src="images/imagetintuc.png" alt="Trang chủ" class="nav-icon"/>
+          <span>Trang chủ</span>
+        </a>
+        <a href="news.html" class="nav-news">
+          <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
+          <span>Tin tức</span>
+        </a>
+        <a href="menu.html" class="nav-account">
+          <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
+          <span>Menu</span>
+        </a>
+        <a href="cart.html" class="nav-cart">
+          <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
+          <span>Giỏ hàng</span>
+        </a>
+        <a href="policy.html" class="nav-policy">
+          <img src="images/imagechinhsach.png" alt="Chính sách" class="nav-icon"/>
+          <span>Chính sách</span>
+        </a>
+        <a href="about.html" class="nav-about">
+          <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
+          <span>Giới thiệu</span>
+        </a>
+      </div>
+                  
+                      <div class="appbar-mobile">
+                        <div class="appbar-left">
+                          <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+                        </div>
+                        <div class="appbar-right">
+                          <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+                        </div>
+                      </div>
 </body>
 <body id="home">
     <!-- Loading Overlay -->

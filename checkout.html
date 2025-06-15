@@ -187,6 +187,16 @@
             transform: scale(0.96);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+        @media (max-width: 767px) {
+            .container_fullwidth .col-md-3 {
+                display: none !important;
+            }
+        }
+        @media (max-width: 767px) {
+        .checkout-page {
+            padding-bottom: 400px; /* hoặc giá trị bạn muốn, ví dụ 80px */
+        }
+        }
     </style>
 </head>
 <body id="home">
@@ -504,21 +514,21 @@
                                                                     </span>
                                                                     <span class="text">Giao Hàng Tiêu Chuẩn</span>
                                                                 </p>
-                                                                <p class="privacy">
+                                                                <!-- <p class="privacy">
                                                                     <span class="input-radio">
                                                                         <input type="radio" name="delivery_method" value="express">
                                                                     </span>
                                                                     <span class="text">Giao Hàng Nhanh</span>
-                                                                </p>
+                                                                </p> -->
                                                             </div>
                                                         </div>
-                                                        <div class="order-note">
+                                                        <!-- <div class="order-note">
                                                             <h5>Ghi Chú Đơn Hàng</h5>
                                                             <div class="form-row">
                                                                 <label class="lebel-abs">Ghi chú</label>
                                                                 <textarea class="input namefild" id="order_note" ></textarea>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <button type="submit">Tiếp Tục</button>
                                                     </div>
                                                 </div>
@@ -1770,22 +1780,40 @@
             });
         });
     </script>
-           <!-- Bottom Navigation Bar cho mobile -->
-                   <div class="bottom-nav">
-                    <a href="index.html" class="nav-home"><i class="fa fa-home"></i><span></span>Trang chủ</span></a>
-                    <a href="news.html" class="nav-news"><i class="fa fa-file-text-o"></i><span>Tin tức</span></a>
-                    <a href="menu.html" class="nav-account"><i class="fa fa-coffee"></i><span>Menu</span></a>
-                    <a href="cart.html" class="nav-cart"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span></a>
-                    <a href="policy.html" class="nav-policy"><i class="fa fa-file-text-o"></i><span>Chính sách</span></a>
-                    <a href="about.html" class="nav-about"><i class="fa fa-info-circle"></i><span>Giới thiệu</span></a>
-                  </div>
+   <!-- Bottom Navigation Bar cho mobile -->
+   <div class="bottom-nav">
+    <a href="index.html" class="nav-home">
+      <img src="images/imagetintuc.png" alt="Trang chủ" class="nav-icon"/>
+      <span>Trang chủ</span>
+    </a>
+    <a href="news.html" class="nav-news">
+      <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
+      <span>Tin tức</span>
+    </a>
+    <a href="menu.html" class="nav-account">
+      <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
+      <span>Menu</span>
+    </a>
+    <a href="cart.html" class="nav-cart">
+      <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
+      <span>Giỏ hàng</span>
+    </a>
+    <a href="policy.html" class="nav-policy">
+      <img src="images/imagechinhsach.png" alt="Chính sách" class="nav-icon"/>
+      <span>Chính sách</span>
+    </a>
+    <a href="about.html" class="nav-about">
+      <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
+      <span>Giới thiệu</span>
+    </a>
+  </div>
               
                   <div class="appbar-mobile">
                     <div class="appbar-left">
                       <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
                     </div>
                     <div class="appbar-right">
-                      <a href="member.html" class="appbar-account"><i class="fa fa-user"></i></a>
+                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
                     </div>
                   </div>
 </body>
