@@ -405,6 +405,41 @@
             padding-bottom: 400px; /* hoặc giá trị bạn muốn, ví dụ 80px */
         }
         }
+        @media (max-width: 767px) {
+            .cart-table th, .cart-table td {
+                font-size: 12px;
+                padding: 4px 2px;
+            }
+            .cart-table img {
+                width: 36px;
+                height: auto;
+                border-radius: 6px;
+            }
+            .quantity-control button {
+                width: 22px;
+                height: 22px;
+                font-size: 13px;
+                margin: 0 2px;
+                padding: 0;
+            }
+            .quantity-control input {
+                width: 28px;
+                padding: 2px;
+                font-size: 12px;
+            }
+            .cart-table {
+                width: 100% !important;
+                min-width: unset !important;
+                table-layout: fixed;
+            }
+            .cart-page {
+                overflow-x: unset !important;
+            }
+            .cart-table th:first-child,
+            .cart-table td:first-child {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body id="home">
