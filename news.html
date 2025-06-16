@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="google-site-verification" content="PaAsbmk1XWa3-fOeh2_9aTtEK38RChaUkzoLMp8MIko" />
+    <meta name="description" content="Tin tức và sự kiện mới nhất từ Ấm - Coffee and Cake. Cập nhật các chương trình khuyến mãi, mẹo pha chế, và hoạt động đặc biệt.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Tin Tức & Sự Kiện - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        const firebaseConfig = {
+           apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+           authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+           databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "coffee-and-cake-e2f5d",
+           storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+           messagingSenderId: "453243002159",
+           appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+           measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getDatabase(app);
+        window.ref = ref; // Thêm ref vào window để có thể sử dụng ở các script khác
+        window.get = get; // Thêm get vào window để có thể sử dụng ở các script khác
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #A67C52;
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .auth-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.7);
+           z-index: 10000;
+           align-items: center;
+           justify-content: center;
+        }
+        .auth-modal-content {
+           background: #fff;
+           padding: 30px;
+           border-radius: 10px;
+           width: 100%;
+           max-width: 400px;
+           position: relative;
+        }
+        .auth-modal-content h2 {
+           font-size: 24px;
+           color: #4A2F1A;
+           margin-bottom: 20px;
+           text-align: center;
+        }
+        .auth-modal-content .close {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           font-size: 20px;
+           cursor: pointer;
+           color: #4A2F1A;
+        }
+        .auth-modal-content form {
+           display: flex;
+           flex-direction: column;
+        }
+        .auth-modal-content input {
+           margin-bottom: 15px;
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           font-size: 16px;
+        }
+        .auth-modal-content button {
+           background: #f7544a;
+           color: #fff;
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+           background: #da2a20;
+        }
+        .auth-modal-content .switch {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+           text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+           color: #f7544a;
+           text-decoration: underline;
+           cursor: pointer;
+        }
+        .usermenu li {
+           display: inline-block;
+           margin-right: 10px;
+        }
+        .usermenu li a {
+           color: #000000;
+           text-decoration: none;
+        }
+        .usermenu li a:hover {
+           color: #A63C3C;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+     </style>
+    <style>
+        /* Modern News Page CSS */
+        .news-section {
+            padding: 50px 0;
+            background: linear-gradient(to bottom, #fff, #ffffff);
+        }
+        .news-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .news-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #3a2317;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .news-header p {
+            font-size: 18px;
+            color: #6a4a3a;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .news-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .news-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .news-card:hover img {
+            transform: scale(1.05);
+        }
+        .news-card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card-content h3 {
+            font-size: 22px;
+            color: #3a2317;
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+        .news-card-content .date {
+            font-size: 14px;
+            color: #a07a6b;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f5e9e2;
+            border-radius: 5px;
+        }
+        .news-card-content p {
+            font-size: 16px;
+            color: #5a3a2a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .news-card-content .btn-read {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+        .news-card-content .btn-read:hover {
+            background: #d6342a;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .news-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .news-pagination a {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #3a2317;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .news-pagination a:hover, .news-pagination a.active {
+            background: #f7544a;
+            color: #fff;
+            box-shadow: 0 5px 10px rgba(247, 84, 74, 0.3);
+        }
+        .news-pagination a.next {
+            font-size: 20px;
+        }
+        .news-sidebar-modern {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-left: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #f7544a #f5e9e2;
+        }
+
+        /* Tùy chỉnh thanh cuộn cho Chrome/Safari */
+        .news-sidebar-modern::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-track {
+            background: #f5e9e2;
+            border-radius: 10px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-thumb {
+            background: #f7544a;
+            border-radius: 10px;
+        }
+
+        .news-sidebar-modern::-webkit-scrollbar-thumb:hover {
+            background: #d6342a;
+        }
+
+        /* Hiệu ứng khi hover vào các phần tử trong sidebar */
+        .news-sidebar-modern h4 {
+            font-size: 20px;
+            color: #3a2317;
+            margin-bottom: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #f7544a;
+            padding-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .search-box {
+            display: flex;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .search-box:focus-within {
+            box-shadow: 0 5px 15px rgba(247, 84, 74, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .news-sidebar-modern .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            font-size: 15px;
+            outline: none;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .search-box input:focus {
+            background: #fff;
+        }
+
+        .news-sidebar-modern .search-box button {
+            padding: 12px 20px;
+            background: #f7544a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .search-box button:hover {
+            background: #d6342a;
+        }
+
+        .news-sidebar-modern .categories-modern {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .news-sidebar-modern .categories-modern li {
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .news-sidebar-modern .categories-modern a {
+            display: block;
+            padding: 12px 15px;
+            background: #f9f9f9;
+            color: #5a3a2a;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .news-sidebar-modern .categories-modern a:hover {
+            background: #fff;
+            color: #f7544a;
+            transform: translateX(5px);
+            border-color: #f7544a;
+            box-shadow: 0 2px 8px rgba(247, 84, 74, 0.1);
+        }
+
+        .news-sidebar-modern .categories-modern a.active {
+            background: #f7544a;
+            color: #fff;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(247, 84, 74, 0.2);
+        }
+
+        /* Responsive cho sidebar */
+        @media (max-width: 991px) {
+            .news-sidebar-modern {
+                position: relative;
+                top: 0;
+                margin-left: 0;
+                margin-top: 30px;
+                max-height: none;
+            }
+        }
+
+        /* Animation cho sidebar khi load trang */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .news-sidebar-modern {
+            animation: slideInRight 0.5s ease-out;
+        }
+        .news-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            max-width: 850px;
+            width: 90%;
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            animation: slideIn 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        .modal-content h2 {
+            font-size: 30px;
+            color: #3a2317;
+            margin-bottom: 20px;
+            font-weight: 700;
+            border-bottom: 2px solid #f7544a;
+            padding-bottom: 10px;
+        }
+        .modal-content .date {
+            font-size: 15px;
+            color: #a07a6b;
+            margin-bottom: 25px;
+            display: inline-block;
+            background: #f5e9e2;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        .modal-content img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .modal-content p {
+            font-size: 17px;
+            color: #4a2f1a;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            /* min-height: 60px; */
+        }
+        .modal-content .btn-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(247, 84, 74, 0.3);
+        }
+        .modal-content .btn-close:hover {
+            background: #d6342a;
+            transform: scale(1.1);
+        }
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* Responsive */
+        @media (max-width: 991px) {
+            .news-container {
+                grid-template-columns: 1fr;
+            }
+            .news-sidebar-modern {
+                margin-left: 0;
+                margin-top: 30px;
+            }
+        }
+        @media (max-width: 767px) {
+            .news-header h1 {
+                font-size: 36px;
+            }
+            .news-header p {
+                font-size: 16px;
+            }
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            .modal-content {
+                padding: 25px;
+            }
+            .modal-content img {
+                height: 250px;
+            }
+        }
+        @media (max-width: 480px) {
+            .news-header h1 {
+                font-size: 28px;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-card img {
+                height: 180px;
+            }
+            .modal-content h2 {
+                font-size: 24px;
+            }
+            .modal-content img {
+                height: 200px;
+            }
+        }
+        @media (max-width: 767px) {
+          .modal-content {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            min-width: 0 !important;
+            border-radius: 0 !important;
+            padding: 10px !important;
+            left: 0 !important;
+            right: 0 !important;
+          }
+          .modal {
+            padding: 0 !important;
+          }
+        }
+    </style>
+</head>
+<body id="home">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay">
+            <div class="loading-content">
+                <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+                <p>Chờ Ấm Một chút nhé...</p>
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    <div class="wrapper">
+       <div class="header">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-2 col-sm-2">
+                   <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                   <div class="header_top">
+                      <div class="row">
+                         <div class="col-md-3">
+                           
+                         </div>
+                         <div class="col-md-6">
+                           <ul class="topmenu">
+                              <li><a href="policy.html">Chính Sách</a></li>
+                              <li><a href="member.html">Thành Viên</a></li>
+                           </ul>
+                         </div>
+                         <div class="col-md-3">
+                            <ul class="usermenu">
+                                <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                             </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="clearfix"></div>
+                   <div class="header_bottom">
+                      <ul class="option">
+                         <li id="search" class="search">
+                            <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                         </li>
+                         <li class="option-cart">
+                            <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <!-- <ul class="option-cart-item">
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Cappuccino</p>
+                                        <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">45.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Bánh Red Velvet</p>
+                                        <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">55.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                            </ul> -->
+                         </li>
+                      </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div>
+                      <div class="navbar-collapse collapse">
+                         <ul class="nav navbar-nav">
+                            <li>
+                                <a href="index.html">Trang Chủ</a>
+                            </li>
+                            <li><a href="menu.html">Menu</a></li>
+                            <li class="active dropdown"><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
+                            <li><a href="about.html">Về Chúng Tôi</a></li>
+                            <li><a href="timeline.html">Xã hội Ấm</a></li>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="clearfix"></div>
+       <div class="hom-slider">
+          <div class="container">
+             <div id="sequence">
+                <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                <ul class="sequence-canvas">
+                   <li class="animate-in">
+                      <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                      </div>
+                      
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                      <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400">
+                         <h1>Khuyến Mãi Đặc Biệt</h1>
+                      </div>   
+                      <div class="flat-caption caption3 formLeft delay500">
+                         <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                      </div>
+                      <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                   </li>
+                   <li>
+                      <div class="flat-caption caption2 formLeft delay400 text-center">
+                         <h1>Bánh Ngọt Tươi Mới</h1>
+                      </div>
+                      <div class="flat-caption caption3 formLeft delay500 text-center">
+                         <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                      </div>
+                      <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                      <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                   </li>
+                </ul>
+             </div>
+          </div>
+          <div class="promotion-banner">
+             <div class="container">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-4">
+                     <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                  </div>
+                </div>
+             </div>
+          </div>
+       </div>
+        <div class="clearfix"></div>
+
+        <!-- Nội dung trang tin tức -->
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="news-section">
+                    <div class="news-header">
+                        <h1>Tin Tức & Sự Kiện</h1>
+                        <p>Khám phá những câu chuyện mới nhất từ Ấm - Coffee and Cake. Từ các chương trình khuyến mãi hấp dẫn đến những mẹo pha chế độc đáo, tất cả đều có tại đây.</p>
+                    </div>
+                    
+                    <div class="news-container">
+                        <div class="news-grid">
+                            <!-- Nội dung tin tức sẽ được thêm vào đây từ Firebase -->
+                        </div>
+
+                        <div class="news-sidebar-modern">
+                            <h4>Tìm Kiếm Tin Tức</h4>
+                            <div class="search-box">
+                                <input type="text" placeholder="Nhập từ khóa...">
+                                <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
+                                <button type="button" class="clear-filter" style="display: none; margin-left: 10px; background: #6c757d;">
+                                    <i class="fa fa-times"></i> Bỏ Lọc
+                                </button>
+                            </div>
+
+                            
+
+                            <h4>Danh Mục Tin Tức</h4>
+                            <ul class="categories-modern">
+                                <li><a href="#" class="active" data-category="all">Tất Cả</a></li>
+                                <li><a href="#" data-category="Khuyến Mãi">Khuyến Mãi</a></li>
+                                <li><a href="#" data-category="Mẹo Pha Chế">Mẹo Pha Chế</a></li>
+                                <li><a href="#" data-category="Sự Kiện">Sự Kiện</a></li>
+                                <li><a href="#" data-category="Sản Phẩm Mới">Sản Phẩm Mới</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="news-pagination">
+                        <a href="#" class="page-link" data-page="1">1</a>
+                        <a href="#" class="page-link" data-page="2">2</a>
+                        <a href="#" class="page-link" data-page="3">3</a>
+                        <a href="#" class="page-link next" data-page="next">›</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <!-- Footer (giữ nguyên từ file gốc) -->
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                <input type="submit" value="Đăng Ký" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Đăng Nhập -->
+<div id="loginModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Nhập</h2>
+       <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="loginBtn">
+            Đăng Nhập
+            <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+       </div>
+       <div class="forgot-password">
+          <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Đăng Ký -->
+ <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Đăng Ký</h2>
+       <form id="registerForm">
+          <input type="text" id="registerName" placeholder="Họ và Tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="registerBtn">
+            Đăng Ký
+            <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+ <!-- Modal Quên Mật Khẩu -->
+ <div id="forgotPasswordModal" class="auth-modal">
+    <div class="auth-modal-content">
+       <span class="close">×</span>
+       <h2>Quên Mật Khẩu</h2>
+       <form id="forgotPasswordForm">
+          <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+          <button type="submit" id="forgotBtn">
+            Gửi Yêu Cầu
+            <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+          </button>
+       </form>
+       <div class="switch">
+          Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+       </div>
+    </div>
+ </div>
+    <!-- Modal Popups -->
+    <div class="modals-container">
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <button class="btn-close">×</button>
+            <h2>Khuyến Mãi Tháng 4: Mua 1 Tặng 1 Đồ Uống</h2>
+            <div class="date">15/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg" alt="Khuyến mãi tháng 4">
+            <p>Chào đón tháng 4 rực rỡ, Ấm - Coffee and Cake mang đến chương trình khuyến mãi đặc biệt: Mua 1 tặng 1 tất cả đồ uống trong menu! Từ cà phê đen đá đậm đà đến latte nghệ thuật, bạn đều có thể thưởng thức cùng bạn bè mà không lo về giá.</p>
+            <p>Thời gian: 15-17/04/2025<br>Địa điểm: Tất cả chi nhánh Ấm - Coffee and Cake<br>Lưu ý: Áp dụng cho đơn hàng tại chỗ và mang về.</p>
+            <p>Hãy đến ngay để không bỏ lỡ cơ hội này!</p>
+        </div>
+    </div>
+    <div class="modal" id="modal2">
+        <div class="modal-content">
+            <button class="btn-close">×</button>
+            <h2>Ra Mắt Bánh Cheesecake Sakura Mới</h2>
+            <div class="date">10/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/side-view-cheesecake-with-cherry-jelly-top-white-plate_141793-2955.jpg" alt="Bánh mới">
+            <p>Lấy cảm hứng từ mùa hoa anh đào Nhật Bản, Cheesecake Sakura của Ấm mang đến hương vị thanh nhẹ, ngọt ngào với lớp kem phô mai mịn màng và chút sắc hồng phấn. Đây là món bánh hoàn hảo cho những buổi chiều thư giãn bên ly cà phê yêu thích.</p>
+            <p>Giá: 65.000 VND/lát<br>Có mặt từ: 10/04/2025<br>Đặt hàng ngay để trải nghiệm!</p>
+        </div>
+    </div>
+    <div class="modal" id="modal3">
+        <div class="modal-content">
+            <button class="btn-close">×</button>
+            <h2>Mẹo Pha Chế Latte Art Tại Nhà</h2>
+            <div class="date">05/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/barista-making-latte-art_23-2148482773.jpg" alt="Mẹo pha chế">
+            <p>Không cần đến quán, bạn vẫn có thể tạo ra những ly latte art đẹp mắt ngay tại nhà! Các barista của Ấm chia sẻ 5 bước đơn giản:</p>
+            <p>1. Chọn cà phê espresso chất lượng.<br>2. Đánh sữa tạo bọt mịn bằng máy hoặc bình French press.<br>3. Đổ sữa từ độ cao 5-10cm để tạo lớp nền.<br>4. Dùng tăm hoặc que khuấy để vẽ hình trái tim, lá cây.<br>5. Thực hành đều đặn để thành thạo!</p>
+            <p>Thử ngay và chia sẻ thành quả của bạn với chúng tôi nhé!</p>
+        </div>
+    </div>
+    <div class="modal" id="modal4">
+        <div class="modal-content">
+            <button class="btn-close">×</button>
+            <h2>Sự Kiện Cộng Đồng: Ngày Cà Phê Miễn Phí</h2>
+            <div class="date">01/04/2025</div>
+            <img src="https://img.freepik.com/free-photo/group-friends-enjoying-coffee-together_23-2148482769.jpg" alt="Sự kiện cộng đồng">
+            <p>Để tri ân khách hàng, Ấm - Coffee and Cake tổ chức Ngày Cà Phê Miễn Phí vào 01/04/2025. Tham gia để thưởng thức cà phê miễn phí, giao lưu với các barista, và nhận quà tặng độc quyền như túi vải, ly tái chế.</p>
+            <p>Thời gian: 8:00 - 12:00, 01/04/2025<br>Địa điểm: Chi nhánh chính - 123 Nguyễn Trãi, Quận 5<br>Đăng ký trước để giữ chỗ!</p>
+        </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Modal Popup
+        function attachModalEvents() {
+            console.log('Attaching modal events');
+            
+            // Xử lý mở modal
+            document.querySelectorAll('.news-card, .btn-read').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const modalId = item.getAttribute('data-modal') || item.closest('.news-card').getAttribute('data-modal');
+                    console.log('Opening modal:', modalId);
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+
+            // Xử lý đóng modal bằng nút close - Cập nhật cách gắn sự kiện
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-close')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const modal = e.target.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+
+            // Xử lý đóng modal khi click bên ngoài
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Thêm xử lý đóng modal bằng phím ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal[style*="display: flex"]');
+                    if (openModal) {
+                        openModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+        }
+
+        // Scroll Animation
+        function setupScrollAnimation() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.2 });
+
+            document.querySelectorAll('.news-card, .news-section').forEach(el => {
+            el.classList.add('animate-hidden');
+            observer.observe(el);
+        });
+        }
+
+        // Biến toàn cục để lưu trữ dữ liệu tin tức
+        let allNewsData = [];
+        let currentFilteredNews = [];
+
+        // Cập nhật hàm loadNewsFromFirebase
+        async function loadNewsFromFirebase() {
+            console.log('Starting to load news from Firebase...');
+            try {
+                const newsRef = window.ref(window.db, 'news');
+                const snapshot = await window.get(newsRef);
+                
+                if (snapshot.exists()) {
+                    let newsData = snapshot.val();
+                    console.log('Raw news data:', newsData);
+
+                    // Chuyển đổi dữ liệu thành mảng
+                    allNewsData = Array.isArray(newsData) ? newsData : Object.values(newsData);
+                    console.log('Processed news array:', allNewsData);
+                    console.log('Number of news items:', allNewsData.length);
+
+                    // Sắp xếp tin tức theo ngày mới nhất
+                    allNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    currentFilteredNews = [...allNewsData];
+
+                    // Hiển thị tin tức
+                    displayNews(currentFilteredNews);
+                    displayModals(currentFilteredNews);
+                    setupCategoryFilter();
+                    setupSearchFunction();
+                } else {
+                    console.log("No news data available in Firebase");
+                    showNoNewsMessage();
+                }
+            } catch (error) {
+                console.error("Error loading news:", error);
+                showErrorMessage(error);
+            }
+        }
+
+        function showNoNewsMessage() {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = `
+                <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                    <h3 style="color: #3a2317; margin-bottom: 10px;">Chưa có tin tức</h3>
+                    <p style="color: #6a4a3a;">Vui lòng quay lại sau</p>
+                </div>
+            `;
+        }
+
+        function showErrorMessage(error) {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = `
+                <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                    <h3 style="color: #3a2317; margin-bottom: 10px;">Có lỗi xảy ra</h3>
+                    <p style="color: #6a4a3a;">Không thể tải tin tức. Vui lòng thử lại sau.</p>
+                    <p style="color: #6a4a3a; font-size: 12px;">Chi tiết: ${error.message}</p>
+                </div>
+            `;
+        }
+
+        function displayNews(newsArray) {
+            const newsGrid = document.querySelector('.news-grid');
+            newsGrid.innerHTML = '';
+            
+            if (newsArray.length === 0) {
+                newsGrid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                        <h3 style="color: #3a2317; margin-bottom: 10px;">Không tìm thấy tin tức</h3>
+                        <p style="color: #6a4a3a;">Vui lòng thử lại với từ khóa khác</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            newsArray.forEach((news, index) => {
+                const formattedDate = formatDate(news.date);
+                const newsCard = `
+                    <div class="news-card" data-modal="modal${index + 1}" data-category="${news.title}">
+                        <img src="${news.image}" alt="${news.alt}">
+                        <div class="news-card-content">
+                            <h3>${news.title}</h3>
+                            <div class="date">${formattedDate}</div>
+                            <p>${news.summary}</p>
+                            <a href="#" class="btn-read" data-modal="modal${index + 1}">Đọc Thêm</a>
+                        </div>
+                    </div>
+                `;
+                newsGrid.innerHTML += newsCard;
+            });
+            
+            attachModalEvents();
+            setupScrollAnimation();
+        }
+
+        function displayModals(newsArray) {
+            let modalsContainer = document.querySelector('.modals-container');
+            if (!modalsContainer) {
+                modalsContainer = document.createElement('div');
+                modalsContainer.className = 'modals-container';
+                document.body.appendChild(modalsContainer);
+            }
+            modalsContainer.innerHTML = '';
+            newsArray.forEach((news, index) => {
+                const formattedDate = formatDate(news.date);
+                // Render trực tiếp HTML nội dung, không bọc thêm <p>
+                const modalContent = `<div class="news-content">${news.content}</div>`;
+                const modal = `
+                    <div class="modal" id="modal${index + 1}">
+                        <div class="modal-content">
+                            <button type="button" class="btn-close" aria-label="Close">×</button>
+                            <h2>${news.title}</h2>
+                            <div class="date">${formattedDate}</div>
+                            <img src="${news.image}" alt="${news.alt}">
+                            ${modalContent}
+                        </div>
+                    </div>
+                `;
+                modalsContainer.innerHTML += modal;
+            });
+            // Thêm style cho modal và nút đóng
+            const style = document.createElement('style');
+            style.textContent = `
+                .modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.75);
+                    z-index: 10000;
+                    align-items: center;
+                    justify-content: center;
+                    overflow-y: auto;
+                    padding: 20px;
+                }
+                .modal-content {
+                    background: #fff;
+                    max-width: 850px;
+                    width: 90%;
+                    border-radius: 20px;
+                    padding: 35px;
+                    position: relative;
+                    animation: slideIn 0.4s ease;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+                }
+                .modal .btn-close {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: #f7544a;
+                    color: #fff;
+                    border: none;
+                    border-radius: 50%;
+                    width: 35px;
+                    height: 35px;
+                    font-size: 18px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(247, 84, 74, 0.3);
+                    z-index: 1;
+                    padding: 0;
+                    line-height: 1;
+                }
+                .modal .btn-close:hover {
+                    background: #d6342a;
+                    transform: scale(1.1);
+                }
+                .modal .btn-close:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(247, 84, 74, 0.3);
+                }
+                @keyframes slideIn {
+                    from { opacity: 0; transform: scale(0.85); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            attachModalEvents();
+        }
+
+        // Hàm format ngày tháng
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    throw new Error('Invalid date');
+                }
+                return date.toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return dateString; // Trả về chuỗi gốc nếu có lỗi
+            }
+        }
+
+        // Đảm bảo loadNewsFromFirebase được gọi khi trang đã sẵn sàng
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing news...');
+            loadNewsFromFirebase();
+        });
+
+        // Cập nhật hàm xử lý tìm kiếm
+        function setupSearchFunction() {
+            const searchInput = document.querySelector('.news-sidebar-modern .search-box input');
+            const clearFilterBtn = document.querySelector('.clear-filter');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    // Nếu ô tìm kiếm trống, hiển thị lại tất cả tin tức
+                    currentFilteredNews = [...allNewsData];
+                    displayNews(currentFilteredNews);
+                    clearFilterBtn.style.display = 'none';
+                    return;
+                }
+
+                // Lọc tin tức dựa trên từ khóa tìm kiếm
+                currentFilteredNews = allNewsData.filter(news => {
+                    const title = news.title.toLowerCase();
+                    const summary = news.summary.toLowerCase();
+                    const content = news.content.join(' ').toLowerCase();
+                    return title.includes(searchTerm) || 
+                           summary.includes(searchTerm) || 
+                           content.includes(searchTerm);
+                });
+
+                // Hiển thị kết quả tìm kiếm
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = 'inline-block';
+            }
+
+            // Xử lý sự kiện tìm kiếm khi nhấn Enter
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+
+            // Xử lý sự kiện khi xóa hết text trong ô tìm kiếm
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() === '') {
+                    performSearch();
+                }
+            });
+
+            // Xử lý nút bỏ lọc
+            clearFilterBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentFilteredNews = [...allNewsData];
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = 'none';
+                
+                // Reset danh mục về "Tất cả"
+                const categoryLinks = document.querySelectorAll('.categories-modern a');
+                categoryLinks.forEach(link => link.classList.remove('active'));
+                categoryLinks[0].classList.add('active');
+            });
+        }
+
+        // Cập nhật hàm xử lý danh mục
+        function setupCategoryFilter() {
+            const categoryLinks = document.querySelectorAll('.categories-modern a');
+            const clearFilterBtn = document.querySelector('.clear-filter');
+
+            function filterByCategory(category) {
+                if (category === 'all') {
+                    currentFilteredNews = [...allNewsData];
+                } else {
+                    currentFilteredNews = allNewsData.filter(news => 
+                        news.title === category
+                    );
+                }
+                
+                displayNews(currentFilteredNews);
+                clearFilterBtn.style.display = category === 'all' ? 'none' : 'inline-block';
+            }
+
+            // Thêm sự kiện click cho các danh mục
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Xóa active class từ tất cả các link
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Thêm active class cho link được click
+                    link.classList.add('active');
+                    
+                    // Lọc tin tức theo danh mục
+                    const category = link.getAttribute('data-category');
+                    filterByCategory(category);
+                });
+            });
+        }
+
+        // Thêm hàm xử lý phân trang
+        function setupPagination() {
+            const newsGrid = document.querySelector('.news-grid');
+            const pageLinks = document.querySelectorAll('.page-link');
+            const originalNewsCards = Array.from(newsGrid.children);
+            const itemsPerPage = 4; // Số tin tức hiển thị trên mỗi trang
+            let currentPage = 1;
+            let filteredCards = [...originalNewsCards]; // Lưu trữ danh sách tin tức đã lọc
+
+            function updatePagination() {
+                const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+                
+                // Cập nhật trạng thái active của các nút phân trang
+                pageLinks.forEach(link => {
+                    const pageNum = link.getAttribute('data-page');
+                    if (pageNum === 'next') {
+                        link.style.display = currentPage < totalPages ? 'flex' : 'none';
+                    } else {
+                        const page = parseInt(pageNum);
+                        link.style.display = page <= totalPages ? 'flex' : 'none';
+                        link.classList.toggle('active', page === currentPage);
+                    }
+                });
+
+                // Hiển thị tin tức cho trang hiện tại
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const currentPageCards = filteredCards.slice(startIndex, endIndex);
+
+                newsGrid.innerHTML = '';
+                if (currentPageCards.length > 0) {
+                    currentPageCards.forEach(card => newsGrid.appendChild(card.cloneNode(true)));
+                } else {
+                    newsGrid.innerHTML = `
+                        <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 20px;">
+                            <h3 style="color: #3a2317; margin-bottom: 10px;">Không có tin tức</h3>
+                            <p style="color: #6a4a3a;">Vui lòng thử lại sau</p>
+                        </div>
+                    `;
+                }
+                attachModalEvents();
+            }
+
+            // Xử lý sự kiện click cho các nút phân trang
+            pageLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageNum = link.getAttribute('data-page');
+                    
+                    if (pageNum === 'next') {
+                        if (currentPage < Math.ceil(filteredCards.length / itemsPerPage)) {
+                            currentPage++;
+                        }
+                    } else {
+                        currentPage = parseInt(pageNum);
+                    }
+                    
+                    updatePagination();
+                });
+            });
+
+            // Cập nhật hàm filterByCategory để hỗ trợ phân trang
+            const originalFilterByCategory = window.filterByCategory;
+            window.filterByCategory = function(category) {
+                currentPage = 1; // Reset về trang 1 khi lọc
+                if (category === 'all') {
+                    filteredCards = [...originalNewsCards];
+                } else {
+                    filteredCards = originalNewsCards.filter(card => 
+                        card.getAttribute('data-category') === category
+                    );
+                }
+                updatePagination();
+            };
+
+            // Cập nhật hàm performSearch để hỗ trợ phân trang
+            const originalPerformSearch = window.performSearch;
+            window.performSearch = function() {
+                currentPage = 1; // Reset về trang 1 khi tìm kiếm
+                const searchTerm = document.querySelector('.news-sidebar-modern .search-box input').value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    filteredCards = [...originalNewsCards];
+                } else {
+                    filteredCards = originalNewsCards.filter(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const summary = card.querySelector('p').textContent.toLowerCase();
+                        return title.includes(searchTerm) || summary.includes(searchTerm);
+                    });
+                }
+                updatePagination();
+            };
+
+            // Cập nhật hàm resetFilters để hỗ trợ phân trang
+            const originalResetFilters = window.resetFilters;
+            window.resetFilters = function() {
+                currentPage = 1; // Reset về trang 1 khi bỏ lọc
+                filteredCards = [...originalNewsCards];
+                updatePagination();
+            };
+
+            // Thêm style cho phân trang
+            const style = document.createElement('style');
+            style.textContent = `
+                .news-pagination {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 15px;
+                    margin-top: 30px;
+                }
+                .news-pagination a {
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #fff;
+                    color: #3a2317;
+                    border-radius: 50%;
+                    text-decoration: none;
+                    font-weight: 600;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+                .news-pagination a:hover, 
+                .news-pagination a.active {
+                    background: #f7544a;
+                    color: #fff;
+                    box-shadow: 0 5px 10px rgba(247, 84, 74, 0.3);
+                }
+                .news-pagination a.next {
+                    font-size: 20px;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Khởi tạo phân trang
+            updatePagination();
+        }
+
+        // Gọi hàm setup pagination khi trang đã load xong
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setupPagination();
+            });
+        } else {
+            setupPagination();
+        }
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script type="module">
+        import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+     
+        document.addEventListener('DOMContentLoaded', () => {
+           // Kiểm tra trạng thái đăng nhập
+           onAuthStateChanged(auth, (user) => {
+              const loginLink = document.getElementById('loginLink');
+              const registerLink = document.getElementById('registerLink');
+              const userInfo = document.getElementById('userInfo');
+     
+              if (user) {
+                 userInfo.style.display = 'inline-block';
+                 loginLink.style.display = 'none';
+                 registerLink.style.display = 'none';
+              } else {
+                 userInfo.style.display = 'none';
+                 loginLink.style.display = 'inline-block';
+                 registerLink.style.display = 'inline-block';
+              }
+           });
+     
+           // Xử lý modal đăng nhập/đăng ký
+           bindModalEvents();
+     
+           // Xử lý form đăng nhập
+           document.getElementById('loginForm').addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const email = document.getElementById('loginEmail').value;
+              const password = document.getElementById('loginPassword').value;
+              const btn = document.getElementById('loginBtn');
+              const spinner = document.getElementById('loginSpinner');
+              btn.disabled = true;
+              spinner.style.display = 'inline-block';
+              try {
+                 await signInWithEmailAndPassword(auth, email, password);
+                 Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                 });
+                 document.getElementById('loginModal').style.display = 'none';
+              } catch (error) {
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                    showConfirmButton: true
+                 });
+              }
+              btn.disabled = false;
+              spinner.style.display = 'none';
+           });
+     
+           // Xử lý form đăng ký
+           document.getElementById('registerForm').addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const name = document.getElementById('registerName').value;
+              const email = document.getElementById('registerEmail').value;
+              const password = document.getElementById('registerPassword').value;
+              const btn = document.getElementById('registerBtn');
+              const spinner = document.getElementById('registerSpinner');
+              btn.disabled = true;
+              spinner.style.display = 'inline-block';
+              try {
+                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                 await updateProfile(userCredential.user, { displayName: name });
+                 await sendEmailVerification(userCredential.user);
+                 Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng ký thành công!',
+                    text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                    showConfirmButton: true
+                 });
+                 document.getElementById('registerModal').style.display = 'none';
+              } catch (error) {
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                    showConfirmButton: true
+                 });
+              }
+              btn.disabled = false;
+              spinner.style.display = 'none';
+           });
+     
+           // Xử lý form quên mật khẩu
+           document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const email = document.getElementById('forgotPasswordEmail').value;
+              const btn = document.getElementById('forgotBtn');
+              const spinner = document.getElementById('forgotSpinner');
+              btn.disabled = true;
+              spinner.style.display = 'inline-block';
+              if (!email) {
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                 });
+                 btn.disabled = false;
+                 spinner.style.display = 'none';
+                 return;
+              }
+              try {
+                 await sendPasswordResetEmail(auth, email);
+                 Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                    showConfirmButton: true
+                 });
+                 document.getElementById('forgotPasswordModal').style.display = 'none';
+              } catch (error) {
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                    showConfirmButton: true
+                 });
+              }
+              btn.disabled = false;
+              spinner.style.display = 'none';
+           });
+     
+           // Xử lý đăng xuất
+           document.getElementById('logoutLink').addEventListener('click', async (e) => {
+              e.preventDefault();
+              Swal.fire({
+                 title: 'Bạn có chắc?',
+                 text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#A63C3C',
+                 cancelButtonColor: '#6c757d',
+                 confirmButtonText: 'Đăng Xuất',
+                 cancelButtonText: 'Hủy'
+              }).then(async (result) => {
+                 if (result.isConfirmed) {
+                    try {
+                       await signOut(auth);
+                       Swal.fire({
+                          icon: 'success',
+                          title: 'Đăng xuất thành công!',
+                          showConfirmButton: false,
+                          timer: 1500
+                       });
+                    } catch (error) {
+                       Swal.fire({
+                          icon: 'error',
+                          title: 'Lỗi!',
+                          text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                          showConfirmButton: true
+                       });
+                    }
+                 }
+              });
+           });
+        });
+     
+        function bindModalEvents() {
+           // Mở modal đăng nhập
+           document.querySelector('.log').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('loginModal').style.display = 'flex';
+           });
+     
+           // Mở modal đăng ký
+           document.querySelector('.reg').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('registerModal').style.display = 'flex';
+           });
+     
+           // Mở modal quên mật khẩu
+           document.getElementById('forgotPassword').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('loginModal').style.display = 'none';
+              document.getElementById('forgotPasswordModal').style.display = 'flex';
+           });
+     
+           // Chuyển từ đăng nhập sang đăng ký
+           document.getElementById('switchToRegister').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('loginModal').style.display = 'none';
+              document.getElementById('registerModal').style.display = 'flex';
+           });
+     
+           // Chuyển từ đăng ký sang đăng nhập
+           document.getElementById('switchToLogin').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('registerModal').style.display = 'none';
+              document.getElementById('loginModal').style.display = 'flex';
+           });
+     
+           // Chuyển từ quên mật khẩu về đăng nhập
+           document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+              e.preventDefault();
+              document.getElementById('forgotPasswordModal').style.display = 'none';
+              document.getElementById('loginModal').style.display = 'flex';
+           });
+     
+           // Đóng modal
+           document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+              closeBtn.addEventListener('click', () => {
+                 document.getElementById('loginModal').style.display = 'none';
+                 document.getElementById('registerModal').style.display = 'none';
+                 document.getElementById('forgotPasswordModal').style.display = 'none';
+              });
+           });
+     
+           // Đóng modal khi click bên ngoài
+           document.querySelectorAll('.auth-modal').forEach(modal => {
+              modal.addEventListener('click', (e) => {
+                 if (e.target === modal) {
+                    modal.style.display = 'none';
+                 }
+              });
+           });
+        }
+     </script>
+   <!-- Bottom Navigation Bar cho mobile -->
+   <div class="bottom-nav">
+    <a href="index.html" class="nav-home">
+      <img src="images/imagetrangchu.png" alt="Trang chủ" class="nav-icon"/>
+      <span>Trang chủ</span>
+    </a>
+    <a href="news.html" class="nav-news">
+      <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
+      <span>Tin tức</span>
+    </a>
+    <a href="menu.html" class="nav-account">
+      <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
+      <span>Menu</span>
+    </a>
+    <a href="cart.html" class="nav-cart">
+      <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
+      <span>Giỏ hàng</span>
+    </a>
+    <a href="policy.html" class="nav-policy">
+      <img src="images/imagechinhsach.png" alt="Bảo mật" class="nav-icon"/>
+      <span>Bảo mật</span>
+    </a>
+    <a href="about.html" class="nav-about">
+      <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
+      <span>Giới thiệu</span>
+    </a>
+    <a href="timeline.html" class="nav-member">
+      <img src="images/LOGOapk.png" alt="Timeline" class="nav-icon"/>
+      <span>Xã hội Ấm</span>
+    </a>
+  </div>
+              
+                  <div class="appbar-mobile">
+                    <div class="appbar-left">
+                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+                    <div class="appbar-right">
+                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+
+                  </div>
+</body>
+</html>

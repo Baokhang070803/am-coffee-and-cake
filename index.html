@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="google-site-verification" content="PaAsbmk1XWa3-fOeh2_9aTtEK38RChaUkzoLMp8MIko" />
+    <meta name="description" content="Ấm - Coffee and Cake, nơi mang đến những ly cà phê thơm ngon và bánh ngọt tinh tế trong không gian ấm cúng.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A67C52">
+    <!-- iOS PWA support -->
+    <link rel="apple-touch-icon" href="images/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getDatabase(app);
+    </script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom CSS cho trang chủ mới */
+        .about-section {
+            padding: 60px 0;
+            background: #f8f8f8;
+            text-align: center;
+        }
+        .about-section h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            margin-bottom: 20px;
+        }
+        .about-section p {
+            font-size: 18px;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .about-section .btn-about {
+            background: #f7544a;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .about-section .btn-about:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        .news-highlight {
+            padding: 60px 0;
+        }
+        .news-highlight h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .news-item {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .news-item-content {
+            padding: 20px;
+        }
+        .news-item-content h3 {
+            font-size: 20px;
+            color: #4A2F1A;
+            margin: 0 0 10px;
+        }
+        .news-item-content .date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .news-item-content p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .news-item-content .btn-readmore {
+            background: #f7544a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .news-item-content .btn-readmore:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        .testimonial-section {
+            padding: 60px 0;
+            background: url('https://img.freepik.com/free-photo/coffee-cup-cake-plate_1203-1694.jpg') center/cover no-repeat;
+            position: relative;
+            color: #fff;
+        }
+        .testimonial-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 47, 26, 0.7);
+            z-index: 1;
+        }
+        .testimonial-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        .testimonial-section h2 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .testimonial-slider {
+            position: relative;
+        }
+        .testimonial-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .testimonial-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+        }
+        .testimonial-item p {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .testimonial-item h4 {
+            font-size: 16px;
+            color: #f7544a;
+        }
+        .testimonial-control {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .testimonial-control a {
+            background: #f7544a;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .testimonial-control a:hover {
+            background: #da2a20;
+        }
+
+        .gallery-section {
+            padding: 60px 0;
+        }
+        .gallery-section h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .gallery-item .overlay i {
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .cta-section {
+            padding: 80px 0;
+            background: url('https://img.freepik.com/free-photo/coffee-cup-table-heat-steams-frothy-drink-relaxation-elegance-generated-by-artificial-intelligence_25030-62779.jpg') center/cover no-repeat;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 47, 26, 0.7);
+            z-index: 1;
+        }
+        .cta-section .container {
+            position: relative;
+            z-index: 2;
+        }
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .cta-section .btn-cta {
+            background: #f7544a;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .cta-section .btn-cta:hover {
+            background: #da2a20;
+            transform: scale(1.05);
+        }
+
+        /* Modal cho Gallery */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-modal-content img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-modal-content .btn-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-modal-content .btn-close:hover {
+            background: #da2a20;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 767px) {
+            .about-section h2, .news-highlight h2, .testimonial-section h2, .gallery-section h2, .cta-section h2 {
+                font-size: 28px;
+            }
+            .about-section p, .cta-section p {
+                font-size: 16px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-item img {
+                height: 150px;
+            }
+        }
+        @media (max-width: 480px) {
+            .about-section, .news-highlight, .testimonial-section, .gallery-section, .cta-section {
+                padding: 40px 0;
+            }
+            .testimonial-item p {
+                font-size: 16px;
+            }
+        }
+
+        /* CSS cho Modal Đăng nhập/Đăng ký */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .auth-modal-content h2 {
+            font-size: 24px;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .modal-description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .auth-modal-content .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #4A2F1A;
+            transition: color 0.3s;
+        }
+        .auth-modal-content .close:hover {
+            color: #f7544a;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4A2F1A;
+            font-weight: 500;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #A67C52;
+            outline: none;
+        }
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 12px;
+        }
+        .password-input {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+        .remember-me input[type="checkbox"]:checked {
+            background-color: #A67C52;
+            border-color: #A67C52;
+        }
+        .remember-me input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+        }
+        .remember-me label {
+            margin: 0 0 0 8px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .remember-me label:hover {
+            color: #A67C52;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #A67C52;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #8B6842;
+        }
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .social-login p {
+            color: #666;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+        .social-login p::before {
+            left: 0;
+        }
+        .social-login p::after {
+            right: 0;
+        }
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-google,
+        .btn-facebook {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-google:hover {
+            background: #f1f1f1;
+        }
+        .btn-facebook:hover {
+            background: #f1f1f1;
+        }
+        .switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .switch a {
+            color: #A67C52;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .switch a:hover {
+            text-decoration: underline;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .forgot-password a {
+            color: #A67C52;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .terms {
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .terms input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .terms input[type="checkbox"]:checked {
+            background-color: #A67C52;
+            border-color: #A67C52;
+        }
+        .terms input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+        }
+        .terms label {
+            margin: 0;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.4;
+        }
+        .terms a {
+            color: #A67C52;
+            text-decoration: none;
+        }
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        .forgot-password-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 5px;
+        }
+        .forgot-password-info h4 {
+            color: #4A2F1A;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .forgot-password-info ol {
+            margin: 0;
+            padding-left: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .forgot-password-info .note {
+            margin-top: 10px;
+            color: #f7544a;
+            font-size: 13px;
+            font-style: italic;
+        }
+        @media (max-width: 480px) {
+            .auth-modal-content {
+                padding: 20px;
+                margin: 15px;
+            }
+            .social-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* CSS cho usermenu */
+        .usermenu li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li a:hover {
+            color: #A63C3C;
+        }
+
+        /* Chatbox Messenger Style - LUXURY A67C52 */
+        .chatbox-messenger {
+            position: fixed;
+            bottom: 100px;
+            right: 26px;
+            z-index: 2147483647 !important;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .chatbox-toggle {
+            background: #A67C52 !important;
+            border: none !important;
+            box-shadow: 0 4px 16px rgba(166,124,82,0.25), 0 1.5px 4px rgba(0,0,0,0.08);
+            padding: 0 !important;
+            width: 64px !important;
+            height: 64px !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: box-shadow 0.2s, background 0.2s;
+            z-index: 2147483647 !important;
+        }
+        .chatbox-toggle img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            display: block;
+            filter: brightness(0) invert(1);
+        }
+        .chatbox-toggle:hover {
+            background: #8B6842 !important;
+            box-shadow: 0 8px 32px rgba(166,124,82,0.35);
+        }
+        .chatbox-window {
+            width: 370px;
+            max-width: 98vw;
+            height: 500px;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 8px 40px rgba(166,124,82,0.22), 0 2px 8px rgba(0,0,0,0.10);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            animation: fadeInUp 0.3s;
+            border: 2px solid #A67C52;
+            z-index: 2147483647 !important;
+        }
+        .chatbox-header {
+            background: linear-gradient(90deg, #A67C52 80%, #8B6842 100%);
+            color: #fff;
+            padding: 18px 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(166,124,82,0.10);
+        }
+        .chatbox-header .chatbox-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chatbox-header .fa-coffee {
+            font-size: 20px;
+            color: #fff;
+        }
+        .chatbox-header .chatbox-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 26px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chatbox-header .chatbox-close:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .chatbox-messages {
+            flex: 1;
+            padding: 20px 18px 16px 18px;
+            background: linear-gradient(180deg, #F7F3EF 0%, #F2E6DA 100%);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .chatbox-message {
+            max-width: 82%;
+            padding: 12px 18px;
+            border-radius: 18px 18px 6px 18px;
+            font-size: 16px;
+            line-height: 1.5;
+            word-break: break-word;
+            display: inline-block;
+            box-shadow: 0 1.5px 6px rgba(166,124,82,0.08);
+            margin-bottom: 2px;
+            position: relative;
+        }
+        .chatbox-message.admin {
+            background: linear-gradient(90deg, #A67C52 80%, #8B6842 100%);
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 18px;
+            border-bottom-right-radius: 18px;
+        }
+        .chatbox-message.user {
+            background: #fff;
+            color: #A67C52;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 6px;
+            border-top-left-radius: 18px;
+            border-bottom-left-radius: 18px;
+            border: 1.5px solid #A67C52;
+        }
+        .chatbox-input-area {
+            display: flex;
+            padding: 14px 16px;
+            border-top: 1.5px solid #E5D3BC;
+            background: #F7F3EF;
+            align-items: center;
+            gap: 8px;
+        }
+        .chatbox-input {
+            flex: 1;
+            border: none;
+            border-radius: 18px;
+            padding: 10px 16px;
+            font-size: 16px;
+            outline: none;
+            background: #fff;
+            color: #A67C52;
+            border: 1.5px solid #E5D3BC;
+            transition: border 0.2s;
+            box-shadow: 0 1px 3px rgba(166,124,82,0.04);
+        }
+        .chatbox-input:focus {
+            border: 1.5px solid #A67C52;
+            background: #F2E6DA;
+        }
+        .chatbox-send {
+            background: #A67C52;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            margin-left: 0;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(166,124,82,0.10);
+            position: relative;
+        }
+        .chatbox-send:after {
+            content: '\f1d8';
+            font-family: FontAwesome;
+            font-size: 20px;
+            display: block;
+        }
+        .chatbox-send span, .chatbox-send svg {
+            display: none;
+        }
+        .chatbox-send:hover {
+            background: #8B6842;
+        }
+        @media (max-width: 600px) {
+            .chatbox-window {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 0;
+                max-height: none;
+                z-index: 999999;
+            }
+            .chatbox-messenger {
+                right: 30px;
+                bottom: 150px;
+                z-index: 2147483647 !important;
+            }
+            .chatbox-toggle {
+                width: 56px !important;
+                height: 56px !important;
+                z-index: 2147483647 !important;
+            }
+            .chatbox-toggle img {
+                width: 32px;
+                height: 32px;
+            }
+            .chatbox-header {
+                padding: 12px 16px;
+                font-size: 16px;
+                z-index: 2147483647 !important;
+            }
+            .chatbox-messages {
+                padding: 16px 12px;
+                z-index: 2147483647 !important;
+            }
+            .chatbox-message {
+                max-width: 85%;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            .chatbox-input-area {
+                padding: 12px;
+                background: #fff;
+                z-index: 2147483647 !important;
+            }
+            .chatbox-input {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            .chatbox-send {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .btn-about,
+        .btn-readmore,
+        .btn-cta,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .btn-about:active,
+        .btn-readmore:active,
+        .btn-cta:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Đảm bảo SweetAlert2 hiển thị trên cùng */
+        .swal2-container {
+            z-index: 100000 !important;
+        }
+        .swal2-popup {
+            z-index: 100001 !important;
+        }
+        .swal2-backdrop-show {
+            z-index: 99999 !important;
+        }
+
+        .galaxy-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 1100px;
+            height: 600px;
+            padding: 30px;
+            background-color: #f5f5f5;
+            box-shadow: 0 30px 50px #dbdbdb;
+        }
+        #cosmic-slide {
+            width: max-content;
+            margin-top: 50px;
+        }
+        .cosmic-item {
+            width: 190px;
+            height: 300px;
+            background-position: 50% 50%;
+            display: inline-block;
+            transition: 0.5s;
+            background-size: cover;
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 30px 50px #505050;
+        }
+        .cosmic-item:nth-child(1),
+        .cosmic-item:nth-child(2) {
+            left: 0;
+            top: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+        }
+        .cosmic-item:nth-child(3) {
+            left: 50%;
+        }
+        .cosmic-item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+        .cosmic-item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+        .cosmic-item:nth-child(n+6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+        .cosmic-item .nebula-content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            width: 250px;
+            text-align: left;
+            padding: 0;
+            color: #ffffff;
+            transform: translate(0, -50%);
+            display: none;
+            font-family: system-ui;
+        }
+        .cosmic-item:nth-child(2) .nebula-content {
+            display: block;
+            z-index: 1;
+        }
+        .cosmic-item .star-name {
+            font-size: 40px;
+            font-weight: bold;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 1 forwards;
+        }
+        .cosmic-item .star-description {
+            margin: 20px 0;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 0.3s 1 forwards;
+        }
+        .cosmic-item .cosmic-button {
+            padding: 10px 20px;
+            border: none;
+            opacity: 0;
+            animation: cosmic-reveal 1s ease-in-out 0.6s 1 forwards;
+        }
+        @keyframes cosmic-reveal {
+            from {
+                opacity: 0;
+                transform: translate(0, 100px);
+                filter: blur(33px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0, 0);
+                filter: blur(0);
+            }
+        }
+        .cosmic-controls {
+            position: absolute;
+            bottom: 30px;
+            z-index: 222222;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cosmic-controls .orbit-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cosmic-controls .orbit-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+        .cosmic-controls .orbit-button:active {
+            transform: scale(0.95);
+        }
+        .cosmic-controls .orbit-button i {
+            line-height: 1;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 10px 0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            opacity: 1;
+            transition: opacity 0.5s;
+            pointer-events: all;
+        }
+        .loading-overlay.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #A67C52;
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* CSS cho điện thoại */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            .hot-products {
+                padding: 40px 15px !important;
+                margin: 40px 0 !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .hot-products h2 {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+            .galaxy-container,
+            #cosmic-slide {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 auto !important;
+                overflow-x: hidden !important;
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+            }
+            .cosmic-item {
+                display: none !important;
+            }
+            .cosmic-item:nth-child(2) {
+                display: block !important;
+                position: relative !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 400px !important;
+                left: 0 !important;
+                top: 0 !important;
+                right: 0 !important;
+                margin: 0 auto !important;
+                box-sizing: border-box !important;
+                box-shadow: 0 8px 24px #ccc;
+                border-radius: 15px;
+            }
+            .cosmic-item:nth-child(2) .nebula-content {
+                left: 15px;
+                right: 15px;
+                width: calc(100% - 30px);
+                padding: 15px;
+                background: rgba(0,0,0,0.6);
+                border-radius: 10px;
+                display: block !important;
+                box-sizing: border-box;
+            }
+            .cosmic-item .star-name {
+                font-size: 22px;
+            }
+            .cosmic-item .star-description {
+                font-size: 14px;
+                margin: 10px 0;
+            }
+            .price {
+                font-size: 18px;
+            }
+            .cosmic-controls {
+                position: relative !important;
+                bottom: 0 !important;
+                margin-top: 20px !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                gap: 30px !important;
+            }
+            .cosmic-controls .orbit-button {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                border: 2px solid #A67C52;
+                background: rgba(166, 124, 82, 0.1);
+                color: #A67C52;
+            }
+            .cosmic-controls .orbit-button:hover {
+                background: #A67C52;
+                color: #fff;
+            }
+        }
+        @media (max-width: 480px) {
+            .hot-products {
+                padding: 40px 10px !important;
+            }
+            .hot-products h2 {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+            .cosmic-item:nth-child(2) {
+                height: 350px !important;
+                border-radius: 12px;
+            }
+            .cosmic-item .nebula-content {
+                padding: 12px;
+                font-size: 12px;
+                left: 10px;
+                right: 10px;
+                width: calc(100% - 20px);
+            }
+            .cosmic-item .star-name {
+                font-size: 18px;
+            }
+            .cosmic-item .star-description {
+                font-size: 12px;
+                margin: 8px 0;
+            }
+            .price {
+                font-size: 16px;
+            }
+            .cosmic-controls {
+                gap: 25px !important;
+                margin-top: 15px !important;
+            }
+            .cosmic-controls .orbit-button {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+        @media (max-width: 768px) {
+          .galaxy-container {
+            display: none !important;
+          }
+        }
+        .hot-products {
+          min-height: 380px;
+          margin: 40px 0 40px 0;
+          position: relative;
+          padding: 60px 0;
+        }
+        .hot-products h2 {
+            font-size: 36px;
+            color: #4A2F1A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        #cosmic-slide {
+          margin-bottom: 24px;
+        }
+        /* Bottom Navigation Bar cho mobile */
+        .bottom-nav {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 60px;
+          background: #fff;
+          border-top: 1.5px solid #e5d3bc;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          z-index: 10001;
+          box-shadow: 0 -2px 12px rgba(166,124,82,0.08);
+        }
+        /* .bottom-nav a {
+          color: #c21d1d;
+          text-decoration: none;
+          font-size: 14px;
+          text-align: center;
+          position: relative;
+        } */
+        .bottom-nav a i {
+          display: block;
+          font-size: 18px;
+          margin-bottom: 4px;
+        }
+        .bottom-nav a span {
+          display: block;
+          font-size: 12px;
+        }
+        .bottom-nav a.active {
+          color: #A67C52;
+        }
+        .bottom-nav a:hover {
+          color: #A67C52;
+        }
+        /* Ẩn menu chính trên mobile */
+        @media (max-width: 767px) {
+          .navbar-header {
+            display: none;
+          }
+          .navbar-collapse {
+            display: none !important;
+          }
+          .bottom-nav {
+            display: flex;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .cosmic-controls .orbit-button {
+            display: none !important;
+          }
+        }
+    </style>
+</head>
+<body id="home">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+            <p>Chờ Ấm Một chút nhé...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+                                   
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="topmenu">
+                                        <li><a href="policy.html">Chính Sách</a></li>
+                                        <li><a href="member.html">Thành Viên</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <ul class="usermenu">
+                                        <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                                </li>
+                            </ul>
+                            <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active dropdown">
+                                        <a href="index.html">Trang Chủ</a>
+                                    </li>
+                                    <li><a href="menu.html">Menu</a>
+                                    </li>
+                                    <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
+                                    <li><a href="about.html">Về Chúng Tôi</a></li>
+                                    <li><a href="timeline.html">Xã hội Ấm</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="hom-slider">
+            <div class="container">
+                <div id="sequence">
+                    <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                    <ul class="sequence-canvas">
+                        <li class="animate-in">
+                            <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                            <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400">
+                                <h1>Khuyến Mãi Đặc Biệt</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500">
+                                <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                            </div>
+                            <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Bánh Ngọt Tươi Mới</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promotion-banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="about-section">
+                    <h2>Về Ấm - Coffee and Cake</h2>
+                    <p>Ấm - Coffee and Cake không chỉ là nơi thưởng thức cà phê và bánh ngọt, mà còn là không gian để bạn tìm thấy sự thư giãn và kết nối. Mỗi ly cà phê, mỗi chiếc bánh đều được làm từ tâm huyết, mang đến hương vị đậm đà và yêu thương.</p>
+                    <a href="about.html" class="btn-about">Khám Phá Thêm</a>
+                </div>
+                <div class="hot-products">
+                    <h2>Sản Phẩm Nổi Bật</h2>
+                    <div id="cosmic-slide">
+                        <!-- Products will be loaded here dynamically -->
+                    </div>
+                    <div class="cosmic-controls">
+                        <button id="prev" class="orbit-button"><i class="fa fa-angle-left"></i></button>
+                        <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="news-highlight">
+                    <h2>Tin Tức Nổi Bật</h2>
+                    <div class="row" id="newsHighlightContainer">
+                        <!-- Tin tức sẽ được thêm vào đây bằng JavaScript -->
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="container_fullwidth">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="title contact-title">Liên Hệ Với <strong>Chúng Tôi</strong></h3>
+                                <p class="center-text">Hãy kết nối với Ấm - Coffee and Cake để trải nghiệm không gian ấm áp và những ly cà phê tuyệt hảo. Chúng tôi luôn sẵn lòng hỗ trợ bạn!</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="contact-infoormation">
+                                    <h5>Thông Tin Liên Hệ</h5>
+                                    <ul>
+                                        <li>
+                                            <span class="icon"><i class="fa fa-map-marker"></i></span>
+                                            <p><strong>Địa chỉ:</strong> Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                                        </li>
+                                        <li>
+                                            <span class="icon"><i class="fa fa-phone"></i></span>
+                                            <p><strong>Hotline:</strong> <a href="tel:+842812345678">(028) 1234 5678</a></p>
+                                        </li>
+                                        <li>
+                                            <span class="icon"><i class="fa fa-envelope"></i></span>
+                                            <p><strong>Email:</strong> <a href="mailto:contact@amcoffee.vn">contact@amcoffee.vn</a></p>
+                                        </li>
+                                        <li>
+                                            <span class="icon"><i class="fa fa-clock-o"></i></span>
+                                            <p><strong>Giờ mở cửa:</strong> 7:00 - 22:00, Thứ Hai - Chủ Nhật</p>
+                                        </li>
+                                    </ul>
+                                    <div class="contact-social">
+                                        <h6>Kết Nối Với Chúng Tôi</h6>
+                                        <ul>
+                                            <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                            <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="ContactForm">
+                                    <h5>Gửi Tin Nhắn Cho Chúng Tôi</h5>
+                                    <form id="contact-form">
+                                        <div class="form-row">
+                                            <label>Họ và Tên <span class="red">*</span></label>
+                                            <input type="text" class="inputfild" name="name" required>
+                                        </div>
+                                        <div class="form-row">
+                                            <label>Email <span class="red">*</span></label>
+                                            <input type="email" class="inputfild" name="email" required>
+                                        </div>
+                                        <div class="form-row">
+                                            <label>Số Điện Thoại</label>
+                                            <input type="tel" class="inputfild" name="phone">
+                                        </div>
+                                        <div class="form-row">
+                                            <label>Tin Nhắn <span class="red">*</span></label>
+                                            <textarea class="inputfild" name="message" rows="5" required></textarea>
+                                        </div>
+                                        <button type="submit" class="button">Gửi Tin Nhắn</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="map">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.447151308632!2d106.68028811480075!3d10.776377792319!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1b7c3ed289%3A0xa06651894598e488!2sNguyen%20Trai%2C%20District%205%2C%20Ho%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2s!4v1634567890123!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                <input type="submit" value="Đăng Ký" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đăng Nhập -->
+    <div id="loginModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Đăng Nhập</h2>
+            <p class="modal-description">Đăng nhập để trải nghiệm đầy đủ dịch vụ của Ấm - Coffee and Cake</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự</small>
+                </div>
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+                <button type="submit" id="loginBtn" class="btn-primary">
+                    Đăng Nhập
+                    <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="social-login">
+                <p>Hoặc đăng nhập với</p>
+                <div class="social-buttons">
+                    <button class="btn-google"><i class="fa fa-google"></i> Google</button>
+                </div>
+            </div>
+            <div class="switch">
+                Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+            </div>
+            <div class="forgot-password">
+                <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đăng Ký -->
+    <div id="registerModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Đăng Ký</h2>
+            <p class="modal-description">Tạo tài khoản để nhận nhiều ưu đãi hấp dẫn từ Ấm - Coffee and Cake</p>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Họ và Tên</label>
+                    <input type="text" id="registerName" placeholder="Nhập họ và tên của bạn" required>
+                    <small class="form-text">Ví dụ: Nguyễn Văn A</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="registerPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="form-group terms">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">Tôi đồng ý với <a href="policy.html">Điều khoản sử dụng</a> và <a href="policy.html#privacy">Chính sách bảo mật</a></label>
+                </div>
+                <button type="submit" id="registerBtn" class="btn-primary">
+                    Đăng Ký
+                    <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch">
+                Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Quên Mật Khẩu -->
+    <div id="forgotPasswordModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Quên Mật Khẩu</h2>
+            <p class="modal-description">Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu</p>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgotPasswordEmail">Email</label>
+                    <input type="email" id="forgotPasswordEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <button type="submit" id="forgotBtn" class="btn-primary">
+                    Gửi Yêu Cầu
+                    <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="forgot-password-info">
+                <h4>Hướng dẫn đặt lại mật khẩu:</h4>
+                <ol>
+                    <li>Nhập email đã đăng ký tài khoản</li>
+                    <li>Kiểm tra hộp thư email của bạn</li>
+                    <li>Nhấp vào liên kết đặt lại mật khẩu trong email</li>
+                    <li>Tạo mật khẩu mới cho tài khoản của bạn</li>
+                </ol>
+                <p class="note">Lưu ý: Liên kết đặt lại mật khẩu sẽ hết hạn sau 24 giờ</p>
+            </div>
+            <div class="switch">
+                Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbox Messenger -->
+    <div class="chatbox-messenger">
+        <button class="chatbox-toggle" id="chatboxToggle" aria-label="Mở hộp chat" style="background: transparent; box-shadow: none; padding: 0; border: none;">
+            <img src="images/chaticon.png" alt="Chat" style="width:56px;height:56px;object-fit:contain;display:block;">
+        </button>
+        <div class="chatbox-window" id="chatboxWindow" style="display:none;">
+            <div class="chatbox-header">
+                <span class="chatbox-title"><i class="fa fa-coffee"></i> Ấm - Chat với Admin</span>
+                <button class="chatbox-close" id="chatboxClose" aria-label="Đóng hộp chat">×</button>
+            </div>
+            <div class="chatbox-messages" id="chatboxMessages">
+                <div class="chatbox-message admin">
+                    Xin chào ngài, hạ thần có thể giúp gì cho ngài ạ?
+                </div>
+            </div>
+            <form class="chatbox-input-area" id="chatboxForm" autocomplete="off">
+                <input type="text" class="chatbox-input" id="chatboxInput" placeholder="Nhập tin nhắn..." required />
+                <button type="submit" class="chatbox-send" aria-label="Gửi"></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    <script>
+        document.getElementById('next').onclick = function() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').appendChild(lists[0]);
+        }
+        document.getElementById('prev').onclick = function() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+        }
+    </script>
+    <script type="module">
+        import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            });
+
+            // Validate password match
+            const registerForm = document.getElementById('registerForm');
+            const password = document.getElementById('registerPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            function validatePassword() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Mật khẩu không khớp');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            password.addEventListener('change', validatePassword);
+            confirmPassword.addEventListener('keyup', validatePassword);
+
+            // Social login handlers
+            const googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+
+            document.querySelector('.btn-google').addEventListener('click', async () => {
+                try {
+                    const btn = document.querySelector('.btn-google');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang xử lý...';
+                    btn.disabled = true;
+
+                    const result = await signInWithPopup(auth, googleProvider);
+                    const user = result.user;
+                    
+                    try {
+                        // Lưu thông tin người dùng vào Realtime Database nếu chưa tồn tại
+                        const db = getDatabase();
+                        const userRef = ref(db, 'users/' + user.uid);
+
+                        // Kiểm tra user đã tồn tại chưa
+                        const { get } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+                        const userSnap = await get(userRef);
+                        if (!userSnap.exists()) {
+                            // Tạo object user data với cấu trúc phù hợp
+                            const userData = {
+                                name: user.displayName || '',
+                                email: user.email,
+                                phone: user.phoneNumber || '',
+                                avatarUrl: user.photoURL || '',
+                                role: 'user',
+                                status: 'active',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            };
+                            await set(userRef, userData);
+                        }
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công!',
+                            text: `Xin chào ${user.displayName || user.email}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        document.getElementById('loginModal').style.display = 'none';
+                    } catch (dbError) {
+                        console.error('Lỗi khi lưu dữ liệu:', dbError);
+                        // Vẫn cho phép đăng nhập thành công nếu chỉ lỗi lưu dữ liệu
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công!',
+                            text: `Xin chào ${user.displayName || user.email}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        document.getElementById('loginModal').style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Lỗi đăng nhập Google:', error);
+                    let errorMessage = 'Đăng nhập bằng Google thất bại. ';
+                    
+                    switch (error.code) {
+                        case 'auth/operation-not-allowed':
+                            errorMessage = 'Đăng nhập bằng Google chưa được bật. Vui lòng liên hệ admin để được hỗ trợ.';
+                            break;
+                        case 'auth/popup-blocked':
+                            errorMessage += 'Cửa sổ popup bị chặn. Vui lòng cho phép popup cho trang web này.';
+                            break;
+                        case 'auth/popup-closed-by-user':
+                            errorMessage += 'Bạn đã đóng cửa sổ đăng nhập.';
+                            break;
+                        case 'auth/cancelled-popup-request':
+                            errorMessage += 'Yêu cầu đăng nhập đã bị hủy.';
+                            break;
+                        case 'auth/account-exists-with-different-credential':
+                            errorMessage += 'Email này đã được sử dụng với phương thức đăng nhập khác.';
+                            break;
+                        case 'PERMISSION_DENIED':
+                            errorMessage = 'Không có quyền truy cập. Vui lòng liên hệ admin để được hỗ trợ.';
+                            break;
+                        default:
+                            errorMessage += 'Vui lòng thử lại sau.';
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: errorMessage,
+                        showConfirmButton: true
+                    });
+                } finally {
+                    const btn = document.querySelector('.btn-google');
+                    btn.innerHTML = '<i class="fa fa-google"></i> Google';
+                    btn.disabled = false;
+                }
+            });
+
+            // Remember me functionality
+            const rememberMe = document.getElementById('rememberMe');
+            if (localStorage.getItem('rememberMe') === 'true') {
+                rememberMe.checked = true;
+                const savedEmail = localStorage.getItem('savedEmail');
+                if (savedEmail) {
+                    document.getElementById('loginEmail').value = savedEmail;
+                }
+            }
+
+            rememberMe.addEventListener('change', () => {
+                if (rememberMe.checked) {
+                    localStorage.setItem('rememberMe', 'true');
+                    localStorage.setItem('savedEmail', document.getElementById('loginEmail').value);
+                } else {
+                    localStorage.removeItem('rememberMe');
+                    localStorage.removeItem('savedEmail');
+                }
+            });
+
+            // Enhanced form validation
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const password = document.getElementById('registerPassword').value;
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumbers = /\d/.test(password);
+                const hasMinLength = password.length >= 6;
+
+                if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasMinLength) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                // Continue with registration...
+            });
+
+            // Password strength indicator
+            const passwordInput = document.getElementById('registerPassword');
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 6) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+                const strengthText = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'][strength - 1];
+                const strengthColor = ['#ff4444', '#ffbb33', '#ffeb3b', '#00C851', '#007E33'][strength - 1];
+
+                const strengthIndicator = document.createElement('div');
+                strengthIndicator.className = 'password-strength';
+                strengthIndicator.style.color = strengthColor;
+                strengthIndicator.textContent = `Độ mạnh mật khẩu: ${strengthText}`;
+
+                const existingIndicator = this.parentElement.querySelector('.password-strength');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+                this.parentElement.appendChild(strengthIndicator);
+            });
+
+            // Kiểm tra trạng thái đăng nhập
+            onAuthStateChanged(auth, (user) => {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+
+                if (user) {
+                    userInfo.style.display = 'inline-block';
+                    loginLink.style.display = 'none';
+                    registerLink.style.display = 'none';
+                } else {
+                    userInfo.style.display = 'none';
+                    loginLink.style.display = 'inline-block';
+                    registerLink.style.display = 'inline-block';
+                }
+            });
+
+            // Xử lý modal đăng nhập/đăng ký
+            bindModalEvents();
+
+            // Xử lý form đăng nhập
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const btn = document.getElementById('loginBtn');
+                const spinner = document.getElementById('loginSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    if (email === 'quantri1amcoffeeandcake@gmail.com' || email === 'nhanvienorders@gmail.com') {
+                        window.location.href = 'AdminDashboard.html';
+                    } else {
+                        document.getElementById('loginModal').style.display = 'none';
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý form đăng ký
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const btn = document.getElementById('registerBtn');
+                const spinner = document.getElementById('registerSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await updateProfile(userCredential.user, { displayName: name });
+                    await sendEmailVerification(userCredential.user);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('registerModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý form quên mật khẩu
+            document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgotPasswordEmail').value;
+                const btn = document.getElementById('forgotBtn');
+                const spinner = document.getElementById('forgotSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                if (!email) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                    });
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    return;
+                }
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý gửi form liên hệ
+            document.getElementById('contact-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = e.target.name.value.trim();
+                const email = e.target.email.value.trim();
+                const phone = e.target.phone.value.trim();
+                const message = e.target.message.value.trim();
+
+                if (!name || !email || !message) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                
+
+                try {
+                    const db = window.db || getDatabase();
+                    await push(ref(db, 'contactMessages'), {
+                        name,
+                        email,
+                        phone,
+                        message,
+                        createdAt: new Date().toISOString()
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Gửi thành công!',
+                        text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
+                        showConfirmButton: true
+                    });
+                    e.target.reset();
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+
+            // Xử lý đăng xuất
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A63C3C',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Đăng Xuất',
+                    cancelButtonText: 'Hủy'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await signOut(auth);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        function bindModalEvents() {
+            document.querySelector('.log').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelector('.reg').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('forgotPasswordModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+            document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => {
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('registerModal').style.display = 'none';
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('.auth-modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            // Sự kiện cho icon user trên App Bar mobile
+            const appbarAccount = document.querySelector('.appbar-account');
+            if (appbarAccount) {
+                appbarAccount.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Kiểm tra trạng thái đăng nhập
+                    if (window.auth && window.auth.currentUser) {
+                        window.location.href = 'member.html';
+                    } else {
+                        document.getElementById('loginModal').style.display = 'flex';
+                    }
+                });
+            }
+        }
+    </script>
+    <script type="module">
+        import { getDatabase, ref, push, onChildAdded } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        const chatboxToggle = document.getElementById('chatboxToggle');
+        const chatboxWindow = document.getElementById('chatboxWindow');
+        const chatboxClose = document.getElementById('chatboxClose');
+        const chatboxForm = document.getElementById('chatboxForm');
+        const chatboxInput = document.getElementById('chatboxInput');
+        const chatboxMessages = document.getElementById('chatboxMessages');
+
+        let chatboxOpenedAt = null;
+        let chatListenerUnsub = null;
+        let autoResponseTimeout = null;
+        let lastMessageTime = null;
+
+        // Function to add auto-response message
+        const addAutoResponse = () => {
+            const autoMsg = document.createElement('div');
+            autoMsg.className = 'chatbox-message admin';
+            autoMsg.textContent = 'Hiện tại Ấm đang bận, bạn vui lòng đợi trong giây lát';
+            chatboxMessages.appendChild(autoMsg);
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+        };
+
+        // Function to reset auto-response timer
+        const resetAutoResponseTimer = () => {
+            if (autoResponseTimeout) {
+                clearTimeout(autoResponseTimeout);
+            }
+            lastMessageTime = new Date();
+            autoResponseTimeout = setTimeout(addAutoResponse, 30000);
+        };
+
+        // Mở chatbox
+        chatboxToggle.addEventListener('click', () => {
+            chatboxWindow.style.display = 'flex';
+            chatboxToggle.style.display = 'none';
+            chatboxMessages.innerHTML = '';
+            
+            const defaultMsg = document.createElement('div');
+            defaultMsg.className = 'chatbox-message admin';
+            defaultMsg.textContent = 'Xin chào ngài, hạ thần có thể giúp gì cho ngài ạ?';
+            chatboxMessages.appendChild(defaultMsg);
+            
+            setTimeout(() => {
+                chatboxInput.focus();
+            }, 200);
+
+            chatboxOpenedAt = new Date();
+            lastMessageTime = new Date();
+            resetAutoResponseTimer();
+
+            if (chatListenerUnsub) chatListenerUnsub();
+            const db = window.db || getDatabase();
+            const messagesRef = ref(db, 'chatMessages');
+            chatListenerUnsub = onChildAdded(messagesRef, (snapshot) => {
+                const msg = snapshot.val();
+                if (msg && msg.timestamp && new Date(msg.timestamp) > chatboxOpenedAt) {
+                    const isAdmin = msg.sender === 'quantri1amcoffeeandcake@gmail.com';
+                    const msgElement = document.createElement('div');
+                    msgElement.className = `chatbox-message ${isAdmin ? 'admin' : 'user'}`;
+                    msgElement.textContent = msg.message;
+                    chatboxMessages.appendChild(msgElement);
+                    chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+                    resetAutoResponseTimer();
+                }
+            });
+        });
+
+        // Đóng chatbox
+        chatboxClose.addEventListener('click', () => {
+            chatboxWindow.style.display = 'none';
+            chatboxToggle.style.display = 'flex';
+            if (chatListenerUnsub) {
+                chatListenerUnsub();
+                chatListenerUnsub = null;
+            }
+            if (autoResponseTimeout) {
+                clearTimeout(autoResponseTimeout);
+                autoResponseTimeout = null;
+            }
+        });
+
+        // Xử lý gửi tin nhắn   
+        chatboxForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const message = chatboxInput.value.trim();
+            if (!message) return;
+
+            const user = window.auth && window.auth.currentUser;
+            const sender = user ? user.displayName || user.email : 'Khách';
+            const senderId = user ? user.uid : 'anonymous';
+            const timestamp = new Date().toISOString();
+
+            chatboxInput.value = '';
+            resetAutoResponseTimer();
+
+            try {
+                const db = window.db || getDatabase();
+                await push(ref(db, 'chatMessages'), {
+                    sender,
+                    senderId,
+                    message,
+                    timestamp
+                });
+            } catch (error) {
+                console.error('Lỗi khi lưu tin nhắn:', error);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chatbox-message admin';
+                errorMsg.textContent = 'Đã có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.';
+                chatboxMessages.appendChild(errorMsg);
+                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            }
+        });
+    </script>
+    <!-- Chatbox Messenger -->
+    <script src="https://app.tudongchat.com/js/chatbox.js"></script>
+    <script>
+      const tudong_chatbox = new TuDongChat('P4hafvAabUdpblD90TdAu')
+      tudong_chatbox.initial()
+    </script>
+
+    <script type="module">
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        // Hàm để lấy và hiển thị tin tức nổi bật
+        async function loadHighlightNews() {
+            try {
+                const db = getDatabase();
+                const newsRef = ref(db, 'news');
+                
+                const snapshot = await get(newsRef);
+                const newsContainer = document.getElementById('newsHighlightContainer');
+                newsContainer.innerHTML = ''; // Xóa nội dung cũ
+
+                if (snapshot.exists()) {
+                    const news = [];
+                    snapshot.forEach((childSnapshot) => {
+                        news.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                    });
+
+                    // Sắp xếp tin tức theo ngày mới nhất
+                    news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    // Hiển thị 3 tin tức mới nhất
+                    news.slice(0, 3).forEach(item => {
+                        const newsItem = document.createElement('div');
+                        newsItem.className = 'col-md-4 col-sm-6';
+                        newsItem.innerHTML = `
+                            <div class="news-item">
+                                <img src="${item.image}" alt="${item.title}">
+                                <div class="news-item-content">
+                                    <h3>${item.title}</h3>
+                                    <div class="date">${new Date(item.date).toLocaleDateString('vi-VN')}</div>
+                                    <p>${item.summary}</p>
+                                    <a href="news.html#${item.id}" class="btn-readmore">Đọc Thêm</a>
+                                </div>
+                            </div>
+                        `;
+                        newsContainer.appendChild(newsItem);
+                    });
+                } else {
+                    newsContainer.innerHTML = '<div class="col-12 text-center">Chưa có tin tức nào</div>';
+                }
+            } catch (error) {
+                console.error('Lỗi khi tải tin tức:', error);
+                const newsContainer = document.getElementById('newsHighlightContainer');
+                newsContainer.innerHTML = '<div class="col-12 text-center">Không thể tải tin tức. Vui lòng thử lại sau.</div>';
+            }
+        }
+
+        // Gọi hàm khi trang được tải
+        document.addEventListener('DOMContentLoaded', loadHighlightNews);
+    </script>
+
+    <script type="module">
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        // Function to load products from Firebase
+        async function loadProducts() {
+            try {
+                const db = getDatabase();
+                const productsRef = ref(db, 'products');
+                const snapshot = await get(productsRef);
+                const cosmicSlide = document.getElementById('cosmic-slide');
+                cosmicSlide.innerHTML = ''; // Clear existing content
+
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    
+                    // Combine drinks and cakes into one array
+                    const allProducts = [
+                        ...Object.entries(data.drinks || {}).map(([id, item]) => ({...item, id, type: 'drinks'})),
+                        ...Object.entries(data.cakes || {}).map(([id, item]) => ({...item, id, type: 'cakes'}))
+                    ];
+
+                    // Create cosmic items for each product
+                    allProducts.forEach(product => {
+                        const cosmicItem = document.createElement('div');
+                        cosmicItem.className = 'cosmic-item';
+                        cosmicItem.style.backgroundImage = `url(${product.image})`;
+                        
+                        cosmicItem.innerHTML = `
+                            <div class="nebula-content">
+                                <div class="star-name">${product.name}</div>
+                                <div class="star-description">${product.attributes}</div>
+                                <div class="price">${product.price.toLocaleString('vi-VN')} VND</div>
+                                <button class="cosmic-button" onclick="window.location.href='menu.html#${product.id}'">Xem thêm</button>
+                            </div>
+                        `;
+                        
+                        cosmicSlide.appendChild(cosmicItem);
+                    });
+
+                    // Initialize slider controls
+                    document.getElementById('next').onclick = function() {
+                        let lists = document.querySelectorAll('.cosmic-item');
+                        document.getElementById('cosmic-slide').appendChild(lists[0]);
+                    }
+                    
+                    document.getElementById('prev').onclick = function() {
+                        let lists = document.querySelectorAll('.cosmic-item');
+                        document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Load products when the page loads
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+
+    <script>
+        // Hàm chuyển slide
+        function nextSlide() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').appendChild(lists[0]);
+        }
+
+        function prevSlide() {
+            let lists = document.querySelectorAll('.cosmic-item');
+            document.getElementById('cosmic-slide').prepend(lists[lists.length - 1]);
+        }
+
+        // Xử lý nút bấm
+        document.getElementById('next').onclick = nextSlide;
+        document.getElementById('prev').onclick = prevSlide;
+
+        
+        setInterval(nextSlide, 4000);
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ẩn overlay loading sau 300ms để đảm bảo hiệu ứng mượt
+        setTimeout(function() {
+            var overlay = document.querySelector('.loading-overlay');
+            if (overlay) {
+                overlay.classList.add('hide');
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                }, 600); // Đợi hiệu ứng mờ dần xong mới ẩn hẳn
+            }
+        }, 300);
+    });
+    </script>
+    <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+  });
+}
+
+// Hiệu ứng tăng phần trăm loading
+let percent = 0;
+const progress = document.querySelector('.loading-progress');
+const percentText = document.querySelector('.loading-percent');
+
+function animateLoading() {
+    if (percent < 100) {
+        percent += Math.random() * 7 + 2; // tăng ngẫu nhiên cho cute
+        if (percent > 100) percent = 100;
+        progress.style.width = percent + '%';
+        percentText.textContent = Math.floor(percent) + '%';
+        setTimeout(animateLoading, 200);
+    } else {
+        // Ẩn overlay khi xong (tuỳ bạn)
+        // document.querySelector('.loading-overlay').style.display = 'none';
+    }
+}
+if (progress && percentText) animateLoading();
+</script>
+   <!-- Bottom Navigation Bar cho mobile -->
+   <div class="bottom-nav">
+    <a href="index.html" class="nav-home">
+      <img src="images/imagetrangchu.png" alt="Trang chủ" class="nav-icon"/>
+      <span>Trang chủ</span>
+    </a>
+    <a href="news.html" class="nav-news">
+      <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
+      <span>Tin tức</span>
+    </a>
+    <a href="menu.html" class="nav-account">
+      <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
+      <span>Menu</span>
+    </a>
+    <a href="cart.html" class="nav-cart">
+      <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
+      <span>Giỏ hàng</span>
+    </a>
+    <a href="policy.html" class="nav-policy">
+      <img src="images/imagechinhsach.png" alt="Bảo mật" class="nav-icon"/>
+      <span>Bảo mật</span>
+    </a>
+    <a href="about.html" class="nav-about">
+      <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
+      <span>Giới thiệu</span>
+    </a>
+    <a href="timeline.html" class="nav-member">
+      <img src="images/LOGOapk.png" alt="Timeline" class="nav-icon"/>
+      <span>Xã hội Ấm</span>
+    </a>
+  </div>
+              
+                  <div class="appbar-mobile">
+                    <div class="appbar-left">
+                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+                    <div class="appbar-right">
+                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+
+                  </div>
+</body>
+</html>

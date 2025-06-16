@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="google-site-verification" content="PaAsbmk1XWa3-fOeh2_9aTtEK38RChaUkzoLMp8MIko" />
+    <meta name="description" content="Timeline - Ấm - Coffee and Cake">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>Timeline - Ấm - Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
+    <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #A67C52;
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        .auth-modal-content h2 {
+            font-size: 24px;
+            color: #4A2F1A;
+           margin-bottom: 20px;
+            text-align: center;
+        }
+        .auth-modal-content .close {
+            position: absolute;
+           top: 10px;
+           right: 10px;
+           font-size: 20px;
+            cursor: pointer;
+            color: #4A2F1A;
+        }
+        .auth-modal-content form {
+           display: flex;
+           flex-direction: column;
+        }
+        .auth-modal-content input {
+           margin-bottom: 15px;
+           padding: 10px;
+           border: 1px solid #ccc;
+            border-radius: 5px;
+           font-size: 16px;
+        }
+        .auth-modal-content button {
+           background: #f7544a;
+            color: #fff;
+           padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+           transition: all 0.3s ease;
+        }
+        .auth-modal-content button:hover {
+           background: #da2a20;
+        }
+        .auth-modal-content .switch {
+            text-align: center;
+           margin-top: 10px;
+        }
+        .auth-modal-content .switch a {
+           color: #f7544a;
+           text-decoration: underline;
+            cursor: pointer;
+        }
+        .auth-modal-content .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .auth-modal-content .forgot-password a {
+           color: #f7544a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .usermenu li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .usermenu li a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .usermenu li a:hover {
+            color: #A63C3C;
+        }
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Facebook-like Timeline Styles */
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .timeline-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 10px;
+            background: transparent;
+        }
+
+        /* Story Section (like Facebook) */
+        .stories-section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .stories-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0;
+        }
+
+        .story-item {
+            min-width: 110px;
+            height: 180px;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background: linear-gradient(45deg, #1877f2, #42a5f5);
+        }
+
+        .story-create {
+            background: #fff;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #1877f2;
+        }
+
+        .story-create i {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Composer nâng cấp */
+        .post-composer {
+          background: #fff;
+          border-radius: 16px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+          padding: 18px 18px 12px;
+          margin-bottom: 20px;
+          transition: box-shadow 0.2s;
+          position: relative;
+        }
+        .post-composer:focus-within {
+          box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+        }
+        .composer-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 10px;
+        }
+        .user-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          overflow: hidden;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          font-size: 20px;
+        }
+        .composer-input {
+          flex: 1;
+          background: #f0f2f5;
+          border: none;
+          border-radius: 24px;
+          padding: 14px 20px;
+          font-size: 17px;
+          outline: none;
+          cursor: pointer;
+          transition: background 0.2s;
+          color: #65676b;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .composer-input:hover, .composer-input:focus {
+          background: #e4e6ea;
+        }
+        .composer-expanded {
+          padding: 0 0 8px 0;
+          margin-top: 10px;
+          border-top: 1px solid #e4e6ea;
+          animation: fadeIn 0.2s;
+        }
+        .composer-textarea {
+          width: 100%;
+          min-height: 90px;
+          border: none;
+          outline: none;
+          font-size: 18px;
+          font-family: inherit;
+          resize: none;
+          color: #1c1e21;
+          line-height: 1.4;
+          margin-bottom: 10px;
+          background: #f8f9fa;
+          border-radius: 12px;
+          padding: 12px 16px;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+          transition: background 0.2s;
+        }
+        .composer-textarea:focus {
+          background: #f0f2f5;
+        }
+        .composer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0 0 0;
+          gap: 10px;
+        }
+        .composer-actions-row {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+        .composer-option {
+          min-width: 80px;
+          justify-content: center;
+          text-align: center;
+          background: #f0f2f5;
+          border-radius: 10px;
+          padding: 10px 0;
+          font-size: 16px;
+          font-weight: 500;
+          transition: background 0.2s, box-shadow 0.2s;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+          cursor: pointer;
+          border: none;
+        }
+        .composer-option:hover {
+          background: #e4e6ea;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        #imagePreviewContainer {
+          margin: 14px 0 0 0;
+          text-align: center;
+        }
+        #imagePreviewContainer img {
+          border-radius: 14px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+          max-width: 220px;
+          max-height: 220px;
+          display: inline-block;
+        }
+        #imagePreviewContainer span {
+          color: #f7544a;
+          font-weight: 500;
+          cursor: pointer;
+          margin-top: 4px;
+          display: block;
+          text-align: center;
+        }
+        .post-btn {
+          margin-left: auto;
+          min-width: 90px;
+          background: linear-gradient(90deg, #f7544a 60%, #a67c52 100%);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          padding: 10px 32px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          transition: background 0.2s, box-shadow 0.2s;
+        }
+        .post-btn:hover:not(:disabled) {
+          background: linear-gradient(90deg, #da2a20 60%, #a67c52 100%);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+        }
+        .post-btn:disabled {
+          background: #e4e6ea;
+          color: #bcc0c4;
+          cursor: not-allowed;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Expanded Composer */
+        .composer-expanded {
+            padding: 16px;
+            border-top: 1px solid #e4e6ea;
+            margin-top: 12px;
+        }
+
+        .composer-textarea {
+            width: 100%;
+            min-height: 120px;
+            border: none;
+            outline: none;
+            font-size: 24px;
+            font-family: inherit;
+            resize: none;
+            color: #1c1e21;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .composer-textarea::placeholder {
+            color: #65676b;
+            font-size: 24px;
+        }
+
+        .composer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .composer-options {
+            display: flex;
+            gap: 12px;
+        }
+
+        .composer-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #65676b;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .composer-option:hover {
+            background: #f0f2f5;
+        }
+
+        .post-btn {
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-btn:hover:not(:disabled) {
+            background: #166fe5;
+        }
+
+        .post-btn:disabled {
+            background: #e4e6ea;
+            color: #bcc0c4;
+            cursor: not-allowed;
+        }
+
+        /* Post Styles - Facebook Design */
+        .post {
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px 0;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 2px;
+            font-size: 15px;
+        }
+
+        .post-time {
+            color: #65676b;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .post-time:hover {
+            text-decoration: underline;
+        }
+
+        .post-menu {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #65676b;
+        }
+
+        .post-menu:hover {
+            background: #f0f2f5;
+        }
+
+        .post-content {
+            padding: 12px 16px 16px;
+            font-size: 16px;
+            line-height: 1.34;
+            color: #1c1e21;
+            word-wrap: break-word;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px 8px;
+            margin-bottom: 4px;
+            color: #65676b;
+            font-size: 15px;
+        }
+
+        .post-likes {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .like-reactions {
+            display: flex;
+            margin-right: 6px;
+        }
+
+        .reaction-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            margin-right: -2px;
+            border: 1px solid white;
+        }
+
+        .like-icon { background: #1877f2; }
+        .love-icon { background: #f33e58; }
+        .haha-icon { background: #f7b125; }
+
+        .post-comments-count {
+            cursor: pointer;
+        }
+
+        .post-comments-count:hover {
+            text-decoration: underline;
+        }
+
+        .post-actions {
+            display: flex;
+            border-top: 1px solid #e4e6ea;
+            border-bottom: 1px solid #e4e6ea;
+            margin: 0 16px;
+        }
+
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #65676b;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 4px;
+            margin: 4px;
+        }
+
+        .post-action:hover {
+            background: #f0f2f5;
+        }
+
+        .post-action.liked {
+            color: #1877f2;
+        }
+
+        .post-action i {
+            font-size: 18px;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 8px 16px 12px;
+        }
+
+        .comment {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 8px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-bubble {
+            background: #f0f2f5;
+            border-radius: 16px;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #1c1e21;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .comment-text {
+            color: #1c1e21;
+            font-size: 14px;
+            line-height: 1.33;
+            word-wrap: break-word;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #65676b;
+            font-weight: 600;
+            padding-left: 12px;
+        }
+
+        .comment-action {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .comment-action:hover {
+            text-decoration: underline;
+        }
+
+        .comment-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-input {
+            flex: 1;
+            background: #f0f2f5;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 14px;
+            outline: none;
+            color: #1c1e21;
+        }
+
+        .comment-input::placeholder {
+            color: #65676b;
+        }
+
+        .comment-submit {
+            min-width: 32px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            color: #1877f2;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .comment-submit:hover {
+            background: #f0f2f5;
+        }
+
+        /* Loading and Empty States */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px;
+            color: #65676b;
+            font-size: 16px;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .empty-timeline {
+            text-align: center;
+            padding: 64px 32px;
+            color: #65676b;
+        }
+
+        .empty-timeline i {
+            font-size: 64px;
+            margin-bottom: 16px;
+            color: #bcc0c4;
+        }
+
+        .empty-timeline h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1c1e21;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .timeline-container {
+                padding: 8px;
+            }
+            
+            .composer-textarea {
+                font-size: 16px;
+            }
+            
+            .composer-textarea::placeholder {
+                font-size: 16px;
+            }
+            
+            .stories-section {
+                margin: 0 -8px 16px;
+            }
+        }
+
+        /* Scroll improvements */
+        .stories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stories-container {
+            scrollbar-width: none;
+        }
+
+        /* Animation improvements */
+        .post-action:active {
+            transform: scale(0.95);
+        }
+
+        .comment-submit:active {
+            transform: scale(0.9);
+        }
+
+        .post-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 600px) {
+          .timeline-container {
+            padding: 4px;
+            max-width: 100vw;
+          }
+          .post, .post-composer, .stories-section {
+            border-radius: 12px;
+            margin-bottom: 10px;
+            padding: 8px 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+          }
+          .post-header, .post-content, .post-stats, .post-actions, .comments-section {
+            padding-left: 4px;
+            padding-right: 4px;
+          }
+          .post-avatar, .comment-avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+          }
+          .comment-bubble {
+            font-size: 15px;
+            padding: 7px 10px;
+            border-radius: 14px;
+          }
+          .comment-replies {
+            margin-left: 12px !important;
+          }
+          .comment-form, .reply-form {
+            gap: 4px;
+          }
+          .comment-input, .composer-input {
+            font-size: 15px;
+            padding: 8px 10px;
+          }
+          .post-btn, .comment-submit {
+            font-size: 14px;
+            padding: 7px 16px;
+          }
+          .composer-textarea {
+            font-size: 15px;
+            min-height: 60px;
+          }
+          .post-username, .comment-author {
+            font-size: 15px;
+          }
+          .post-time, .comment-actions, .post-comments-count {
+            font-size: 12px;
+          }
+        }
+
+        /* Story modal */
+        .story-modal-bg {
+          display: none;
+          position: fixed;
+          z-index: 10001;
+          left: 0; top: 0; width: 100vw; height: 100vh;
+          background: rgba(0,0,0,0.55);
+          align-items: center;
+          justify-content: center;
+        }
+        .story-modal {
+          background: #fff;
+          border-radius: 18px;
+          padding: 0 0 24px 0;
+          max-width: 380px;
+          width: 95vw;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+          position: relative;
+          text-align: center;
+          animation: fadeIn 0.25s;
+        }
+        .story-modal .close {
+          position: absolute;
+          top: 16px; right: 22px;
+          font-size: 28px;
+          color: #65676b;
+          cursor: pointer;
+          font-weight: bold;
+          z-index: 2;
+        }
+        .story-modal-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 24px 24px 0 24px;
+          margin-bottom: 8px;
+        }
+        .story-modal-avatar img {
+          width: 44px; height: 44px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        .story-modal-username {
+          font-weight: 700;
+          font-size: 17px;
+          color: #1c1e21;
+          text-align: left;
+        }
+        .story-modal-body {
+          padding: 0 24px;
+        }
+        .story-upload-label {
+          display: inline-block;
+          background: #f0f2f5;
+          color: #65676b;
+          border-radius: 10px;
+          padding: 10px 22px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          margin-bottom: 10px;
+          margin-top: 4px;
+          transition: background 0.2s;
+          border: 1.5px solid #e4e6ea;
+        }
+        .story-upload-label:hover {
+          background: #e4e6ea;
+        }
+        .story-preview-img {
+          max-width: 100%;
+          max-height: 220px;
+          border-radius: 14px;
+          margin-bottom: 10px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .story-modal textarea {
+          width: 100%;
+          min-height: 60px;
+          border-radius: 10px;
+          border: 1.5px solid #e4e6ea;
+          padding: 10px;
+          margin-bottom: 12px;
+          font-size: 16px;
+          background: #f8f9fa;
+          transition: border 0.2s;
+        }
+        .story-modal textarea:focus {
+          border: 1.5px solid #a67c52;
+        }
+        .story-btn {
+          background: linear-gradient(90deg, #f7544a 60%, #a67c52 100%);
+          color: #fff;
+          border: none;
+          border-radius: 10px;
+          padding: 10px 38px;
+          font-size: 17px;
+          font-weight: 700;
+          cursor: pointer;
+          margin-top: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+          transition: background 0.2s;
+        }
+        .story-btn:disabled {
+          background: #e4e6ea;
+          color: #bcc0c4;
+          cursor: not-allowed;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+        .comment-replies .comment {
+        margin-top: 8px;
+        }
+    </style>
+</head>
+<body id="home">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+       <div class="loading-content">
+          <img src="images/logo.png" alt="Ấm - Coffee and Cake" class="loading-logo">
+          <p>Chờ Ấm Một chút nhé...</p>
+          <div class="loading-spinner"></div>
+       </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <div class="logo"><a href="index.html"><img src="images/logo.png" alt="Ấm - Coffee and Cake"></a></div>
+                    </div>
+                    <div class="col-md-10 col-sm-10">
+                        <div class="header_top">
+                            <div class="row">
+                                <div class="col-md-3">
+                                   
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="topmenu">
+                                        <li><a href="policy.html">Chính Sách</a></li>
+                                        <li><a href="member.html">Thành Viên</a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <ul class="usermenu">
+                                        <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="header_bottom">
+                            <ul class="option">
+                                <li id="search" class="search">
+                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                </li>
+                                <li class="option-cart">
+                                    <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
+                            <!-- <ul class="option-cart-item">
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Cappuccino</p>
+                                        <p>Kích cỡ: <span class="light-red">Nhỏ</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">45.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li>
+                                  <div class="cart-item">
+                                     <div class="image"><img src="https://img.freepik.com/free-photo/front-view-red-cake-slice-fruit-cake-piece-inside-plate-with-fresh-strawberries-grey_140725-20811.jpg?uid=R195732581&ga=GA1.1.557169778.1744386169&semt=ais_hybrid&w=740" alt=""></div>
+                                     <div class="item-description">
+                                        <p class="name">Bánh Red Velvet</p>
+                                        <p>Kích cỡ: <span class="light-red">Lát</span><br>Số lượng: <span class="light-red">01</span></p>
+                                     </div>
+                                     <div class="right">
+                                        <p class="price">55.000 VND</p>
+                                        <a href="#" class="remove"><img src="images/remove.png" alt="Xóa"></a>
+                                     </div>
+                                  </div>
+                               </li>
+                               <li><span class="total">Tổng <strong>100.000 VND</strong></span><button class="checkout" onClick="location.href='checkout.html'">Thanh Toán</button></li>
+                            </ul> -->
+                                </li>
+                            </ul>
+                      <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+                            <div class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                           <li>
+                                        <a href="index.html">Trang Chủ</a>
+                                    </li>
+                          <li><a href="menu.html">Menu</a></li>
+                                    <li><a href="news.html">Tin Tức, Khuyến Mãi & Sự Kiện</a></li>
+                                    <li><a href="about.html">Về Chúng Tôi</a>
+                                    </li>
+                                    <li><a href="timeline.html">Xã hội Ấm</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="hom-slider">
+            <div class="container">
+                <div id="sequence">
+                    <div class="sequence-prev"><i class="fa fa-angle-left"></i></div>
+                    <div class="sequence-next"><i class="fa fa-angle-right"></i></div>
+                    <ul class="sequence-canvas">
+                        <li class="animate-in">
+                            <div class="flat-caption caption1 formLeft delay300 text-center"><span class="suphead">Ấm - Coffee and Cake</span></div>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Chào Mừng Đến Với Không Gian Ấm Áp</h1>
+                            </div>
+                      
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-drinks.html">Xem Menu</a></div>
+                            <div class="flat-image formBottom delay200" data-duration="5" data-bottom="true"><img src="images/khonggian.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400">
+                                <h1>Khuyến Mãi Đặc Biệt</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500">
+                                <h2>Mua 1 tặng 1 cho tất cả đồ uống<br>Chỉ trong tuần này!</h2>
+                            </div>
+                            <div class="flat-button caption5 formLeft delay600"><a class="more" href="promotions.html">Xem Chi Tiết</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/khuyenmai.png" alt=""></div>
+                        </li>
+                        <li>
+                            <div class="flat-caption caption2 formLeft delay400 text-center">
+                                <h1>Bánh Ngọt Tươi Mới</h1>
+                            </div>
+                            <div class="flat-caption caption3 formLeft delay500 text-center">
+                                <p>Khám phá bộ sưu tập bánh ngọt mới nhất của chúng tôi<br>Được làm thủ công mỗi ngày!</p>
+                            </div>
+                            <div class="flat-button caption4 formLeft delay600 text-center"><a class="more" href="menu-cakes.html">Thử Ngay</a></div>
+                            <div class="flat-image formBottom delay200" data-bottom="true"><img src="images/banhngot.png" alt=""></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promotion-banner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-01.png" alt="Cà Phê"></a></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-02.png" alt="Bánh Ngọt"></a></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div class="promo-box"><a href="event.html"><img src="images/promotion-03.png" alt="Khuyến Mãi"></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="container_fullwidth">
+            <div class="container">
+                <div class="timeline-container">
+                <!-- Stories Section -->
+                <!-- <div class="stories-section">
+                    <div class="stories-container" id="storiesContainer">
+                        <div class="story-item story-create" onclick="openStoryModal()">
+                            <i class="fa fa-plus"></i>
+                            <span>Tạo tin</span>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Post Composer -->
+                <div class="post-composer" id="postComposer">
+                    <div class="composer-header">
+                        <div class="user-avatar" id="userAvatar">?</div>
+                        <input type="text" class="composer-input" placeholder="Bạn đang nghĩ gì?" readonly onclick="openComposer()">
+                    </div>
+                    
+                    <div class="composer-divider"></div>
+                    
+                    <!-- <div class="composer-actions-bar">
+                        <div class="composer-action-btn live" onclick="goLive()">
+                            <i class="fa fa-
+                            -camera"></i>
+                            <span>Video trực tiếp</span>
+                        </div>
+                        <div class="composer-action-btn photo" onclick="selectPhoto()">
+                            <i class="fa fa-image"></i>
+                            <span>Ảnh/video</span>
+                        </div>
+                        <div class="composer-action-btn feeling" onclick="selectFeeling()">
+                            <i class="fa fa-smile-o"></i>
+                            <span>Cảm xúc/hoạt động</span>
+                        </div>
+                    </div> -->
+                    
+                    <div id="composerExpanded" class="composer-expanded" style="display: none;">
+                        <textarea class="composer-textarea" id="postContent" placeholder="Bạn đang nghĩ gì?"></textarea>
+                        <div class="composer-bottom">
+                            <div class="composer-actions-row">
+                                <div class="composer-option photo" onclick="selectPhoto()">
+                                    <i class="fa fa-image" style="color: #45bd62;"></i>
+                                    <span>Ảnh</span>
+                                </div>
+                                <div class="composer-option feeling" onclick="toggleEmojiPicker()">
+                                    <i class="fa fa-smile-o" style="color: #f7b928;"></i>
+                                    <span>Cảm xúc</span>
+                                </div>
+                            </div>
+                            <button class="post-btn" id="postBtn" onclick="createPost()" disabled>Đăng</button>
+                        </div>
+                    </div>
+                    <input type="file" id="postImageInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                    <div id="imagePreviewContainer" style="display:none;"></div>
+                    <div id="emojiPicker" style="display:none;position:absolute;z-index:1000;background:#fff;border:1px solid #ccc;border-radius:8px;padding:8px;max-width:220px;max-height:180px;overflow:auto;"></div>
+                </div>
+
+                <!-- Posts Feed -->
+                <div id="postsFeed">
+                    <!-- Posts will be loaded here -->
+                </div>
+
+                <!-- Loading -->
+                <div id="loadingPosts" class="loading" style="display: none;">
+                    <i class="fa fa-spinner"></i>
+                    <span>Đang tải bài viết...</span>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyTimeline" class="empty-timeline" style="display: none;">
+                    <i class="fa fa-newspaper-o"></i>
+                    <h3>Chưa có bài viết nào</h3>
+                    <p>Hãy là người đầu tiên chia sẻ câu chuyện của bạn!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="clearfix"></div>
+        <div class="footer">
+            <div class="footer-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="footer-logo"><a href="index.html"><img src="images/LOGO.png" alt="Ấm - Coffee and Cake"></a></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Thông Tin <strong>Liên Hệ</strong></h4>
+                            <p>Số 123, Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh</p>
+                            <p>Hotline: (028) 1234 5678</p>
+                            <p>Email: contact@amcoffee.vn</p>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="title">Hỗ Trợ <strong>Khách Hàng</strong></h4>
+                            <ul class="support">
+                                <li><a href="policy.html#faq">Câu Hỏi Thường Gặp</a></li>
+                                <li><a href="policy.html#payment">Phương Thức Thanh Toán</a></li>
+                                <li><a href="policy.html#delivery">Giao Hàng</a></li>
+                                <li><a href="policy.html#returns">Đổi Trả</a></li>
+                                    <li><a href="policy.html#support">Hỗ Trợ Khách Hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="title">Đăng Ký <strong>Bản Tin</strong></h4>
+                            <p>Nhận ưu đãi và tin tức mới nhất từ Ấm!</p>
+                            <form class="newsletter">
+                                <input type="email" name="email" placeholder="Nhập email của bạn...">
+                                <input type="submit" value="Đăng Ký" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-info">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social-icon2">
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Modal Đăng Nhập -->
+    <div id="loginModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Đăng Nhập</h2>
+            <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="loginBtn">
+                    Đăng Nhập
+                    <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch">
+                Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
+            </div>
+            <div class="forgot-password">
+                <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Đăng Ký -->
+    <div id="registerModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Đăng Ký</h2>
+            <form id="registerForm">
+          <input type="text" id="registerName" placeholder="Họ và Tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="registerBtn">
+                    Đăng Ký
+                    <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch">
+                Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Quên Mật Khẩu -->
+    <div id="forgotPasswordModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close">×</span>
+            <h2>Quên Mật Khẩu</h2>
+            <form id="forgotPasswordForm">
+          <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+          <button type="submit" id="forgotBtn">
+                    Gửi Yêu Cầu
+                    <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch">
+                Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
+            </div>
+        </div>
+    </div>
+            </div>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sequence-min.js"></script>
+    <script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="js/script.min.js"></script>
+    
+    <!-- Authentication Script -->
+    <script type="module">
+        import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, push, onValue, set, get, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra trạng thái đăng nhập
+            onAuthStateChanged(auth, (user) => {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+
+                if (user) {
+                    userInfo.style.display = 'inline-block';
+                    loginLink.style.display = 'none';
+                    registerLink.style.display = 'none';
+                } else {
+                    userInfo.style.display = 'none';
+                    loginLink.style.display = 'inline-block';
+                    registerLink.style.display = 'inline-block';
+                }
+            });
+
+            // Xử lý modal đăng nhập/đăng ký
+            bindModalEvents();
+
+            // Xử lý form đăng nhập
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const btn = document.getElementById('loginBtn');
+                const spinner = document.getElementById('loginSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng nhập thành công!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                        document.getElementById('loginModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý form đăng ký
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const btn = document.getElementById('registerBtn');
+                const spinner = document.getElementById('registerSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await updateProfile(userCredential.user, { displayName: name });
+                    await sendEmailVerification(userCredential.user);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('registerModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý form quên mật khẩu
+            document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgotPasswordEmail').value;
+                const btn = document.getElementById('forgotBtn');
+                const spinner = document.getElementById('forgotSpinner');
+                btn.disabled = true;
+                spinner.style.display = 'inline-block';
+                if (!email) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng nhập email để đặt lại mật khẩu.'
+                    });
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    return;
+                }
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.',
+                        showConfirmButton: true
+                    });
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: error.code === 'auth/user-not-found' ? 'Email không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                        showConfirmButton: true
+                    });
+                }
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            });
+
+            // Xử lý đăng xuất
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A63C3C',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Đăng Xuất',
+                    cancelButtonText: 'Hủy'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await signOut(auth);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        function bindModalEvents() {
+               // Mở modal đăng nhập
+            document.querySelector('.log').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+               // Mở modal đăng ký
+            document.querySelector('.reg').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+               // Mở modal quên mật khẩu
+            document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('forgotPasswordModal').style.display = 'flex';
+            });
+
+               // Chuyển từ đăng nhập sang đăng ký
+            document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('registerModal').style.display = 'flex';
+            });
+
+               // Chuyển từ đăng ký sang đăng nhập
+            document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('registerModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+               // Chuyển từ quên mật khẩu về đăng nhập
+            document.getElementById('switchToLoginFromForgot').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'flex';
+            });
+
+               // Đóng modal
+            document.querySelectorAll('.auth-modal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => {
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('registerModal').style.display = 'none';
+                    document.getElementById('forgotPasswordModal').style.display = 'none';
+                });
+            });
+
+               // Đóng modal khi click bên ngoài
+            document.querySelectorAll('.auth-modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        }
+    </script>
+
+    <!-- Timeline JavaScript -->
+    <script type="module">
+        import { getDatabase, ref, push, onValue, set, get, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        
+        // Initialize database
+        const database = getDatabase();
+        let currentUser = null;
+        let posts = [];
+
+        // User management
+        window.auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
+                if (user.photoURL) {
+                    document.getElementById('userAvatar').innerHTML = `<img src="${user.photoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                } else {
+                    document.getElementById('userAvatar').textContent = initial;
+                }
+                document.querySelector('.composer-input').placeholder = `Chào ${user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
+                loadPosts();
+                loadStories();
+            } else {
+                document.getElementById('userAvatar').textContent = '?';
+                document.querySelector('.composer-input').placeholder = 'Đăng nhập để chia sẻ suy nghĩ của bạn';
+                document.getElementById('postsFeed').innerHTML = '';
+                showEmptyState();
+                document.getElementById('storiesContainer').innerHTML = document.getElementById('storiesContainer').querySelector('.story-create').outerHTML;
+            }
+        });
+
+        // Story functions
+        let storyImageBase64 = null;
+        function openStoryModal() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            const modal = document.getElementById('storyModalBg');
+            if (!modal) {
+                alert('Không tìm thấy modal storyModalBg trong DOM!');
+                return;
+            }
+            modal.style.display = 'flex';
+            document.getElementById('storyImageInput').value = '';
+            document.getElementById('storyPreviewImg').src = '';
+            document.getElementById('storyPreviewImg').style.display = 'none';
+            document.getElementById('storyText').value = '';
+            document.getElementById('storyPostBtn').disabled = true;
+            storyImageBase64 = null;
+            // Set avatar và tên
+            document.getElementById('storyUserAvatar').src = currentUser.photoURL || 'images/default-avatar.png';
+            document.getElementById('storyUserName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
+        }
+        window.openStoryModal = openStoryModal;
+        function closeStoryModal() {
+            document.getElementById('storyModalBg').style.display = 'none';
+        }
+        window.handleStoryImage = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                storyImageBase64 = e.target.result;
+                document.getElementById('storyPreviewImg').src = storyImageBase64;
+                document.getElementById('storyPreviewImg').style.display = 'block';
+                checkStoryBtn();
+            };
+            reader.readAsDataURL(file);
+        };
+        document.getElementById('storyText').addEventListener('input', checkStoryBtn);
+        function checkStoryBtn() {
+            const text = document.getElementById('storyText').value.trim();
+            document.getElementById('storyPostBtn').disabled = !storyImageBase64;
+        }
+        window.createStory = async function() {
+            const text = document.getElementById('storyText').value.trim();
+            if (!storyImageBase64) return;
+            const storyData = {
+                authorId: currentUser.uid,
+                authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                authorPhotoURL: currentUser.photoURL || null,
+                image: storyImageBase64,
+                text: text,
+                timestamp: Date.now()
+            };
+            try {
+                await push(ref(database, 'stories'), storyData);
+                closeStoryModal();
+                Swal.fire({ icon: 'success', title: 'Đã đăng tin!', timer: 1200, showConfirmButton: false });
+            } catch (e) {
+                Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Không thể đăng tin.', showConfirmButton: true });
+            }
+        };
+        // Hiển thị story 24h
+        function loadStories() {
+            const storiesRef = ref(database, 'stories');
+            onValue(storiesRef, (snapshot) => {
+                const now = Date.now();
+                const stories = [];
+                snapshot.forEach(child => {
+                    const s = child.val();
+                    if (s.timestamp && now - s.timestamp <= 24*60*60*1000) {
+                        stories.push({ id: child.key, ...s });
+                    }
+                });
+                renderStories(stories);
+            });
+        }
+        function renderStories(stories) {
+            const container = document.getElementById('storiesContainer');
+            // Giữ nút tạo tin
+            container.innerHTML = container.querySelector('.story-create').outerHTML;
+            stories.reverse().forEach(story => {
+                const avatar = story.authorPhotoURL ? `<img src="${story.authorPhotoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">` : `<div style="width:36px;height:36px;border-radius:50%;background:#a67c52;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;">${story.authorName ? story.authorName.charAt(0).toUpperCase() : '?'}</div>`;
+                const html = `<div class="story-item" onclick="viewStory('${story.id}')" style="background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                    <div style="margin-top:10px;">${avatar}</div>
+                    <img src="${story.image}" style="width:60px;height:90px;object-fit:cover;border-radius:8px;margin:8px 0 4px 0;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+                    <div style="font-size:13px;color:#a67c52;font-weight:500;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${story.authorName || 'Người dùng'}</div>
+                </div>`;
+                container.innerHTML += html;
+            });
+        }
+        window.viewStory = function(storyId) {
+            const storiesRef = ref(database, 'stories/' + storyId);
+            get(storiesRef).then(snap => {
+                if (!snap.exists()) return;
+                const s = snap.val();
+                document.getElementById('viewerImg').src = s.image;
+                document.getElementById('viewerAuthor').textContent = s.authorName || 'Người dùng';
+                document.getElementById('viewerText').textContent = s.text || '';
+                document.getElementById('viewerTime').textContent = formatTimeAgo(s.timestamp);
+                document.getElementById('storyViewerBg').style.display = 'flex';
+            });
+        };
+        window.closeStoryViewer = function() {
+            document.getElementById('storyViewerBg').style.display = 'none';
+        };
+
+        // Composer functions
+        window.openComposer = function() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            const expanded = document.getElementById('composerExpanded');
+            expanded.style.display = 'block';
+            document.getElementById('postContent').focus();
+        };
+
+        window.goLive = function() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            Swal.fire({
+                title: 'Video trực tiếp',
+                text: 'Tính năng Live sẽ có trong phiên bản tới!',
+                icon: 'info',
+                confirmButtonText: 'Được rồi'
+            });
+        };
+
+        window.selectPhoto = function() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            document.getElementById('postImageInput').click();
+        };
+
+        window.selectFeeling = function() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            Swal.fire({
+                title: 'Cảm xúc/hoạt động',
+                text: 'Tính năng cảm xúc sẽ có trong phiên bản tới!',
+                icon: 'info',
+                confirmButtonText: 'Được rồi'
+            });
+        };
+
+        window.selectLocation = function() {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            Swal.fire({
+                title: 'Thêm vị trí',
+                text: 'Tính năng vị trí sẽ có trong phiên bản tới!',
+                icon: 'info',
+                confirmButtonText: 'Được rồi'
+            });
+        };
+
+        // Post content validation
+        document.addEventListener('DOMContentLoaded', () => {
+            const postContent = document.getElementById('postContent');
+            const postBtn = document.getElementById('postBtn');
+            
+            if (postContent && postBtn) {
+                postContent.addEventListener('input', function() {
+                    postBtn.disabled = this.value.trim().length === 0;
+                });
+            }
+        });
+
+        // Create post function
+        window.createPost = async function() {
+            const content = document.getElementById('postContent').value.trim();
+            if (!content && !selectedImageBase64 && !selectedEmoji) return;
+            if (!currentUser) return;
+
+            const postBtn = document.getElementById('postBtn');
+            postBtn.disabled = true;
+            postBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang đăng...';
+
+            try {
+                const postData = {
+                    content: content,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                    authorEmail: currentUser.email,
+                    authorPhotoURL: currentUser.photoURL || null,
+                    timestamp: serverTimestamp(),
+                    likes: {},
+                    comments: {},
+                    image: selectedImageBase64 || null,
+                    emoji: selectedEmoji || null
+                };
+
+                await push(ref(database, 'posts'), postData);
+                document.getElementById('postContent').value = '';
+                selectedImageBase64 = null;
+                selectedEmoji = '';
+                document.getElementById('imagePreviewContainer').innerHTML = '';
+                document.getElementById('imagePreviewContainer').style.display = 'none';
+                let preview = document.getElementById('selectedEmojiPreview');
+                if (preview) preview.textContent = '';
+                document.getElementById('composerExpanded').style.display = 'none';
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng bài thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (error) {
+                console.error('Error creating post:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi đăng bài. Vui lòng thử lại.',
+                    confirmButtonText: 'Được rồi'
+                });
+            }
+
+            postBtn.disabled = false;
+            postBtn.textContent = 'Đăng';
+        };
+
+        // Load and render posts
+        function loadPosts() {
+            document.getElementById('loadingPosts').style.display = 'block';
+            document.getElementById('emptyTimeline').style.display = 'none';
+
+            const postsRef = ref(database, 'posts');
+            onValue(postsRef, (snapshot) => {
+                posts = [];
+                snapshot.forEach((childSnapshot) => {
+                    posts.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+                
+                posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                
+                document.getElementById('loadingPosts').style.display = 'none';
+                
+                if (posts.length === 0) {
+                    showEmptyState();
+                } else {
+                    renderPosts();
+                }
+            });
+        }
+
+        function renderPosts() {
+            const feed = document.getElementById('postsFeed');
+            feed.innerHTML = '';
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                feed.appendChild(postElement);
+            });
+        }
+
+        // Create post element
+        function createPostElement(post) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
+            postDiv.setAttribute('data-post-id', post.id);
+
+            const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+            const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
+            const isLiked = currentUser && post.likes && post.likes[currentUser.uid];
+            
+            const timeAgo = formatTimeAgo(post.timestamp);
+            const authorInitial = post.authorName ? post.authorName.charAt(0).toUpperCase() : post.authorEmail.charAt(0).toUpperCase();
+            const avatarHtml = post.authorPhotoURL
+                ? `<img src="${post.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+                : authorInitial;
+            let imageHtml = '';
+            if (post.image) {
+                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>`;
+            }
+            let emojiHtml = '';
+            if (post.emoji) {
+                emojiHtml = `<span style='font-size:22px;margin-left:6px;'>${post.emoji}</span>`;
+            }
+
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${avatarHtml}</div>
+                    <div class="post-user-info">
+                        <div class="post-username">${post.authorName || post.authorEmail.split('@')[0]}</div>
+                        <div class="post-time">${timeAgo}</div>
+                    </div>
+                    <div class="post-menu"></div>
+                </div>
+                <div class="post-content">${post.content}${emojiHtml}</div>
+                ${imageHtml}
+                ${likesCount > 0 || commentsCount > 0 ? `
+                <div class="post-stats">
+                    <div class="post-likes">
+                        ${likesCount > 0 ? `
+                        <div class="like-reactions">
+                            <div class="reaction-icon like-icon"><i class="fa fa-thumbs-up"></i></div>
+                        </div>
+                        ${likesCount} lượt thích` : ''}
+                    </div>
+                    <div class="post-comments-count" onclick="focusComment('${post.id}')">
+                        ${commentsCount > 0 ? `${commentsCount} bình luận` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                <div class="post-actions">
+                    <div class="post-action ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                        <i class="fa fa-thumbs-up"></i>
+                        <span>Thích</span>
+                    </div>
+                    <div class="post-action" onclick="focusComment('${post.id}')">
+                        <i class="fa fa-comment-o"></i>
+                        <span>Bình luận</span>
+                    </div>
+                </div>
+                <div class="comments-section">
+                    <div id="comments-${post.id}">
+                        ${renderComments(post.comments || {}, post.id)}
+                    </div>
+                    ${currentUser ? `
+                    <div class="comment-form">
+                        <div class="comment-avatar">${currentUser.photoURL ? `<img src='${currentUser.photoURL}' alt='avatar' style='width:100%;height:100%;border-radius:50%;object-fit:cover;'>` : (currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : currentUser.email.charAt(0).toUpperCase())}</div>
+                        <input type="text" class="comment-input" placeholder="Viết bình luận..." 
+                               onkeypress="handleCommentKeypress(event, '${post.id}')">
+                        <button class="comment-submit" onclick="addComment('${post.id}')">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            return postDiv;
+        }
+
+        // Số bình luận hiển thị mặc định
+        const DEFAULT_COMMENTS_SHOWN = 3;
+        // Lưu trạng thái số lượng bình luận đã xem cho từng post
+        let commentsShownMap = {};
+        // Lưu trạng thái bộ lọc cho từng post
+        let commentSortMap = {};
+
+        // Render comments với phân trang và bộ lọc
+        function renderComments(comments, postId, parentId = null, level = 0) {
+            if (!comments || Object.keys(comments).length === 0) return '';
+            let entries = Object.entries(comments);
+            // Bộ lọc
+            let sortType = commentSortMap[postId] || 'newest';
+            if (sortType === 'oldest') {
+                entries.sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
+            } else if (sortType === 'mostliked') {
+                entries.sort((a, b) => (Object.keys(b[1].likes || {}).length - Object.keys(a[1].likes || {}).length));
+            } else {
+                // newest
+                entries.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+            }
+            // Phân trang chỉ áp dụng cho cấp 1
+            let showAll = commentsShownMap[postId] === 'all';
+            let shown = showAll || level > 0 ? entries.length : (commentsShownMap[postId] || DEFAULT_COMMENTS_SHOWN);
+            let html = '';
+            // Bộ lọc chỉ ở cấp 1
+            if (level === 0 && entries.length > 0) {
+                html += `<div style='margin-bottom:6px;'>
+                    <select onchange="changeCommentSort('${postId}', this.value)" style='padding:2px 8px;border-radius:6px;border:1px solid #e4e6ea;font-size:14px;'>
+                        <option value='newest' ${sortType==='newest'?'selected':''}>Mới nhất</option>
+                        <option value='oldest' ${sortType==='oldest'?'selected':''}>Cũ nhất</option>
+                        <option value='mostliked' ${sortType==='mostliked'?'selected':''}>Nhiều like nhất</option>
+                    </select>
+                </div>`;
+            }
+            entries.slice(0, shown).forEach(([id, comment]) => {
+                // Nếu comment là node chỉ chứa replies (không có text), chỉ render replies con
+                if (!comment || typeof comment !== 'object') return '';
+                const hasText = typeof comment.text === 'string' && comment.text.trim();
+                let repliesHtml = '';
+                if (comment.replies && typeof comment.replies === 'object') {
+                    repliesHtml = `<div class="comment-replies" style="margin-left:32px;">${renderComments(comment.replies, postId, id, level+1)}</div>`;
+                }
+                if (!hasText) {
+                    // Không render khung bình luận, chỉ render replies con
+                    html += repliesHtml;
+                    return;
+                }
+                const authorInitial = comment.authorName ? comment.authorName.charAt(0).toUpperCase() : comment.authorEmail ? comment.authorEmail.charAt(0).toUpperCase() : '?';
+                const avatarHtml = comment.authorPhotoURL
+                    ? `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+                    : authorInitial;
+                const timeAgo = formatTimeAgo(comment.timestamp);
+                const likesCount = comment.likes ? Object.keys(comment.likes).length : 0;
+                const isLiked = currentUser && comment.likes && comment.likes[currentUser.uid];
+                // Form trả lời
+                let replyForm = '';
+                if (currentUser) {
+                    replyForm = `
+                        <div class="reply-form" id="reply-form-${id}" style="display:none; margin-top:4px;">
+                            <input type="text" class="comment-input" placeholder="Trả lời..." id="reply-input-${id}" style="width:80%;" onkeypress="handleReplyKeypress(event, '${postId}', '${id}')">
+                            <button class="comment-submit" onclick="addReply('${postId}', '${id}')"><i class="fa fa-paper-plane"></i></button>
+                        </div>
+                    `;
+                }
+                html += `
+                    <div class="comment">
+                        <div class="comment-avatar">${avatarHtml}</div>
+                        <div class="comment-content">
+                            <div class="comment-bubble">
+                                <div class="comment-author">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</div>
+                                <div class="comment-text">${comment.text}</div>
+                            </div>
+                            <div class="comment-actions">
+                                <span class="comment-action${isLiked ? ' liked' : ''}" onclick="toggleLikeComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">
+                                    Thích${likesCount > 0 ? ` (${likesCount})` : ''}
+                                </span>
+                                <span class="comment-action" onclick="showReplyForm('${id}')">Trả lời</span>
+                                <span>${timeAgo}</span>
+                            </div>
+                            ${replyForm}
+                            ${repliesHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            // Nút xem thêm chỉ ở cấp 1
+            if (level === 0 && entries.length > shown) {
+                html += `<div style='text-align:center;margin:8px 0;'><button onclick="showMoreComments('${postId}')" style='background:#f0f2f5;border:none;border-radius:8px;padding:6px 18px;font-size:15px;cursor:pointer;'>Xem thêm bình luận</button></div>`;
+            }
+            return html;
+        }
+        window.showMoreComments = function(postId) {
+            if (!commentsShownMap[postId] || commentsShownMap[postId] === 'all') {
+                commentsShownMap[postId] = DEFAULT_COMMENTS_SHOWN * 2;
+            } else {
+                commentsShownMap[postId] += DEFAULT_COMMENTS_SHOWN;
+            }
+            // Nếu đã hiển thị hết thì set 'all'
+            const post = posts.find(p => p.id === postId);
+            if (post && post.comments && Object.keys(post.comments).length <= commentsShownMap[postId]) {
+                commentsShownMap[postId] = 'all';
+            }
+            renderPosts();
+        };
+        window.changeCommentSort = function(postId, sortType) {
+            commentSortMap[postId] = sortType;
+            renderPosts();
+        };
+
+        // Interaction functions
+        window.toggleLike = async function(postId) {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+
+            try {
+                const likeRef = ref(database, `posts/${postId}/likes/${currentUser.uid}`);
+                const snapshot = await get(likeRef);
+                
+                if (snapshot.exists()) {
+                    await set(likeRef, null);
+                } else {
+                    await set(likeRef, {
+                        authorId: currentUser.uid,
+                        authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                        timestamp: serverTimestamp()
+                    });
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error);
+            }
+        };
+
+        window.addComment = async function(postId) {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+            // Lấy đúng ô input bình luận chính (không lấy nhầm ô reply)
+            const commentInput = postElement.querySelector('.comment-form .comment-input');
+            const commentText = commentInput.value.trim();
+            if (!commentText) return;
+
+            try {
+                const commentData = {
+                    text: commentText,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                    authorEmail: currentUser.email,
+                    authorPhotoURL: currentUser.photoURL || null,
+                    timestamp: serverTimestamp()
+                };
+
+                await push(ref(database, `posts/${postId}/comments`), commentData);
+                commentInput.value = ''; // luôn clear input sau khi gửi
+            } catch (error) {
+                console.error('Error adding comment:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi thêm bình luận.',
+                    confirmButtonText: 'Được rồi'
+                });
+            }
+        };
+
+        window.handleCommentKeypress = function(event, postId) {
+            if (event.key === 'Enter') {
+                addComment(postId);
+            }
+        };
+
+        window.focusComment = function(postId) {
+            const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+            const commentInput = postElement.querySelector('.comment-input');
+            if (commentInput) commentInput.focus();
+        };
+
+        window.sharePost = function(postId) {
+            Swal.fire({
+                title: 'Chia sẻ bài viết',
+                text: 'Tính năng chia sẻ sẽ có trong phiên bản tới!',
+                icon: 'info',
+                confirmButtonText: 'Được rồi'
+            });
+        };
+
+        window.likeComment = function(commentId) {
+            Swal.fire({
+                title: 'Thích bình luận',
+                text: 'Tính năng thích bình luận sẽ có trong phiên bản tới!',
+                icon: 'info',
+                confirmButtonText: 'Được rồi'
+            });
+        };
+
+        // Thêm các hàm JS cho trả lời bình luận và thích bình luận
+        window.showReplyForm = function(commentId) {
+            // Ẩn tất cả reply-form khác
+            document.querySelectorAll('.reply-form').forEach(f => f.style.display = 'none');
+            // Hiện form của comment này
+            const form = document.getElementById('reply-form-' + commentId);
+            if (form) form.style.display = 'flex';
+            // Focus vào input
+            const input = document.getElementById('reply-input-' + commentId);
+            if (input) input.focus();
+        };
+
+        window.addReply = async function(postId, commentId) {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            const input = document.getElementById('reply-input-' + commentId);
+            const text = input.value.trim();
+            if (!text) return;
+            try {
+                const replyData = {
+                    text: text,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Người dùng'),
+                    authorEmail: currentUser.email,
+                    authorPhotoURL: currentUser.photoURL || null,
+                    timestamp: Date.now()
+                };
+                const repliesRef = ref(database, `posts/${postId}/comments/${commentId}/replies`);
+                await push(repliesRef, replyData);
+                input.value = '';
+                document.getElementById('reply-form-' + commentId).style.display = 'none';
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi trả lời bình luận.',
+                    confirmButtonText: 'Được rồi'
+                });
+            }
+        };
+
+        window.toggleLikeComment = async function(postId, commentId, parentId = null) {
+            if (!currentUser) {
+                document.querySelector('.log').click();
+                return;
+            }
+            let likeRef;
+            if (parentId) {
+                // Like reply
+                likeRef = ref(database, `posts/${postId}/comments/${parentId}/replies/${commentId}/likes/${currentUser.uid}`);
+            } else {
+                // Like comment
+                likeRef = ref(database, `posts/${postId}/comments/${commentId}/likes/${currentUser.uid}`);
+            }
+            const snapshot = await get(likeRef);
+            if (snapshot.exists()) {
+                await set(likeRef, null);
+            } else {
+                await set(likeRef, {
+                    authorId: currentUser.uid,
+                    authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                    timestamp: Date.now()
+                });
+            }
+        };
+
+        // Format time ago
+        function formatTimeAgo(timestamp) {
+            if (!timestamp) return 'Vừa xong';
+            
+            const now = Date.now();
+            const diff = now - timestamp;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 7) {
+                return new Date(timestamp).toLocaleDateString('vi-VN');
+            } else if (days > 0) {
+                return `${days} ngày`;
+            } else if (hours > 0) {
+                return `${hours}g`;
+            } else if (minutes > 0) {
+                return `${minutes}ph`;
+            } else {
+                return 'Vừa xong';
+            }
+        }
+
+        // Show empty state
+        function showEmptyState() {
+            document.getElementById('emptyTimeline').style.display = 'block';
+        }
+
+        // Auto-hide loading overlay
+        setTimeout(() => {
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'none';
+            }
+        }, 2000);
+
+        window.handleReplyKeypress = function(event, postId, commentId) {
+            if (event.key === 'Enter') {
+                addReply(postId, commentId);
+            }
+        };
+
+        // Thêm biến toàn cục cho ảnh và cảm xúc
+        let selectedImageBase64 = null;
+        let selectedEmoji = '';
+
+        // Xử lý upload ảnh và preview
+        window.handleImageUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImageBase64 = e.target.result;
+                const preview = `<img src="${selectedImageBase64}" alt="preview" style="max-width:100%;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;">`;
+                document.getElementById('imagePreviewContainer').innerHTML = preview + '<span style="display:block;color:#f7544a;cursor:pointer;font-size:13px;margin-top:2px;" onclick="removeImage()">Xóa ảnh</span>';
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        };
+        window.removeImage = function() {
+            selectedImageBase64 = null;
+            document.getElementById('postImageInput').value = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+        };
+
+        // Emoji picker đơn giản
+        const emojiList = ['😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😍','😘','😗','😙','😚','😋','😜','😝','😛','🤑','🤗','🤩','🤔','🤨','😐','😑','😶','🙄','😏','😣','😥','😮','🤐','😯','😪','😫','😴','😌','😛','😜','😝','🤤','😒','😓','😔','😕','🙃','🤑','😲','☹️','🙁','😖','😞','😟','😤','😢','😭','😦','😧','😨','😩','🤯','😬','😰','😱','🥵','🥶','😳','🤪','😵','😡','😠','🤬','😷','🤒','🤕','🤢','🤮','🥴','😇','🥳','🥺','🤠','🤡','🤥','🤫','🤭','🧐','🤓','😈','👿','👹','👺','💀','👻','👽','🤖','💩'];
+        window.toggleEmojiPicker = function() {
+            const picker = document.getElementById('emojiPicker');
+            if (picker.style.display === 'block') {
+                picker.style.display = 'none';
+                return;
+            }
+            let html = '';
+            emojiList.forEach(e => {
+                html += `<span style="font-size:22px;cursor:pointer;padding:2px;" onclick="selectEmoji('${e}')">${e}</span>`;
+            });
+            picker.innerHTML = html;
+            picker.style.display = 'block';
+        };
+        window.selectEmoji = function(emoji) {
+            selectedEmoji = emoji;
+            document.getElementById('emojiPicker').style.display = 'none';
+            // Hiển thị emoji đã chọn trên composer
+            let preview = document.getElementById('selectedEmojiPreview');
+            if (!preview) {
+                preview = document.createElement('span');
+                preview.id = 'selectedEmojiPreview';
+                preview.style.fontSize = '22px';
+                preview.style.marginLeft = '8px';
+                document.querySelector('.composer-options').appendChild(preview);
+            }
+            preview.textContent = emoji;
+        };
+    </script>
+
+    <script>
+        // Ẩn loading overlay sau khi trang tải xong
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                if (loadingOverlay) {
+                    loadingOverlay.style.display = 'none';
+                }
+            }, 1000);
+        });
+    </script>
+
+    <!-- Bottom Navigation Bar cho mobile -->
+   <div class="bottom-nav">
+    <a href="index.html" class="nav-home">
+      <img src="images/imagetrangchu.png" alt="Trang chủ" class="nav-icon"/>
+      <span>Trang chủ</span>
+    </a>
+    <a href="news.html" class="nav-news">
+      <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
+      <span>Tin tức</span>
+    </a>
+    <a href="menu.html" class="nav-account">
+      <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
+      <span>Menu</span>
+    </a>
+    <a href="cart.html" class="nav-cart">
+      <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
+      <span>Giỏ hàng</span>
+    </a>
+    <a href="policy.html" class="nav-policy">
+      <img src="images/imagechinhsach.png" alt="Bảo mật" class="nav-icon"/>
+      <span>Bảo mật</span>
+    </a>
+    <a href="about.html" class="nav-about">
+      <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
+      <span>Giới thiệu</span>
+    </a>
+    <a href="timeline.html" class="nav-member">
+      <img src="images/LOGOapk.png" alt="Timeline" class="nav-icon"/>
+      <span>Xã hội Ấm</span>
+    </a>
+  </div>
+              
+                  <div class="appbar-mobile">
+                    <div class="appbar-left">
+                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+                    <div class="appbar-right">
+                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+                    </div>
+
+                  </div>
+
+    <!-- Modal tạo Story -->
+    <div class="story-modal-bg" id="storyModalBg">
+  <div class="story-modal">
+    <span class="close" onclick="closeStoryModal()">&times;</span>
+    <div class="story-modal-header">
+      <div class="story-modal-avatar">
+        <img id="storyUserAvatar" src="" alt="avatar"/>
+      </div>
+      <div class="story-modal-username" id="storyUserName"></div>
+    </div>
+    <div class="story-modal-body">
+      <label class="story-upload-label" for="storyImageInput">
+        <i class="fa fa-image"></i> Thêm ảnh vào tin
+        <input type="file" id="storyImageInput" accept="image/*" onchange="handleStoryImage(event)" style="display:none;">
+      </label>
+      <img id="storyPreviewImg" class="story-preview-img" style="display:none;"/>
+      <textarea id="storyText" maxlength="120" placeholder="Bạn muốn chia sẻ điều gì?"></textarea>
+    </div>
+    <button class="story-btn" id="storyPostBtn" onclick="createStory()" disabled>Đăng tin</button>
+  </div>
+</div>
+    </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Ấm Coffee & Cake</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #A67C52 0%, #8B5A3C 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #FFFFFF;
+            padding: 10px;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+        
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+        
+        .retry-btn {
+            background: #FFFFFF;
+            color: #A67C52;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .retry-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .coffee-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .status {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+        
+        .connection-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ff4444;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .online .connection-indicator {
+            background: #44ff44;
+            animation: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="coffee-icon">❓</div>
+        <div class="logo">
+            <img src="images/LOGO.png" alt="Ấm Coffee & Cake Logo" onerror="this.style.display='none'; this.parentNode.innerHTML='Ấm';">
+        </div>
+        <h1>Oops! Mất kết nối</h1>
+        <p>Có vẻ như bạn đang offline. Hãy kiểm tra kết nối internet và thử lại nhé!</p>
+        
+        <button class="retry-btn" onclick="retryConnection()">
+            🔄 Thử lại
+        </button>
+        
+        <div class="status" id="status">
+            <span class="connection-indicator"></span>
+            <span id="status-text">Đang kiểm tra kết nối...</span>
+        </div>
+    </div>
+
+    <script>
+        function retryConnection() {
+            window.location.reload();
+        }
+        
+        function checkConnection() {
+            const statusEl = document.getElementById('status');
+            const statusText = document.getElementById('status-text');
+            
+            if (navigator.onLine) {
+                statusEl.classList.add('online');
+                statusText.textContent = 'Đã có kết nối! Nhấn thử lại để tiếp tục.';
+            } else {
+                statusEl.classList.remove('online');
+                statusText.textContent = 'Không có kết nối internet';
+            }
+        }
+        
+        // Check connection status
+        window.addEventListener('online', checkConnection);
+        window.addEventListener('offline', checkConnection);
+        
+        // Initial check
+        checkConnection();
+        
+        // Auto retry when back online
+        window.addEventListener('online', () => {
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+        
+        // Periodic check every 5 seconds
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+</html>
