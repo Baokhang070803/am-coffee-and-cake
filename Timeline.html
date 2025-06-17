@@ -988,10 +988,48 @@
         }
         @media (max-width: 767px) {
         .timeline-container {
-            padding-bottom: 630px; /* hoặc giá trị bạn muốn, ví dụ 80px */
+            padding-bottom: 750px; /* hoặc giá trị bạn muốn, ví dụ 80px */
         }
         }
        
+        .timeline-filter-btn {
+          border-radius: 22px;
+          min-width: 110px;
+          font-size: 16px;
+          font-weight: 500;
+          box-shadow: 0 2px 8px rgba(166,124,82,0.07);
+          padding: 10px 0;
+          transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+          border: none;
+          outline: none;
+        }
+        .timeline-filter-btn:active {
+          transform: scale(0.97);
+          box-shadow: 0 1px 4px rgba(166,124,82,0.10);
+        }
+        #timelineFilterBar {
+          display: flex;
+          justify-content: center;
+          gap: 14px;
+          margin: 18px 0 18px 0;
+          width: 100%;
+          max-width: 520px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        @media (max-width: 600px) {
+          #timelineFilterBar {
+            max-width: 100vw;
+            padding: 0 4vw;
+            gap: 8px;
+          }
+          .timeline-filter-btn {
+            min-width: 0;
+            flex: 1 1 0;
+            font-size: 15px;
+            padding: 9px 0;
+          }
+        }
     </style>
 </head>
 <body id="home">
@@ -1196,6 +1234,7 @@
                                     <i class="fa fa-smile-o" style="color: #f7b928;"></i>
                                     <span>Cảm xúc</span>
                                 </div>
+                                <span id="selectedEmojiPreview" style="font-size:22px;margin-left:8px;"></span>
                             </div>
                             <button class="post-btn" id="postBtn" onclick="createPost()" disabled>Đăng</button>
                         </div>
@@ -1206,6 +1245,10 @@
                 </div>
 
                 <!-- Posts Feed -->
+                <div id="timelineFilterBar" style="display:flex;justify-content:center;gap:14px;margin:18px 0 18px 0;">
+                    <button id="showAllPostsBtn" class="post-btn timeline-filter-btn">Tất cả</button>
+                    <button id="showMyPostsBtn" class="post-btn timeline-filter-btn">Cá nhân</button>
+                </div>
                 <div id="postsFeed">
                     <!-- Posts will be loaded here -->
                 </div>
@@ -1576,6 +1619,7 @@
         const database = getDatabase();
         let currentUser = null;
         let posts = [];
+        let postsToShow = 5; // Số bài viết hiển thị ban đầu
 
         // User management
         window.auth.onAuthStateChanged((user) => {
@@ -1845,11 +1889,9 @@
                         ...childSnapshot.val()
                     });
                 });
-                
                 posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                
                 document.getElementById('loadingPosts').style.display = 'none';
-                
+                postsToShow = 5; // Reset về 5 mỗi lần load mới
                 if (posts.length === 0) {
                     showEmptyState();
                 } else {
@@ -1861,7 +1903,11 @@
         function renderPosts() {
             const feed = document.getElementById('postsFeed');
             feed.innerHTML = '';
-            posts.forEach(post => {
+            let filteredPosts = posts;
+            if (showMyPostsOnly && currentUser) {
+                filteredPosts = posts.filter(post => post.authorId === currentUser.uid);
+            }
+            filteredPosts.slice(0, postsToShow).forEach(post => {
                 const postElement = createPostElement(post);
                 feed.appendChild(postElement);
             });
@@ -1876,7 +1922,6 @@
             const likesCount = post.likes ? Object.keys(post.likes).length : 0;
             const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
             const isLiked = currentUser && post.likes && post.likes[currentUser.uid];
-            
             const timeAgo = formatTimeAgo(post.timestamp);
             const authorInitial = post.authorName ? post.authorName.charAt(0).toUpperCase() : post.authorEmail.charAt(0).toUpperCase();
             const avatarHtml = post.authorPhotoURL
@@ -1890,6 +1935,7 @@
             if (post.emoji) {
                 emojiHtml = `<span style='font-size:22px;margin-left:6px;'>${post.emoji}</span>`;
             }
+            const isAuthor = currentUser && post.authorId === currentUser.uid;
 
             postDiv.innerHTML = `
                 <div class="post-header">
@@ -1898,7 +1944,9 @@
                         <div class="post-username">${post.authorName || post.authorEmail.split('@')[0]}</div>
                         <div class="post-time">${timeAgo}</div>
                     </div>
-                    <div class="post-menu"></div>
+                    <div class="post-menu">
+                        ${isAuthor ? `<span class="delete-post-btn" title="Xóa bài viết" onclick="deletePost('${post.id}')" style="color:#d33;cursor:pointer;font-size:18px;padding:6px;"><img src="https://cdn-icons-png.freepik.com/256/1214/1214428.png" alt="Xóa" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;"></span>` : ''}
+                    </div>
                 </div>
                 <div class="post-content">${post.content}${emojiHtml}</div>
                 ${imageHtml}
@@ -1936,7 +1984,7 @@
                         <input type="text" class="comment-input" placeholder="Viết bình luận..." 
                                onkeypress="handleCommentKeypress(event, '${post.id}')">
                         <button class="comment-submit" onclick="addComment('${post.id}')">
-                            <i class="fa fa-paper-plane"></i>
+                            <img src="https://cdn-icons-png.freepik.com/256/18605/18605508.png?ga=GA1.1.635552943.1743728016&semt=ais_hybrid" alt="Gửi" style="width:35px;height:35px;object-fit:contain;display:block;">
                         </button>
                     </div>
                     ` : ''}
@@ -2007,7 +2055,9 @@
                     replyForm = `
                         <div class="reply-form" id="reply-form-${id}" style="display:none; margin-top:4px;">
                             <input type="text" class="comment-input" placeholder="Trả lời..." id="reply-input-${id}" style="width:80%;" onkeypress="handleReplyKeypress(event, '${postId}', '${id}')">
-                            <button class="comment-submit" onclick="addReply('${postId}', '${id}')"><i class="fa fa-paper-plane"></i></button>
+                            <button class="comment-submit" onclick="addReply('${postId}', '${id}')">
+                                <img src="https://cdn-icons-png.freepik.com/256/18605/18605508.png?ga=GA1.1.635552943.1743728016&semt=ais_hybrid" alt="Gửi" style="width:24px;height:24px;object-fit:contain;display:block;">
+                            </button>
                         </div>
                     `;
                 }
@@ -2286,29 +2336,104 @@
             const picker = document.getElementById('emojiPicker');
             if (picker.style.display === 'block') {
                 picker.style.display = 'none';
+                // Xóa sự kiện click ngoài nếu có
+                document.removeEventListener('pointerdown', handleClickOutsideEmojiPicker);
                 return;
             }
             let html = '';
             emojiList.forEach(e => {
-                html += `<span style="font-size:22px;cursor:pointer;padding:2px;" onclick="selectEmoji('${e}')">${e}</span>`;
+                html += `<span style=\"font-size:22px;cursor:pointer;padding:2px;\" onclick=\"event.stopPropagation();selectEmoji('${e}')\">${e}</span>`;
             });
             picker.innerHTML = html;
             picker.style.display = 'block';
+            // Thêm sự kiện click ngoài để ẩn picker
+            setTimeout(() => {
+                document.addEventListener('pointerdown', handleClickOutsideEmojiPicker);
+            }, 0);
         };
+        // Hàm xử lý click ngoài emoji picker
+        function handleClickOutsideEmojiPicker(event) {
+            const picker = document.getElementById('emojiPicker');
+            if (!picker) return;
+            if (picker.style.display !== 'block') return;
+            if (!picker.contains(event.target) && !event.target.classList.contains('composer-option') && !event.target.classList.contains('fa-smile-o')) {
+                picker.style.display = 'none';
+                document.removeEventListener('pointerdown', handleClickOutsideEmojiPicker);
+            }
+        }
         window.selectEmoji = function(emoji) {
             selectedEmoji = emoji;
             document.getElementById('emojiPicker').style.display = 'none';
             // Hiển thị emoji đã chọn trên composer
             let preview = document.getElementById('selectedEmojiPreview');
-            if (!preview) {
-                preview = document.createElement('span');
-                preview.id = 'selectedEmojiPreview';
-                preview.style.fontSize = '22px';
-                preview.style.marginLeft = '8px';
-                document.querySelector('.composer-options').appendChild(preview);
-            }
-            preview.textContent = emoji;
+            if (preview) preview.textContent = emoji;
         };
+
+        // Infinite scroll: tự động tải thêm bài khi cuộn xuống cuối trang
+        window.addEventListener('scroll', function() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+                if (postsToShow < posts.length) {
+                    postsToShow += 5;
+                    renderPosts();
+                }
+            }
+        });
+        window.deletePost = function(postId) {
+            Swal.fire({
+                title: 'Xóa bài viết?',
+                text: 'Bạn có chắc muốn xóa bài viết này? Hành động này không thể hoàn tác!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await set(ref(database, 'posts/' + postId), null);
+                        Swal.fire('Đã xóa!', 'Bài viết đã được xóa.', 'success');
+                    } catch (e) {
+                        Swal.fire('Lỗi!', 'Không thể xóa bài viết.', 'error');
+                    }
+                }
+            });
+        };
+
+        // Thêm biến trạng thái và logic filter vào script type=module
+        let showMyPostsOnly = false;
+
+        // Thêm sự kiện cho hai nút filter sau khi DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const allBtn = document.getElementById('showAllPostsBtn');
+            const myBtn = document.getElementById('showMyPostsBtn');
+            function updateFilterButtons() {
+                if (showMyPostsOnly) {
+                    myBtn.style.background = '#a67c52';
+                    myBtn.style.color = '#fff';
+                    allBtn.style.background = '#e4e6ea';
+                    allBtn.style.color = '#a67c52';
+                } else {
+                    allBtn.style.background = '#a67c52';
+                    allBtn.style.color = '#fff';
+                    myBtn.style.background = '#e4e6ea';
+                    myBtn.style.color = '#a67c52';
+                }
+            }
+            allBtn.addEventListener('click', function() {
+                showMyPostsOnly = false;
+                postsToShow = 5;
+                renderPosts();
+                updateFilterButtons();
+            });
+            myBtn.addEventListener('click', function() {
+                showMyPostsOnly = true;
+                postsToShow = 5;
+                renderPosts();
+                updateFilterButtons();
+            });
+            updateFilterButtons();
+        });
     </script>
 
     <script>
