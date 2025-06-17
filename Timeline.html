@@ -1690,14 +1690,9 @@
                     document.getElementById('userAvatar').textContent = initial;
                 }
                 document.querySelector('.composer-input').placeholder = `Chào ${(profile && profile.name) || user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
-                // Lưu profile vào biến toàn cục để dùng khi tạo post/comment/story
                 window.currentUserProfile = profile;
                 loadPosts();
                 loadStories();
-                // Cập nhật trạng thái online
-                const userStatusRef = ref(database, 'users/' + user.uid + '/online');
-                set(userStatusRef, true);
-                onDisconnect(userStatusRef).set(false);
             } else {
                 document.getElementById('userAvatar').textContent = '?';
                 document.querySelector('.composer-input').placeholder = 'Đăng nhập để chia sẻ suy nghĩ của bạn';
@@ -2682,7 +2677,7 @@
           document.getElementById('profileAvatarImg').src = 'images/default-avatar.png';
           document.getElementById('profileName').textContent = 'Tên người dùng';
           document.getElementById('profileEmail').textContent = 'Email';
-          document.getElementById('profileStatus').textContent = '● Offline';
+          document.getElementById('profileStatus').textContent = '';
           document.getElementById('profileOnlineDot').style.display = 'none';
           document.getElementById('profileTabPosts').innerHTML = 'Đang tải bài viết...';
           document.getElementById('profileTabPhotos').innerHTML = '';
@@ -2707,12 +2702,8 @@
             document.getElementById('profileAvatarImg').src = user.avatarUrl || 'images/default-avatar.png';
             document.getElementById('profileName').textContent = user.name || 'Người dùng';
             document.getElementById('profileEmail').textContent = user.email || '';
-            // Online status
-            const onlineSnap = await get(ref(db, 'users/' + uid + '/online'));
-            const online = onlineSnap.exists() && onlineSnap.val();
-            document.getElementById('profileStatus').textContent = online ? '● Đang online' : '● Offline';
-            document.getElementById('profileStatus').style.color = online ? '#4caf50' : '#bbb';
-            document.getElementById('profileOnlineDot').style.display = online ? 'block' : 'none';
+            document.getElementById('profileStatus').textContent = '';
+            document.getElementById('profileOnlineDot').style.display = 'none';
             // Bài viết
             const userPosts = posts.filter(p => p.authorId === uid);
             if (userPosts.length === 0) {
@@ -2733,7 +2724,6 @@
             } else {
               document.getElementById('profileTabPhotos').innerHTML = `<div class='profile-photos-grid'>${userImages.map(img => `<img src='${img}' loading='lazy'>`).join('')}</div>`;
             }
-            // Mặc định hiển thị tab bài viết
             showProfileTab('posts');
           } catch (e) {
             document.getElementById('profileTabPosts').innerHTML = '<div style="color:#d33;text-align:center;">Không thể tải thông tin người dùng.</div>';
