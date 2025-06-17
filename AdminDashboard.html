@@ -1005,6 +1005,89 @@
   <!-- Thêm QuillJS -->
   <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <!-- Thêm vào <style> hoặc file css -->
+  <style>
+  .post-detail-modal {
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: #fff;
+  }
+  .post-detail-modal .modal-header {
+    border-bottom: 1px solid #eee;
+    align-items: center;
+  }
+  .post-detail-modal .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #a67c52;
+  }
+  .post-detail-modal .modal-body {
+    padding: 24px 18px 18px 18px;
+  }
+  .post-detail-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .post-detail-author img {
+    width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+  .post-detail-author-info {
+    flex: 1;
+  }
+  .post-detail-author-name {
+    font-weight: 600; font-size: 1.1rem; color: #a67c52;
+  }
+  .post-detail-author-email {
+    font-size: 0.95rem; color: #888;
+  }
+  .post-detail-time {
+    font-size: 0.92rem; color: #bbb;
+  }
+  .post-detail-content {
+    font-size: 1.15rem; color: #222; margin: 12px 0 8px 0;
+  }
+  .post-detail-image {
+    max-width: 100%; max-height: 340px; border-radius: 12px; margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+  .post-detail-stats {
+    display: flex; gap: 18px; align-items: center; margin: 10px 0 18px 0;
+    color: #a67c52; font-size: 1.05rem;
+  }
+  .post-detail-comments {
+    margin-top: 10px;
+  }
+  .post-detail-comment {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;
+  }
+  .post-detail-comment img {
+    width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+  }
+  .post-detail-comment-body {
+    flex: 1;
+    background: #f8f8f8;
+    border-radius: 12px;
+    padding: 8px 12px;
+  }
+  .post-detail-comment-name {
+    font-weight: 600; color: #a67c52; font-size: 1rem;
+  }
+  .post-detail-comment-meta {
+    font-size: 0.92rem; color: #888; margin-bottom: 2px;
+  }
+  .post-detail-reply {
+    margin-left: 38px;
+    border-left: 2px solid #eee;
+    padding-left: 10px;
+  }
+  .btn-delete-comment {
+    background: none; border: none; color: #d33; font-size: 1.1rem; cursor: pointer;
+    margin-left: 6px;
+  }
+  </style>
 </head>
 <body>
   <!-- Mobile Toggle Button -->
@@ -1040,6 +1123,10 @@
       <a href="#newsManagement" class="nav-link" data-bs-toggle="tab">
         <i class="fas fa-newspaper"></i>
         <span>Quản lý tin tức</span>
+      </a>
+      <a href="#postManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-clipboard"></i>
+        <span>Quản lý bài đăng</span>
       </a>
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
@@ -1877,6 +1964,11 @@
   </div>
 </div>
 
+<section id="postManagement" class="content-section">
+  <h2>Quản Lý Bài Đăng & Bình Luận</h2>
+  <div id="postsList"></div>
+</section>
+
   <div class="footer">
     <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
   </div>
@@ -2025,6 +2117,9 @@
         console.log('User logged in:', user.email, 'UID:', user.uid);
         // Set user name
         document.querySelector('.user-name').textContent = 'Quản trị viên';
+        // Gán biến quyền toàn cục
+        window.isAdmin = true;
+        window.currentUser = user;
         // For admin, show everything and start with dashboard
         initializeDashboard();
       }
@@ -2156,7 +2251,10 @@
             loadMessages();
             break;
           case 'userManagement':
-            loadUsers(); // <-- Thêm dòng này để luôn load danh sách user khi chuyển tab
+            loadUsers();
+            break;
+          case 'postManagement':
+            loadPosts();
             break;
         }
       }
@@ -5008,6 +5106,166 @@
     document.addEventListener('DOMContentLoaded', function() {
       loadDashboardStats();
     });
+    window.loadPosts = async function() {
+  const snapshot = await get(ref(db, 'posts'));
+  const posts = snapshot.exists() ? snapshot.val() : {};
+  window.renderPosts(posts);
+};
+
+window.renderPosts = function(posts) {
+  const container = document.getElementById('postsList');
+  if (!container) return;
+  if (Object.keys(posts).length === 0) {
+    container.innerHTML = '<div class="text-muted text-center">Chưa có bài đăng nào.</div>';
+    return;
+  }
+  container.innerHTML = Object.entries(posts).reverse().map(([postId, post]) => {
+    const likeCount = post.likes ? Object.keys(post.likes).length : 0;
+    const commentCount = post.comments ? Object.keys(post.comments).length : 0;
+    const canDelete = window.isAdmin || (window.currentUser && window.currentUser.uid === post.authorId);
+    return `
+      <div class="card mb-2" style="position:relative;">
+        <div class="card-body d-flex align-items-center" onclick="showPostDetail('${postId}')">
+          <img src="${post.authorPhotoURL || 'https://i.pravatar.cc/32?u=' + post.authorId}" class="rounded-circle me-2" style="width:36px;height:36px;">
+          <div style="flex:1;">
+            <b>${post.authorName || 'Ẩn danh'}</b>
+            <div class="text-muted" style="font-size:12px;">${post.authorEmail || ''} • ${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
+            <div>${post.content ? post.content.substring(0, 60) : ''}${post.content && post.content.length > 60 ? '...' : ''}</div>
+            ${post.emoji ? `<span style=\"font-size:20px;\">${post.emoji}</span>` : ''}
+          </div>
+          <div class="ms-2 text-end">
+            <span title="Lượt thích"><i class="fas fa-heart text-danger"></i> ${likeCount}</span>
+            <span class="ms-2" title="Bình luận"><i class="fas fa-comment"></i> ${commentCount}</span>
+          </div>
+        </div>
+        ${canDelete ? `
+         
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+window.showPostDetail = function(postId) {
+  get(ref(db, 'posts/' + postId)).then(snapshot => {
+    if (!snapshot.exists()) return;
+    const post = snapshot.val();
+    // Render phần author
+    const authorHtml = `
+      <div class="post-detail-author">
+        <img src="${post.authorPhotoURL || 'images/default-avatar.png'}" alt="avatar">
+        <div class="post-detail-author-info">
+          <div class="post-detail-author-name">${post.authorName || 'Ẩn danh'}</div>
+          <div class="post-detail-author-email">${post.authorEmail || ''}</div>
+          <div class="post-detail-time">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
+        </div>
+      </div>
+    `;
+    // Nội dung bài viết
+    const contentHtml = `<div class="post-detail-content">${post.content || ''} ${post.emoji ? `<span style='font-size:22px;'>${post.emoji}</span>` : ''}</div>`;
+    // Ảnh bài viết
+    const imageHtml = post.image ? `<img src="${post.image}" class="post-detail-image" alt="post-img">` : '';
+    // Stats
+    const likeCount = post.likes ? Object.keys(post.likes).length : 0;
+    const commentCount = post.comments ? Object.keys(post.comments).length : 0;
+    const statsHtml = `<div class="post-detail-stats"><span><i class="fas fa-heart"></i> ${likeCount} lượt thích</span><span><i class="fas fa-comment"></i> ${commentCount} bình luận</span></div>`;
+    // Render bình luận & reply
+    function renderDetailComments(comments, level = 0) {
+      if (!comments || Object.keys(comments).length === 0) return '';
+      let html = '';
+      Object.entries(comments).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0)).forEach(([id, cmt]) => {
+        if (!cmt || typeof cmt !== 'object' || !cmt.text) return;
+        const displayName = cmt.authorName && cmt.authorName.trim() ? cmt.authorName : (cmt.authorEmail && cmt.authorEmail.trim() ? cmt.authorEmail : 'Ẩn danh');
+        html += `
+          <div class="post-detail-comment${level > 0 ? ' post-detail-reply' : ''}">
+            <img src="${cmt.authorPhotoURL || 'images/default-avatar.png'}" alt="avatar">
+            <div class="post-detail-comment-body">
+              <div class="post-detail-comment-name">${displayName}</div>
+              <div class="post-detail-comment-meta">${cmt.authorEmail && cmt.authorEmail !== displayName ? cmt.authorEmail : ''} • ${cmt.timestamp ? new Date(cmt.timestamp).toLocaleString() : ''}</div>
+              <div>${cmt.text}</div>
+            </div>
+            ${(window.isAdmin || (window.currentUser && window.currentUser.uid === cmt.authorId)) ? `<button class="btn-delete-comment" onclick="deleteComment('${postId}','${id}',${level>0?`'${cmt.parentId||''}'`:'null'})"><i class="fas -trash"></i></button>` : ''}
+          </div>
+        `;
+        if (cmt.replies) {
+          html += renderDetailComments(cmt.replies, level + 1);
+        }
+      });
+      return html;
+    }
+    const commentsHtml = `<div class="post-detail-comments">${renderDetailComments(post.comments || {})}</div>`;
+    document.getElementById('postDetailBody').innerHTML = authorHtml + contentHtml + imageHtml + statsHtml + commentsHtml;
+    // Hiện nút xóa bài nếu là admin hoặc chính chủ
+    const delBtn = document.getElementById('deletePostInModal');
+    if (window.isAdmin || (window.currentUser && window.currentUser.uid === post.authorId)) {
+      delBtn.style.display = '';
+      delBtn.onclick = function() { window.deletePost(postId); };
+    } else {
+      delBtn.style.display = 'none';
+    }
+    // Hiện modal
+    const modal = new bootstrap.Modal(document.getElementById('postDetailModal'));
+    modal.show();
+  });
+};
+
+window.deletePost = async function(postId) {
+  try {
+    if (!db) {
+      Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Firebase chưa được khởi tạo.' });
+      return;
+    }
+    const result = await Swal.fire({
+      title: 'Bạn có chắc muốn xóa bài đăng này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    });
+    if (result.isConfirmed) {
+      await remove(ref(db, 'posts/' + postId));
+      await window.loadPosts();
+      // Đóng modal chi tiết bài đăng nếu đang mở
+      const postModal = bootstrap.Modal.getInstance(document.getElementById('postDetailModal'));
+      if (postModal) postModal.hide();
+      Swal.fire({ icon: 'success', title: 'Đã xóa!', timer: 1200, showConfirmButton: false });
+    }
+  } catch (e) {
+    Swal.fire({ icon: 'error', title: 'Lỗi!', text: e.message });
+  }
+};
+
+window.deleteComment = async function(postId, commentId, parentId = null) {
+  try {
+    if (!db) {
+      Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Firebase chưa được khởi tạo.' });
+      return;
+    }
+    const result = await Swal.fire({
+      title: 'Bạn có chắc muốn xóa bình luận này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    });
+    if (result.isConfirmed) {
+      let commentRef;
+      if (parentId) {
+        // Xóa reply
+        commentRef = ref(db, `posts/${postId}/comments/${parentId}/replies/${commentId}`);
+      } else {
+        // Xóa bình luận cấp 1
+        commentRef = ref(db, `posts/${postId}/comments/${commentId}`);
+      }
+      await remove(commentRef);
+      // Reload lại chi tiết bài đăng
+      window.showPostDetail(postId);
+      Swal.fire({ icon: 'success', title: 'Đã xóa!', timer: 1200, showConfirmButton: false });
+    }
+  } catch (e) {
+    Swal.fire({ icon: 'error', title: 'Lỗi!', text: e.message });
+  }
+};
+
   </script>
   <script>
   let quillAdd, quillEdit;
@@ -5100,6 +5358,22 @@
     });
   }); -->
 
- 
+ <!-- Modal chi tiết bài đăng -->
+<div class="modal fade" id="postDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content post-detail-modal">
+      <div class="modal-header">
+        <h5 class="modal-title">Chi Tiết Bài Đăng</h5>
+        <button type="button" class="btn btn-danger btn-sm" id="deletePostInModal" style="display:none;">
+          <i class="fas fa-trash"></i> Xóa bài
+        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="postDetailBody">
+        <!-- JS sẽ render nội dung chi tiết bài đăng ở đây -->
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -1621,17 +1621,31 @@
         let posts = [];
         let postsToShow = 5; // Số bài viết hiển thị ban đầu
 
+        // Thêm hàm lấy profile từ database
+        async function getUserProfile(uid) {
+            const db = getDatabase();
+            const userRef = ref(db, 'users/' + uid);
+            const snap = await get(userRef);
+            if (snap.exists()) return snap.val();
+            return null;
+        }
+
         // User management
-        window.auth.onAuthStateChanged((user) => {
+        window.auth.onAuthStateChanged(async (user) => {
             currentUser = user;
             if (user) {
-                const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
-                if (user.photoURL) {
-                    document.getElementById('userAvatar').innerHTML = `<img src="${user.photoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                // Lấy profile từ database
+                const profile = await getUserProfile(user.uid);
+                let avatarUrl = profile && profile.avatarUrl ? profile.avatarUrl : (user.photoURL || null);
+                const initial = (profile && profile.name ? profile.name.charAt(0) : (user.displayName ? user.displayName.charAt(0) : user.email.charAt(0))).toUpperCase();
+                if (avatarUrl) {
+                    document.getElementById('userAvatar').innerHTML = `<img src="${avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
                 } else {
                     document.getElementById('userAvatar').textContent = initial;
                 }
-                document.querySelector('.composer-input').placeholder = `Chào ${user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
+                document.querySelector('.composer-input').placeholder = `Chào ${(profile && profile.name) || user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
+                // Lưu profile vào biến toàn cục để dùng khi tạo post/comment/story
+                window.currentUserProfile = profile;
                 loadPosts();
                 loadStories();
             } else {
@@ -1640,6 +1654,7 @@
                 document.getElementById('postsFeed').innerHTML = '';
                 showEmptyState();
                 document.getElementById('storiesContainer').innerHTML = document.getElementById('storiesContainer').querySelector('.story-create').outerHTML;
+                window.currentUserProfile = null;
             }
         });
 
@@ -1690,10 +1705,11 @@
         window.createStory = async function() {
             const text = document.getElementById('storyText').value.trim();
             if (!storyImageBase64) return;
+            const profile = window.currentUserProfile;
             const storyData = {
                 authorId: currentUser.uid,
-                authorName: currentUser.displayName || currentUser.email.split('@')[0],
-                authorPhotoURL: currentUser.photoURL || null,
+                authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
+                authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
                 image: storyImageBase64,
                 text: text,
                 timestamp: Date.now()
@@ -1758,8 +1774,12 @@
                 return;
             }
             const expanded = document.getElementById('composerExpanded');
-            expanded.style.display = 'block';
-            document.getElementById('postContent').focus();
+            if (expanded.style.display === 'block') {
+                expanded.style.display = 'none';
+            } else {
+                expanded.style.display = 'block';
+                document.getElementById('postContent').focus();
+            }
         };
 
         window.goLive = function() {
@@ -1826,25 +1846,23 @@
             const content = document.getElementById('postContent').value.trim();
             if (!content && !selectedImageBase64 && !selectedEmoji) return;
             if (!currentUser) return;
-
             const postBtn = document.getElementById('postBtn');
             postBtn.disabled = true;
             postBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang đăng...';
-
+            const profile = window.currentUserProfile;
             try {
                 const postData = {
                     content: content,
                     authorId: currentUser.uid,
-                    authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                    authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
                     authorEmail: currentUser.email,
-                    authorPhotoURL: currentUser.photoURL || null,
+                    authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
                     timestamp: serverTimestamp(),
                     likes: {},
                     comments: {},
                     image: selectedImageBase64 || null,
                     emoji: selectedEmoji || null
                 };
-
                 await push(ref(database, 'posts'), postData);
                 document.getElementById('postContent').value = '';
                 selectedImageBase64 = null;
@@ -1854,7 +1872,6 @@
                 let preview = document.getElementById('selectedEmojiPreview');
                 if (preview) preview.textContent = '';
                 document.getElementById('composerExpanded').style.display = 'none';
-
                 Swal.fire({
                     icon: 'success',
                     title: 'Đăng bài thành công!',
@@ -1870,7 +1887,6 @@
                     confirmButtonText: 'Được rồi'
                 });
             }
-
             postBtn.disabled = false;
             postBtn.textContent = 'Đăng';
         };
@@ -1882,6 +1898,7 @@
 
             const postsRef = ref(database, 'posts');
             onValue(postsRef, (snapshot) => {
+                console.log('Posts changed!');
                 posts = [];
                 snapshot.forEach((childSnapshot) => {
                     posts.push({
@@ -1900,17 +1917,35 @@
             });
         }
 
-        function renderPosts() {
+        // Thêm biến toàn cục cho scroll debounce và render append
+        let scrollTimeout = null;
+        let lastRenderedCount = 0;
+
+        // Sửa hàm renderPosts để chỉ append khi cuộn, đảm bảo hiệu ứng
+        function renderPosts(appendOnly = false) {
             const feed = document.getElementById('postsFeed');
-            feed.innerHTML = '';
             let filteredPosts = posts;
             if (showMyPostsOnly && currentUser) {
                 filteredPosts = posts.filter(post => post.authorId === currentUser.uid);
             }
-            filteredPosts.slice(0, postsToShow).forEach(post => {
-                const postElement = createPostElement(post);
-                feed.appendChild(postElement);
-            });
+            if (appendOnly && lastRenderedCount < postsToShow) {
+                // Chỉ append thêm bài mới
+                for (let i = lastRenderedCount; i < Math.min(postsToShow, filteredPosts.length); i++) {
+                    const postElement = createPostElement(filteredPosts[i]);
+                    postElement.style.animation = 'fadeInUp 0.3s ease-out';
+                    feed.appendChild(postElement);
+                }
+                lastRenderedCount = Math.min(postsToShow, filteredPosts.length);
+            } else {
+                // Render lại toàn bộ (khi filter hoặc reload)
+                feed.innerHTML = '';
+                filteredPosts.slice(0, postsToShow).forEach(post => {
+                    const postElement = createPostElement(post);
+                    postElement.style.animation = 'fadeInUp 0.3s ease-out';
+                    feed.appendChild(postElement);
+                });
+                lastRenderedCount = Math.min(postsToShow, filteredPosts.length);
+            }
         }
 
         // Create post element
@@ -1929,7 +1964,7 @@
                 : authorInitial;
             let imageHtml = '';
             if (post.image) {
-                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>`;
+                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' loading='lazy' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>`;
             }
             let emojiHtml = '';
             if (post.emoji) {
@@ -1980,7 +2015,15 @@
                     </div>
                     ${currentUser ? `
                     <div class="comment-form">
-                        <div class="comment-avatar">${currentUser.photoURL ? `<img src='${currentUser.photoURL}' alt='avatar' style='width:100%;height:100%;border-radius:50%;object-fit:cover;'>` : (currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : currentUser.email.charAt(0).toUpperCase())}</div>
+                        <div class="comment-avatar">
+                          ${
+                            (window.currentUserProfile && window.currentUserProfile.avatarUrl)
+                              ? `<img src='${window.currentUserProfile.avatarUrl}' alt='avatar' style='width:100%;height:100%;border-radius:50%;object-fit:cover;'>`
+                              : (currentUser.photoURL
+                                ? `<img src='${currentUser.photoURL}' alt='avatar' style='width:100%;height:100%;border-radius:50%;object-fit:cover;'>`
+                                : `<img src='images/default-avatar.png' alt='avatar' style='width:100%;height:100%;border-radius:50%;object-fit:cover;'>`)
+                          }
+                        </div>
                         <input type="text" class="comment-input" placeholder="Viết bình luận..." 
                                onkeypress="handleCommentKeypress(event, '${post.id}')">
                         <button class="comment-submit" onclick="addComment('${post.id}')">
@@ -2043,9 +2086,22 @@
                     return;
                 }
                 const authorInitial = comment.authorName ? comment.authorName.charAt(0).toUpperCase() : comment.authorEmail ? comment.authorEmail.charAt(0).toUpperCase() : '?';
-                const avatarHtml = comment.authorPhotoURL
-                    ? `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
-                    : authorInitial;
+                let avatarHtml = '';
+                if (comment.authorPhotoURL) {
+                    avatarHtml = `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                } else if (comment.authorId) {
+                    avatarHtml = `<div id="avatar-cmt-${id}" style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#a67c52;display:flex;align-items:center;justify-content:center;">
+                        <img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">
+                    </div>`;
+                    getUserProfile(comment.authorId).then(profile => {
+                        if (profile && profile.avatarUrl) {
+                            const el = document.getElementById('avatar-cmt-' + id);
+                            if (el) el.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                        }
+                    });
+                } else {
+                    avatarHtml = `<img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                }
                 const timeAgo = formatTimeAgo(comment.timestamp);
                 const likesCount = comment.likes ? Object.keys(comment.likes).length : 0;
                 const isLiked = currentUser && comment.likes && comment.likes[currentUser.uid];
@@ -2061,6 +2117,7 @@
                         </div>
                     `;
                 }
+                const isAuthor = currentUser && comment.authorId === currentUser.uid;
                 html += `
                     <div class="comment">
                         <div class="comment-avatar">${avatarHtml}</div>
@@ -2075,6 +2132,7 @@
                                 </span>
                                 <span class="comment-action" onclick="showReplyForm('${id}')">Trả lời</span>
                                 <span>${timeAgo}</span>
+                                ${isAuthor ? `<span class="comment-action" style="color:#d33;" onclick="deleteComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">Xóa</span>` : ''}
                             </div>
                             ${replyForm}
                             ${repliesHtml}
@@ -2141,17 +2199,16 @@
             const commentInput = postElement.querySelector('.comment-form .comment-input');
             const commentText = commentInput.value.trim();
             if (!commentText) return;
-
+            const profile = window.currentUserProfile;
             try {
                 const commentData = {
                     text: commentText,
                     authorId: currentUser.uid,
-                    authorName: currentUser.displayName || currentUser.email.split('@')[0],
+                    authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
                     authorEmail: currentUser.email,
-                    authorPhotoURL: currentUser.photoURL || null,
+                    authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
                     timestamp: serverTimestamp()
                 };
-
                 await push(ref(database, `posts/${postId}/comments`), commentData);
                 commentInput.value = ''; // luôn clear input sau khi gửi
             } catch (error) {
@@ -2215,13 +2272,14 @@
             const input = document.getElementById('reply-input-' + commentId);
             const text = input.value.trim();
             if (!text) return;
+            const profile = window.currentUserProfile;
             try {
                 const replyData = {
                     text: text,
                     authorId: currentUser.uid,
-                    authorName: currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Người dùng'),
+                    authorName: (profile && profile.name) || (currentUser.displayName ? currentUser.displayName : (currentUser.email ? currentUser.email.split('@')[0] : 'Người dùng')),
                     authorEmail: currentUser.email,
-                    authorPhotoURL: currentUser.photoURL || null,
+                    authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
                     timestamp: Date.now()
                 };
                 const repliesRef = ref(database, `posts/${postId}/comments/${commentId}/replies`);
@@ -2371,12 +2429,15 @@
 
         // Infinite scroll: tự động tải thêm bài khi cuộn xuống cuối trang
         window.addEventListener('scroll', function() {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-                if (postsToShow < posts.length) {
-                    postsToShow += 5;
-                    renderPosts();
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+                    if (postsToShow < posts.length) {
+                        postsToShow += 5;
+                        renderPosts(true); // chỉ append
+                    }
                 }
-            }
+            }, 120);
         });
         window.deletePost = function(postId) {
             Swal.fire({
@@ -2423,17 +2484,50 @@
             allBtn.addEventListener('click', function() {
                 showMyPostsOnly = false;
                 postsToShow = 5;
+                lastRenderedCount = 0;
                 renderPosts();
                 updateFilterButtons();
             });
             myBtn.addEventListener('click', function() {
                 showMyPostsOnly = true;
                 postsToShow = 5;
+                lastRenderedCount = 0;
                 renderPosts();
                 updateFilterButtons();
             });
             updateFilterButtons();
         });
+
+        // Thêm sau các hàm window.deletePost, window.addReply, ...
+        window.deleteComment = function(postId, commentId, parentId = null) {
+            Swal.fire({
+                title: 'Xóa bình luận?',
+                text: 'Bạn có chắc muốn xóa bình luận này? Hành động này không thể hoàn tác!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        let commentRef;
+                        if (parentId && parentId !== 'null') {
+                            // Xóa reply
+                            commentRef = ref(database, `posts/${postId}/comments/${parentId}/replies/${commentId}`);
+                        } else {
+                            // Xóa comment cấp 1
+                            commentRef = ref(database, `posts/${postId}/comments/${commentId}`);
+                        }
+                        await set(commentRef, null);
+                        Swal.fire('Đã xóa!', 'Bình luận đã được xóa.', 'success');
+                    } catch (e) {
+                        Swal.fire('Lỗi!', 'Không thể xóa bình luận.', 'error');
+                    }
+                }
+            });
+        };
     </script>
 
     <script>
