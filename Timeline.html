@@ -1030,6 +1030,51 @@
             padding: 9px 0;
           }
         }
+        .profile-modal-bg {
+          display: none; position: fixed; z-index: 10001; left: 0; top: 0; width: 100vw; height: 100vh;
+          background: rgba(0,0,0,0.55); align-items: center; justify-content: center;
+        }
+        .profile-modal {
+          background: #fff; border-radius: 18px; max-width: 480px; width: 96vw;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.22); position: relative; padding: 0 0 24px 0;
+          animation: fadeIn 0.25s; overflow: hidden;
+          display: flex; flex-direction: column;
+        }
+        .profile-avatar-wrap {
+          margin: 0 auto; margin-top: 28px; width: 96px; height: 96px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.10); background: #fff;
+          display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .profile-avatar-wrap img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; }
+        #profileOnlineDot {
+          position: absolute; right: 6px; bottom: 6px; width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid #fff;
+          background: #4caf50; display: none;
+        }
+        .profile-info { text-align: center; margin-top: 18px; }
+        .profile-name { font-size: 22px; font-weight: 700; color: #a67c52; }
+        .profile-email { color: #888; font-size: 15px; margin-bottom: 4px; }
+        .profile-status { margin-bottom: 8px; }
+        .profile-actions { margin-bottom: 10px; }
+        .profile-actions button {
+          background: #1877f2; color: #fff; border: none; border-radius: 6px; padding: 7px 22px; font-size: 15px; font-weight: 600; cursor: pointer;
+          margin: 0 6px; transition: background 0.2s;
+        }
+        .profile-actions button:hover { background: #166fe5; }
+        .profile-tabs { display: flex; justify-content: center; gap: 10px; margin: 18px 0 0 0; }
+        .profile-tabs button {
+          background: #f0f2f5; color: #a67c52; border: none; border-radius: 18px; padding: 7px 22px; font-size: 15px; font-weight: 600; cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+        }
+        .profile-tabs button.active, .profile-tabs button:focus {
+          background: #a67c52; color: #fff;
+        }
+        .profile-tab-content { padding: 18px 18px 0 18px; min-height: 120px; max-height: 340px; overflow-y: auto; }
+        .profile-photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .profile-photos-grid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; }
+        @media (max-width: 600px) {
+          .profile-modal { max-width: 99vw; }
+          .profile-avatar-wrap { width: 70px; height: 70px; }
+          .profile-avatar-wrap img { width: 64px; height: 64px; }
+        }
     </style>
 </head>
 <body id="home">
@@ -1390,7 +1435,7 @@
     <!-- Authentication Script -->
     <script type="module">
         import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getDatabase, ref, push, onValue, set, get, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        import { getDatabase, ref, push, onValue, set, get, serverTimestamp, onDisconnect } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             // Kiểm tra trạng thái đăng nhập
@@ -1537,6 +1582,7 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             });
+                            await set(ref(database, 'users/' + user.uid + '/online'), false);
                         } catch (error) {
                             Swal.fire({
                                 icon: 'error',
@@ -1648,6 +1694,10 @@
                 window.currentUserProfile = profile;
                 loadPosts();
                 loadStories();
+                // Cập nhật trạng thái online
+                const userStatusRef = ref(database, 'users/' + user.uid + '/online');
+                set(userStatusRef, true);
+                onDisconnect(userStatusRef).set(false);
             } else {
                 document.getElementById('userAvatar').textContent = '?';
                 document.querySelector('.composer-input').placeholder = 'Đăng nhập để chia sẻ suy nghĩ của bạn';
@@ -1960,8 +2010,8 @@
             const timeAgo = formatTimeAgo(post.timestamp);
             const authorInitial = post.authorName ? post.authorName.charAt(0).toUpperCase() : post.authorEmail.charAt(0).toUpperCase();
             const avatarHtml = post.authorPhotoURL
-                ? `<img src="${post.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
-                : authorInitial;
+                ? `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')"><img src="${post.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></span>`
+                : `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')">${authorInitial}</span>`;
             let imageHtml = '';
             if (post.image) {
                 imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' loading='lazy' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>`;
@@ -1976,11 +2026,15 @@
                 <div class="post-header">
                     <div class="post-avatar">${avatarHtml}</div>
                     <div class="post-user-info">
-                        <div class="post-username">${post.authorName || post.authorEmail.split('@')[0]}</div>
+                        <div class="post-username"><span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')">${post.authorName || post.authorEmail.split('@')[0]}</span></div>
                         <div class="post-time">${timeAgo}</div>
                     </div>
                     <div class="post-menu">
-                        ${isAuthor ? `<span class="delete-post-btn" title="Xóa bài viết" onclick="deletePost('${post.id}')" style="color:#d33;cursor:pointer;font-size:18px;padding:6px;"><img src="https://cdn-icons-png.freepik.com/256/1214/1214428.png" alt="Xóa" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;"></span>` : ''}
+                        ${isAuthor ? `
+                            <span class="edit-post-btn" title="Chỉnh sửa bài viết" onclick="editPost('${post.id}')" style="color:#1c7ed6;cursor:pointer;font-size:18px;padding:6px;margin-right:6px;">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="Chỉnh sửa" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;">
+                            </span>
+                            <span class="delete-post-btn" title="Xóa bài viết" onclick="deletePost('${post.id}')" style="color:#d33;cursor:pointer;font-size:18px;padding:6px;"><img src="https://cdn-icons-png.freepik.com/256/1214/1214428.png" alt="Xóa" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;"></span>` : ''}
                     </div>
                 </div>
                 <div class="post-content">${post.content}${emojiHtml}</div>
@@ -2118,12 +2172,13 @@
                     `;
                 }
                 const isAuthor = currentUser && comment.authorId === currentUser.uid;
+                const authorNameHtml = `<span style='cursor:pointer;color:#a67c52;font-weight:600;' onclick="viewProfile('${comment.authorId}')">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</span>`;
                 html += `
-                    <div class="comment">
+                    <div class="comment" data-comment-id="${id}">
                         <div class="comment-avatar">${avatarHtml}</div>
                         <div class="comment-content">
                             <div class="comment-bubble">
-                                <div class="comment-author">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</div>
+                                <div class="comment-author">${authorNameHtml}</div>
                                 <div class="comment-text">${comment.text}</div>
                             </div>
                             <div class="comment-actions">
@@ -2132,6 +2187,7 @@
                                 </span>
                                 <span class="comment-action" onclick="showReplyForm('${id}')">Trả lời</span>
                                 <span>${timeAgo}</span>
+                                ${isAuthor ? `<span class="comment-action" style="color:#1c7ed6;" onclick="editComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">Chỉnh sửa</span>` : ''}
                                 ${isAuthor ? `<span class="comment-action" style="color:#d33;" onclick="deleteComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">Xóa</span>` : ''}
                             </div>
                             ${replyForm}
@@ -2528,6 +2584,180 @@
                 }
             });
         };
+
+        // Thêm hàm JS cho chỉnh sửa bài viết
+        window.editPost = function(postId) {
+            const postDiv = document.querySelector(`[data-post-id="${postId}"]`);
+            if (!postDiv) return;
+            const contentDiv = postDiv.querySelector('.post-content');
+            if (!contentDiv) return;
+            const oldContent = contentDiv.textContent;
+            // Ẩn các nút menu
+            const menuDiv = postDiv.querySelector('.post-menu');
+            if (menuDiv) menuDiv.style.display = 'none';
+            // Hiện textarea để sửa
+            contentDiv.innerHTML = `<textarea class='edit-post-textarea' style='width:100%;min-height:80px;border-radius:8px;border:1.5px solid #a67c52;padding:10px;font-size:16px;'>${oldContent}</textarea>
+                <div style='margin-top:8px;text-align:right;'>
+                    <button onclick="saveEditPost('${postId}')" style='background:#a67c52;color:#fff;border:none;border-radius:6px;padding:6px 18px;font-size:15px;margin-right:8px;'>Lưu</button>
+                    <button onclick="cancelEditPost('${postId}')" style='background:#e4e6ea;color:#a67c52;border:none;border-radius:6px;padding:6px 18px;font-size:15px;'>Hủy</button>
+                </div>`;
+        };
+        window.cancelEditPost = function(postId) {
+            renderPosts();
+        };
+        window.saveEditPost = async function(postId) {
+            const postDiv = document.querySelector(`[data-post-id="${postId}"]`);
+            if (!postDiv) return;
+            const textarea = postDiv.querySelector('.edit-post-textarea');
+            if (!textarea) return;
+            const newContent = textarea.value.trim();
+            if (!newContent) {
+                Swal.fire({icon:'error',title:'Lỗi!',text:'Nội dung không được để trống.'});
+                return;
+            }
+            try {
+                await set(ref(database, 'posts/' + postId + '/content'), newContent);
+                Swal.fire({icon:'success',title:'Đã lưu thay đổi!',timer:1000,showConfirmButton:false});
+            } catch (e) {
+                Swal.fire({icon:'error',title:'Lỗi!',text:'Không thể lưu thay đổi.'});
+            }
+            renderPosts();
+        };
+
+        // Thêm hàm JS cho chỉnh sửa bình luận
+        window.editComment = function(postId, commentId, parentId = null) {
+            let commentSelector = parentId && parentId !== 'null'
+                ? `#comments-${postId} .comment-replies [data-comment-id='${commentId}']`
+                : `#comments-${postId} [data-comment-id='${commentId}']`;
+            const commentDiv = document.querySelector(commentSelector) || document.querySelector(`[data-comment-id='${commentId}']`);
+            if (!commentDiv) return;
+            const bubble = commentDiv.querySelector('.comment-bubble');
+            if (!bubble) return;
+            const oldText = bubble.querySelector('.comment-text').textContent;
+            // Ẩn các action
+            const actions = commentDiv.querySelector('.comment-actions');
+            if (actions) actions.style.display = 'none';
+            // Hiện input để sửa
+            bubble.innerHTML = `<input class='edit-comment-input' style='width:90%;border-radius:6px;border:1.5px solid #a67c52;padding:6px 10px;font-size:15px;' value="${oldText.replace(/"/g, '&quot;')}">
+                <div style='margin-top:6px;text-align:right;'>
+                    <button onclick="saveEditComment('${postId}', '${commentId}', ${parentId ? `'${parentId}'` : 'null'})" style='background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 14px;font-size:14px;margin-right:6px;'>Lưu</button>
+                    <button onclick="cancelEditComment('${postId}')" style='background:#e4e6ea;color:#a67c52;border:none;border-radius:6px;padding:4px 14px;font-size:14px;'>Hủy</button>
+                </div>`;
+        };
+        window.cancelEditComment = function(postId) {
+            renderPosts();
+        };
+        window.saveEditComment = async function(postId, commentId, parentId = null) {
+            let commentSelector = parentId && parentId !== 'null'
+                ? `#comments-${postId} .comment-replies [data-comment-id='${commentId}']`
+                : `#comments-${postId} [data-comment-id='${commentId}']`;
+            const commentDiv = document.querySelector(commentSelector) || document.querySelector(`[data-comment-id='${commentId}']`);
+            if (!commentDiv) return;
+            const input = commentDiv.querySelector('.edit-comment-input');
+            if (!input) return;
+            const newText = input.value.trim();
+            if (!newText) {
+                Swal.fire({icon:'error',title:'Lỗi!',text:'Nội dung không được để trống.'});
+                return;
+            }
+            let commentRef;
+            if (parentId && parentId !== 'null') {
+                commentRef = ref(database, `posts/${postId}/comments/${parentId}/replies/${commentId}/text`);
+            } else {
+                commentRef = ref(database, `posts/${postId}/comments/${commentId}/text`);
+            }
+            try {
+                await set(commentRef, newText);
+                Swal.fire({icon:'success',title:'Đã lưu thay đổi!',timer:1000,showConfirmButton:false});
+            } catch (e) {
+                Swal.fire({icon:'error',title:'Lỗi!',text:'Không thể lưu thay đổi.'});
+            }
+            renderPosts();
+        };
+
+        // Thêm hàm viewProfile
+        window.viewProfile = async function(uid) {
+          openProfileModal();
+          // Reset UI
+          document.getElementById('profileAvatarImg').src = 'images/default-avatar.png';
+          document.getElementById('profileName').textContent = 'Tên người dùng';
+          document.getElementById('profileEmail').textContent = 'Email';
+          document.getElementById('profileStatus').textContent = '● Offline';
+          document.getElementById('profileOnlineDot').style.display = 'none';
+          document.getElementById('profileTabPosts').innerHTML = 'Đang tải bài viết...';
+          document.getElementById('profileTabPhotos').innerHTML = '';
+          try {
+            // Lấy thông tin user
+            const db = getDatabase();
+            const userSnap = await get(ref(db, 'users/' + uid));
+            let user = userSnap.exists() ? userSnap.val() : null;
+            if (!user) {
+              // Tìm trong posts
+              let name = '', email = '', photo = '';
+              for (const p of posts) {
+                if (p.authorId === uid) {
+                  name = p.authorName || '';
+                  email = p.authorEmail || '';
+                  photo = p.authorPhotoURL || '';
+                  break;
+                }
+              }
+              user = { name, email, avatarUrl: photo };
+            }
+            document.getElementById('profileAvatarImg').src = user.avatarUrl || 'images/default-avatar.png';
+            document.getElementById('profileName').textContent = user.name || 'Người dùng';
+            document.getElementById('profileEmail').textContent = user.email || '';
+            // Online status
+            const onlineSnap = await get(ref(db, 'users/' + uid + '/online'));
+            const online = onlineSnap.exists() && onlineSnap.val();
+            document.getElementById('profileStatus').textContent = online ? '● Đang online' : '● Offline';
+            document.getElementById('profileStatus').style.color = online ? '#4caf50' : '#bbb';
+            document.getElementById('profileOnlineDot').style.display = online ? 'block' : 'none';
+            // Bài viết
+            const userPosts = posts.filter(p => p.authorId === uid);
+            if (userPosts.length === 0) {
+              document.getElementById('profileTabPosts').innerHTML = '<div style="color:#aaa;text-align:center;">Chưa có bài viết nào.</div>';
+            } else {
+              document.getElementById('profileTabPosts').innerHTML = userPosts.map(p => `
+                <div style='background:#f8f8f8;border-radius:10px;padding:12px 14px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);'>
+                  <div style='font-size:15px;color:#222;margin-bottom:6px;white-space:pre-line;'>${p.content ? p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''}</div>
+                  ${p.image ? `<img src='${p.image}' style='max-width:100%;max-height:220px;border-radius:8px;margin:8px 0;'>` : ''}
+                  <div style='color:#bbb;font-size:13px;margin-top:4px;'>${p.timestamp ? formatTimeAgo(p.timestamp) : ''}</div>
+                </div>
+              `).join('');
+            }
+            // Ảnh
+            const userImages = userPosts.filter(p => p.image).map(p => p.image);
+            if (userImages.length === 0) {
+              document.getElementById('profileTabPhotos').innerHTML = '<div style="color:#aaa;text-align:center;">Chưa có ảnh nào.</div>';
+            } else {
+              document.getElementById('profileTabPhotos').innerHTML = `<div class='profile-photos-grid'>${userImages.map(img => `<img src='${img}' loading='lazy'>`).join('')}</div>`;
+            }
+            // Mặc định hiển thị tab bài viết
+            showProfileTab('posts');
+          } catch (e) {
+            document.getElementById('profileTabPosts').innerHTML = '<div style="color:#d33;text-align:center;">Không thể tải thông tin người dùng.</div>';
+            document.getElementById('profileTabPhotos').innerHTML = '';
+          }
+        }
+
+        window.showProfileTab = function(tab) {
+          const postsTab = document.getElementById('profileTabPosts');
+          const photosTab = document.getElementById('profileTabPhotos');
+          const btnPosts = document.querySelector('.profile-tabs button[onclick*="showProfileTab(\'posts\')"]');
+          const btnPhotos = document.querySelector('.profile-tabs button[onclick*="showProfileTab(\'photos\')"]');
+          if (tab === 'posts') {
+            postsTab.style.display = '';
+            photosTab.style.display = 'none';
+            if (btnPosts) btnPosts.classList.add('active');
+            if (btnPhotos) btnPhotos.classList.remove('active');
+          } else if (tab === 'photos') {
+            postsTab.style.display = 'none';
+            photosTab.style.display = '';
+            if (btnPhotos) btnPhotos.classList.add('active');
+            if (btnPosts) btnPosts.classList.remove('active');
+          }
+        }
     </script>
 
     <script>
@@ -2605,5 +2835,37 @@
     <button class="story-btn" id="storyPostBtn" onclick="createStory()" disabled>Đăng tin</button>
   </div>
 </div>
+    <!-- Modal Trang cá nhân Facebook style (đơn giản, không cover, không story) -->
+    <div id="profileModal" class="profile-modal-bg">
+      <div class="profile-modal">
+        <span class="close" onclick="closeProfileModal()" style="position:absolute;top:16px;right:22px;font-size:28px;color:#65676b;cursor:pointer;font-weight:bold;z-index:2;">&times;</span>
+        <div class="profile-avatar-wrap">
+          <img id="profileAvatarImg" src="images/default-avatar.png" alt="avatar">
+          <span id="profileOnlineDot"></span>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">Tên người dùng</div>
+          <div class="profile-email" id="profileEmail">Email</div>
+          <div class="profile-status" id="profileStatus">● Offline</div>
+          <div class="profile-actions">
+            <!-- <button onclick="messageUser()">Nhắn tin</button> -->
+          </div>
+        </div>
+        <div class="profile-tabs">
+          <button class="active" onclick="showProfileTab('posts')">Bài viết</button>
+          <button onclick="showProfileTab('photos')">Ảnh</button>
+        </div>
+        <div class="profile-tab-content" id="profileTabPosts">Đang tải bài viết...</div>
+        <div class="profile-tab-content" id="profileTabPhotos" style="display:none"></div>
+      </div>
+    </div>
+    <script>
+    window.openProfileModal = function() {
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+    window.closeProfileModal = function() {
+      document.getElementById('profileModal').style.display = 'none';
+    }
+    </script>
     </body>
 </html>
