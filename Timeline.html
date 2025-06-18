@@ -1076,6 +1076,41 @@
             background: none !important;
         }
         }
+
+        /* Nút sửa và xóa bài viết to, dễ bấm, hình tròn */
+        .edit-post-btn, .delete-post-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            margin-left: 4px;
+            margin-right: 4px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            border: 1.5px solid #ececec;
+            overflow: hidden;
+        }
+        .edit-post-btn:hover, .delete-post-btn:hover {
+            background: #ffe5e0;
+            box-shadow: 0 2px 8px rgba(247,84,74,0.13);
+            transform: scale(1.08);
+            border-color: #f7544a;
+        }
+        .edit-post-btn img.edit-icon, .delete-post-btn img.delete-icon {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: transparent;
+            /* Đảm bảo icon không bị méo */
+            box-shadow: none;
+        }
     </style>
 </head>
 <body id="home">
@@ -2025,12 +2060,14 @@
                         <div class="post-username"><span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')">${post.authorName || post.authorEmail.split('@')[0]}</span></div>
                         <div class="post-time">${timeAgo}</div>
                     </div>
-                    <div class="post-menu">
+                    <div">
                         ${isAuthor ? `
-                            <span class="edit-post-btn" title="Chỉnh sửa bài viết" onclick="editPost('${post.id}')" style="color:#1c7ed6;cursor:pointer;font-size:18px;padding:6px;margin-right:6px;">
-                                <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="Chỉnh sửa" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;">
+                            <span class="edit-post-btn" title="Chỉnh sửa bài viết" onclick="editPost('${post.id}')">
+                                <img src="images/imagesua.png" alt="Sửa" class="edit-icon">
                             </span>
-                            <span class="delete-post-btn" title="Xóa bài viết" onclick="deletePost('${post.id}')" style="color:#d33;cursor:pointer;font-size:18px;padding:6px;"><img src="https://cdn-icons-png.freepik.com/256/1214/1214428.png" alt="Xóa" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;"></span>` : ''}
+                            <span class="delete-post-btn" title="Xóa bài viết" onclick="deletePost('${post.id}')">
+                                <img src="images/imagexoa.png" alt="Xóa" class="delete-icon">
+                            </span>` : ''}
                     </div>
                 </div>
                 <div class="post-content">${post.content}${emojiHtml}</div>
