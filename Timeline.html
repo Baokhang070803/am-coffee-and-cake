@@ -986,11 +986,7 @@
         .comment-replies .comment {
         margin-top: 8px;
         }
-        @media (max-width: 767px) {
-        .timeline-container {
-            padding-bottom: 750px; /* hoặc giá trị bạn muốn, ví dụ 80px */
-        }
-        }
+        #home 
        
         .timeline-filter-btn {
           border-radius: 22px;
@@ -1074,6 +1070,11 @@
           .profile-modal { max-width: 99vw; }
           .profile-avatar-wrap { width: 70px; height: 70px; }
           .profile-avatar-wrap img { width: 64px; height: 64px; }
+        }
+        @media (max-width: 767px) {
+        #home {
+            background: none !important;
+        }
         }
     </style>
 </head>
