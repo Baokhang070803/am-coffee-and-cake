@@ -1055,8 +1055,12 @@
                     let newsData = snapshot.val();
                     console.log('Raw news data:', newsData);
 
-                    // Chuyển đổi dữ liệu thành mảng
-                    allNewsData = Array.isArray(newsData) ? newsData : Object.values(newsData);
+                    // Chuyển đổi dữ liệu thành mảng có id
+                    if (Array.isArray(newsData)) {
+                        allNewsData = newsData.map((item, idx) => ({...item, id: Object.keys(newsData)[idx] || idx}));
+                    } else {
+                        allNewsData = Object.entries(newsData).map(([id, item]) => ({...item, id}));
+                    }
                     console.log('Processed news array:', allNewsData);
                     console.log('Number of news items:', allNewsData.length);
 
@@ -1067,6 +1071,7 @@
                     // Hiển thị tin tức
                     displayNews(currentFilteredNews);
                     displayModals(currentFilteredNews);
+                    openModalByIdFromHash();
                     setupCategoryFilter();
                     setupSearchFunction();
                 } else {
@@ -1117,13 +1122,13 @@
             newsArray.forEach((news, index) => {
                 const formattedDate = formatDate(news.date);
                 const newsCard = `
-                    <div class="news-card" data-modal="modal${index + 1}" data-category="${news.title}">
+                    <div class="news-card" data-modal="modal${index + 1}" data-category="${news.title}" data-id="${news.id || ''}">
                         <img src="${news.image}" alt="${news.alt}">
                         <div class="news-card-content">
                             <h3>${news.title}</h3>
                             <div class="date">${formattedDate}</div>
                             <p>${news.summary}</p>
-                            <a href="#" class="btn-read" data-modal="modal${index + 1}">Đọc Thêm</a>
+                            <a href="#" class="btn-read" data-modal="modal${index + 1}" data-id="${news.id || ''}">Đọc Thêm</a>
                         </div>
                     </div>
                 `;
@@ -1147,7 +1152,7 @@
                 // Render trực tiếp HTML nội dung, không bọc thêm <p>
                 const modalContent = `<div class="news-content">${news.content}</div>`;
                 const modal = `
-                    <div class="modal" id="modal${index + 1}">
+                    <div class="modal" id="modal${index + 1}" data-id="${news.id || ''}">
                         <div class="modal-content">
                             <button type="button" class="btn-close" aria-label="Close">×</button>
                             <h2>${news.title}</h2>
@@ -1495,6 +1500,22 @@
             });
         } else {
             setupPagination();
+        }
+
+        // Hàm tự động mở modal theo id trên hash nếu có
+        function openModalByIdFromHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (!hash) return;
+            // Tìm index của tin tức có id = hash
+            const index = allNewsData.findIndex(news => news.id === hash);
+            if (index !== -1) {
+                // Modal được render với id dạng modal{index+1}
+                const modal = document.getElementById(`modal${index + 1}`);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
         }
     </script>
 
