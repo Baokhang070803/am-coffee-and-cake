@@ -14,7 +14,7 @@
         body {
             min-height: 100vh;
             font-family: 'Roboto', Arial, sans-serif;
-            background: linear-gradient(120deg, #d72638 0%, #fbb040 100%);
+            background: #fff;
             overflow-x: hidden;
             position: relative;
             animation: bgfadein 1.2s cubic-bezier(.77,0,.18,1) 1;
@@ -23,7 +23,7 @@
             justify-content: center;
         }
         @keyframes bgfadein {
-            from { filter: blur(16px) brightness(0.7); opacity: 0; }
+            from { filter: blur(1px) brightness(0.7); opacity: 0; }
             to   { filter: blur(0) brightness(1); opacity: 1; }
         }
         .particles {
@@ -35,61 +35,66 @@
         .container {
             position: relative;
             z-index: 2;
-            background: rgba(255,255,255,0.95);
-            border-radius: 28px;
-            box-shadow: 0 8px 40px 0 rgba(215,38,56,0.13), 0 1.5px 8px rgba(0,0,0,0.06);
-            padding: 32px 16px 28px 16px;
-            max-width: 370px;
-            width: 96vw;
+            background: rgba(255,255,255,0.18);
+            border-radius: 32px;
+            box-shadow: 0 8px 40px 0 rgba(215,38,56,0.13), 0 1.5px 8px rgba(0,0,0,0.06), 0 0 0 2px rgba(255,255,255,0.18), 0 0 32px 8px #fbb04044;
+            padding: 38px 18px 32px 18px;
+            max-width: 410px;
+            width: 98vw;
             text-align: center;
             margin: 0;
             animation: fadeinup 1.2s cubic-bezier(.77,0,.18,1) 0.2s both;
+            backdrop-filter: blur(1px) saturate(1.3);
+            border: 2.5px solid rgba(255,255,255,0.22);
+            box-sizing: border-box;
         }
         @keyframes fadeinup {
             from { opacity: 0; transform: translateY(60px) scale(0.98); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
         .app-logo {
-            width: 72px;
-            height: 72px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
             margin-bottom: 18px;
             background: none;
             border: none;
-            box-shadow: none;
-            animation: none;
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
         .app-title {
-            font-size: 1.7rem;
+            font-size: 2.1rem;
             font-weight: 900;
-            color: #c28c19;
-            margin-bottom: 7px;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 8px #fbb04022;
+            color: #7b4f27;
+            margin-bottom: 10px;
+            letter-spacing: 1.2px;
+            text-shadow: 0 2px 18px #fbb04055, 0 1px 0 #fff;
         }
         .app-desc {
             color: #444;
-            font-size: 1.05rem;
+            font-size: 1.13rem;
             margin-bottom: 22px;
             font-weight: 500;
+            background: rgba(255,255,255,0.45);
+            border-radius: 12px;
+            padding: 8px 0 8px 0;
+            box-shadow: 0 2px 8px #fbb04022;
         }
         .download-btn {
             display: flex;
             flex-direction: column;
             gap: 13px;
-            margin-bottom: 10px;
+            margin-bottom: 18px;
         }
         .btn-apk {
             background: linear-gradient(90deg, #d72638 60%, #fbb040 100%);
             color: #fff;
             border: none;
             border-radius: 32px;
-            font-size: 1.08rem;
+            font-size: 1.18rem;
             font-weight: 700;
-            padding: 14px 0;
+            padding: 16px 0;
             width: 100%;
             margin-bottom: 4px;
             cursor: pointer;
@@ -98,19 +103,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 12px #d7263820;
+            box-shadow: 0 2px 18px #d7263820, 0 0 0 2px #fff3;
             position: relative;
             overflow: hidden;
             animation: btnpop 1.1s cubic-bezier(.77,0,.18,1) 0.7s both;
         }
         .btn-apk img {
-            width: 26px;
-            height: 26px;
-            margin-right: 12px;
+            width: 30px;
+            height: 30px;
+            margin-right: 14px;
+            filter: drop-shadow(0 0 6px #fff8);
+            animation: icon-shake 2.2s infinite alternate cubic-bezier(.77,0,.18,1);
+        }
+        @keyframes icon-shake {
+            0% { transform: rotate(-6deg) scale(1); }
+            60% { transform: rotate(7deg) scale(1.08); }
+            100% { transform: rotate(-6deg) scale(1); }
         }
         .btn-apk:hover {
-            transform: scale(1.04) translateY(-1px) rotate(-1deg);
-            box-shadow: 0 6px 18px #fbb04060, 0 2px 8px #d7263820;
+            transform: scale(1.06) translateY(-2px) rotate(-1deg);
+            box-shadow: 0 8px 28px #fbb04090, 0 2px 8px #d7263820;
             background: linear-gradient(90deg, #fbb040 0%, #d72638 100%);
         }
         @keyframes btnpop {
@@ -125,19 +137,21 @@
             color: #fff;
             border: none;
             border-radius: 28px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 500;
-            padding: 11px 0;
+            padding: 13px 0;
             width: 100%;
             cursor: not-allowed;
             opacity: 0.5;
             text-decoration: none;
             transition: background 0.2s;
+            box-shadow: 0 0 0 2px #fff3;
         }
         .btn-store img {
-            width: 22px;
-            height: 22px;
-            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            filter: drop-shadow(0 0 4px #fff8);
         }
         .svg-wave {
             position: fixed;
@@ -145,6 +159,57 @@
             width: 100vw;
             z-index: 1;
             pointer-events: none;
+            animation: wave-move 8s linear infinite alternate;
+        }
+        @keyframes wave-move {
+            0% { transform: translateY(0) scaleX(1); }
+            100% { transform: translateY(10px) scaleX(1.03); }
+        }
+        /* Feature section */
+        .features {
+            margin: 32px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            align-items: center;
+            z-index: 2;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.55);
+            border-radius: 18px;
+            box-shadow: 0 2px 18px #fbb04022, 0 0 0 2px #fff3;
+            padding: 18px 18px 14px 18px;
+            max-width: 340px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            animation: fadeinup 1.2s cubic-bezier(.77,0,.18,1) both;
+        }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbb040 60%, #d72638 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px #fbb04055;
+            font-size: 2rem;
+            color: #fff;
+        }
+        .feature-content {
+            text-align: left;
+        }
+        .feature-title {
+            font-size: 1.13rem;
+            font-weight: 700;
+            color: #7b4f27;
+            margin-bottom: 3px;
+        }
+        .feature-desc {
+            font-size: 0.98rem;
+            color: #444;
         }
         @media (max-width: 500px) {
             body {
@@ -164,11 +229,15 @@
             .btn-store { font-size: 0.93rem; padding: 8px 0; border-radius: 20px; }
             .btn-store img { width: 16px; height: 16px; margin-right: 7px; }
             .download-btn { gap: 8px; }
+            .features { gap: 14px; }
+            .feature-card { padding: 10px 8px 8px 8px; gap: 10px; }
+            .feature-icon { width: 30px; height: 30px; font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <canvas class="particles"></canvas>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <dotlottie-player src="https://lottie.host/292479a2-3c53-4bce-9b92-b47975092b98/aBQelm4cR7.lottie" background="transparent" speed="1" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;" loop autoplay></dotlottie-player>
     <div class="container">
         <img src="images/logo.png" alt="Ấm Coffee & Cake" class="app-logo">
         <div class="app-title">Ấm Coffee & Cake App</div>
@@ -191,62 +260,43 @@
                 Có sẵn tại Amazon.com
             </a>
         </div>
+        <div class="features">
+            <div class="feature-card">
+                <div ></div>
+                <div class="feature-content">
+                    <div class="feature-title">Đặt món siêu nhanh</div>
+                    <div class="feature-desc">Chọn món, đặt hàng và thanh toán chỉ trong vài chạm.</div>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div ></div>
+                <div class="feature-content">
+                    <div class="feature-title">Ưu đãi độc quyền</div>
+                    <div class="feature-desc">Nhận voucher, tích điểm đổi quà chỉ dành cho thành viên app.</div>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div ></div>
+                <div class="feature-content">
+                    <div class="feature-title">Menu đa dạng</div>
+                    <div class="feature-desc">Thưởng thức cà phê, bánh ngọt và nhiều món hấp dẫn khác.</div>
+                </div>
+            </div>
+        </div>
     </div>
     <svg class="svg-wave" viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#fff" fill-opacity="0.9" d="M0,120 C360,200 1080,40 1440,120 L1440,180 L0,180 Z"></path>
-        <path fill="#fbb040" fill-opacity="0.25" d="M0,160 C400,100 1040,220 1440,160 L1440,180 L0,180 Z"></path>
+        <path fill="#fff" fill-opacity="0.9" d="M0,120 C360,200 1080,40 1440,120 L1440,180 L0,180 Z">
+            <animate attributeName="d" dur="8s" repeatCount="indefinite"
+                values="M0,120 C360,200 1080,40 1440,120 L1440,180 L0,180 Z;
+                        M0,130 C400,180 1040,60 1440,130 L1440,180 L0,180 Z;
+                        M0,120 C360,200 1080,40 1440,120 L1440,180 L0,180 Z" />
+        </path>
+        <path fill="#fbb040" fill-opacity="0.25" d="M0,160 C400,100 1040,220 1440,160 L1440,180 L0,180 Z">
+            <animate attributeName="d" dur="8s" repeatCount="indefinite"
+                values="M0,160 C400,100 1040,220 1440,160 L1440,180 L0,180 Z;
+                        M0,170 C420,120 1020,200 1440,170 L1440,180 L0,180 Z;
+                        M0,160 C400,100 1040,220 1440,160 L1440,180 L0,180 Z" />
+        </path>
     </svg>
-    <script>
-    // Hiệu ứng particles nổi bồng bềnh
-    const canvas = document.querySelector('.particles');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-    function createParticles() {
-        particles = [];
-        for (let i = 0; i < 32; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height * 0.7,
-                r: 8 + Math.random() * 16,
-                d: 0.5 + Math.random() * 1.5,
-                alpha: 0.12 + Math.random() * 0.18,
-                color: Math.random() > 0.5 ? '#d72638' : '#fbb040',
-                dx: (Math.random() - 0.5) * 0.3,
-                dy: 0.2 + Math.random() * 0.3
-            });
-        }
-    }
-    createParticles();
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let p of particles) {
-            ctx.globalAlpha = p.alpha;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-            ctx.fillStyle = p.color;
-            ctx.shadowColor = p.color;
-            ctx.shadowBlur = 16;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            p.x += p.dx;
-            p.y += p.dy;
-            if (p.y - p.r > canvas.height * 0.85) {
-                p.y = -p.r;
-                p.x = Math.random() * canvas.width;
-            }
-        }
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(animate);
-    }
-    animate();
-    // Tạo lại particles khi resize lớn
-    window.addEventListener('resize', createParticles);
-    </script>
 </body>
 </html> 
