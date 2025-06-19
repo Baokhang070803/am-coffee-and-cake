@@ -1128,6 +1128,10 @@
             /* Đảm bảo icon không bị méo */
             box-shadow: none;
         }
+        .disabled-like {
+          pointer-events: none;
+          opacity: 0.6;
+        }
     </style>
 </head>
 <body id="home">
@@ -1744,16 +1748,14 @@
                 }
                 document.querySelector('.composer-input').placeholder = `Chào ${(profile && profile.name) || user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
                 window.currentUserProfile = profile;
-                loadPosts();
-                loadStories();
             } else {
                 document.getElementById('userAvatar').textContent = '?';
                 document.querySelector('.composer-input').placeholder = 'Đăng nhập để chia sẻ suy nghĩ của bạn';
-                document.getElementById('postsFeed').innerHTML = '';
-                showEmptyState();
-                document.getElementById('storiesContainer').innerHTML = document.getElementById('storiesContainer').querySelector('.story-create').outerHTML;
                 window.currentUserProfile = null;
             }
+            // Luôn load bài viết và story cho cả 2 trường hợp
+            loadPosts();
+            loadStories();
         });
 
         // Story functions
@@ -2104,11 +2106,11 @@
                 </div>
                 ` : ''}
                 <div class="post-actions">
-                    <div class="post-action ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                    <div class="post-action ${isLiked ? 'liked' : ''} ${!currentUser ? 'disabled-like' : ''}" ${!currentUser ? 'style="pointer-events:none;opacity:0.6;"' : ''} onclick="${currentUser ? `toggleLike('${post.id}')` : ''}">
                         <i class="fa fa-thumbs-up"></i>
                         <span>Thích</span>
                     </div>
-                    <div class="post-action" onclick="focusComment('${post.id}')">
+                    <div class="post-action${!currentUser ? ' disabled-like' : ''}" ${!currentUser ? 'style="pointer-events:none;opacity:0.6;"' : ''} onclick="${currentUser ? `focusComment('${post.id}')` : ''}">
                         <i class="fa fa-comment-o"></i>
                         <span>Bình luận</span>
                     </div>
@@ -2232,10 +2234,10 @@
                                 <div class="comment-text">${comment.text}</div>
                             </div>
                             <div class="comment-actions">
-                                <span class="comment-action${isLiked ? ' liked' : ''}" onclick="toggleLikeComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">
+                                <span class="comment-action${isLiked ? ' liked' : ''}${!currentUser ? ' disabled-like' : ''}" ${!currentUser ? 'style="pointer-events:none;opacity:0.6;"' : ''} onclick="${currentUser ? `toggleLikeComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})` : ''}">
                                     Thích${likesCount > 0 ? ` (${likesCount})` : ''}
                                 </span>
-                                <span class="comment-action" onclick="showReplyForm('${id}')">Trả lời</span>
+                                <span class="comment-action${!currentUser ? ' disabled-like' : ''}" ${!currentUser ? 'style="pointer-events:none;opacity:0.6;"' : ''} onclick="${currentUser ? `showReplyForm('${id}')` : ''}">Trả lời</span>
                                 <span>${timeAgo}</span>
                                 ${isAuthor ? `<span class="comment-action" style="color:#1c7ed6;" onclick="editComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">Chỉnh sửa</span>` : ''}
                                 ${isAuthor ? `<span class="comment-action" style="color:#d33;" onclick="deleteComment('${postId}', '${id}', ${parentId ? `'${parentId}'` : 'null'})">Xóa</span>` : ''}
