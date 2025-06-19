@@ -53,8 +53,65 @@
       .message-time { font-size: 20px; }
     }
     @media (max-width: 600px) {
-      .main-chat { max-width: 100vw; border-radius: 0; box-shadow: none; /* Không set height hoặc min-height ở đây */ }
-      .chat-header, .chat-input-bar { border-radius: 0; }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #f5f6fa;
+        overflow: hidden;
+      }
+      .main-chat {
+        max-width: 100vw;
+        min-height: 100vh;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: #fff;
+      }
+      .chat-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 10;
+        border-radius: 0;
+        padding: 12px 12px;
+        box-sizing: border-box;
+      }
+      .chat-input-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 10;
+        border-radius: 0;
+        padding: 8px 8px;
+        box-sizing: border-box;
+      }
+      .chat-messages {
+        flex: 1;
+        margin-top: 70px;   /* chiều cao header */
+        margin-bottom: 70px; /* chiều cao input bar */
+        padding: 8px 8px;
+        overflow-y: auto;
+        height: auto;
+        min-height: 0;
+        background: #f7f7f7;
+      }
+      .message-bubble {
+        max-width: 80vw;
+        word-break: break-word;
+        font-size: 16px;
+        padding: 10px 16px;
+        border-radius: 16px;
+      }
+      .message-row {
+        margin-bottom: 8px;
+      }
     }
   </style>
 </head>
@@ -147,7 +204,7 @@
         <div class="message-row${m.sender === currentUser.uid ? ' own' : ''}">
           <div class="message-bubble">
             ${m.text ? escapeHtml(m.text) : ''}
-            ${m.image ? `<div style='margin-top:6px;'><img src='${m.image}' style='max-width:180px;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>` : ''}
+            ${m.image ? `<div style='margin-top:6px;'><img src='${m.image}' class='chat-image-view' style='max-width:180px;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;'></div>` : ''}
           </div>
           <span class="message-time">${m.timestamp ? formatTimeAgo(m.timestamp) : ''}</span>
         </div>
@@ -229,6 +286,23 @@
     } else {
       document.getElementById('emojiBtn').onclick = function() { alert('Chức năng đang phát triển'); };
     }
+  </script>
+  <!-- Modal xem ảnh lớn -->
+  <div id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+    <img id="modalImg" src="" style="max-width:96vw;max-height:96vh;border-radius:12px;box-shadow:0 2px 16px rgba(0,0,0,0.25);">
+  </div>
+  <script>
+  // Xem ảnh lớn khi click
+    document.body.addEventListener('click', function(e) {
+      if (e.target.classList.contains('chat-image-view')) {
+        document.getElementById('modalImg').src = e.target.src;
+        document.getElementById('imageModal').style.display = 'flex';
+      }
+    });
+    document.getElementById('imageModal').onclick = function() {
+      this.style.display = 'none';
+      document.getElementById('modalImg').src = '';
+    };
   </script>
 </body>
 </html> 
