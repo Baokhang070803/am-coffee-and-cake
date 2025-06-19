@@ -14,9 +14,10 @@
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
     <link href="css/mobile.css" rel="stylesheet">
-    <link href="css/mobile.css" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#A67C52">
+    <!-- Thêm Material Icons để icon hiển thị đúng -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- iOS PWA support -->
     <link rel="apple-touch-icon" href="images/logo.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1353,6 +1354,109 @@
             display: none !important;
           }
         }
+
+        /* --- Video Jumbotron Section --- */
+        .vid-jumbotron {
+            position: relative;
+            width: 100%;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .vid-jumbotron .video-bg-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .vid-jumbotron video {
+            width: 100vw;
+            height: 100%;
+            object-fit: cover;
+            min-height: 420px;
+            min-width: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+        .vid-jumbotron .video-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(40, 24, 10, 0.45);
+            z-index: 2;
+        }
+        .vid-jumbotron .video-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: #fff;
+            width: 100%;
+            padding: 60px 20px 40px 20px;
+        }
+        .vid-jumbotron .video-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+        }
+        .vid-jumbotron .video-content .subtitle {
+            font-size: 24px;
+            margin-bottom: 36px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        }
+        .video-scroll-btn {
+            background: #A67C52;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 32px;
+            box-shadow: 0 4px 16px rgba(166,124,82,0.18);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            outline: none;
+        }
+        .video-scroll-btn:hover {
+            background: #8B6842;
+            transform: scale(1.08);
+        }
+        @media (max-width: 991px) {
+            .vid-jumbotron .video-content h1 {
+                font-size: 36px;
+            }
+            .vid-jumbotron .video-content .subtitle {
+                font-size: 18px;
+            }
+            .vid-jumbotron {
+                min-height: 260px;
+            }
+        }
+        @media (max-width: 600px) {
+            .vid-jumbotron .video-content h1 {
+                font-size: 24px;
+            }
+            .vid-jumbotron .video-content .subtitle {
+                font-size: 14px;
+            }
+            .vid-jumbotron {
+                min-height: 160px;
+                margin-bottom: 20px;
+            }
+            .video-scroll-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
+            }
+        }
     </style>
 </head>
 <body id="home">
@@ -1483,6 +1587,22 @@
                     <p>Ấm - Coffee and Cake không chỉ là nơi thưởng thức cà phê và bánh ngọt, mà còn là không gian để bạn tìm thấy sự thư giãn và kết nối. Mỗi ly cà phê, mỗi chiếc bánh đều được làm từ tâm huyết, mang đến hương vị đậm đà và yêu thương.</p>
                     <a href="about.html" class="btn-about">Khám Phá Thêm</a>
                 </div>
+                <div class="vid-layout-transparent mdl-layout mdl-js-layout">
+                    <main class="mdl-layout__content">
+                        <section class="vid-jumbotron">
+                            <div class="video-bg-container">
+                                <video autoplay loop muted preload="auto" poster="images/Screenshot_2025-06-19-12-06-33-931_com.miui.mediaviewer.jpg">
+                                    <source src="video/Coffee_Shop_Video_Generation.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-overlay"></div>
+                            </div>
+                            <div class="video-content">
+                                <h1>Ấm - Coffee & Cake</h1>
+                                <p class="subtitle">Không gian ấm áp, hương vị tuyệt vời</p>
+                            </div>
+                        </section>
+                    </main>
+                </div>
                 <div class="hot-products">
                     <h2>Sản Phẩm Nổi Bật</h2>
                     <div id="cosmic-slide">
@@ -1493,6 +1613,7 @@
                         <button id="next" class="orbit-button"><i class="fa fa-angle-right"></i></button>
                     </div>
                 </div>
+
                 <div class="clearfix"></div>
                 <div class="news-highlight">
                     <h2>Tin Tức Nổi Bật</h2>
@@ -2607,5 +2728,7 @@ if (progress && percentText) animateLoading();
                     </div>
 
                   </div>
+
+              
 </body>
 </html>
