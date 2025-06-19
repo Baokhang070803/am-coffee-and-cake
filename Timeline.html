@@ -1132,6 +1132,71 @@
           pointer-events: none;
           opacity: 0.6;
         }
+        /* Đảm bảo popup Swal.fire luôn nổi trên modal cá nhân */
+        .swal2-container {
+          z-index: 20000 !important;
+        }
+        /* Modal lời mời kết bạn kiểu Facebook */
+        #friendRequestsModalBg .profile-modal {
+          animation: fadeIn 0.22s;
+        }
+        .friend-request-card {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          background: #f8f8f8;
+          border-radius: 10px;
+          margin-bottom: 14px;
+          padding: 10px 12px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .friend-request-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .friend-request-info {
+          flex: 1;
+          min-width: 0;
+        }
+        .friend-request-name {
+          font-weight: 600;
+          color: #a67c52;
+          font-size: 16px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .friend-request-id {
+          font-size: 12px;
+          color: #bbb;
+        }
+        .friend-request-actions button {
+          margin-left: 6px;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 14px;
+          font-size: 14px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: background 0.18s;
+        }
+        .friend-request-actions .accept {
+          background: #4caf50;
+          color: #fff;
+        }
+        .friend-request-actions .accept:hover {
+          background: #388e3c;
+        }
+        .friend-request-actions .reject {
+          background: #d33;
+          color: #fff;
+        }
+        .friend-request-actions .reject:hover {
+          background: #a31515;
+        }
     </style>
 </head>
 <body id="home">
@@ -2729,7 +2794,11 @@
 
         // Thêm hàm viewProfile
         window.viewProfile = async function(uid) {
+          // Chỉ mở modal nếu nó đang đóng
+          const modal = document.getElementById('profileModal');
+          if (modal.style.display !== 'flex') {
           openProfileModal();
+          }
           // Reset UI
           document.getElementById('profileAvatarImg').src = 'images/default-avatar.png';
           document.getElementById('profileName').textContent = 'Tên người dùng';
@@ -2738,6 +2807,7 @@
           document.getElementById('profileOnlineDot').style.display = 'none';
           document.getElementById('profileTabPosts').innerHTML = 'Đang tải bài viết...';
           document.getElementById('profileTabPhotos').innerHTML = '';
+          document.getElementById('profileTabFriends').innerHTML = '';
           try {
             // Lấy thông tin user
             const db = getDatabase();
@@ -2755,6 +2825,9 @@
                 }
               }
               user = { name, email, avatarUrl: photo };
+              if (!name && !email && !photo) {
+                console.log('Không tìm thấy dữ liệu user hoặc bài viết cho uid:', uid);
+              }
             }
             document.getElementById('profileAvatarImg').src = user.avatarUrl || 'images/default-avatar.png';
             document.getElementById('profileName').textContent = user.name || 'Người dùng';
@@ -2781,30 +2854,280 @@
             } else {
               document.getElementById('profileTabPhotos').innerHTML = `<div class='profile-photos-grid'>${userImages.map(img => `<img src='${img}' loading='lazy'>`).join('')}</div>`;
             }
+            // Bạn bè
+            await loadProfileFriends(uid);
             showProfileTab('posts');
+            // Nút kết bạn
+            const currentUid = window.auth.currentUser ? window.auth.currentUser.uid : null;
+            if (typeof renderFriendButton === 'function') {
+              await renderFriendButton(currentUid, uid);
+            }
           } catch (e) {
             document.getElementById('profileTabPosts').innerHTML = '<div style="color:#d33;text-align:center;">Không thể tải thông tin người dùng.</div>';
             document.getElementById('profileTabPhotos').innerHTML = '';
+            document.getElementById('profileTabFriends').innerHTML = '';
+            console.error('Lỗi khi load profile:', e);
           }
         }
 
         window.showProfileTab = function(tab) {
           const postsTab = document.getElementById('profileTabPosts');
           const photosTab = document.getElementById('profileTabPhotos');
-          const btnPosts = document.querySelector('.profile-tabs button[onclick*="showProfileTab(\'posts\')"]');
-          const btnPhotos = document.querySelector('.profile-tabs button[onclick*="showProfileTab(\'photos\')"]');
+          const friendsTab = document.getElementById('profileTabFriends');
+          const btnPosts = document.getElementById('profileTabBtnPosts');
+          const btnPhotos = document.getElementById('profileTabBtnPhotos');
+          const btnFriends = document.getElementById('profileTabBtnFriends');
           if (tab === 'posts') {
             postsTab.style.display = '';
             photosTab.style.display = 'none';
+            friendsTab.style.display = 'none';
             if (btnPosts) btnPosts.classList.add('active');
             if (btnPhotos) btnPhotos.classList.remove('active');
+            if (btnFriends) btnFriends.classList.remove('active');
           } else if (tab === 'photos') {
             postsTab.style.display = 'none';
             photosTab.style.display = '';
+            friendsTab.style.display = 'none';
             if (btnPhotos) btnPhotos.classList.add('active');
             if (btnPosts) btnPosts.classList.remove('active');
+            if (btnFriends) btnFriends.classList.remove('active');
+          } else if (tab === 'friends') {
+            postsTab.style.display = 'none';
+            photosTab.style.display = 'none';
+            friendsTab.style.display = '';
+            if (btnFriends) btnFriends.classList.add('active');
+            if (btnPosts) btnPosts.classList.remove('active');
+            if (btnPhotos) btnPhotos.classList.remove('active');
           }
         }
+
+        // Hàm load danh sách bạn bè
+        async function loadProfileFriends(uid) {
+          const db = getDatabase();
+          const userSnap = await get(ref(db, 'users/' + uid + '/friends'));
+          const friends = userSnap.exists() ? Object.keys(userSnap.val() || {}) : [];
+          const friendsTab = document.getElementById('profileTabFriends');
+          if (!friendsTab) return;
+          if (friends.length === 0) {
+            friendsTab.innerHTML = '<div style="color:#aaa;text-align:center;">Chưa có bạn bè nào.</div>';
+            return;
+          }
+          // Lấy thông tin từng bạn bè
+          let html = "<div style='display:flex;flex-wrap:wrap;gap:16px;'>";
+          for (const fid of friends) {
+            let name = '', avatar = 'images/default-avatar.png';
+            const friendSnap = await get(ref(db, 'users/' + fid));
+            if (friendSnap.exists()) {
+              const f = friendSnap.val();
+              name = f.name || f.displayName || f.email || 'Người dùng';
+              avatar = f.avatarUrl || 'images/default-avatar.png';
+            } else {
+              // fallback: tìm trong posts
+              for (const p of posts) {
+                if (p.authorId === fid) {
+                  name = p.authorName || p.authorEmail || 'Người dùng';
+                  avatar = p.authorPhotoURL || 'images/default-avatar.png';
+                  break;
+                }
+              }
+            }
+            html += `<div style='width:90px;text-align:center;cursor:pointer;' onclick="viewProfile('${fid}')">
+              <img src='${avatar}' style='width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;'>
+              <div style='font-size:14px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>${name}</div>
+            </div>`;
+          }
+          html += '</div>';
+          friendsTab.innerHTML = html;
+        }
+
+        // Thay thế hàm openFriendRequestsModal bằng modal custom
+        window.openFriendRequestsModal = async function() {
+          const user = window.auth.currentUser;
+          if (!user) return;
+          const db = getDatabase();
+          const reqRef = ref(db, 'users/' + user.uid + '/friendRequests');
+          const snap = await get(reqRef);
+          const requests = snap.exists() ? snap.val() : {};
+          const reqIds = Object.keys(requests);
+          const modalBg = document.getElementById('friendRequestsModalBg');
+          const listDiv = document.getElementById('friendRequestsList');
+          const noReqDiv = document.getElementById('noFriendRequests');
+          listDiv.innerHTML = '';
+          if (reqIds.length === 0) {
+            noReqDiv.style.display = '';
+            modalBg.style.display = 'flex';
+            return;
+          }
+          noReqDiv.style.display = 'none';
+          for (const fid of reqIds) {
+            let name = 'Người dùng', avatar = 'images/default-avatar.png';
+            const friendSnap = await get(ref(db, 'users/' + fid));
+            if (friendSnap.exists()) {
+              const f = friendSnap.val();
+              name = f.name || f.displayName || f.email || 'Người dùng';
+              avatar = f.avatarUrl || 'images/default-avatar.png';
+            }
+            const card = document.createElement('div');
+            card.className = 'friend-request-card';
+            card.innerHTML = `
+              <img src="${avatar}" class="friend-request-avatar" alt="avatar">
+              <div class="friend-request-info">
+                <div class="friend-request-name">${name}</div>
+                <div class="friend-request-id">${fid}</div>
+              </div>
+              <div class="friend-request-actions">
+                <button class="accept" onclick="acceptFriendRequest('${fid}')">Chấp nhận</button>
+                <button class="reject" onclick="rejectFriendRequest('${fid}')">Từ chối</button>
+              </div>
+            `;
+            listDiv.appendChild(card);
+          }
+          modalBg.style.display = 'flex';
+        };
+        // Đóng modal
+        window.closeFriendRequestsModal = function() {
+          document.getElementById('friendRequestsModalBg').style.display = 'none';
+        };
+        // Đóng khi click nền mờ
+        if (document.getElementById('friendRequestsModalBg')) {
+          document.getElementById('friendRequestsModalBg').addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+          });
+        }
+
+        async function renderFriendButton(currentUid, targetUid) {
+        const actionsDiv = document.getElementById('profileActions');
+        if (!actionsDiv) return;
+        actionsDiv.innerHTML = '';
+        if (!currentUid || !targetUid || currentUid === targetUid) return;
+        const db = getDatabase();
+        // Kiểm tra trạng thái quan hệ
+        const [friendsSnap, sentSnap, receivedSnap] = await Promise.all([
+            get(ref(db, 'users/' + currentUid + '/friends/' + targetUid)),
+            get(ref(db, 'users/' + currentUid + '/sentRequests/' + targetUid)),
+            get(ref(db, 'users/' + currentUid + '/friendRequests/' + targetUid)),
+        ]);
+        let btns = '';
+        if (friendsSnap.exists()) {
+            btns += `<button style='background:#bbb;' onclick='unfriendUser("${targetUid}")'>Hủy kết bạn</button>`;
+        } else if (sentSnap.exists()) {
+            btns += `<button style='background:#aaa;' disabled>Đã gửi lời mời</button>`;
+        } else if (receivedSnap.exists()) {
+            btns += `<button style='background:#4caf50;' onclick='acceptFriendRequestModal("${targetUid}")'>Chấp nhận</button> <button style='background:#d33;' onclick='rejectFriendRequestModal("${targetUid}")'>Từ chối</button>`;
+        } else {
+            btns += `<button style='background:#1877f2;color:#fff;' onclick='sendFriendRequest("${targetUid}")'>Kết bạn</button>`;
+        }
+        // Thêm nút nhắn tin
+        btns += `<button style='background:#a67c52;color:#fff;margin-left:8px;' onclick='messageUser("${targetUid}")'><i class="fa fa-comment"></i> Nhắn tin</button>`;
+        actionsDiv.innerHTML = btns;
+        }
+        // Hàm mở Messenger với bạn bè
+        window.messageUser = function(uid) {
+          window.location.href = 'MessengerChat.html?uid=' + encodeURIComponent(uid);
+        }
+        window.sendFriendRequest = async function(targetUid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        await set(ref(db, 'users/' + targetUid + '/friendRequests/' + user.uid), true);
+        await set(ref(db, 'users/' + user.uid + '/sentRequests/' + targetUid), true);
+        await renderFriendButton(user.uid, targetUid);
+        Swal.fire({icon:'success',title:'Đã gửi lời mời kết bạn!'});
+        }
+        window.unfriendUser = async function(targetUid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        await set(ref(db, 'users/' + user.uid + '/friends/' + targetUid), null);
+        await set(ref(db, 'users/' + targetUid + '/friends/' + user.uid), null);
+        await renderFriendButton(user.uid, targetUid);
+        Swal.fire({icon:'info',title:'Đã hủy kết bạn.'});
+        }
+        window.acceptFriendRequestModal = async function(targetUid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        await set(ref(db, 'users/' + user.uid + '/friends/' + targetUid), true);
+        await set(ref(db, 'users/' + targetUid + '/friends/' + user.uid), true);
+        await set(ref(db, 'users/' + user.uid + '/friendRequests/' + targetUid), null);
+        await set(ref(db, 'users/' + targetUid + '/sentRequests/' + user.uid), null);
+        await renderFriendButton(user.uid, targetUid);
+        Swal.fire({icon:'success',title:'Đã chấp nhận kết bạn!'});
+        await loadProfileFriends(user.uid);
+        }
+        window.rejectFriendRequestModal = async function(targetUid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        await set(ref(db, 'users/' + user.uid + '/friendRequests/' + targetUid), null);
+        await set(ref(db, 'users/' + targetUid + '/sentRequests/' + user.uid), null);
+        await renderFriendButton(user.uid, targetUid);
+        Swal.fire({icon:'info',title:'Đã từ chối lời mời.'});
+        }
+        // Lắng nghe realtime số lượng lời mời kết bạn và cập nhật badge
+        window.auth.onAuthStateChanged(user => {
+        const badge = document.getElementById('friendRequestBadge');
+        const countSpan = document.getElementById('friendRequestCount');
+        if (!badge || !countSpan) return;
+        if (user) {
+            const db = getDatabase();
+            const reqRef = ref(db, 'users/' + user.uid + '/friendRequests');
+            onValue(reqRef, (snap) => {
+            const requests = snap.exists() ? snap.val() : {};
+            const count = Object.keys(requests).length;
+            if (count > 0) {
+                badge.style.display = 'inline-block';
+                countSpan.textContent = count;
+            } else {
+                badge.style.display = 'none';
+                countSpan.textContent = '0';
+            }
+            });
+        } else {
+            badge.style.display = 'none';
+            countSpan.textContent = '0';
+        }
+        });
+        // Xử lý chấp nhận lời mời
+        window.acceptFriendRequest = async function(fid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        // Thêm vào friends của cả 2
+        await set(ref(db, 'users/' + user.uid + '/friends/' + fid), true);
+        await set(ref(db, 'users/' + fid + '/friends/' + user.uid), true);
+        // Xóa lời mời
+        await set(ref(db, 'users/' + user.uid + '/friendRequests/' + fid), null);
+        await set(ref(db, 'users/' + fid + '/sentRequests/' + user.uid), null);
+        // Reload lại modal
+        window.openFriendRequestsModal();
+        // Reload tab bạn bè nếu đang mở
+        if (document.getElementById('profileTabFriends').style.display !== 'none') {
+            await loadProfileFriends(user.uid);
+        }
+        }
+
+        // Xử lý từ chối lời mời
+        window.rejectFriendRequest = async function(fid) {
+        const user = window.auth.currentUser;
+        if (!user) return;
+        const db = getDatabase();
+        // Xóa lời mời
+        await set(ref(db, 'users/' + user.uid + '/friendRequests/' + fid), null);
+        await set(ref(db, 'users/' + fid + '/sentRequests/' + user.uid), null);
+        // Reload lại modal
+        window.openFriendRequestsModal();
+        }
+        let html = "<div style='display:flex;flex-wrap:wrap;gap:16px;'>";
+        for (const fid of friends) {
+        // ... (giữ nguyên code cũ)
+        html += `<div style='width:90px;text-align:center;cursor:pointer;' onclick="viewProfile('${fid}')">
+            <img src='${avatar}' style='width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;'>
+            <div style='font-size:14px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>${name}</div>
+        </div>`;
+        }
+        html += '</div>';
+friendsTab.innerHTML = html;
     </script>
 
     <script>
@@ -2894,16 +3217,21 @@
           <div class="profile-name" id="profileName">Tên người dùng</div>
           <div class="profile-email" id="profileEmail">Email</div>
           <div class="profile-status" id="profileStatus">● Offline</div>
-          <div class="profile-actions">
-            <!-- <button onclick="messageUser()">Nhắn tin</button> -->
+          <div class="profile-actions" id="profileActions">
+            <!-- Nút kết bạn sẽ được render động bằng JS -->
+          </div>
+          <div id="friendRequestBadge" style="display:none;position:relative;">
+            <span style="background:#d33;color:#fff;border-radius:50%;padding:2px 7px;font-size:13px;position:absolute;top:-8px;right:-8px;z-index:2;cursor:pointer;" onclick="openFriendRequestsModal()" id="friendRequestCount">0</span>
           </div>
         </div>
         <div class="profile-tabs">
-          <button class="active" onclick="showProfileTab('posts')">Bài viết</button>
-          <button onclick="showProfileTab('photos')">Ảnh</button>
+          <button id="profileTabBtnPosts" class="active" onclick="showProfileTab('posts')">Bài viết</button>
+          <button id="profileTabBtnPhotos" onclick="showProfileTab('photos')">Ảnh</button>
+          <button id="profileTabBtnFriends" onclick="showProfileTab('friends')">Bạn bè</button>
         </div>
         <div class="profile-tab-content" id="profileTabPosts">Đang tải bài viết...</div>
         <div class="profile-tab-content" id="profileTabPhotos" style="display:none"></div>
+        <div class="profile-tab-content" id="profileTabFriends" style="display:none"></div>
       </div>
     </div>
     <script>
@@ -2914,5 +3242,14 @@
       document.getElementById('profileModal').style.display = 'none';
     }
     </script>
+    <!-- Modal Lời mời kết bạn kiểu Facebook -->
+    <div id="friendRequestsModalBg" class="profile-modal-bg" style="z-index:20001;display:none;">
+      <div class="profile-modal" style="max-width:500px;padding:0 0 24px 0;">
+        <span class="close" onclick="closeFriendRequestsModal()" style="position:absolute;top:16px;right:22px;font-size:28px;color:#65676b;cursor:pointer;font-weight:bold;z-index:2;">&times;</span>
+        <div style="font-size:20px;font-weight:700;color:#a67c52;text-align:center;margin:22px 0 10px 0;">Lời mời kết bạn</div>
+        <div id="friendRequestsList" style="max-height:340px;overflow-y:auto;padding:0 24px;"></div>
+        <div id="noFriendRequests" style="color:#aaa;text-align:center;display:none;">Bạn không có lời mời kết bạn nào.</div>
+      </div>
+    </div>
     </body>
 </html>

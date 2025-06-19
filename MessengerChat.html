@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - Ấm Messenger</title>
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <style>
+    body { background: #f5f6fa; margin: 0; font-family: 'Roboto', Arial, sans-serif; }
+    .main-chat { height: 100vh; display: flex; flex-direction: column; max-width: 540px; margin: 0 auto; box-sizing: border-box; }
+    .chat-header { background: #fff; display: flex; align-items: center; gap: 12px; padding: 18px 18px; border-radius: 18px 18px 0 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .chat-header-avatar { width: 54px; height: 54px; border-radius: 50%; overflow: hidden; background: #e0e0e0; display: flex; align-items: center; justify-content: center; border: 2.5px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .chat-header-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .chat-header-info { flex: 1; min-width: 0; }
+    .chat-header-name { font-weight: 700; color: #222; font-size: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.2px; }
+    .chat-header-status { color: #4caf50; font-size: 15px; margin-top: 2px; }
+    .chat-back-btn { background: none; border: none; font-size: 26px; color: #a67c52; margin-right: 12px; transition: color 0.18s, background 0.18s; border-radius: 50%; padding: 6px; }
+    .chat-back-btn:hover { background: #f0f2f5; color: #222; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 28px 18px 18px 18px; display: flex; flex-direction: column; gap: 14px; background: #f7f7f7; border-radius: 0 0 0 0; }
+    .message-row { display: flex; align-items: flex-end; gap: 10px; }
+    .message-row.own { flex-direction: row-reverse; }
+    .message-bubble { max-width: 70%; background: #e4e6eb; border-radius: 18px; padding: 14px 20px; font-size: 18px; color: #222; box-shadow: 0 1px 4px rgba(0,0,0,0.04); word-break: break-word; position: relative; }
+    .message-row.own .message-bubble { background: #aee1fb; color: #222; }
+    .message-time { font-size: 13px; color: #888; margin: 0 8px; }
+    .chat-input-bar { background: #fff; border-top: 1px solid #e4e6ea; padding: 16px 14px; display: flex; align-items: center; gap: 12px; border-radius: 0 0 18px 18px; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
+    .chat-input { flex: 1; border-radius: 22px; border: 1.5px solid #e4e6ea; padding: 14px 18px; font-size: 18px; outline: none; background: #f7f7f7; color: #222; transition: box-shadow 0.18s, background 0.18s; }
+    .chat-input:focus { background: #fff; color: #222; box-shadow: 0 2px 12px rgba(0,0,0,0.10); border-color: #a67c52; }
+    .chat-send-btn { background: #a67c52; color: #fff; border: none; border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .chat-send-btn:hover { background: #f0f2f5; color: #a67c52; }
+    .chat-send-btn img, .chat-send-btn i { width: 26px; height: 26px; object-fit: contain; font-size: 26px; }
+    @media (min-width: 900px) {
+      body { background: #f5f6fa; }
+      .main-chat {
+        max-width: 100vw;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        background: #fff;
+        height: 100vh;
+      }
+      .chat-header { padding: 40px 60px; border-radius: 0; }
+      .chat-header-avatar { width: 100px; height: 100px; }
+      .chat-header-name { font-size: 38px; }
+      .chat-header-status { font-size: 22px; }
+      .chat-messages { padding: 48px 60px 40px 60px; }
+      .chat-input-bar { padding: 32px 60px; border-radius: 0; }
+      .chat-input { font-size: 28px; padding: 24px 32px; }
+      .chat-send-btn { width: 70px; height: 70px; font-size: 36px; }
+      .chat-send-btn img, .chat-send-btn i { width: 40px; height: 40px; font-size: 40px; }
+      .message-bubble { font-size: 26px; padding: 22px 32px; }
+      .message-time { font-size: 20px; }
+    }
+    @media (max-width: 600px) {
+      .main-chat { max-width: 100vw; border-radius: 0; box-shadow: none; }
+      .chat-header, .chat-input-bar { border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-chat">
+    <div class="chat-header" id="chatHeader">
+      <button class="chat-back-btn" id="backBtn"><i class="fa fa-arrow-left"></i></button>
+      <div class="chat-header-avatar" id="chatHeaderAvatar"></div>
+      <div class="chat-header-info">
+        <div class="chat-header-name" id="chatHeaderName">Tên bạn bè</div>
+        <div class="chat-header-status" id="chatHeaderStatus"></div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-bar">
+      <!-- <button class="chat-send-btn" id="emojiBtn"><i class="fa fa-smile-o"></i></button> -->
+      <button class="chat-send-btn" id="imageBtn"><img src="https://cdn-icons-png.freepik.com/256/14873/14873787.png?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_incoming" style="width:50px;height:50px;object-fit:contain;"></button>
+      <input type="text" class="chat-input" id="chatInput" placeholder="Nhập tin nhắn..." disabled>
+      <button class="chat-send-btn" id="sendBtn" disabled><img src="https://cdn-icons-png.freepik.com/256/17731/17731920.png?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_incoming" alt="Gửi" style="width:50px;height:50px;object-fit:contain;"></button>
+    </div>
+  </div>
+  <input type="file" id="chatImageInput" accept="image/*" style="display:none;">
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getDatabase, ref, push, onValue, set, get, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+    const firebaseConfig = { /* ... dùng config cũ ... */
+      apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+      authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+      databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "coffee-and-cake-e2f5d",
+      storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+      messagingSenderId: "453243002159",
+      appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+      measurementId: "G-1H7DM8MQCV"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    // Lấy uid từ query string
+    function getQueryUid() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('uid');
+    }
+    let currentUser = null;
+    let friendUid = getQueryUid();
+    let friendInfo = null;
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user && friendUid) loadFriendInfo();
+    });
+    async function loadFriendInfo() {
+      const friendSnap = await get(ref(database, 'users/' + friendUid));
+      if (friendSnap.exists()) {
+        friendInfo = friendSnap.val();
+        document.getElementById('chatHeaderAvatar').innerHTML = friendInfo.avatarUrl ? `<img src='${friendInfo.avatarUrl}'>` : '';
+        document.getElementById('chatHeaderName').textContent = friendInfo.name || friendInfo.displayName || friendInfo.email || 'Người dùng';
+      }
+      document.getElementById('chatHeaderStatus').textContent = '';
+      document.getElementById('chatInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      listenMessages();
+    }
+    function getConversationId(uid1, uid2) {
+      return [uid1, uid2].sort().join('_');
+    }
+    let messageListener = null;
+    function listenMessages() {
+      if (!currentUser || !friendUid) return;
+      if (messageListener) messageListener();
+      const convId = getConversationId(currentUser.uid, friendUid);
+      const msgRef = ref(database, 'messages/' + convId);
+      messageListener = onValue(msgRef, (snap) => {
+        let msgs = [];
+        snap.forEach(child => {
+          msgs.push({ id: child.key, ...child.val() });
+        });
+        msgs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        renderMessages(msgs);
+      });
+    }
+    function renderMessages(msgs) {
+      const msgDiv = document.getElementById('chatMessages');
+      if (!msgDiv) return;
+      if (!msgs || msgs.length === 0) {
+        msgDiv.innerHTML = '<div style="color:#bbb;text-align:center;margin-top:40px;">Chưa có tin nhắn nào. Hãy bắt đầu cuộc trò chuyện!</div>';
+        return;
+      }
+      msgDiv.innerHTML = msgs.map(m => `
+        <div class="message-row${m.sender === currentUser.uid ? ' own' : ''}">
+          <div class="message-bubble">
+            ${m.text ? escapeHtml(m.text) : ''}
+            ${m.image ? `<div style='margin-top:6px;'><img src='${m.image}' style='max-width:180px;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>` : ''}
+          </div>
+          <span class="message-time">${m.timestamp ? formatTimeAgo(m.timestamp) : ''}</span>
+        </div>
+      `).join('');
+      setTimeout(() => { msgDiv.scrollTop = msgDiv.scrollHeight; }, 100);
+    }
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function formatTimeAgo(ts) {
+      if (!ts) return '';
+      const now = Date.now();
+      const diff = now - ts;
+      const min = 60*1000, hour = 60*min, day = 24*hour;
+      if (diff < min) return 'Vừa xong';
+      if (diff < hour) return Math.floor(diff/min) + 'ph';
+      if (diff < day) return Math.floor(diff/hour) + 'g';
+      return new Date(ts).toLocaleDateString('vi-VN');
+    }
+    // Gửi tin nhắn
+    document.getElementById('chatInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    let selectedImageBase64 = null;
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text && !selectedImageBase64) return;
+      if (!currentUser || !friendUid) return;
+      const convId = getConversationId(currentUser.uid, friendUid);
+      const db = getDatabase();
+      const msgRef = ref(db, 'messages/' + convId);
+      const newMsg = {
+        sender: currentUser.uid,
+        text: text || '',
+        timestamp: Date.now()
+      };
+      if (selectedImageBase64) {
+        newMsg.image = selectedImageBase64;
+      }
+      await push(msgRef, newMsg);
+      await set(ref(db, 'conversationMeta/' + convId + '/lastMessage'), text ? text : (selectedImageBase64 ? '[Đã gửi ảnh]' : ''));
+      await set(ref(db, 'conversationMeta/' + convId + '/updatedAt'), Date.now());
+      input.value = '';
+      selectedImageBase64 = null;
+    }
+    // Gửi ảnh
+    document.getElementById('imageBtn').onclick = () => document.getElementById('chatImageInput').click();
+    document.getElementById('chatImageInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        selectedImageBase64 = ev.target.result;
+        sendMessage();
+      };
+      reader.readAsDataURL(file);
+    });
+    // Nút back
+    document.getElementById('backBtn').onclick = function() {
+      window.location.href = 'MessengerList.html';
+    };
+    // Gán lại sự kiện cho emojiBtn
+    if (typeof toggleEmojiPicker === 'function') {
+      document.getElementById('emojiBtn').onclick = toggleEmojiPicker;
+    } else {
+      document.getElementById('emojiBtn').onclick = function() { alert('Chức năng đang phát triển'); };
+    }
+  </script>
+</body>
+</html> 
