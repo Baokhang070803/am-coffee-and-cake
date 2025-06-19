@@ -1197,6 +1197,31 @@
         .friend-request-actions .reject:hover {
           background: #a31515;
         }
+        #timelineFilterBar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        margin: 18px 0 18px 0;
+        width: 100%;
+        max-width: 100%; /* hoặc 480px, 520px tùy ý */
+        margin-left: auto;
+        margin-right: auto;
+        }
+
+        .timeline-filter-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.07);
+        padding: 10px 0;
+        border-radius: 22px;
+        border: none;
+        outline: none;
+        text-align: center;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
     </style>
 </head>
 <body id="home">
@@ -1415,10 +1440,12 @@
                 <div id="timelineFilterBar" style="display:flex;justify-content:center;gap:14px;margin:18px 0 18px 0;">
                     <button id="showAllPostsBtn" class="post-btn timeline-filter-btn">Tất cả</button>
                     <button id="showMyPostsBtn" class="post-btn timeline-filter-btn">Cá nhân</button>
+                    <button id="showFriendsPostsBtn" class="post-btn timeline-filter-btn">Bạn bè</button>
                 </div>
                 <div id="postsFeed">
                     <!-- Posts will be loaded here -->
                 </div>
+                <div id="friendsListPanel" style="display:none;"></div>
 
                 <!-- Loading -->
                 <div id="loadingPosts" class="loading" style="display: none;">
@@ -2094,7 +2121,6 @@
                 filteredPosts = posts.filter(post => post.authorId === currentUser.uid);
             }
             if (appendOnly && lastRenderedCount < postsToShow) {
-                // Chỉ append thêm bài mới
                 for (let i = lastRenderedCount; i < Math.min(postsToShow, filteredPosts.length); i++) {
                     const postElement = createPostElement(filteredPosts[i]);
                     postElement.style.animation = 'fadeInUp 0.3s ease-out';
@@ -2102,7 +2128,6 @@
                 }
                 lastRenderedCount = Math.min(postsToShow, filteredPosts.length);
             } else {
-                // Render lại toàn bộ (khi filter hoặc reload)
                 feed.innerHTML = '';
                 filteredPosts.slice(0, postsToShow).forEach(post => {
                     const postElement = createPostElement(post);
@@ -2636,26 +2661,55 @@
 
         // Thêm biến trạng thái và logic filter vào script type=module
         let showMyPostsOnly = false;
+        let showFriendsPanel = false;
+        let friendsList = [];
 
-        // Thêm sự kiện cho hai nút filter sau khi DOMContentLoaded
+        // Lấy danh sách bạn bè khi đăng nhập
+        window.auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const db = getDatabase();
+                const snap = await get(ref(db, 'users/' + user.uid + '/friends'));
+                friendsList = snap.exists() ? Object.keys(snap.val() || {}) : [];
+            } else {
+                friendsList = [];
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const allBtn = document.getElementById('showAllPostsBtn');
             const myBtn = document.getElementById('showMyPostsBtn');
+            const friendsBtn = document.getElementById('showFriendsPostsBtn');
+            const postsFeed = document.getElementById('postsFeed');
+            const friendsPanel = document.getElementById('friendsListPanel');
             function updateFilterButtons() {
                 if (showMyPostsOnly) {
                     myBtn.style.background = '#a67c52';
                     myBtn.style.color = '#fff';
                     allBtn.style.background = '#e4e6ea';
                     allBtn.style.color = '#a67c52';
+                    friendsBtn.style.background = '#e4e6ea';
+                    friendsBtn.style.color = '#a67c52';
+                } else if (showFriendsPanel) {
+                    friendsBtn.style.background = '#a67c52';
+                    friendsBtn.style.color = '#fff';
+                    allBtn.style.background = '#e4e6ea';
+                    allBtn.style.color = '#a67c52';
+                    myBtn.style.background = '#e4e6ea';
+                    myBtn.style.color = '#a67c52';
                 } else {
                     allBtn.style.background = '#a67c52';
                     allBtn.style.color = '#fff';
                     myBtn.style.background = '#e4e6ea';
                     myBtn.style.color = '#a67c52';
+                    friendsBtn.style.background = '#e4e6ea';
+                    friendsBtn.style.color = '#a67c52';
                 }
             }
             allBtn.addEventListener('click', function() {
                 showMyPostsOnly = false;
+                showFriendsPanel = false;
+                postsFeed.style.display = '';
+                friendsPanel.style.display = 'none';
                 postsToShow = 5;
                 lastRenderedCount = 0;
                 renderPosts();
@@ -2663,9 +2717,20 @@
             });
             myBtn.addEventListener('click', function() {
                 showMyPostsOnly = true;
+                showFriendsPanel = false;
+                postsFeed.style.display = '';
+                friendsPanel.style.display = 'none';
                 postsToShow = 5;
                 lastRenderedCount = 0;
                 renderPosts();
+                updateFilterButtons();
+            });
+            friendsBtn.addEventListener('click', async function() {
+                showMyPostsOnly = false;
+                showFriendsPanel = true;
+                postsFeed.style.display = 'none';
+                friendsPanel.style.display = '';
+                await renderFriendsPanel();
                 updateFilterButtons();
             });
             updateFilterButtons();
@@ -2931,9 +2996,14 @@
                 }
               }
             }
-            html += `<div style='width:90px;text-align:center;cursor:pointer;' onclick="viewProfile('${fid}')">
-              <img src='${avatar}' style='width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;'>
-              <div style='font-size:14px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>${name}</div>
+            html += `<div style='width:110px;text-align:center;cursor:pointer;display:inline-block;margin-bottom:12px;'>
+              <div onclick="viewProfile('${fid}')">
+                <img src='${avatar}' style='width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;'>
+                <div style='font-size:14px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>${name}</div>
+              </div>
+              <button style="margin-top:6px;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:13px;cursor:pointer;" onclick="event.stopPropagation();messageUser('${fid}')">
+                <i class='fa fa-comment'></i> Nhắn tin
+              </button>
             </div>`;
           }
           html += '</div>';
@@ -3023,7 +3093,7 @@
         }
         // Hàm mở Messenger với bạn bè
         window.messageUser = function(uid) {
-          window.location.href = 'MessengerChat.html?uid=' + encodeURIComponent(uid);
+          window.location.href = 'MessengerList.html';
         }
         window.sendFriendRequest = async function(targetUid) {
         const user = window.auth.currentUser;
@@ -3127,7 +3197,40 @@
         </div>`;
         }
         html += '</div>';
-friendsTab.innerHTML = html;
+        friendsTab.innerHTML = html;
+        async function renderFriendsPanel() {
+        const panel = document.getElementById('friendsListPanel');
+        panel.innerHTML = '<div style="text-align:center;color:#aaa;padding:24px;">Đang tải danh sách bạn bè...</div>';
+        if (!currentUser || !Array.isArray(friendsList) || friendsList.length === 0) {
+            panel.innerHTML = '<div style="text-align:center;color:#aaa;padding:24px;">Bạn chưa có bạn bè nào.</div>';
+            return;
+        }
+        const db = getDatabase();
+        let html = '<div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;">';
+        for (const fid of friendsList) {
+            let name = '', avatar = 'images/default-avatar.png', email = '';
+            try {
+                const snap = await get(ref(db, 'users/' + fid));
+                if (snap.exists()) {
+                    const f = snap.val();
+                    name = f.name || f.displayName || f.email || 'Người dùng';
+                    avatar = f.avatarUrl || 'images/default-avatar.png';
+                    email = f.email || '';
+                }
+            } catch {}
+            html += `<div style='width:120px;text-align:center;cursor:pointer;display:inline-block;margin-bottom:12px;'>
+                <div onclick="viewProfile('${fid}')">
+                    <img src='${avatar}' style='width:60px;height:60px;border-radius:50%;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;'>
+                    <div style='font-size:14px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>${name}</div>
+                </div>
+                <button style="margin-top:6px;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:13px;cursor:pointer;" onclick="event.stopPropagation();messageUser('${fid}')">
+                    <i class='fa fa-comment'></i> Nhắn tin
+                </button>
+            </div>`;
+        }
+        html += '</div>';
+        panel.innerHTML = html;
+    }
     </script>
 
     <script>
