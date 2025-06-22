@@ -1555,17 +1555,23 @@
           margin-bottom: 0;
         }
         .point-history {
-          margin-top: 20px;
+          margin-top: 12px;
+          background: #fff;
+          border-radius: 8px;
+          padding: 10px 10px 6px 10px;
+          box-shadow: 0 1px 4px #f7544a11;
         }
         .point-history-title {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 600;
-          margin-bottom: 8px;
+          color: #4A2F1A;
+          margin-bottom: 4px;
         }
         #pointHistoryList {
           font-size: 13px;
           color: #444;
           padding-left: 18px;
+          margin-bottom: 0;
         }
         .member-card-vip {
           position: relative;
@@ -1575,7 +1581,9 @@
           color: #fff;
           margin-bottom: 18px;
           box-shadow: 0 4px 24px #0002;
-          min-width: 280px; max-width: 420px; margin: 0 auto;
+          min-width: 280px;
+          max-width: 420px;
+          margin: 0 auto;
         }
         .member-card-bg {
           position: absolute; left: 0; right: 0; top: 0; height: 80px; z-index: 1;
@@ -1946,12 +1954,10 @@
                                   </ul>
                                 </div>
                                 <!-- Lịch sử điểm (nếu muốn) -->
-                                <!--
                                 <div class="point-history">
-                                  <div class="point-history-title">Lịch sử điểm:</div>
+                                  <div class="point-history-title">Lịch sử tích điểm:</div>
                                   <ul id="pointHistoryList"></ul>
                                 </div>
-                                -->
                               </div>
                             </div>
                         </div>
@@ -3395,16 +3401,24 @@
 
         function updateMemberPointsFromOrders(orders) {
           let totalPoints = 0;
+          let historyHtml = '';
           orders.forEach(order => {
             // Chỉ tính điểm cho đơn đã xác nhận
             if (order.status !== 'confirmed') return;
             const points = Math.floor((order.grandTotal || 0) * 0.01);
             totalPoints += points;
+            if (points > 0) {
+              historyHtml += `<li><b>#${order.id.slice(-6).toUpperCase()}</b> - ${new Date(order.createdAt).toLocaleDateString('vi-VN')} : <span style="color:#f7544a;">+${points} điểm</span></li>`;
+            }
           });
 
           // Cập nhật điểm
           if (document.getElementById('memberPoints')) {
             document.getElementById('memberPoints').textContent = totalPoints;
+          }
+          // Cập nhật lịch sử điểm
+          if (document.getElementById('pointHistoryList')) {
+            document.getElementById('pointHistoryList').innerHTML = historyHtml || '<li>Chưa có điểm tích lũy</li>';
           }
 
           // Tính hạng và tiến trình
