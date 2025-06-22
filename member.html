@@ -18,6 +18,38 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 cho thông báo -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- JsBarcode và renderMemberCard phải nằm trước script type=module -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+    function renderMemberCard(user, userData) {
+      // Tên, email, UID
+      document.getElementById('memberName').textContent = userData?.name || user.displayName || 'Chưa đặt tên';
+      document.getElementById('memberEmail').textContent = user.email || '';
+      document.getElementById('memberUID').textContent = user.uid || '';
+      let points = userData?.points || 0;
+      document.getElementById('memberPoints').textContent = points;
+      // Hạng và màu
+      let rank = 'Đồng', rankClass = 'rank-bronze', nextRank = 'Bạc', nextRankPoint = 100, nextRankInfo = '';
+      if (points >= 300) { rank = 'Vàng'; rankClass = 'rank-gold'; nextRank = ''; nextRankInfo = 'Bạn đã đạt hạng cao nhất!'; }
+      else if (points >= 100) { rank = 'Bạc'; rankClass = 'rank-silver'; nextRank = 'Vàng'; nextRankPoint = 300; nextRankInfo = `Còn ${nextRankPoint - points} điểm để lên hạng Vàng`; }
+      else { nextRankInfo = `Còn ${100 - points} điểm để lên hạng Bạc`; }
+      let rankSpan = document.getElementById('memberRank');
+      rankSpan.textContent = rank;
+      rankSpan.className = 'member-card-rank ' + rankClass;
+      document.getElementById('nextRankInfo').textContent = nextRankInfo;
+      // Mã vạch: dùng UID hoặc email
+      let barcodeValue = user.uid || user.email || '';
+      let barcodeDiv = document.getElementById('memberBarcode');
+      barcodeDiv.innerHTML = '<svg id="barcodeSVG"></svg>';
+      JsBarcode('#barcodeSVG', barcodeValue, {
+        format: 'CODE128',
+        width: 2,
+        height: 40,
+        displayValue: false,
+        margin: 0
+      });
+    }
+    </script>
     <style>
         .loading-overlay {
             position: fixed;
@@ -1295,6 +1327,359 @@
             padding-bottom: 400px; /* hoặc giá trị bạn muốn, ví dụ 80px */
         }
         }
+        .reward-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            background: #fffdfa;
+            box-shadow: 0 2px 8px rgba(247, 84, 74, 0.04);
+        }
+        .reward-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #f7544a22;
+        }
+        .reward-item .reward-info {
+            flex: 1;
+        }
+        .reward-item .reward-name {
+            font-weight: 600;
+            color: #4A2F1A;
+            font-size: 17px;
+            margin-bottom: 2px;
+        }
+        .reward-item .reward-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .reward-item .reward-points {
+            color: #f7544a;
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .reward-item .reward-quantity {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+        .reward-item button {
+            background: #f7544a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .reward-item button:disabled {
+            background: #ccc;
+            color: #fff;
+            cursor: not-allowed;
+        }
+        .member-card-section {
+          max-width: 420px;
+          margin: 0 auto;
+        }
+        .member-card.fancy-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 18px;
+          box-shadow: 0 6px 32px rgba(80,40,20,0.13), 0 1.5px 6px #f7544a22;
+          background: linear-gradient(135deg, #fffdfa 60%, #fbeee6 100%);
+          margin-bottom: 28px;
+          padding: 0;
+          min-width: 280px;
+          max-width: 420px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .member-card-bg {
+          position: absolute;
+          top: -40px; left: -40px; right: -40px; bottom: -40px;
+          background: radial-gradient(circle at 70% 30%, #f7544a22 0%, #fffdfa 80%);
+          z-index: 1;
+          pointer-events: none;
+        }
+        .member-card-content {
+          position: relative;
+          z-index: 2;
+          padding: 28px 22px 18px 22px;
+        }
+        .member-card-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .member-card-title {
+          font-size: 17px;
+          font-weight: 600;
+          color: #4A2F1A;
+          letter-spacing: 0.2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          line-height: 1.2;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+        .member-card-rank {
+          font-size: 15px;
+          font-weight: 700;
+          border-radius: 8px;
+          padding: 4px 16px;
+          background: linear-gradient(90deg, #fff3e0 60%, #ffe0b2 100%);
+          color: #b87333;
+          box-shadow: 0 1px 4px #f7544a11;
+          border: 1.5px solid #f7544a22;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        .member-card-rank.rank-silver {
+          background: linear-gradient(90deg, #f3f3f3 60%, #e0e0e0 100%);
+          color: #aaa;
+          border-color: #aaa2;
+        }
+        .member-card-rank.rank-gold {
+          background: linear-gradient(90deg, #fffbe0 60%, #ffe066 100%);
+          color: #e6b800;
+          border-color: #e6b80044;
+        }
+        .member-card-barcode {
+          margin: 18px 0 12px 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 44px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 1px 4px #f7544a11;
+          padding: 6px 0;
+        }
+        .member-card-info {
+          margin-bottom: 10px;
+          text-align: center;
+        }
+        .member-card-name {
+          font-size: 17px;
+          font-weight: 600;
+          color: #4A2F1A;
+          margin-bottom: 2px;
+        }
+        .member-card-email {
+          font-size: 13px;
+          color: #666;
+          margin-bottom: 1px;
+        }
+        .member-card-uid {
+          font-size: 12px;
+          color: #aaa;
+          word-break: break-all;
+        }
+        .member-card-points {
+          font-size: 15px;
+          color: #f7544a;
+          font-weight: 600;
+          margin-bottom: 6px;
+        }
+        .next-rank-info {
+          font-size: 13px;
+          color: #888;
+          font-weight: 400;
+        }
+        .member-card-note {
+          font-size: 13px;
+          color: #666;
+          margin-top: 8px;
+          text-align: center;
+          background: #fff7f3;
+          border-radius: 8px;
+          padding: 7px 0 4px 0;
+          margin-bottom: 0;
+        }
+        @media (max-width: 480px) {
+          .member-card.fancy-card { padding: 0; }
+          .member-card-content { padding: 18px 6px 10px 6px; }
+        }
+        .rank-bronze { color: #b87333 !important; }
+        .rank-silver { color: #aaa !important; }
+        .rank-gold { color: #e6b800 !important; }
+        .member-rank-icons {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+        .rank-icon {
+          text-align: center;
+          font-size: 13px;
+          color: #444;
+        }
+        .rank-icon img {
+          width: 44px;
+          height: 44px;
+          object-fit: contain;
+          margin-bottom: 2px;
+        }
+        .member-rank-progress {
+          font-size: 13px;
+          color: #666;
+          text-align: center;
+        }
+        .rank-benefits {
+          background: #fff;
+          border-radius: 12px;
+          padding: 16px;
+          box-shadow: 0 2px 8px #0001;
+          margin-bottom: 0;
+        }
+        .rank-benefits-title {
+          font-size: 15px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+        .rank-benefits ul {
+          font-size: 13px;
+          color: #444;
+          padding-left: 18px;
+          margin-bottom: 0;
+        }
+        .point-history {
+          margin-top: 20px;
+        }
+        .point-history-title {
+          font-size: 15px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+        #pointHistoryList {
+          font-size: 13px;
+          color: #444;
+          padding-left: 18px;
+        }
+        .member-card-vip {
+          position: relative;
+          background: #222;
+          border-radius: 18px;
+          overflow: hidden;
+          color: #fff;
+          margin-bottom: 18px;
+          box-shadow: 0 4px 24px #0002;
+          min-width: 280px; max-width: 420px; margin: 0 auto;
+        }
+        .member-card-bg {
+          position: absolute; left: 0; right: 0; top: 0; height: 80px; z-index: 1;
+        }
+        .wave-bg { width: 100%; height: 80px; display: block; }
+        .member-card-barcode {
+          position: relative; z-index: 2; margin: 24px auto 8px auto; background: #fff; border-radius: 8px; width: 80%; min-height: 44px; display: flex; justify-content: center; align-items: center;
+        }
+        .member-card-instruct {
+          position: relative; z-index: 2; padding: 12px 18px 18px 18px; font-size: 13px; text-align: left;
+        }
+        .member-card-instruct b { color: #f7544a; }
+        .membership-program { background: #fff; border-radius: 14px; box-shadow: 0 2px 8px #0001; padding: 18px 14px; margin-bottom: 18px; }
+        .membership-status { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+        .rank-gold { color: #e6b800; }
+        .rank-silver { color: #aaa; }
+        .rank-bronze { color: #b87333; }
+        .membership-medals { display: flex; justify-content: space-around; margin-bottom: 10px; }
+        .medal img { width: 44px; }
+        .medal { text-align: center; font-size: 13px; }
+        .membership-progress { margin-bottom: 10px; }
+        .progress-bar-bg { background: #eee; border-radius: 8px; height: 8px; width: 100%; position: relative; }
+        .progress-bar-fill { background: linear-gradient(90deg,#f7544a,#e6b800); height: 8px; border-radius: 8px; }
+        .progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-top: 2px; }
+        .membership-tabs { display: flex; gap: 8px; margin-bottom: 8px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; border-radius: 8px 8px 0 0; background: #f7f7f7; color: #333; font-weight: 500; cursor: pointer; }
+        .tab-btn.active { background: #f7544a; color: #fff; }
+        .membership-tab-content { font-size: 13px; color: #333; background: #fff; border-radius: 0 0 8px 8px; padding: 10px 8px; }
+        @media (max-width: 600px) {
+          .member-card-vip,
+          .membership-program,
+          .rank-benefits,
+          .member-card.fancy-card,
+          .member-card-section {
+            min-width: unset !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+            margin: 0 auto 16px auto !important;
+            box-sizing: border-box !important;
+            padding-left: 4px !important;
+            padding-right: 4px !important;
+          }
+          .member-card-barcode {
+            width: 96% !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+          }
+          .member-card-content {
+            padding: 18px 4px 10px 4px !important;
+          }
+          .rank-benefits,
+          .membership-program {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+          }
+        }
+        @media (max-width: 600px) {
+          html, body {
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+          #rewardsSection,
+          #rewardsSection .membership-info,
+          #rewardsSection .member-card,
+          #rewardsSection .member-card-content,
+          #rewardsSection .member-card-vip,
+          #rewardsSection .member-card-section,
+          #rewardsSection .member-rank-box,
+          #rewardsSection .rank-benefits {
+            min-width: 0 !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+            margin: 0 auto 12px auto !important;
+            box-sizing: border-box !important;
+            padding-left: 4px !important;
+            padding-right: 4px !important;
+            overflow-x: hidden !important;
+          }
+          #rewardsSection .member-card-barcode {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+          }
+          #rewardsSection .member-card-content {
+            padding: 12px 2px 8px 2px !important;
+          }
+          #rewardsSection .member-card-title {
+            font-size: 15px !important;
+          }
+          #rewardsSection .member-card-info,
+          #rewardsSection .member-card-points,
+          #rewardsSection .member-rank-title,
+          #rewardsSection .rank-benefits-title {
+            font-size: 13px !important;
+          }
+          #rewardsSection .rank-icon img {
+            width: 32px !important;
+            height: 32px !important;
+          }
+          #rewardsSection .rank-icon {
+            font-size: 12px !important;
+          }
+        }
     </style>
 </head>
 <body id="home">
@@ -1429,9 +1814,10 @@
                                     <div style="font-weight:600;margin-bottom:5px;" id="sidebarUserName">Chưa đăng nhập</div>
                                 </div>
                                 <ul>
-                                    <li class="active"><a href="#" data-section="profileSection">Thông Tin Cá Nhân</a></li>
-                                    <li><a href="#" data-section="chartSection">Thống Kê Mua Hàng</a></li>
-                                    <li><a href="#" data-section="ordersSection">Lịch Sử Đặt Hàng</a></li>
+                                    <li class="active"><a href="#" data-section="profileSection">Thông Tin</a></li>
+                                    <li><a href="#" data-section="chartSection">Thống Kê</a></li>
+                                    <li><a href="#" data-section="ordersSection">Lịch Sử</a></li>
+                                    <li><a href="#" data-section="rewardsSection">Tích Điểm</a></li>
                                     <li><a href="#" id="sidebarLogout">Đăng Xuất</a></li>
                                 </ul>
                             </div>
@@ -1506,6 +1892,67 @@
                                         <a href="menu.html" class="shop-now-btn">Đặt Hàng Ngay</a>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="rewardsSection" class="account-section" style="display:none;">
+                              <div class="membership-info member-card-section">
+                                <!-- Thẻ thành viên -->
+                                <div class="member-card fancy-card">
+                                  <div class="member-card-bg"></div>
+                                  <div class="member-card-content">
+                                    <div class="member-card-row">
+                                      <span class="member-card-title"><i class="fa fa-id-card"></i> Thẻ Thành Viên</span>
+                                      <span class="member-card-rank" id="memberRank">Đồng</span>
+                                    </div>
+                                    <div class="member-card-barcode" id="memberBarcode"></div>
+                                    <div class="member-card-info">
+                                      <div class="member-card-name" id="memberName">Tên thành viên</div>
+                                      <div class="member-card-email" id="memberEmail"></div>
+                                      <div class="member-card-uid" id="memberUID"></div>
+                                    </div>
+                                    <div class="member-card-row member-card-points">
+                                      <span>Điểm: <b id="memberPoints">0</b></span>
+                                      <span id="nextRankInfo" class="next-rank-info"></span>
+                                    </div>
+                                    <div class="member-card-note">
+                                      <i class="fa fa-info-circle"></i> Xuất trình thẻ này tại quầy để tích điểm.
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- Hạng thành viên -->
+                                <div class="member-rank-box">
+                                  <div class="member-rank-title">
+                                    Hạng hiện tại của bạn: <span id="memberRank" class="rank-bronze">Đồng</span>
+                                  </div>
+                                  <div class="member-rank-icons">
+                                    <div class="rank-icon"><img src="images/dong.png" alt="Đồng"><div>Đồng</div></div>
+                                    <div class="rank-icon"><img src="images/bac.png" alt="Bạc"><div>Bạc</div></div>
+                                    <div class="rank-icon"><img src="images/vang.png" alt="Vàng"><div>Vàng</div></div>
+                                  </div>
+                                  <div class="member-rank-progress">
+                                    <span id="memberPoints">0</span> điểm | <span id="nextRankInfo">Còn 100 điểm để lên hạng Bạc</span>
+                                  </div>
+                                </div>
+                                <!-- Quyền lợi các hạng -->
+                                <div class="rank-benefits">
+                                  <div class="rank-benefits-title">Quyền lợi của thẻ thành viên:</div>
+                                  <ul>
+                                    <p>
+                                        - Thẻ này dùng để quét tích 1% điểm cho mỗi hóa đơn.<br>
+                                        - Xuất trình thẻ khi thanh toán tại quầy hoặc thanh toán online.<br>
+                                        - Điểm sẽ được cộng sau khi đơn hàng hoàn tất.<br>
+                                        - Đổi quà tại quầy khi đủ điều kiện.<br>
+                                        <b>Không chia sẻ mã này cho người khác.</b>
+                                      </p>
+                                  </ul>
+                                </div>
+                                <!-- Lịch sử điểm (nếu muốn) -->
+                                <!--
+                                <div class="point-history">
+                                  <div class="point-history-title">Lịch sử điểm:</div>
+                                  <ul id="pointHistoryList"></ul>
+                                </div>
+                                -->
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -2249,6 +2696,8 @@
                         sidebarAvatar.src = avatarUrl;
                         profileAvatar.src = avatarUrl;
                         sidebarUserName.textContent = data.name || user.displayName || "Người dùng";
+                        // Gọi hàm vẽ thẻ thành viên
+                        renderMemberCard(user, data);
                     } else {
                         userNameElement.textContent = user.displayName || "Người dùng chưa đặt tên";
                         userEmailElement.textContent = user.email || "Chưa có email";
@@ -2259,6 +2708,8 @@
                         sidebarAvatar.src = defaultAvatar;
                         profileAvatar.src = defaultAvatar;
                         sidebarUserName.textContent = user.displayName || "Người dùng";
+                        // Gọi hàm vẽ thẻ thành viên với thông tin cơ bản
+                        renderMemberCard(user, {});
                     }
                 }, (error) => {
                     Swal.fire({
@@ -2292,6 +2743,7 @@
                             id,
                             ...order
                         }));
+                        updateMemberPointsFromOrders(orders);
 
                         // Sắp xếp theo thời gian tạo (mới nhất trước)
                         orders.sort((a, b) => {
@@ -2906,6 +3358,82 @@
         }
         window.addEventListener('resize', showLogoutMobileBtnIfMobile);
         window.addEventListener('DOMContentLoaded', showLogoutMobileBtnIfMobile);
+
+        async function updateMemberPointsByOrder(user) {
+          const ordersRef = ref(database, 'orders');
+          const q = query(ordersRef, orderByChild('userId'), equalTo(user.uid));
+          const snapshot = await get(q);
+
+          let totalPoints = 0;
+          if (snapshot.exists()) {
+            const orders = Object.entries(snapshot.val())
+              .map(([id, order]) => ({ id, ...order }))
+              .filter(order => order.status === 'delivered');
+            orders.forEach(order => {
+              // 1% điểm cho mỗi hóa đơn
+              const points = Math.floor((order.grandTotal || 0) * 0.01);
+              totalPoints += points;
+            });
+          }
+          // Cập nhật điểm vào thẻ thành viên
+          if (document.getElementById('memberPoints')) {
+            document.getElementById('memberPoints').textContent = totalPoints;
+          }
+          // Nếu có cập nhật hạng, tiến trình, quyền lợi thì gọi lại hàm updateMemberStatus với totalPoints
+          if (typeof updateMemberStatus === 'function') {
+            updateMemberStatus(user, totalPoints);
+          }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            // ... existing code ...
+            if (user) {
+                updateMemberPointsByOrder(user);
+            }
+            // ... existing code ...
+        });
+
+        function updateMemberPointsFromOrders(orders) {
+          let totalPoints = 0;
+          orders.forEach(order => {
+            // Chỉ tính điểm cho đơn đã xác nhận
+            if (order.status !== 'confirmed') return;
+            const points = Math.floor((order.grandTotal || 0) * 0.01);
+            totalPoints += points;
+          });
+
+          // Cập nhật điểm
+          if (document.getElementById('memberPoints')) {
+            document.getElementById('memberPoints').textContent = totalPoints;
+          }
+
+          // Tính hạng và tiến trình
+          let rank = 'Đồng', rankClass = 'rank-bronze', nextRank = 'Bạc', nextRankPoint = 10000, nextRankInfo = '';
+          if (totalPoints >= 100000) {
+            rank = 'Vàng'; rankClass = 'rank-gold'; nextRank = ''; nextRankPoint = null; nextRankInfo = 'Bạn đã đạt hạng cao nhất!';
+          } else if (totalPoints >= 10000) {
+            rank = 'Bạc'; rankClass = 'rank-silver'; nextRank = 'Vàng'; nextRankPoint = 100000; nextRankInfo = `Còn ${nextRankPoint - totalPoints} điểm để lên hạng Vàng`;
+          } else {
+            nextRankInfo = `Còn ${nextRankPoint - totalPoints} điểm để lên hạng Bạc`;
+          }
+
+          // Cập nhật giao diện hạng
+          if (document.getElementById('memberRank')) {
+            document.getElementById('memberRank').textContent = rank;
+            document.getElementById('memberRank').className = 'member-card-rank ' + rankClass;
+          }
+          if (document.getElementById('nextRankInfo')) {
+            document.getElementById('nextRankInfo').textContent = nextRankInfo;
+          }
+          // Nếu có phần hiển thị hạng ở dưới
+          if (document.querySelector('.member-rank-title span')) {
+            document.querySelector('.member-rank-title span').textContent = rank;
+            document.querySelector('.member-rank-title span').className = rankClass;
+          }
+          if (document.querySelector('.member-rank-progress')) {
+            document.querySelector('.member-rank-progress').innerHTML = `${totalPoints} điểm | ${nextRankInfo}`;
+          }
+        }
     </script>
     <!-- Order Detail Modal -->
     <div class="modal fade" id="orderDetailModal" tabindex="-1">
