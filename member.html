@@ -26,28 +26,39 @@
       document.getElementById('memberName').textContent = userData?.name || user.displayName || 'Chưa đặt tên';
       document.getElementById('memberEmail').textContent = user.email || '';
       document.getElementById('memberUID').textContent = user.uid || '';
-      let points = userData?.points || 0;
-      document.getElementById('memberPoints').textContent = points;
-      // Hạng và màu
-      let rank = 'Đồng', rankClass = 'rank-bronze', nextRank = 'Bạc', nextRankPoint = 100, nextRankInfo = '';
-      if (points >= 300) { rank = 'Vàng'; rankClass = 'rank-gold'; nextRank = ''; nextRankInfo = 'Bạn đã đạt hạng cao nhất!'; }
-      else if (points >= 100) { rank = 'Bạc'; rankClass = 'rank-silver'; nextRank = 'Vàng'; nextRankPoint = 300; nextRankInfo = `Còn ${nextRankPoint - points} điểm để lên hạng Vàng`; }
-      else { nextRankInfo = `Còn ${100 - points} điểm để lên hạng Bạc`; }
-      let rankSpan = document.getElementById('memberRank');
-      rankSpan.textContent = rank;
-      rankSpan.className = 'member-card-rank ' + rankClass;
-      document.getElementById('nextRankInfo').textContent = nextRankInfo;
-      // Mã vạch: dùng UID hoặc email
-      let barcodeValue = user.uid || user.email || '';
+      
+      // Phần xử lý điểm và hạng sẽ được cập nhật bởi hàm updateMemberPointsFromOrders
+      // nên có thể bỏ hoặc giữ giá trị mặc định ở đây.
+
+      // Mã vạch: Ưu tiên dùng 5 số cuối của SĐT, fallback ra UID
+      let barcodeValue;
+      const userPhone = userData?.phone?.replace(/\D/g, ''); // Lấy SĐT và lọc ký tự không phải số
+
+      if (userPhone && userPhone.length >= 5) {
+        barcodeValue = userPhone.slice(-5);
+      } else {
+        // Fallback: dùng 5 ký tự số cuối của UID
+        barcodeValue = (user.uid?.replace(/\D/g, '') || '000000').slice(-5);
+      }
+
+      // Đảm bảo barcodeValue luôn có giá trị
+      if (!barcodeValue) {
+        barcodeValue = "00000";
+      }
+      
       let barcodeDiv = document.getElementById('memberBarcode');
-      barcodeDiv.innerHTML = '<svg id="barcodeSVG"></svg>';
-      JsBarcode('#barcodeSVG', barcodeValue, {
-        format: 'CODE128',
-        width: 2,
-        height: 40,
-        displayValue: false,
-        margin: 0
-      });
+      if (barcodeDiv) {
+        barcodeDiv.innerHTML = '<svg id="barcodeSVG"></svg>';
+        JsBarcode('#barcodeSVG', barcodeValue, {
+          format: 'CODE39',
+          width: 3.5,
+          height: 70,
+          displayValue: true,
+          margin: 0,
+          fontSize: 20,
+          textMargin: 5
+        });
+      }
     }
     </script>
     <style>
@@ -1456,15 +1467,17 @@
           border-color: #e6b80044;
         }
         .member-card-barcode {
-          margin: 18px 0 12px 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 44px;
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
           background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 1px 4px #f7544a11;
-          padding: 6px 0;
+          padding: 4px 0;
+          overflow-x: auto;
+        }
+        .member-card-barcode svg {
+          width: 100% !important;
+          height: auto !important;
+          display: block;
         }
         .member-card-info {
           margin-bottom: 10px;
