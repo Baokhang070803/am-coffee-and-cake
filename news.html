@@ -647,10 +647,10 @@
                          </div>
                          <div class="col-md-3">
                             <ul class="usermenu">
-                                <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                                <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                <li id="loginLink"><a href="login.html"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                <li id="registerLink"><a href="register.html"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
                                 <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
-                             </ul>
+                            </ul>
                          </div>
                       </div>
                    </div>
@@ -1530,23 +1530,69 @@
     <script type="module">
         import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
      
-        document.addEventListener('DOMContentLoaded', () => {
-           // Kiểm tra trạng thái đăng nhập
+                document.addEventListener('DOMContentLoaded', () => {
+           // Kiểm tra trạng thái đăng nhập từ localStorage trước
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                try {
+                    const userData = JSON.parse(storedUser);
+                    updateUIForLoggedInUser(userData);
+                } catch (e) {
+                    console.error('Lỗi khi phân tích dữ liệu người dùng:', e);
+                    localStorage.removeItem('user');
+                }
+            }
+            
+            // Kiểm tra trạng thái đăng nhập từ Firebase
            onAuthStateChanged(auth, (user) => {
               const loginLink = document.getElementById('loginLink');
               const registerLink = document.getElementById('registerLink');
               const userInfo = document.getElementById('userInfo');
-     
+
               if (user) {
-                 userInfo.style.display = 'inline-block';
-                 loginLink.style.display = 'none';
-                 registerLink.style.display = 'none';
+                console.log("User đã đăng nhập:", user.email);
+                    
+                // Cập nhật localStorage với thông tin mới nhất
+                localStorage.setItem('user', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName || user.email.split('@')[0],
+                    photoURL: user.photoURL
+                }));
+                
+                // Cập nhật UI
+                updateUIForLoggedInUser(user);
               } else {
-                 userInfo.style.display = 'none';
-                 loginLink.style.display = 'inline-block';
-                 registerLink.style.display = 'inline-block';
-              }
+                console.log("Chưa đăng nhập");
+                if (userInfo) userInfo.style.display = 'none';
+                if (loginLink) loginLink.style.display = 'inline-block';
+                if (registerLink) registerLink.style.display = 'inline-block';
+                
+                // Xóa dữ liệu người dùng khỏi localStorage
+                localStorage.removeItem('user');
+                localStorage.removeItem('authToken');
+             }
            });
+           
+           // Hàm cập nhật UI cho người dùng đã đăng nhập
+            function updateUIForLoggedInUser(user) {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+                
+                if (userInfo) {
+                    userInfo.style.display = 'inline-block';
+                    // Thêm tên người dùng vào menu
+                    const userName = user.displayName || user.email.split('@')[0];
+                    userInfo.innerHTML = `<a href="member.html"><i class="fa fa-user"></i> ${userName}</a> | <a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a>`;
+                    
+                    // Gắn lại sự kiện đăng xuất
+                    document.getElementById('logoutLink').addEventListener('click', handleLogout);
+                }
+                
+                if (loginLink) loginLink.style.display = 'none';
+                if (registerLink) registerLink.style.display = 'none';
+            }
      
            // Xử lý modal đăng nhập/đăng ký
            bindModalEvents();
@@ -1561,14 +1607,32 @@
               btn.disabled = true;
               spinner.style.display = 'inline-block';
               try {
-                 await signInWithEmailAndPassword(auth, email, password);
+                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                 const user = userCredential.user;
+                 
+                 // Lưu thông tin người dùng vào localStorage để duy trì trạng thái đăng nhập
+                 localStorage.setItem('user', JSON.stringify({
+                     uid: user.uid,
+                     email: user.email,
+                     displayName: user.displayName || email.split('@')[0],
+                     photoURL: user.photoURL
+                 }));
+                 
+                 // Lưu token xác thực nếu có
+                 user.getIdToken().then(token => {
+                     localStorage.setItem('authToken', token);
+                 });
+                 
                  Swal.fire({
                     icon: 'success',
                     title: 'Đăng nhập thành công!',
                     showConfirmButton: false,
                     timer: 1500
                  });
-                 document.getElementById('loginModal').style.display = 'none';
+                 
+                 setTimeout(() => {
+                     document.getElementById('loginModal').style.display = 'none';
+                 }, 1000);
               } catch (error) {
                  Swal.fire({
                     icon: 'error',
@@ -1653,39 +1717,66 @@
               spinner.style.display = 'none';
            });
      
-           // Xử lý đăng xuất
-           document.getElementById('logoutLink').addEventListener('click', async (e) => {
+           // Hàm xử lý đăng xuất
+           function handleLogout(e) {
               e.preventDefault();
-              Swal.fire({
-                 title: 'Bạn có chắc?',
-                 text: "Bạn muốn đăng xuất khỏi hệ thống?",
-                 icon: 'warning',
-                 showCancelButton: true,
-                 confirmButtonColor: '#A63C3C',
-                 cancelButtonColor: '#6c757d',
-                 confirmButtonText: 'Đăng Xuất',
-                 cancelButtonText: 'Hủy'
-              }).then(async (result) => {
-                 if (result.isConfirmed) {
-                    try {
-                       await signOut(auth);
-                       Swal.fire({
-                          icon: 'success',
-                          title: 'Đăng xuất thành công!',
-                          showConfirmButton: false,
-                          timer: 1500
-                       });
-                    } catch (error) {
-                       Swal.fire({
-                          icon: 'error',
-                          title: 'Lỗi!',
-                          text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
-                          showConfirmButton: true
-                       });
-                    }
-                 }
-              });
-           });
+              if (typeof Swal !== 'undefined') {
+                  Swal.fire({
+                      title: 'Bạn có chắc?',
+                      text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#A63C3C',
+                      cancelButtonColor: '#6c757d',
+                      confirmButtonText: 'Đăng Xuất',
+                      cancelButtonText: 'Hủy'
+                  }).then(async (result) => {
+                      if (result.isConfirmed) {
+                          try {
+                              await signOut(auth);
+                              // Xóa dữ liệu người dùng khỏi localStorage
+                              localStorage.removeItem('user');
+                              localStorage.removeItem('authToken');
+                              
+                              Swal.fire({
+                                  icon: 'success',
+                                  title: 'Đăng xuất thành công!',
+                                  showConfirmButton: false,
+                                  timer: 1500
+                              });
+                              
+                              // Tải lại trang để cập nhật UI
+                              setTimeout(() => {
+                                  window.location.reload();
+                              }, 1500);
+                          } catch (error) {
+                              Swal.fire({
+                                  icon: 'error',
+                                  title: 'Lỗi!',
+                                  text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                                  showConfirmButton: true
+                              });
+                          }
+                      }
+                  });
+              } else {
+                  if (confirm("Bạn có chắc muốn đăng xuất?")) {
+                      signOut(auth).then(() => {
+                          localStorage.removeItem('user');
+                          localStorage.removeItem('authToken');
+                          window.location.reload();
+                      }).catch((error) => {
+                          alert("Lỗi khi đăng xuất: " + error.message);
+                      });
+                  }
+              }
+           }
+           
+           // Gắn sự kiện đăng xuất cho nút đăng xuất có sẵn
+           const existingLogoutLink = document.getElementById('logoutLink');
+           if (existingLogoutLink) {
+               existingLogoutLink.addEventListener('click', handleLogout);
+           }
         });
      
         function bindModalEvents() {
@@ -1748,6 +1839,24 @@
            });
         }
      </script>
+         <script>
+            // Xử lý chuyển trang khi click vào icon user trên mobile
+            document.addEventListener('DOMContentLoaded', function() {
+                const appbarAccountLink = document.getElementById('appbarAccountLink');
+                if (appbarAccountLink) {
+                    appbarAccountLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Kiểm tra trạng thái đăng nhập từ localStorage
+                        const storedUser = localStorage.getItem('user');
+                        if (storedUser) {
+                            window.location.href = 'member.html';
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                }
+            });
+     </script>
    <!-- Bottom Navigation Bar cho mobile -->
    <div class="bottom-nav">
     <a href="index.html" class="nav-home">
@@ -1780,14 +1889,13 @@
     </a>
   </div>
               
-                  <div class="appbar-mobile">
-                    <div class="appbar-left">
-                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
-                    </div>
-                    <div class="appbar-right">
-                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
-                    </div>
-
-                  </div>
+  <div class="appbar-mobile">
+    <div class="appbar-left">
+      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+    </div>
+    <div class="appbar-right">
+      <a href="#" class="appbar-account" id="appbarAccountLink"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+    </div>
+  </div>
 </body>
 </html>

@@ -9,12 +9,19 @@
     <title>Giỏ Hàng - Ấm - Coffee and Cake</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
     <link href="css/mobile.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A67C52">
+    <!-- Thêm Material Icons để icon hiển thị đúng -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- iOS PWA support -->
+    <link rel="apple-touch-icon" href="images/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .loading-overlay {
@@ -28,6 +35,9 @@
             justify-content: center;
             align-items: center;
             z-index: 999999;
+            opacity: 1;
+            transition: opacity 0.5s;
+            pointer-events: all;
         }
 
         .loading-content {
@@ -60,10 +70,13 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: #f5f5f5;
         }
+        
+        /* CSS cho Modal Đăng nhập/Đăng ký */
         .auth-modal {
             display: none;
             position: fixed;
@@ -79,26 +92,35 @@
         .auth-modal-content {
             background: #fff;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 10px;
             width: 100%;
             max-width: 400px;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .auth-modal-content h2 {
             font-size: 24px;
             color: #4A2F1A;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
-            font-weight: 600;
+        }
+        .modal-description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
         .auth-modal-content .close {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
             cursor: pointer;
             color: #4A2F1A;
+            transition: color 0.3s;
+        }
+        .auth-modal-content .close:hover {
+            color: #f7544a;
         }
         .auth-modal-content form {
             display: flex;
@@ -108,38 +130,38 @@
             margin-bottom: 15px;
             padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
         }
         .auth-modal-content input:focus {
-            border-color: #f7544a;
+            border-color: #A67C52;
             outline: none;
         }
         .auth-modal-content button {
-            background: #f7544a;
+            background: #A67C52;
             color: #fff;
             padding: 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             font-size: 16px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s;
         }
         .auth-modal-content button:hover {
-            background: #da2a20;
+            background: #8B6842;
         }
-        .auth-modal-content .switch {
+        .auth-modal-content .switch-form {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
+            color: #666;
         }
-        .auth-modal-content .switch a {
-            color: #f7544a;
+        .auth-modal-content .switch-form a {
+            color: #A67C52;
             text-decoration: none;
             font-weight: 500;
         }
-        .auth-modal-content .switch a:hover {
+        .auth-modal-content .switch-form a:hover {
             text-decoration: underline;
         }
         .auth-modal-content .forgot-password {
@@ -147,31 +169,75 @@
             margin-top: 10px;
         }
         .auth-modal-content .forgot-password a {
-            color: #f7544a;
+            color: #A67C52;
             text-decoration: none;
-            font-weight: 500;
+            font-size: 14px;
         }
         .auth-modal-content .forgot-password a:hover {
             text-decoration: underline;
         }
+        
+        /* CSS cho usermenu */
         .usermenu li {
             display: inline-block;
-            /* margin-right: 10px; */
+            margin-right: 10px;
         }
         .usermenu li a {
             color: #000000;
             text-decoration: none;
-            /* font-weight: 500; */
         }
         .usermenu li a:hover {
             color: #A63C3C;
         }
-        .loading-overlay.hidden { display: none; }
+        
+        .loading-overlay.hidden { 
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Spinner cho modal */
+        .modal-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid #fff;
+            border-top: 2.5px solid #f7544a;
+            border-radius: 50%;
+            animation: modalspin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes modalspin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        
+        /* Hiệu ứng nút bấm */
+        .auth-modal-content button,
+        .button {
+            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
+        }
+        .auth-modal-content button:active,
+        .button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Đảm bảo SweetAlert2 hiển thị trên cùng */
+        .swal2-container {
+            z-index: 100000 !important;
+        }
+        .swal2-popup {
+            z-index: 100001 !important;
+        }
+        .swal2-backdrop-show {
+            z-index: 99999 !important;
+        }
+        
         .cart-page {
             background: #fff;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
         .cart-page h3 {
@@ -370,36 +436,6 @@
                 margin-bottom: 10px;
             }
         }
-        /* Spinner cho modal */
-        .modal-spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2.5px solid #fff;
-            border-top: 2.5px solid #f7544a;
-            border-radius: 50%;
-            animation: modalspin 0.7s linear infinite;
-            vertical-align: middle;
-        }
-        @keyframes modalspin {
-            0% { transform: rotate(0deg);}
-            100% { transform: rotate(360deg);}
-        }
-        /* Hiệu ứng nút bấm */
-        .auth-modal-content button,
-        .button {
-            transition: transform 0.1s cubic-bezier(.4,0,.2,1), box-shadow 0.1s;
-        }
-        .auth-modal-content button:active,
-        .button:active {
-            transform: scale(0.96);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        @media (max-width: 767px) {
-            .container_fullwidth .col-md-3 {
-                display: none !important;
-            }
-        }
         @media (max-width: 767px) {
         .cart-page {
             padding-bottom: 400px; /* hoặc giá trị bạn muốn, ví dụ 80px */
@@ -470,8 +506,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <ul class="usermenu">
-                                        <li id="loginLink"><a href="#" class="log"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
-                                        <li id="registerLink"><a href="#" class="reg"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                                        <li id="loginLink"><a href="login.html"><i class="fa fa-sign-in"></i> Đăng Nhập</a></li>
+                                        <li id="registerLink"><a href="register.html"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
                                         <li id="userInfo" style="display: none;"><a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a></li>
                                     </ul>
                                 </div>
@@ -731,7 +767,7 @@
                         <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
                     </button>
                 </form>
-                <div class="switch">
+                <div class="switch-form">
                     Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng Ký</a>
                 </div>
                 <div class="forgot-password">
@@ -752,7 +788,7 @@
                         <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
                     </button>
                 </form>
-                <div class="switch">
+                <div class="switch-form">
                     Đã có tài khoản? <a href="#" id="switchToLogin">Đăng Nhập</a>
                 </div>
             </div>
@@ -768,7 +804,7 @@
                         <span class="modal-spinner" id="forgotSpinner" style="display:none;margin-left:8px;"></span>
                     </button>
                 </form>
-                <div class="switch">
+                <div class="switch-form">
                     Quay lại <a href="#" id="switchToLoginFromForgot">Đăng Nhập</a>
                 </div>
             </div>
@@ -811,13 +847,28 @@
                     const userInfo = document.getElementById('userInfo');
 
                     if (user) {
-                        userInfo.style.display = 'inline-block';
-                        loginLink.style.display = 'none';
-                        registerLink.style.display = 'none';
+                        if (userInfo) {
+                            userInfo.style.display = 'inline-block';
+                            // Thêm tên người dùng vào menu
+                            const userName = user.displayName || user.email.split('@')[0];
+                            userInfo.innerHTML = `<a href="member.html"><i class="fa fa-user"></i> ${userName}</a> | <a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a>`;
+                            
+                            // Gắn lại sự kiện đăng xuất
+                            const logoutLink = document.getElementById('logoutLink');
+                            if (logoutLink) {
+                                logoutLink.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    handleLogout();
+                                });
+                            }
+                        }
+                        
+                        if (loginLink) loginLink.style.display = 'none';
+                        if (registerLink) registerLink.style.display = 'none';
                     } else {
-                        userInfo.style.display = 'none';
-                        loginLink.style.display = 'inline-block';
-                        registerLink.style.display = 'inline-block';
+                        if (userInfo) userInfo.style.display = 'none';
+                        if (loginLink) loginLink.style.display = 'inline-block';
+                        if (registerLink) registerLink.style.display = 'inline-block';
                     }
                 });
 
@@ -938,8 +989,7 @@
                 });
 
                 // Xử lý đăng xuất
-                document.getElementById('logoutLink').addEventListener('click', async (e) => {
-                    e.preventDefault();
+                function handleLogout() {
                     Swal.fire({
                         title: 'Bạn có chắc?',
                         text: "Bạn muốn đăng xuất khỏi hệ thống?",
@@ -953,12 +1003,21 @@
                         if (result.isConfirmed) {
                             try {
                                 await auth.signOut();
+                                // Xóa dữ liệu người dùng khỏi localStorage
+                                localStorage.removeItem('user');
+                                localStorage.removeItem('authToken');
+                                
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Đăng xuất thành công!',
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
+                                
+                                // Tải lại trang để cập nhật UI
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1500);
                             } catch (error) {
                                 Swal.fire({
                                     icon: 'error',
@@ -969,6 +1028,12 @@
                             }
                         }
                     });
+                }
+
+                // Xử lý đăng xuất cho nút logoutLink
+                document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handleLogout();
                 });
             });
 
@@ -1361,13 +1426,162 @@
     </a>
   </div>
               
-                  <div class="appbar-mobile">
-                    <div class="appbar-left">
-                      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
-                    </div>
-                    <div class="appbar-right">
-                      <a href="member.html" class="appbar-account"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
-                    </div>
-                  </div>
+  <div class="appbar-mobile">
+    <div class="appbar-left">
+      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
+    </div>
+    <div class="appbar-right">
+      <a href="#" class="appbar-account" id="appbarAccountLink"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
+    </div>
+  </div>
+
+    <!-- Script xử lý trạng thái đăng nhập -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ẩn overlay loading sau 300ms để đảm bảo hiệu ứng mượt
+        setTimeout(function() {
+            var overlay = document.querySelector('.loading-overlay');
+            if (overlay) {
+                overlay.classList.add('hide');
+                setTimeout(function() {
+                    overlay.style.display = 'none';
+                }, 600); // Đợi hiệu ứng mờ dần xong mới ẩn hẳn
+            }
+        }, 300);
+    });
+    </script>
+    
+    <script type="module">
+        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra trạng thái đăng nhập từ localStorage trước
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                try {
+                    const userData = JSON.parse(storedUser);
+                    updateUIForLoggedInUser(userData);
+                } catch (e) {
+                    console.error('Lỗi khi phân tích dữ liệu người dùng:', e);
+                    localStorage.removeItem('user');
+                }
+            }
+            
+            // Kiểm tra trạng thái đăng nhập từ Firebase
+            const auth = window.auth;
+            onAuthStateChanged(auth, (user) => {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+
+                if (user) {
+                    console.log("User đã đăng nhập:", user.email);
+                    
+                    // Cập nhật localStorage với thông tin mới nhất
+                    localStorage.setItem('user', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: user.displayName || user.email.split('@')[0],
+                        photoURL: user.photoURL
+                    }));
+                    
+                    // Cập nhật UI
+                    updateUIForLoggedInUser(user);
+                } else {
+                    console.log("Chưa đăng nhập");
+                    if (userInfo) userInfo.style.display = 'none';
+                    if (loginLink) loginLink.style.display = 'inline-block';
+                    if (registerLink) registerLink.style.display = 'inline-block';
+                    
+                    // Xóa dữ liệu người dùng khỏi localStorage
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('authToken');
+                }
+            });
+            
+            // Hàm cập nhật UI cho người dùng đã đăng nhập
+            function updateUIForLoggedInUser(user) {
+                const loginLink = document.getElementById('loginLink');
+                const registerLink = document.getElementById('registerLink');
+                const userInfo = document.getElementById('userInfo');
+                
+                if (userInfo) {
+                    userInfo.style.display = 'inline-block';
+                    // Thêm tên người dùng vào menu
+                    const userName = user.displayName || user.email.split('@')[0];
+                    userInfo.innerHTML = `<a href="member.html"><i class="fa fa-user"></i> ${userName}</a> | <a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a>`;
+                    
+                    // Gắn lại sự kiện đăng xuất
+                    const logoutLink = document.getElementById('logoutLink');
+                    if (logoutLink) {
+                        logoutLink.addEventListener('click', handleLogout);
+                    }
+                }
+                
+                if (loginLink) loginLink.style.display = 'none';
+                if (registerLink) registerLink.style.display = 'none';
+            }
+            
+            // Hàm xử lý đăng xuất
+            function handleLogout() {
+                Swal.fire({
+                    title: 'Bạn có chắc?',
+                    text: "Bạn muốn đăng xuất khỏi hệ thống?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#A63C3C',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Đăng Xuất',
+                    cancelButtonText: 'Hủy'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await signOut(auth);
+                            // Xóa dữ liệu người dùng khỏi localStorage
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('authToken');
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đăng xuất thành công!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            
+                            // Tải lại trang để cập nhật UI
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1500);
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+                                showConfirmButton: true
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+        <script>
+            // Xử lý chuyển trang khi click vào icon user trên mobile
+            document.addEventListener('DOMContentLoaded', function() {
+                const appbarAccountLink = document.getElementById('appbarAccountLink');
+                if (appbarAccountLink) {
+                    appbarAccountLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Kiểm tra trạng thái đăng nhập từ localStorage
+                        const storedUser = localStorage.getItem('user');
+                        if (storedUser) {
+                            window.location.href = 'member.html';
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                }
+            });
+            </script>
 </body>
 </html>

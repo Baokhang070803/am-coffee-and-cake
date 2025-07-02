@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - Ấm Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lottie-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.6);
+        }
+        
+        .lottie-background .desktop-lottie {
+            min-width: 100%;
+            min-height: 100%;
+            scale: 1.5;
+            opacity: 0.8;
+        }
+        
+        .lottie-background .mobile-lottie {
+            display: none;
+            min-width: 100%;
+            min-height: 100%;
+            scale: 1.2;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .lottie-background .desktop-lottie {
+                display: none;
+            }
+            
+            .lottie-background .mobile-lottie {
+                display: block;
+            }
+        }
+        
+        .auth-modal { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background: rgba(0,0,0,0.4); 
+            z-index: 10000;
+        }
+        
+        .auth-modal-content { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 20px; 
+            width: 100%; 
+            max-width: 450px; 
+            position: relative; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            animation: fadeInDown 0.5s;
+        }
+        
+        .auth-modal-content h2 { 
+            font-size: 28px; 
+            color: #4A2F1A; 
+            margin-bottom: 15px; 
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .modal-description { 
+            text-align: center; 
+            color: #666; 
+            margin-bottom: 25px; 
+            font-size: 15px; 
+        }
+        
+        .auth-modal-content .close { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-size: 24px; 
+            cursor: pointer; 
+            color: #4A2F1A; 
+            transition: color 0.3s, transform 0.3s; 
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(166, 124, 82, 0.1);
+        }
+        
+        .auth-modal-content .close:hover { 
+            color: #f7544a; 
+            transform: rotate(90deg);
+            background: rgba(247, 84, 74, 0.1);
+        }
+        
+        .form-group { 
+            margin-bottom: 24px; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #4A2F1A; 
+            font-weight: 500; 
+            font-size: 15px;
+        }
+        
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"] { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            font-size: 15px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .form-group input:focus { 
+            border-color: #A67C52; 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.2);
+        }
+        
+        .form-text { 
+            display: block; 
+            margin-top: 6px; 
+            color: #888; 
+            font-size: 13px; 
+        }
+        
+        .password-input { 
+            position: relative; 
+        }
+        
+        .toggle-password { 
+            position: absolute; 
+            right: 16px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            cursor: pointer; 
+            color: #777;
+            transition: color 0.3s;
+        }
+        
+        .toggle-password:hover {
+            color: #A67C52;
+        }
+        
+        .btn-primary { 
+            width: 100%; 
+            padding: 14px; 
+            background: #A67C52; 
+            color: #fff; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: 500;
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 6px rgba(166, 124, 82, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover { 
+            background: #8B6842; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(139, 104, 66, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(139, 104, 66, 0.3);
+        }
+        
+        .switch { 
+            text-align: center; 
+            margin-top: 25px; 
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .switch a { 
+            color: #A67C52; 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .switch a:hover { 
+            color: #8B6842;
+        }
+        
+        .switch a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #A67C52;
+            transition: width 0.3s ease;
+        }
+        
+        .switch a:hover::after {
+            width: 100%;
+        }
+        
+        .terms { 
+            font-size: 14px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 10px; 
+            margin-bottom: 24px; 
+        }
+        
+        .terms input[type="checkbox"] { 
+            width: 18px; 
+            height: 18px; 
+            margin: 0; 
+            cursor: pointer; 
+            position: relative; 
+            appearance: none; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            background-color: #fff; 
+            transition: all 0.3s ease; 
+            flex-shrink: 0; 
+            margin-top: 2px; 
+        }
+        
+        .terms input[type="checkbox"]:checked { 
+            background-color: #A67C52; 
+            border-color: #A67C52; 
+        }
+        
+        .terms input[type="checkbox"]:checked::after { 
+            content: '✓'; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            color: #fff; 
+            font-size: 12px; 
+        }
+        
+        .terms label { 
+            margin: 0; 
+            color: #666; 
+            cursor: pointer; 
+            user-select: none; 
+            line-height: 1.5; 
+        }
+        
+        .terms a { 
+            color: #A67C52; 
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .terms a:hover { 
+            color: #8B6842;
+        }
+        
+        .terms a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #A67C52;
+            transition: width 0.3s ease;
+        }
+        
+        .terms a:hover::after {
+            width: 100%;
+        }
+        
+        .modal-spinner { 
+            display: inline-block; 
+            width: 18px; 
+            height: 18px; 
+            border: 2.5px solid #fff; 
+            border-top: 2.5px solid transparent; 
+            border-radius: 50%; 
+            animation: modalspin 0.7s linear infinite; 
+            vertical-align: middle; 
+        }
+        
+        @keyframes modalspin { 
+            0% { transform: rotate(0deg);} 
+            100% { transform: rotate(360deg);} 
+        }
+        
+        /* Ripple effect for buttons */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .btn-primary:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        .password-strength {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .swal2-container {
+            z-index: 2147483647 !important;
+        }
+        .swal2-popup {
+            z-index: 2147483647 !important;
+            border-radius: 15px !important;
+            padding: 2em !important;
+        }
+        .swal2-backdrop-show {
+            z-index: 2147483646 !important;
+        }
+        
+        @media (max-width: 576px) {
+            .auth-modal-content {
+                padding: 25px;
+                border-radius: 15px;
+                max-width: 90%;
+            }
+            
+            .auth-modal-content h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lottie-background">
+        <dotlottie-player class="desktop-lottie" src="https://lottie.host/073cb2bc-a31c-4ec0-a952-ebe8c525cdff/N2Ocg9BFzH.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
+        <dotlottie-player class="mobile-lottie" src="https://lottie.host/016f84cd-0344-4992-95db-aac9d8e23d6e/dNNVYkgD52.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
+    </div>
+    
+    <div class="auth-modal" style="display:flex;">
+        <div class="auth-modal-content">
+            <span class="close" onclick="window.location.href='index.html'">×</span>
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Ấm Coffee and Cake Logo">
+            </div>
+            <h2>Đăng Ký</h2>
+            <p class="modal-description">Tạo tài khoản để nhận nhiều ưu đãi hấp dẫn từ Ấm - Coffee and Cake</p>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Họ và Tên</label>
+                    <input type="text" id="registerName" placeholder="Nhập họ và tên của bạn" required>
+                    <small class="form-text">Ví dụ: Nguyễn Văn A</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="registerPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="form-group terms">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">Tôi đồng ý với <a href="policy.html">Điều khoản sử dụng</a> và <a href="policy.html#privacy">Chính sách bảo mật</a></label>
+                </div>
+                <button type="submit" id="registerBtn" class="btn-primary">
+                    Đăng Ký
+                    <span class="modal-spinner" id="registerSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="switch">
+                Đã có tài khoản? <a href="login.html" id="switchToLogin">Đăng Nhập</a>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
+        // Validate password match
+        const registerForm = document.getElementById('registerForm');
+        const password = document.getElementById('registerPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        function validatePassword() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Mật khẩu không khớp');
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        }
+        password.addEventListener('change', validatePassword);
+        confirmPassword.addEventListener('keyup', validatePassword);
+        // Enhanced form validation
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const spinner = document.getElementById('registerSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasMinLength = password.length >= 6;
+            if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasMinLength) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.',
+                    showConfirmButton: true
+                });
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                return;
+            }
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                await sendEmailVerification(userCredential.user);
+                
+                // Lưu thông tin người dùng vào Realtime Database
+                try {
+                    const { getDatabase, ref, set } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+                    const db = getDatabase();
+                    const userRef = ref(db, 'users/' + userCredential.user.uid);
+                    
+                    // Tạo object user data với cấu trúc phù hợp
+                    const userData = {
+                        name: name,
+                        email: email,
+                        role: 'user',
+                        status: 'active',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    await set(userRef, userData);
+                } catch (dbError) {
+                    console.error('Lỗi khi lưu dữ liệu người dùng:', dbError);
+                    // Tiếp tục xử lý ngay cả khi lỗi lưu dữ liệu
+                }
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng ký thành công!',
+                    text: 'Vui lòng kiểm tra email để xác nhận tài khoản.',
+                    showConfirmButton: true
+                });
+                
+                // Chuyển hướng sau khi hiển thị thông báo
+                setTimeout(() => {
+                    window.location.replace('login.html');
+                }, 2000);
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'auth/email-already-in-use' ? 'Email đã được sử dụng.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                    showConfirmButton: true
+                });
+            }
+            btn.disabled = false;
+            spinner.style.display = 'none';
+        });
+        // Password strength indicator
+        const passwordInput = document.getElementById('registerPassword');
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            const strengthText = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'][strength - 1];
+            const strengthColor = ['#ff4444', '#ffbb33', '#ffeb3b', '#00C851', '#007E33'][strength - 1];
+            const strengthIndicator = document.createElement('div');
+            strengthIndicator.className = 'password-strength';
+            strengthIndicator.style.color = strengthColor;
+            strengthIndicator.textContent = `Độ mạnh mật khẩu: ${strengthText}`;
+            const existingIndicator = this.parentElement.querySelector('.password-strength');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+            this.parentElement.appendChild(strengthIndicator);
+        });
+    </script>
+</body>
+</html> 

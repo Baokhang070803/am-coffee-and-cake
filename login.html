@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - Ấm Coffee and Cake</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic,100italic,100' rel='stylesheet' type='text/css'>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lottie-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.6);
+        }
+        
+        .lottie-background .desktop-lottie {
+            min-width: 100%;
+            min-height: 100%;
+            scale: 1.5;
+            opacity: 0.8;
+        }
+        
+        .lottie-background .mobile-lottie {
+            display: none;
+            min-width: 100%;
+            min-height: 100%;
+            scale: 1.2;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .lottie-background .desktop-lottie {
+                display: none;
+            }
+            
+            .lottie-background .mobile-lottie {
+                display: block;
+            }
+        }
+        
+        .auth-modal { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background: rgba(0,0,0,0.4); 
+            z-index: 10000;
+        }
+        
+        .auth-modal-content { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 20px; 
+            width: 100%; 
+            max-width: 450px; 
+            position: relative; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            animation: fadeInDown 0.5s;
+        }
+        
+        .auth-modal-content h2 { 
+            font-size: 28px; 
+            color: #4A2F1A; 
+            margin-bottom: 15px; 
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .modal-description { 
+            text-align: center; 
+            color: #666; 
+            margin-bottom: 25px; 
+            font-size: 15px; 
+        }
+        
+        .auth-modal-content .close { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-size: 24px; 
+            cursor: pointer; 
+            color: #4A2F1A; 
+            transition: color 0.3s, transform 0.3s; 
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(166, 124, 82, 0.1);
+        }
+        
+        .auth-modal-content .close:hover { 
+            color: #f7544a; 
+            transform: rotate(90deg);
+            background: rgba(247, 84, 74, 0.1);
+        }
+        
+        .form-group { 
+            margin-bottom: 24px; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #4A2F1A; 
+            font-weight: 500; 
+            font-size: 15px;
+        }
+        
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"] { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            font-size: 15px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .form-group input:focus { 
+            border-color: #A67C52; 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.2);
+        }
+        
+        .form-text { 
+            display: block; 
+            margin-top: 6px; 
+            color: #888; 
+            font-size: 13px; 
+        }
+        
+        .password-input { 
+            position: relative; 
+        }
+        
+        .toggle-password { 
+            position: absolute; 
+            right: 16px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            cursor: pointer; 
+            color: #777;
+            transition: color 0.3s;
+        }
+        
+        .toggle-password:hover {
+            color: #A67C52;
+        }
+        
+        .remember-me { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 24px; 
+        }
+        
+        .remember-me input[type="checkbox"] { 
+            width: 18px; 
+            height: 18px; 
+            margin: 0; 
+            cursor: pointer; 
+            position: relative; 
+            appearance: none; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            background-color: #fff; 
+            transition: all 0.3s ease; 
+        }
+        
+        .remember-me input[type="checkbox"]:checked { 
+            background-color: #A67C52; 
+            border-color: #A67C52; 
+        }
+        
+        .remember-me input[type="checkbox"]:checked::after { 
+            content: '✓'; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            color: #fff; 
+            font-size: 12px; 
+        }
+        
+        .remember-me label { 
+            margin: 0 0 0 10px; 
+            color: #666; 
+            font-size: 14px; 
+            cursor: pointer; 
+            user-select: none; 
+        }
+        
+        .remember-me label:hover { 
+            color: #A67C52; 
+        }
+        
+        .btn-primary { 
+            width: 100%; 
+            padding: 14px; 
+            background: #A67C52; 
+            color: #fff; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: 500;
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 6px rgba(166, 124, 82, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover { 
+            background: #8B6842; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(139, 104, 66, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(139, 104, 66, 0.3);
+        }
+        
+        .social-login { 
+            margin-top: 30px; 
+            text-align: center; 
+        }
+        
+        .social-login p { 
+            color: #777; 
+            margin-bottom: 20px; 
+            position: relative; 
+            font-size: 14px;
+        }
+        
+        .social-login p::before, .social-login p::after { 
+            content: ""; 
+            position: absolute; 
+            top: 50%; 
+            width: 35%; 
+            height: 1px; 
+            background: #ddd; 
+        }
+        
+        .social-login p::before { 
+            left: 0; 
+        }
+        
+        .social-login p::after { 
+            right: 0; 
+        }
+        
+        .social-buttons { 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .btn-google { 
+            flex: 1; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            background: #fff; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: 500;
+        }
+        
+        .btn-google:hover { 
+            background: #f1f1f1;
+            border-color: #ccc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-google:active {
+            transform: translateY(0);
+        }
+        
+        .btn-google i {
+            color: #DB4437;
+            font-size: 18px;
+        }
+        
+        .switch { 
+            text-align: center; 
+            margin-top: 25px; 
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .switch a { 
+            color: #A67C52; 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .switch a:hover { 
+            color: #8B6842;
+        }
+        
+        .switch a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #A67C52;
+            transition: width 0.3s ease;
+        }
+        
+        .switch a:hover::after {
+            width: 100%;
+        }
+        
+        .forgot-password { 
+            text-align: center; 
+            margin-top: 15px; 
+        }
+        
+        .forgot-password a { 
+            color: #A67C52; 
+            text-decoration: none; 
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .forgot-password a:hover { 
+            color: #8B6842;
+        }
+        
+        .forgot-password a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #A67C52;
+            transition: width 0.3s ease;
+        }
+        
+        .forgot-password a:hover::after {
+            width: 100%;
+        }
+        
+        .modal-spinner { 
+            display: inline-block; 
+            width: 18px; 
+            height: 18px; 
+            border: 2.5px solid #fff; 
+            border-top: 2.5px solid transparent; 
+            border-radius: 50%; 
+            animation: modalspin 0.7s linear infinite; 
+            vertical-align: middle; 
+        }
+        
+        @keyframes modalspin { 
+            0% { transform: rotate(0deg);} 
+            100% { transform: rotate(360deg);} 
+        }
+        
+        /* Ripple effect for buttons */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .btn-primary:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .swal2-container {
+            z-index: 2147483647 !important;
+        }
+        .swal2-popup {
+            z-index: 2147483647 !important;
+            border-radius: 15px !important;
+            padding: 2em !important;
+        }
+        .swal2-backdrop-show {
+            z-index: 2147483646 !important;
+        }
+        
+        @media (max-width: 576px) {
+            .auth-modal-content {
+                padding: 25px;
+                border-radius: 15px;
+                max-width: 90%;
+            }
+            
+            .auth-modal-content h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lottie-background">
+        <dotlottie-player class="desktop-lottie" src="https://lottie.host/073cb2bc-a31c-4ec0-a952-ebe8c525cdff/N2Ocg9BFzH.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
+        <dotlottie-player class="mobile-lottie" src="https://lottie.host/016f84cd-0344-4992-95db-aac9d8e23d6e/dNNVYkgD52.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
+    </div>
+    
+    <div class="auth-modal" style="display:flex;">
+        <div class="auth-modal-content">
+            <span class="close" onclick="window.location.href='index.html'">×</span>
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Ấm Coffee and Cake Logo">
+            </div>
+            <h2>Đăng Nhập</h2>
+            <p class="modal-description">Đăng nhập để trải nghiệm đầy đủ dịch vụ của Ấm - Coffee and Cake</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Nhập email của bạn" required>
+                    <small class="form-text">Ví dụ: example@email.com</small>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <div class="password-input">
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                        <i class="fa fa-eye toggle-password"></i>
+                    </div>
+                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự</small>
+                </div>
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+                <button type="submit" id="loginBtn" class="btn-primary">
+                    Đăng Nhập
+                    <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                </button>
+            </form>
+            <div class="social-login">
+                <p>Hoặc đăng nhập với</p>
+                <div class="social-buttons">
+                    <button class="btn-google"><i class="fa fa-google"></i> Google</button>
+                </div>
+            </div>
+            <div class="switch">
+                Chưa có tài khoản? <a href="register.html" id="switchToRegister">Đăng Ký</a>
+            </div>
+            <div class="forgot-password">
+                <a href="forgot-password.html" id="forgotPassword">Quên mật khẩu?</a>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
+            authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
+            databaseURL: "https://coffee-and-cake-e2f5d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "coffee-and-cake-e2f5d",
+            storageBucket: "coffee-and-cake-e2f5d.appspot.com",
+            messagingSenderId: "453243002159",
+            appId: "1:453243002159:web:074baa5652ed789ecbd5da",
+            measurementId: "G-1H7DM8MQCV"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
+        // Remember me functionality
+        const rememberMe = document.getElementById('rememberMe');
+        if (localStorage.getItem('rememberMe') === 'true') {
+            rememberMe.checked = true;
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                document.getElementById('loginEmail').value = savedEmail;
+            }
+        }
+        rememberMe.addEventListener('change', () => {
+            if (rememberMe.checked) {
+                localStorage.setItem('rememberMe', 'true');
+                localStorage.setItem('savedEmail', document.getElementById('loginEmail').value);
+            } else {
+                localStorage.removeItem('rememberMe');
+                localStorage.removeItem('savedEmail');
+            }
+        });
+        // Xử lý form đăng nhập
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loginSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Lưu thông tin người dùng vào localStorage để duy trì trạng thái đăng nhập
+                localStorage.setItem('user', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName || email.split('@')[0],
+                    photoURL: user.photoURL
+                }));
+                
+                // Lưu token xác thực nếu có
+                user.getIdToken().then(token => {
+                    localStorage.setItem('authToken', token);
+                });
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                
+                if (email === 'quantri1amcoffeeandcake@gmail.com' || email === 'nhanvienorders@gmail.com') {
+                    window.location.href = 'AdminDashboard.html';
+                } else {
+                    // Đảm bảo chuyển hướng đúng và xóa cache
+                    setTimeout(() => {
+                        window.location.replace('index.html');
+                    }, 1500);
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: error.code === 'auth/wrong-password' ? 'Mật khẩu không đúng.' : error.code === 'auth/user-not-found' ? 'Tài khoản không tồn tại.' : 'Đã có lỗi xảy ra. Vui lòng thử lại.',
+                    showConfirmButton: true
+                });
+            }
+            btn.disabled = false;
+            spinner.style.display = 'none';
+        });
+        // Google login
+        const googleProvider = new GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: 'select_account' });
+        document.querySelector('.btn-google').addEventListener('click', async () => {
+            try {
+                const btn = document.querySelector('.btn-google');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang xử lý...';
+                btn.disabled = true;
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                // Lưu thông tin người dùng vào localStorage
+                localStorage.setItem('user', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName || user.email.split('@')[0],
+                    photoURL: user.photoURL
+                }));
+                
+                // Lưu token xác thực
+                user.getIdToken().then(token => {
+                    localStorage.setItem('authToken', token);
+                });
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công!',
+                    text: `Xin chào ${user.displayName || user.email}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                
+                // Đảm bảo chuyển hướng đúng và xóa cache
+                setTimeout(() => {
+                    window.location.replace('index.html');
+                }, 1500);
+            } catch (error) {
+                let errorMessage = 'Đăng nhập bằng Google thất bại. ';
+                switch (error.code) {
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Đăng nhập bằng Google chưa được bật. Vui lòng liên hệ admin để được hỗ trợ.';
+                        break;
+                    case 'auth/popup-blocked':
+                        errorMessage += 'Cửa sổ popup bị chặn. Vui lòng cho phép popup cho trang web này.';
+                        break;
+                    case 'auth/popup-closed-by-user':
+                        errorMessage += 'Bạn đã đóng cửa sổ đăng nhập.';
+                        break;
+                    case 'auth/cancelled-popup-request':
+                        errorMessage += 'Yêu cầu đăng nhập đã bị hủy.';
+                        break;
+                    case 'auth/account-exists-with-different-credential':
+                        errorMessage += 'Email này đã được sử dụng với phương thức đăng nhập khác.';
+                        break;
+                    case 'PERMISSION_DENIED':
+                        errorMessage = 'Không có quyền truy cập. Vui lòng liên hệ admin để được hỗ trợ.';
+                        break;
+                    default:
+                        errorMessage += 'Vui lòng thử lại sau.';
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: errorMessage,
+                    showConfirmButton: true
+                });
+            } finally {
+                const btn = document.querySelector('.btn-google');
+                btn.innerHTML = '<i class="fa fa-google"></i> Google';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html> 
