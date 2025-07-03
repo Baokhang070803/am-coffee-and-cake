@@ -21,6 +21,12 @@ Disallow: /*?*                    # Chặn các URL có query parameters
 Disallow: /js/                    # Thư mục JavaScript
 Disallow: /css/                   # Thư mục CSS
 Disallow: /fonts/                 # Thư mục fonts
+Disallow: /Timeline.html           # Mạng xã hội nội bộ
+Disallow: /MessengerList.html      # Danh sách chat
+Disallow: /MessengerChat.html      # Trang chat chi tiết
+Disallow: /register.html           # Đăng ký
+Disallow: /login.html              # Đăng nhập
+Disallow: /forgot-password.html    # Quên mật khẩu
 
 # Tốc độ thu thập
 Crawl-delay: 10

@@ -1,3 +1,18 @@
+<!--
+  File: vnpay_return.html
+  Công dụng:
+    - Trang hiển thị kết quả thanh toán cho khách hàng sau khi thực hiện giao dịch qua cổng VNPAY.
+    - Cập nhật trạng thái đơn hàng, lưu kết quả giao dịch vào hệ thống (Firebase), và hiển thị hóa đơn chi tiết cho khách hàng.
+  Các chức năng chính:
+    1. Nhận và xử lý các tham số trả về từ VNPAY (mã giao dịch, mã đơn hàng, số tiền, trạng thái, thời gian, v.v.).
+    2. Kết nối Firebase Realtime Database để lấy thông tin đơn hàng, cập nhật trạng thái đơn hàng (thành công/thất bại), lưu kết quả thanh toán.
+    3. Hiển thị thông báo trạng thái giao dịch (thành công/thất bại/lỗi tham số) với giao diện đẹp, rõ ràng.
+    4. Hiển thị hóa đơn chi tiết: thông tin khách hàng, sản phẩm, số lượng, giá, tổng tiền, giảm giá, phí ship.
+    5. Xóa giỏ hàng và các thông tin tạm khi thanh toán thành công.
+    6. Lưu trữ kết quả thanh toán vào nhiều nhánh trên Firebase (payment_results, payment_results_by_date, payment_statistics) 
+    7. Có các nút điều hướng: về trang chủ, xem đơn hàng, thử lại thanh toán.
+    8. Tối ưu cho cả desktop và mobile, có hiệu ứng loading overlay.
+-->
 <!DOCTYPE html>
 <html lang="vi">
 <head>

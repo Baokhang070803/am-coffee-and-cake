@@ -101,4 +101,52 @@
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
+
+    <!-- Timeline (Mạng xã hội) -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/Timeline.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Messenger List -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/MessengerList.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Messenger Chat -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/MessengerChat.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Đăng ký -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/register.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <!-- Đăng nhập -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/login.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <!-- Quên mật khẩu -->
+    <url>
+        <loc>https://amcoffeeandcake.netlify.app/forgot-password.html</loc>
+        <lastmod>2024-03-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.2</priority>
+    </url>
 </urlset> 
