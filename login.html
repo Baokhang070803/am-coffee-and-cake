@@ -32,68 +32,83 @@
             position: relative;
             overflow: hidden;
         }
-        
-        .lottie-background {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .login-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        .login-left {
+            flex: 1 1 0;
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            display: block;
+        }
+        .login-left video {
             width: 100%;
             height: 100%;
-            z-index: -1;
+            object-fit: cover;
+            object-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .login-right {
+            flex: 1 1 0;
             display: flex;
-            justify-content: center;
             align-items: center;
-            overflow: hidden;
-            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+            padding-right: 0;
         }
-        
-        .lottie-background .desktop-lottie {
-            min-width: 100%;
-            min-height: 100%;
-            scale: 1.5;
-            opacity: 0.8;
-        }
-        
-        .lottie-background .mobile-lottie {
-            display: none;
-            min-width: 100%;
-            min-height: 100%;
-            scale: 1.2;
-            opacity: 0.8;
-        }
-        
+        /* Ẩn video trên mobile, form chiếm toàn bộ */
         @media (max-width: 768px) {
-            .lottie-background .desktop-lottie {
+            .login-container {
+                flex-direction: column;
+            }
+            .login-left {
                 display: none;
             }
-            
-            .lottie-background .mobile-lottie {
-                display: block;
+            .login-right {
+                flex: 1 1 100%;
+                width: 100vw;
+                justify-content: center;
+                align-items: center;
+                padding-right: 0;
+            }
+            .auth-modal-content {
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+                min-width: unset !important;
+                margin: 0 !important;
+            }
+            .form-wrapper {
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                max-width: 100vw !important;
+                min-width: unset !important;
             }
         }
-        
-        .auth-modal { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            background: rgba(0,0,0,0.4); 
-            z-index: 10000;
+        .auth-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.0);
+            box-shadow: none;
+            margin: 0;
         }
-        
-        .auth-modal-content { 
-            background: #fff; 
-            padding: 40px; 
-            border-radius: 20px; 
-            width: 100%; 
-            max-width: 450px; 
-            position: relative; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            animation: fadeInDown 0.5s;
+        .auth-modal-content {
+            min-width: 400px;
+            margin: 40px 0 0 0;
         }
         
         .auth-modal-content h2 { 
@@ -482,56 +497,71 @@
                 font-size: 24px;
             }
         }
+        @media (max-width: 768px) {
+            .auth-modal-content {
+                margin: 0 !important;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            body.login-page {
+                padding-top: 0 !important;
+            }
+        }
     </style>
 </head>
-<body>
-    <div class="lottie-background">
-        <dotlottie-player class="desktop-lottie" src="https://lottie.host/073cb2bc-a31c-4ec0-a952-ebe8c525cdff/N2Ocg9BFzH.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
-        <dotlottie-player class="mobile-lottie" src="https://lottie.host/016f84cd-0344-4992-95db-aac9d8e23d6e/dNNVYkgD52.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
-    </div>
-    
-    <div class="auth-modal" style="display:flex;">
-        <div class="auth-modal-content">
-            <span class="close" onclick="window.location.href='index.html'">×</span>
-            <div class="logo-container">
-                <img src="images/logo.png" alt="Ấm Coffee and Cake Logo">
-            </div>
-            <h2>Đăng Nhập</h2>
-            <p class="modal-description">Đăng nhập để trải nghiệm đầy đủ dịch vụ của Ấm - Coffee and Cake</p>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="Nhập email của bạn" required>
-                    <small class="form-text">Ví dụ: example@email.com</small>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Mật khẩu</label>
-                    <div class="password-input">
-                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
-                        <i class="fa fa-eye toggle-password"></i>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-left">
+            <video autoplay loop muted playsinline>
+                <source src="video/Coffee_Shop_Video_Generation.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ video.
+            </video>
+        </div>
+        <div class="login-right">
+            <div class="auth-modal" style="display:flex; background: rgba(0,0,0,0.0); box-shadow: none;">
+                <div class="auth-modal-content">
+                    <span class="close" onclick="window.location.href='index.html'">×</span>
+                    <div class="logo-container">
+                        <img src="images/logo.png" alt="Ấm Coffee and Cake Logo">
                     </div>
-                    <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự</small>
+                    <h2>Đăng Nhập</h2>
+                    <p class="modal-description">Đăng nhập để trải nghiệm đầy đủ dịch vụ của Ấm - Coffee and Cake</p>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" placeholder="Nhập email của bạn" required>
+                            <small class="form-text">Ví dụ: example@email.com</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Mật khẩu</label>
+                            <div class="password-input">
+                                <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                                <i class="fa fa-eye toggle-password"></i>
+                            </div>
+                            <small class="form-text">Mật khẩu phải có ít nhất 6 ký tự</small>
+                        </div>
+                        <div class="form-group remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <button type="submit" id="loginBtn" class="btn-primary">
+                            Đăng Nhập
+                            <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
+                        </button>
+                    </form>
+                    <div class="social-login">
+                        <p>Hoặc đăng nhập với</p>
+                        <div class="social-buttons">
+                            <button class="btn-google"><img src="https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" alt="Google logo" style="height:18px;width:18px;vertical-align:middle;margin-right:8px;"></button>
+                        </div>
+                    </div>
+                    <div class="switch">
+                        Chưa có tài khoản? <a href="register.html" id="switchToRegister">Đăng Ký</a>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="forgot-password.html" id="forgotPassword">Quên mật khẩu?</a>
+                    </div>
                 </div>
-                <div class="form-group remember-me">
-                    <input type="checkbox" id="rememberMe">
-                    <label for="rememberMe">Ghi nhớ đăng nhập</label>
-                </div>
-                <button type="submit" id="loginBtn" class="btn-primary">
-                    Đăng Nhập
-                    <span class="modal-spinner" id="loginSpinner" style="display:none;margin-left:8px;"></span>
-                </button>
-            </form>
-            <div class="social-login">
-                <p>Hoặc đăng nhập với</p>
-                <div class="social-buttons">
-                    <button class="btn-google"><i class="fa fa-google"></i> Google</button>
-                </div>
-            </div>
-            <div class="switch">
-                Chưa có tài khoản? <a href="register.html" id="switchToRegister">Đăng Ký</a>
-            </div>
-            <div class="forgot-password">
-                <a href="forgot-password.html" id="forgotPassword">Quên mật khẩu?</a>
             </div>
         </div>
     </div>
@@ -699,7 +729,7 @@
                 });
             } finally {
                 const btn = document.querySelector('.btn-google');
-                btn.innerHTML = '<i class="fa fa-google"></i> Google';
+                btn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" style="height:18px;width:18px;vertical-align:middle;margin-right:8px;"> Google';
                 btn.disabled = false;
             }
         });
