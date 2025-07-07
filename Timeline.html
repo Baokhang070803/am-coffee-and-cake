@@ -2272,6 +2272,23 @@
             }
         }
 
+        // Hàm đếm tổng số comment bao gồm cả replies (đệ quy)
+        function countTotalComments(comments) {
+            if (!comments || typeof comments !== 'object') return 0;
+            let total = 0;
+            Object.values(comments).forEach(comment => {
+                // Chỉ đếm nếu có text (tức là comment thực sự)
+                if (comment && typeof comment === 'object' && typeof comment.text === 'string' && comment.text.trim() !== '') {
+                    total++;
+                }
+                // Đệ quy cho replies (nếu có)
+                if (comment && typeof comment === 'object' && comment.replies && typeof comment.replies === 'object') {
+                    total += countTotalComments(comment.replies);
+                }
+            });
+            return total;
+        }
+
         // Create post element
         function createPostElement(post) {
             const postDiv = document.createElement('div');
@@ -2279,7 +2296,7 @@
             postDiv.setAttribute('data-post-id', post.id);
 
             const likesCount = post.likes ? Object.keys(post.likes).length : 0;
-            const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
+            const commentsCount = countTotalComments(post.comments);
             const isLiked = currentUser && post.likes && post.likes[currentUser.uid];
             const timeAgo = formatTimeAgo(post.timestamp);
             const authorInitial = post.authorName ? post.authorName.charAt(0).toUpperCase() : post.authorEmail.charAt(0).toUpperCase();
@@ -2288,7 +2305,8 @@
                 : `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')">${authorInitial}</span>`;
             let imageHtml = '';
             if (post.image) {
-                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' loading='lazy' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);'></div>`;
+                // Thêm onclick để phóng to ảnh
+                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' loading='lazy' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:zoom-in;' onclick="openImageModal('${post.image.replace(/'/g, '\'')}')"></div>`;
             }
             let emojiHtml = '';
             if (post.emoji) {
@@ -3370,7 +3388,70 @@
         panel.innerHTML = html;
     }
     </script>
-
+<!-- Modal phóng to ảnh bài viết (lightbox) -->
+<style>
+    #imageLightboxModal {
+      display: none;
+      position: fixed;
+      z-index: 20000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+    }
+    #imageLightboxModal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+      background: #fff;
+    }
+    #imageLightboxModal .close {
+      position: absolute;
+      top: 24px;
+      right: 36px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 2;
+      text-shadow: 0 2px 8px #000;
+    }
+    @media (max-width: 600px) {
+      #imageLightboxModal .close {
+        top: 12px;
+        right: 16px;
+        font-size: 32px;
+      }
+    }
+    </style>
+    <div id="imageLightboxModal">
+      <span class="close" onclick="closeImageModal()">&times;</span>
+      <img id="imageLightboxImg" src="" alt="Ảnh phóng to" />
+    </div>
+    <!-- End modal phóng to ảnh -->
+    <script>
+    // Lightbox modal cho ảnh post
+    function openImageModal(src) {
+        const modal = document.getElementById('imageLightboxModal');
+        const img = document.getElementById('imageLightboxImg');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+    window.openImageModal = openImageModal;
+    function closeImageModal() {
+        document.getElementById('imageLightboxModal').style.display = 'none';
+        document.getElementById('imageLightboxImg').src = '';
+    }
+    window.closeImageModal = closeImageModal;
+    // Đóng modal khi click ra ngoài ảnh
+    const imageLightboxModal = document.getElementById('imageLightboxModal');
+    if (imageLightboxModal) {
+        imageLightboxModal.addEventListener('click', function(e) {
+            if (e.target === imageLightboxModal) closeImageModal();
+        });
+    }
+    </script>
     <script>
         // Ẩn loading overlay sau khi trang tải xong
         document.addEventListener('DOMContentLoaded', function() {
