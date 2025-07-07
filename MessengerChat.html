@@ -120,7 +120,7 @@
         margin-bottom: 70px; /* chiều cao input bar */
         padding: 8px 8px;
         overflow-y: auto;
-        height: auto;
+        height: calc(100vh - 140px); /* Chiều cao cố định = viewport - (header + input) */
         min-height: 0;
         background: #f7f7f7;
       }
@@ -434,7 +434,12 @@ window.getSignalingRef = getSignalingRef;
           return `<div class="message-row${m.sender === currentUser.uid ? ' own' : ''}"><div class="message-bubble">${m.text ? escapeHtml(m.text) : ''}${m.image ? `<div style='margin-top:6px;'><img src='${m.image}' class='chat-image-view' style='max-width:180px;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;'></div>` : ''}</div><span class="message-time">${m.timestamp ? formatTimeAgo(m.timestamp) : ''}</span></div>`;
         }
       }).join('');
-      setTimeout(() => { msgDiv.scrollTop = msgDiv.scrollHeight; }, 100);
+      
+      // Tăng thời gian chờ cho mobile
+      const isMobile = window.innerWidth <= 600;
+      setTimeout(() => { 
+        msgDiv.scrollTop = msgDiv.scrollHeight; 
+      }, isMobile ? 500 : 100);
     }
     function escapeHtml(str) {
       return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -490,6 +495,12 @@ sendBtn.addEventListener('click', sendMessage);
       await set(ref(db, 'conversationMeta/' + convId + '/updatedAt'), Date.now());
       input.value = '';
       selectedImageBase64 = null;
+      
+      // Thêm cuộn xuống sau khi gửi tin nhắn
+      setTimeout(() => {
+        const msgDiv = document.getElementById('chatMessages');
+        if (msgDiv) msgDiv.scrollTop = msgDiv.scrollHeight;
+      }, 300);
     }
     // Gửi ảnh
 const imageBtn = document.getElementById('imageBtn');
@@ -993,5 +1004,29 @@ function stopCallTimer() {
   <!-- Âm thanh gọi đi/nhận cuộc gọi -->
   <audio id="callingSound" src="music/chuonggoi.mp3" loop preload="auto"></audio>
   <audio id="incomingSound" src="music/nhancuocgoi.mp3" loop preload="auto"></audio>
+  
+  <!-- Thêm MutationObserver để theo dõi thay đổi DOM -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatMessages = document.getElementById('chatMessages');
+      if (chatMessages) {
+        // Tạo MutationObserver để tự động cuộn xuống khi có tin nhắn mới
+        const observer = new MutationObserver(() => {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+        
+        // Bắt đầu theo dõi thay đổi trong DOM
+        observer.observe(chatMessages, { 
+          childList: true, 
+          subtree: true 
+        });
+        
+        // Đảm bảo cuộn xuống khi trang tải xong
+        setTimeout(() => {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 800);
+      }
+    });
+  </script>
 </body>
 </html> 
