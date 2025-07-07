@@ -2798,12 +2798,19 @@
         let showFriendsPanel = false;
         let friendsList = [];
 
-        // Lấy danh sách bạn bè khi đăng nhập
+        // Lấy danh sách bạn bè khi đăng nhập (realtime)
         window.auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const db = getDatabase();
-                const snap = await get(ref(db, 'users/' + user.uid + '/friends'));
-                friendsList = snap.exists() ? Object.keys(snap.val() || {}) : [];
+                const friendsRef = ref(db, 'users/' + user.uid + '/friends');
+                onValue(friendsRef, (snap) => {
+                    friendsList = snap.exists() ? Object.keys(snap.val() || {}) : [];
+                    // Nếu đang ở tab bạn bè thì tự động render lại
+                    const friendsPanel = document.getElementById('friendsListPanel');
+                    if (friendsPanel && friendsPanel.style.display !== 'none') {
+                        renderFriendsPanel();
+                    }
+                });
             } else {
                 friendsList = [];
             }
