@@ -113,16 +113,19 @@
         border-radius: 0;
         padding: 8px 8px;
         box-sizing: border-box;
+        background: #fff; /* đảm bảo nền trắng */
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1); /* thêm đổ bóng để phân biệt */
       }
       .chat-messages {
         flex: 1;
         margin-top: 70px;   /* chiều cao header */
         margin-bottom: 70px; /* chiều cao input bar */
-        padding: 8px 8px;
+        padding: 8px 8px 16px 8px; /* tăng padding bottom để tránh tin nhắn bị khuất */
         overflow-y: auto;
         height: calc(100vh - 140px); /* Chiều cao cố định = viewport - (header + input) */
         min-height: 0;
         background: #f7f7f7;
+        box-sizing: border-box; /* đảm bảo padding nằm trong kích thước */
       }
       .message-bubble {
         max-width: 80vw;
@@ -132,7 +135,12 @@
         border-radius: 16px;
       }
       .message-row {
-        margin-bottom: 8px;
+        margin-bottom: 12px; /* tăng khoảng cách giữa các tin nhắn */
+      }
+      
+      /* Đảm bảo tin nhắn cuối cùng luôn có đủ khoảng cách với input bar */
+      .message-row:last-child {
+        margin-bottom: 24px;
       }
     }
   </style>
@@ -1025,6 +1033,40 @@ function stopCallTimer() {
         setTimeout(() => {
           chatMessages.scrollTop = chatMessages.scrollHeight;
         }, 800);
+        
+        // Thêm sự kiện resize để điều chỉnh kích thước khi thay đổi màn hình
+        window.addEventListener('resize', function() {
+          // Cập nhật lại chiều cao container tin nhắn
+          const headerHeight = 70; // chiều cao header
+          const inputHeight = 70;  // chiều cao input bar
+          chatMessages.style.height = `calc(100vh - ${headerHeight + inputHeight}px)`;
+          
+          // Cuộn xuống cuối cùng
+          setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 100);
+        });
+        
+        // Thêm padding bottom cho tin nhắn cuối cùng
+        function ensureLastMessageVisible() {
+          const messages = chatMessages.querySelectorAll('.message-row');
+          if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            // Đảm bảo tin nhắn cuối có đủ khoảng cách với input bar
+            lastMessage.style.marginBottom = '16px';
+          }
+        }
+        
+        // Gọi hàm khi có tin nhắn mới
+        observer.observe(chatMessages, {
+          childList: true,
+          subtree: true,
+          attributes: false,
+          characterData: false
+        });
+        
+        // Gọi ngay khi trang tải xong
+        setTimeout(ensureLastMessageVisible, 1000);
       }
     });
   </script>
