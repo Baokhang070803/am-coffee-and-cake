@@ -106,35 +106,96 @@
       if (user) loadFriendsList();
     });
     async function loadFriendsList() {
-      if (!currentUser) return;
-      const db = getDatabase();
-      const userSnap = await get(ref(db, 'users/' + currentUser.uid + '/friends'));
-      const friends = userSnap.exists() ? Object.keys(userSnap.val() || {}) : [];
-      let list = [];
-      for (const fid of friends) {
-        let name = '', avatar = 'images/default-avatar.png', email = '';
-        const friendSnap = await get(ref(db, 'users/' + fid));
-        if (friendSnap.exists()) {
-          const f = friendSnap.val();
-          name = f.name || f.displayName || f.email || 'Người dùng';
-          avatar = f.avatarUrl || 'images/default-avatar.png';
-          email = f.email || '';
-        }
-        // Lấy lastMessage, updatedAt
-        const convId = [currentUser.uid, fid].sort().join('_');
-        const metaSnap = await get(ref(db, 'conversationMeta/' + convId));
-        let lastMessage = '', updatedAt = 0;
-        if (metaSnap.exists()) {
-          const meta = metaSnap.val();
-          lastMessage = meta.lastMessage || '';
-          updatedAt = meta.updatedAt || 0;
-        }
-        list.push({ uid: fid, name, avatar, email, lastMessage, updatedAt });
+      if (!currentUser) {
+        document.getElementById('mobileConversationList').innerHTML = 
+          '<div style="color:#aaa;text-align:center;margin-top:30px;">Vui lòng đăng nhập để xem danh sách bạn bè.</div>';
+        return;
       }
-      // Sắp xếp theo updatedAt mới nhất
-      list.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-      friendsList = list;
-      renderMobileConversationList(list);
+      
+      try {
+        const db = getDatabase();
+        
+        // Đọc từng friend riêng lẻ thay vì đọc cả node friends
+        // Đầu tiên, đọc thông tin người dùng hiện tại để lấy email (đảm bảo quyền truy cập)
+        const userRef = ref(db, 'users/' + currentUser.uid);
+        const userSnap = await get(userRef);
+        
+        if (!userSnap.exists()) {
+          console.log("Không tìm thấy thông tin người dùng");
+          document.getElementById('mobileConversationList').innerHTML = 
+            '<div style="color:#aaa;text-align:center;margin-top:30px;">Bạn chưa có bạn bè nào.</div>';
+          return;
+        }
+        
+        // Thử đọc từng friend một cách thủ công
+        // Đầu tiên, đọc tất cả users để tìm những người có mối quan hệ bạn bè với người dùng hiện tại
+        const allUsersRef = ref(db, 'users');
+        const allUsersSnap = await get(allUsersRef);
+        
+        if (!allUsersSnap.exists()) {
+          console.log("Không tìm thấy dữ liệu users");
+          document.getElementById('mobileConversationList').innerHTML = 
+            '<div style="color:#aaa;text-align:center;margin-top:30px;">Bạn chưa có bạn bè nào.</div>';
+          return;
+        }
+        
+        const allUsers = allUsersSnap.val();
+        let friends = [];
+        
+        // Tìm những người dùng có mối quan hệ bạn bè với người dùng hiện tại
+        for (const uid in allUsers) {
+          if (uid === currentUser.uid) continue; // Bỏ qua chính mình
+          
+          const user = allUsers[uid];
+          // Kiểm tra xem người dùng này có trong danh sách bạn bè của người dùng hiện tại không
+          if (user.friends && user.friends[currentUser.uid]) {
+            // Đây là bạn bè
+            const name = user.name || user.displayName || user.email || 'Người dùng';
+            const avatar = user.avatarUrl || 'images/default-avatar.png';
+            const email = user.email || '';
+            
+            // Lấy thông tin cuộc trò chuyện
+            const convId = [currentUser.uid, uid].sort().join('_');
+            let lastMessage = '', updatedAt = 0;
+            
+            try {
+              const metaRef = ref(db, 'conversationMeta/' + convId);
+              const metaSnap = await get(metaRef);
+              
+              if (metaSnap.exists()) {
+                const meta = metaSnap.val();
+                lastMessage = meta.lastMessage || '';
+                updatedAt = meta.updatedAt || 0;
+              }
+            } catch (err) {
+              console.log("Không thể đọc thông tin cuộc trò chuyện:", err);
+            }
+            
+            friends.push({ uid, name, avatar, email, lastMessage, updatedAt });
+          }
+        }
+        
+        // Sắp xếp theo updatedAt mới nhất
+        friends.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+        friendsList = friends;
+        
+        if (friends.length === 0) {
+          document.getElementById('mobileConversationList').innerHTML = 
+            '<div style="color:#aaa;text-align:center;margin-top:30px;">Bạn chưa có bạn bè nào.</div>';
+        } else {
+          renderMobileConversationList(friends);
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách bạn bè:", error);
+        document.getElementById('mobileConversationList').innerHTML = 
+          `<div style="color:#d33;text-align:center;margin-top:30px;">
+             <p>Không thể tải danh sách bạn bè</p>
+             <p style="font-size:14px;color:#888;">Lỗi: ${error.message}</p>
+             <button onclick="location.reload()" style="background:#a67c52;color:#fff;border:none;border-radius:6px;padding:8px 16px;margin-top:10px;cursor:pointer;">
+               Thử lại
+             </button>
+           </div>`;
+      }
     }
     function renderMobileConversationList(list) {
       const convDiv = document.getElementById('mobileConversationList');
