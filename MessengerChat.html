@@ -175,7 +175,7 @@
     <div class="call-modal-fullscreen">
       <div class="call-header">
         <div class="call-user-info">
-          <img id="callAvatar" class="call-avatar" src="images/default-avatar.png" alt="Avatar">
+          <img id="callAvatar" class="call-avatar" src="images/LOGO.png" alt="Avatar">
           <div class="call-username" id="callUsername">Tên bạn bè</div>
           <div class="call-status" id="callStatus">Đang gọi...</div>
         </div>
@@ -185,13 +185,31 @@
         <video id="remoteVideo" autoplay playsinline></video>
         <video id="localVideo" autoplay playsinline muted class="local-video-pip"></video>
         <audio id="remoteAudio" autoplay style="display:none;"></audio>
-      </div>
+      </div>  
       <div class="call-controls">
         <button id="toggleMicBtn" class="call-btn"><i class="fa fa-microphone"></i></button>
         <button id="toggleCameraBtn" class="call-btn"><i class="fa fa-video-camera"></i></button>
+        <button id="minimizeCallBtn" class="call-btn minimize"><i class="fa fa-compress"></i></button>
         <button id="acceptCallBtn" class="call-btn accept"><i class="fa fa-phone"></i></button>
         <button id="rejectCallBtn" class="call-btn reject"><i class="fa fa-phone"></i></button>
         <button id="endCallBtn" class="call-btn end"><i class="fa fa-phone"></i></button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mini call view (picture-in-picture) -->
+  <div id="miniCallView" class="mini-call-view" style="display:none;">
+    <div class="mini-call-content">
+      <div class="mini-call-video">
+        <video id="miniRemoteVideo" autoplay playsinline muted></video>
+      </div>
+      <div class="mini-call-info">
+        <div class="mini-call-name" id="miniCallName">Tên bạn bè</div>
+        <div class="mini-call-timer" id="miniCallTimer">00:00</div>
+      </div>
+      <div class="mini-call-buttons">
+        <button id="expandCallBtn" class="mini-call-btn expand"><i class="fa fa-arrows-alt"></i></button>
+        <button id="miniEndCallBtn" class="mini-call-btn end"><i class="fa fa-phone"></i></button>
       </div>
     </div>
   </div>
@@ -319,6 +337,108 @@
       0%, 100% { transform: translateX(0); }
       10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
       20%, 40%, 60%, 80% { transform: translateX(4px); }
+    }
+    
+    /* Picture-in-picture mini call view */
+    .mini-call-view {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 180px;
+      height: 100px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 9998;
+      overflow: hidden;
+      display: none;
+      transition: all 0.3s ease;
+      border: 2px solid #fff;
+    }
+    .mini-call-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .mini-call-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f0f2f5;
+      z-index: 1;
+    }
+    #miniRemoteVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .mini-call-info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 6px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+      color: #fff;
+      z-index: 2;
+      box-sizing: border-box;
+    }
+    .mini-call-name {
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mini-call-timer {
+      font-size: 10px;
+      opacity: 0.9;
+    }
+    .mini-call-buttons {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+      z-index: 2;
+      box-sizing: border-box;
+    }
+    .mini-call-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.8);
+      color: #222;
+    }
+    .mini-call-btn.end {
+      background: #d33;
+      color: #fff;
+    }
+    .mini-call-view:hover {
+      transform: scale(1.05);
+    }
+    .mini-call-btn:active {
+      transform: scale(0.9);
+    }
+    @media (max-width: 600px) {
+      .mini-call-view {
+        width: 120px;
+        height: 70px;
+        bottom: 80px;
+        right: 10px;
+      }
     }
   </style>
   <script type="module">
@@ -604,9 +724,11 @@ function showCallModal(type, statusText, isIncoming = false) {
 }
 function hideCallModal() {
   callModal.style.display = 'none';
+  miniCallView.style.display = 'none';
   localVideo.srcObject = null;
   remoteVideo.srcObject = null;
   remoteAudio.srcObject = null;
+  miniRemoteVideo.srcObject = null;
   stopCallTimer();
   stopAllCallSounds();
   if (callTimeout) clearTimeout(callTimeout);
@@ -940,7 +1062,10 @@ async function cleanupCall() {
   if (signalingRef) await remove(signalingRef);
 }
 callModal.onclick = function(e) {
-  if (e.target === callModal) cleanupCall();
+  if (e.target === callModal) {
+    // Khi click vào nền, thu nhỏ cuộc gọi thành picture-in-picture thay vì kết thúc
+    minimizeCall();
+  }
 };
 // --- Mic/Camera toggle ---
 const toggleMicBtn = document.getElementById('toggleMicBtn');
@@ -987,14 +1112,22 @@ let callStartTime = null;
 function startCallTimer() {
   callStartTime = Date.now();
   const callTimer = document.getElementById('callTimer');
+  const miniCallTimer = document.getElementById('miniCallTimer');
+  
   if (callTimerInterval) clearInterval(callTimerInterval);
   callTimerInterval = setInterval(() => {
     const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
     const min = Math.floor(elapsed / 60).toString().padStart(2, '0');
     const sec = (elapsed % 60).toString().padStart(2, '0');
-    callTimer.textContent = `${min}:${sec}`;
+    const timeStr = `${min}:${sec}`;
+    
+    // Cập nhật cả hai timer
+    if (callTimer) callTimer.textContent = timeStr;
+    if (miniCallTimer) miniCallTimer.textContent = timeStr;
   }, 1000);
-  callTimer.textContent = '00:00';
+  
+  if (callTimer) callTimer.textContent = '00:00';
+  if (miniCallTimer) miniCallTimer.textContent = '00:00';
 }
 function stopCallTimer() {
   if (callTimerInterval) clearInterval(callTimerInterval);
@@ -1002,7 +1135,67 @@ function stopCallTimer() {
   callStartTime = null;
   const callTimer = document.getElementById('callTimer');
   if (callTimer) callTimer.textContent = '00:00';
-    }
+  const miniCallTimer = document.getElementById('miniCallTimer');
+  if (miniCallTimer) miniCallTimer.textContent = '00:00';
+}
+
+// --- Picture-in-Picture (Mini Call View) ---
+const miniCallView = document.getElementById('miniCallView');
+const expandCallBtn = document.getElementById('expandCallBtn');
+const miniEndCallBtn = document.getElementById('miniEndCallBtn');
+const minimizeCallBtn = document.getElementById('minimizeCallBtn');
+const miniRemoteVideo = document.getElementById('miniRemoteVideo');
+const miniCallName = document.getElementById('miniCallName');
+const miniCallTimer = document.getElementById('miniCallTimer');
+
+// Hàm thu nhỏ cuộc gọi thành picture-in-picture
+function minimizeCall() {
+  // Chỉ thu nhỏ khi đang trong cuộc gọi (không phải đang gọi hoặc đang đổ chuông)
+  if (callStatus.textContent !== 'Đang trò chuyện...') return;
+  
+  // Hiển thị mini view
+  miniCallView.style.display = 'block';
+  
+  // Cập nhật thông tin
+  miniCallName.textContent = document.getElementById('callUsername').textContent;
+  miniCallTimer.textContent = document.getElementById('callTimer').textContent;
+  
+  // Cập nhật video
+  if (callType === 'video' && remoteVideo.srcObject) {
+    miniRemoteVideo.srcObject = remoteVideo.srcObject;
+    miniRemoteVideo.style.display = 'block';
+  } else {
+    miniRemoteVideo.style.display = 'none';
+  }
+  
+  // Ẩn modal chính
+  callModal.style.display = 'none';
+}
+
+// Hàm mở rộng cuộc gọi từ picture-in-picture
+function expandCall() {
+  // Hiển thị modal chính
+  callModal.style.display = 'flex';
+  
+  // Ẩn mini view
+  miniCallView.style.display = 'none';
+}
+
+// Gán sự kiện cho các nút
+if (minimizeCallBtn) {
+  minimizeCallBtn.onclick = minimizeCall;
+}
+
+if (expandCallBtn) {
+  expandCallBtn.onclick = expandCall;
+}
+
+if (miniEndCallBtn) {
+  miniEndCallBtn.onclick = async function() {
+    if (signalingRef) await set(signalingRef, { type: 'end' });
+    cleanupCall();
+  };
+}
   </script>
   <!-- Modal xem ảnh lớn -->
   <div id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
