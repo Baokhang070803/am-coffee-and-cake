@@ -432,12 +432,48 @@
     .mini-call-btn:active {
       transform: scale(0.9);
     }
-    @media (max-width: 600px) {
-      .mini-call-view {
-        width: 120px;
-        height: 70px;
-        bottom: 80px;
-        right: 10px;
+    @media (max-width: 600px), (max-height: 700px) {
+      .call-modal-fullscreen {
+        padding: 0 !important;
+        justify-content: flex-start !important;
+      }
+      .call-header {
+        padding: 4px 2vw 0 2vw !important;
+      }
+      .call-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        margin-bottom: 2px !important;
+      }
+      .call-username {
+        font-size: 16px !important;
+      }
+      .call-status {
+        font-size: 12px !important;
+      }
+      .call-timer {
+        font-size: 12px !important;
+        padding: 2px 6px !important;
+        margin-top: 2px !important;
+      }
+      .call-controls {
+        position: fixed !important;
+        left: 0; right: 0; bottom: 0;
+        width: 100vw !important;
+        background: rgba(255,255,255,0.95);
+        gap: 8px !important;
+        margin-bottom: 0 !important;
+        padding: 6px 0 !important;
+        z-index: 100000;
+      }
+      .call-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 15px !important;
+        margin: 0 1px !important;
+      }
+      .call-video-area {
+        min-height: 120px !important;
       }
     }
   </style>
