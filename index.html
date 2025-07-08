@@ -2240,50 +2240,59 @@
             });
 
             // Xử lý gửi form liên hệ
-            document.getElementById('contact-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const name = e.target.name.value.trim();
-                const email = e.target.email.value.trim();
-                const phone = e.target.phone.value.trim();
-                const message = e.target.message.value.trim();
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    try {
+                        e.preventDefault();
+                        console.log('Form submit intercepted!');
+                        const name = e.target.name.value.trim();
+                        const email = e.target.email.value.trim();
+                        const phone = e.target.phone.value.trim();
+                        const message = e.target.message.value.trim();
 
-                if (!name || !email || !message) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi!',
-                        text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
-                        showConfirmButton: true
-                    });
-                    return;
-                }
+                        if (!name || !email || !message) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+                                showConfirmButton: true
+                            });
+                            return;
+                        }
 
-                
-
-                try {
-                    const db = window.db || getDatabase();
-                    await push(ref(db, 'contactMessages'), {
-                        name,
-                        email,
-                        phone,
-                        message,
-                        createdAt: new Date().toISOString()
-                    });
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Gửi thành công!',
-                        text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
-                        showConfirmButton: true
-                    });
-                    e.target.reset();
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi!',
-                        text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
-                        showConfirmButton: true
-                    });
-                }
-            });
+                        try {
+                            const db = window.db || getDatabase();
+                            await push(ref(db, 'contactMessages'), {
+                                name,
+                                email,
+                                phone,
+                                message,
+                                createdAt: new Date().toISOString()
+                            });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Gửi thành công!',
+                                text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
+                                showConfirmButton: true
+                            });
+                            e.target.reset();
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
+                                showConfirmButton: true
+                            });
+                            console.error('Lỗi khi gửi tin nhắn:', error);
+                        }
+                    } catch (outerError) {
+                        console.error('Lỗi ngoài cùng khi submit form:', outerError);
+                    }
+                });
+            } else {
+                console.error('Không tìm thấy form liên hệ với id contact-form');
+            }
 
             // Xử lý đăng xuất
             document.getElementById('logoutLink').addEventListener('click', async (e) => {
@@ -2727,6 +2736,56 @@ if (progress && percentText) animateLoading();
                     </div>
                   </div>
 
-              
+    <script type="module">
+import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const email = e.target.email.value.trim();
+      const phone = e.target.phone.value.trim();
+      const message = e.target.message.value.trim();
+      if (!name || !email || !message) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+          showConfirmButton: true
+        });
+        return;
+      }
+      try {
+        const db = window.db || getDatabase();
+        await push(ref(db, 'contactMessages'), {
+          name,
+          email,
+          phone,
+          message,
+          createdAt: new Date().toISOString()
+        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Gửi thành công!',
+          text: 'Cảm ơn bạn đã liên hệ với chúng tôi.',
+          showConfirmButton: true
+        });
+        e.target.reset();
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Không thể gửi tin nhắn. Vui lòng thử lại.',
+          showConfirmButton: true
+        });
+        console.error('Lỗi khi gửi tin nhắn:', error);
+      }
+    });
+  } else {
+  }
+});
+</script>
 </body>
 </html>

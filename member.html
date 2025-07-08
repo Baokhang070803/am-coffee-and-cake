@@ -39,6 +39,26 @@
     <!-- JsBarcode và renderMemberCard phải nằm trước script type=module -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script>
+    // --- Thêm hàm sinh barcode 5 số ngẫu nhiên và kiểm tra trùng lặp ---
+    async function generateUniqueBarcode(database) {
+      const generate = () => Math.floor(10000 + Math.random() * 90000).toString();
+      let barcode;
+      let exists = true;
+      while (exists) {
+        barcode = generate();
+        // Đảm bảo dùng đúng SDK, đúng database instance
+        try {
+          const snapshot = await get(query(ref(database, 'users'), orderByChild('barcode'), equalTo(barcode)));
+          exists = snapshot.exists();
+          console.log("Kiểm tra barcode:", barcode, "exists:", exists);
+        } catch (err) {
+          console.error("Lỗi khi kiểm tra barcode:", err);
+          exists = false; // Nếu lỗi thì cứ cho qua để tránh vòng lặp vô hạn
+        }
+      }
+      console.log("Barcode sinh ra là:", barcode);
+      return barcode;
+    }
     function renderMemberCard(user, userData) {
       // Tên, email, UID
       document.getElementById('memberName').textContent = userData?.name || user.displayName || 'Chưa đặt tên';
@@ -48,22 +68,8 @@
       // Phần xử lý điểm và hạng sẽ được cập nhật bởi hàm updateMemberPointsFromOrders
       // nên có thể bỏ hoặc giữ giá trị mặc định ở đây.
 
-      // Mã vạch: Ưu tiên dùng 5 số cuối của SĐT, fallback ra UID
-      let barcodeValue;
-      const userPhone = userData?.phone?.replace(/\D/g, ''); // Lấy SĐT và lọc ký tự không phải số
-
-      if (userPhone && userPhone.length >= 5) {
-        barcodeValue = userPhone.slice(-5);
-      } else {
-        // Fallback: dùng 5 ký tự số cuối của UID
-        barcodeValue = (user.uid?.replace(/\D/g, '') || '000000').slice(-5);
-      }
-
-      // Đảm bảo barcodeValue luôn có giá trị
-      if (!barcodeValue) {
-        barcodeValue = "00000";
-      }
-      
+      // Mã vạch: Lấy từ userData.barcode, fallback "00000"
+      let barcodeValue = userData?.barcode && userData.barcode !== "00000" ? userData.barcode : "00000";
       let barcodeDiv = document.getElementById('memberBarcode');
       if (barcodeDiv) {
         barcodeDiv.innerHTML = '<svg id="barcodeSVG"></svg>';
@@ -2193,7 +2199,7 @@
         // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, onValue, update, query, orderByChild, equalTo, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getDatabase, ref, onValue, update, query, orderByChild, equalTo, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
         // Firebase Config
@@ -2709,7 +2715,7 @@
         };
 
         // Check Auth State and Load Data
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             const logoutLink = document.getElementById('logoutLink');
             const loginLink = document.getElementById('loginLink');
             const registerLink = document.getElementById('registerLink');
@@ -2749,7 +2755,7 @@
 
                 // Load user info
                 const userRef = ref(database, `users/${user.uid}`);
-                onValue(userRef, (snapshot) => {
+                onValue(userRef, async (snapshot) => {
                     const data = snapshot.val();
                     console.log("Dữ liệu người dùng:", data);
                     
@@ -2779,6 +2785,11 @@
                         
                         // Gọi hàm vẽ thẻ thành viên với thông tin cơ bản
                         renderMemberCard(user, {});
+                    }
+                    // Nếu chưa có barcode hoặc barcode là '00000' thì sinh và lưu mới
+                    if (!data?.barcode || data.barcode === "00000") {
+                      let barcode = await generateUniqueBarcode(database);
+                      await update(userRef, { barcode });
                     }
                 }, (error) => {
                     console.error("Lỗi tải thông tin người dùng:", error);
@@ -3005,7 +3016,7 @@
         };
 
         // Handle Register
-        window.handleRegister = function() {
+        window.handleRegister = async function() {
             const name = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
@@ -3024,52 +3035,44 @@
                 spinner.style.display = 'none';
                 return;
             }
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    const userRef = ref(database, `users/${user.uid}`);
-                    set(userRef, {
-                        name: name,
-                        email: email,
-                        phone: '',
-                        address: '',
-                        role: 'user',
-                        created_at: new Date().toISOString().split('T')[0],
-                        emailVerified: false,
-                        deleted: false
-                    }).then(() => {
-                        updateProfile(user, { displayName: name }).then(() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Đăng ký thành công!',
-                                timer: 1500,
-                                showConfirmButton: false
-                            }).then(() => {
-                                closeModal('registerModal');
-                                window.location.reload();
-                            });
-                        });
-                    }).catch((error) => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi!',
-                            text: `Không thể lưu thông tin: ${error.message}`,
-                            showConfirmButton: true
-                        });
-                    });
-                })
-                .catch((error) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi!',
-                        text: `Đăng ký thất bại: ${error.message}`,
-                        showConfirmButton: true
-                    });
-                })
-                .finally(() => {
-                    btn.disabled = false;
-                    spinner.style.display = 'none';
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                // Sinh barcode 5 số ngẫu nhiên, đảm bảo không trùng
+                let barcode = await generateUniqueBarcode(database);
+                const userRef = ref(database, `users/${user.uid}`);
+                await set(userRef, {
+                  name: name,
+                  email: email,
+                  phone: '',
+                  address: '',
+                  role: 'user',
+                  created_at: new Date().toISOString().split('T')[0],
+                  emailVerified: false,
+                  deleted: false,
+                  barcode: barcode
                 });
+                await updateProfile(user, { displayName: name });
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Đăng ký thành công!',
+                  timer: 1500,
+                  showConfirmButton: false
+                }).then(() => {
+                  closeModal('registerModal');
+                  window.location.reload();
+                });
+            } catch (error) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Lỗi!',
+                  text: `Đăng ký thất bại: ${error.message}`,
+                  showConfirmButton: true
+                });
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
         };
 
         // Handle Forgot Password
@@ -3593,6 +3596,28 @@
           }
           if (document.querySelector('.member-rank-progress')) {
             document.querySelector('.member-rank-progress').innerHTML = `${totalPoints} điểm | ${nextRankInfo}`;
+          }
+
+          // --- Lưu toàn bộ thông tin thẻ thành viên vào node user ---
+          const user = auth.currentUser;
+          if (user) {
+            const userRef = ref(database, `users/${user.uid}`);
+            // Lấy barcode hiện tại
+            get(userRef).then(snap => {
+              let barcode = '';
+              if (snap.exists()) barcode = snap.val().barcode || '';
+              const memberCardInfo = {
+                barcode: barcode,
+                points: totalPoints,
+                rank: rank,
+                rankClass: rankClass,
+                nextRank: nextRank,
+                nextRankPoint: nextRankPoint,
+                nextRankInfo: nextRankInfo,
+                lastUpdate: new Date().toISOString()
+              };
+              update(userRef, { memberCard: memberCardInfo });
+            });
           }
         }
     </script>
