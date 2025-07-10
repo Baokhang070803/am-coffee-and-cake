@@ -1174,9 +1174,12 @@
           pointer-events: none;
           opacity: 0.6;
         }
-        /* Đảm bảo popup Swal.fire luôn nổi trên modal cá nhân */
+        /* Đảm bảo popup Swal.fire luôn nổi trên tất cả modal */
         .swal2-container {
-          z-index: 20000 !important;
+          z-index: 99999 !important;
+        }
+        .swal2-popup {
+          z-index: 99999 !important;
         }
         /* Modal lời mời kết bạn kiểu Facebook */
         #friendRequestsModalBg .profile-modal {
@@ -2409,6 +2412,14 @@
                         <i class="fa fa-comment-o"></i>
                         <span>Bình luận</span>
                     </div>
+                    <div class="post-action${!currentUser ? ' disabled-like' : ''}" ${!currentUser ? 'style="pointer-events:none;opacity:0.6;"' : ''} onclick="${currentUser ? `openShareModal('${post.id}')` : ''}">
+                        <i class="fa fa-share"></i>
+                        <span>Chia sẻ</span>
+                    </div>
+                    <div class="post-action" onclick="openPostDetailModal('${post.id}')">
+                        <i class="fa fa-eye"></i>
+                        <span>Chi tiết</span>
+                    </div>
                 </div>
                 <div class="comments-section">
                     <div id="comments-${post.id}">
@@ -2637,13 +2648,423 @@
             if (commentInput) commentInput.focus();
         };
 
-        window.sharePost = function(postId) {
+        // Biến toàn cục để lưu postId hiện tại đang chia sẻ
+        let currentSharingPostId = null;
+
+        // Mở modal chia sẻ
+        window.openShareModal = function(postId) {
+            currentSharingPostId = postId;
+            const modal = document.getElementById('shareModalBg');
+            const linkInput = document.getElementById('shareLinkInput');
+            
+            // Tạo link chia sẻ
+            const shareLink = `${window.location.origin}${window.location.pathname}?post=${postId}`;
+            linkInput.value = shareLink;
+            
+            modal.style.display = 'flex';
+        };
+
+        // Đóng modal chia sẻ
+        window.closeShareModal = function() {
+            document.getElementById('shareModalBg').style.display = 'none';
+            currentSharingPostId = null;
+        };
+
+        // Chia sẻ lên Facebook
+        window.shareToFacebook = function() {
+            if (!currentSharingPostId) return;
+            
+            const shareLink = document.getElementById('shareLinkInput').value;
+            const post = posts.find(p => p.id === currentSharingPostId);
+            const shareText = post ? post.content.substring(0, 100) + '...' : 'Bài viết từ Xã hội Ấm';
+            
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}&quote=${encodeURIComponent(shareText)}`;
+            window.open(facebookUrl, '_blank', 'width=600,height=400');
+            
+            // Đóng modal trước khi hiển thị thông báo
+            closeShareModal();
+            
+            // Delay một chút để modal đóng hoàn toàn
+            setTimeout(() => {
             Swal.fire({
-                title: 'Chia sẻ bài viết',
-                text: 'Tính năng chia sẻ sẽ có trong phiên bản tới!',
-                icon: 'info',
-                confirmButtonText: 'Được rồi'
+                    icon: 'success',
+                    title: 'Đã mở Facebook!',
+                    text: 'Vui lòng hoàn tất chia sẻ trên Facebook.',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    allowOutsideClick: true,
+                    allowEscapeKey: true
+                });
+            }, 300);
+        };
+
+        // Chia sẻ lên Twitter
+        window.shareToTwitter = function() {
+            if (!currentSharingPostId) return;
+            
+            const shareLink = document.getElementById('shareLinkInput').value;
+            const post = posts.find(p => p.id === currentSharingPostId);
+            const shareText = post ? post.content.substring(0, 100) + '...' : 'Bài viết từ Xã hội Ấm';
+            
+            const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareLink)}&text=${encodeURIComponent(shareText)}`;
+            window.open(twitterUrl, '_blank', 'width=600,height=400');
+            
+            // Đóng modal trước khi hiển thị thông báo
+            closeShareModal();
+            
+            // Delay một chút để modal đóng hoàn toàn
+            setTimeout(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đã mở Twitter!',
+                    text: 'Vui lòng hoàn tất chia sẻ trên Twitter.',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    allowOutsideClick: true,
+                    allowEscapeKey: true
+                });
+            }, 300);
+        };
+
+        // Copy link bài viết
+        window.copyPostLink = function() {
+            const linkInput = document.getElementById('shareLinkInput');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                // Đóng modal trước khi hiển thị thông báo
+                closeShareModal();
+                
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đã sao chép!',
+                        text: 'Link bài viết đã được sao chép vào clipboard.',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        allowOutsideClick: true,
+                        allowEscapeKey: true
+                    });
+                }, 300);
+            } catch (err) {
+                closeShareModal();
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Không thể sao chép link. Vui lòng thử lại.',
+                        confirmButtonText: 'Được rồi',
+                        allowOutsideClick: true,
+                        allowEscapeKey: true
+                    });
+                }, 300);
+            }
+        };
+
+        // Copy link vào clipboard (hiện đại)
+        window.copyLinkToClipboard = function() {
+            const linkInput = document.getElementById('shareLinkInput');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                // Sử dụng Clipboard API hiện đại
+                navigator.clipboard.writeText(linkInput.value).then(() => {
+                    // Đóng modal trước khi hiển thị thông báo
+                    closeShareModal();
+                    
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã sao chép!',
+                            text: 'Link bài viết đã được sao chép vào clipboard.',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            allowOutsideClick: true,
+                            allowEscapeKey: true
+                        });
+                    }, 300);
+                }).catch(() => {
+                    // Fallback cho phương thức cũ
+                    copyPostLink();
+                });
+            } else {
+                // Fallback cho trình duyệt cũ
+                copyPostLink();
+            }
+        };
+
+        // Đăng lại bài viết (share as new post)
+        window.shareAsNewPost = function() {
+            if (!currentSharingPostId) return;
+
+            const post = posts.find(p => p.id === currentSharingPostId);
+            if (!post) return;
+
+            closeShareModal();
+
+            const composerExpanded = document.getElementById('composerExpanded');
+            const postContent = document.getElementById('postContent');
+            const shareLink = `${window.location.origin}${window.location.pathname}?post=${post.id}`;
+
+            let repostContent = `📢 Đăng lại từ ${post.authorEmail.split('@')[0]}:\n`;
+            if (post.content && post.content.trim()) {
+              repostContent += `\n"${post.content}"\n`;
+            }
+            if (post.emoji) {
+              repostContent += `\n${post.emoji} Cảm xúc gốc`;
+            }
+            repostContent += `\n\n🔗 Link gốc: ${shareLink}\n\n#ĐăngLại #XãHộiẤm`;
+            if (post.timestamp) {
+              const originalTime = formatTimeAgo(post.timestamp);
+              repostContent += `\n📅 Đăng lúc: ${originalTime}`;
+            }
+
+            composerExpanded.style.display = 'block';
+            postContent.value = repostContent;
+            postContent.focus();
+
+            // Ảnh gốc chỉ hiển thị ở preview
+            if (post.image) {
+              const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+              const preview = `<img src="${post.image}" alt="repost-preview" style="max-width:100%;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;">
+              <span style="display:block;color:#f7544a;cursor:pointer;font-size:13px;margin-top:2px;" onclick="removeImage()">Xóa ảnh</span>
+              <span style="display:block;color:#666;font-size:12px;margin-top:2px;">�� Ảnh từ bài viết gốc</span>`;
+              imagePreviewContainer.innerHTML = preview;
+              imagePreviewContainer.style.display = 'block';
+              window.selectedImageCloudinaryUrl = post.image;
+            }
+
+            document.getElementById('postBtn').disabled = false;
+            composerExpanded.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            Swal.fire({
+              icon: 'info',
+              title: 'Sẵn sàng đăng lại!',
+              text: `Nội dung đã được điền sẵn với link gốc${post.image ? ' và ảnh gốc' : ''}. Bạn có thể chỉnh sửa trước khi đăng.`,
+              timer: 3000,
+              showConfirmButton: false
             });
+        };
+
+        // Đóng modal khi click ra ngoài
+        document.addEventListener('DOMContentLoaded', function() {
+            const shareModal = document.getElementById('shareModalBg');
+            if (shareModal) {
+                shareModal.addEventListener('click', function(e) {
+                    if (e.target === shareModal) {
+                        closeShareModal();
+                    }
+                });
+            }
+
+            const postDetailModal = document.getElementById('postDetailModalBg');
+            if (postDetailModal) {
+                postDetailModal.addEventListener('click', function(e) {
+                    if (e.target === postDetailModal) {
+                        closePostDetailModal();
+                    }
+                });
+            }
+        });
+
+        // Biến toàn cục để lưu postId hiện tại trong modal chi tiết
+        let currentDetailPostId = null;
+
+                // Tạo bài viết chỉ đọc cho modal chi tiết
+        function createReadOnlyPostElement(post) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post post-detail-post';
+            postDiv.setAttribute('data-post-id', post.id);
+
+            const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+            const commentsCount = countTotalComments(post.comments);
+            const timeAgo = formatTimeAgo(post.timestamp);
+            
+            // Tạo avatar và tên động từ authorId
+            const authorInitial = post.authorEmail.charAt(0).toUpperCase();
+            let avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">${authorInitial}</span>`;
+            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-${post.id}">${post.authorEmail.split('@')[0]}</span>`;
+            
+            // Load thông tin user mới nhất
+            loadUserInfoForPost(post.authorId, post.id);
+            
+            let imageHtml = '';
+            if (post.image) {
+                imageHtml = `<div style='margin:8px 0;'><img src='${post.image}' alt='post-img' loading='lazy' style='max-width:100%;max-height:320px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:zoom-in;' onclick="openImageModal('${post.image.replace(/'/g, '\'')}')"></div>`;
+            }
+            
+            let emojiHtml = '';
+            if (post.emoji) {
+                emojiHtml = `<span style='font-size:22px;margin-left:6px;'>${post.emoji}</span>`;
+            }
+
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${avatarHtml}</div>
+                    <div class="post-user-info">
+                        <div class="post-username">${authorNameHtml}</div>
+                        <div class="post-time">${timeAgo}</div>
+                    </div>
+                </div>
+                <div class="post-content">${post.content}${emojiHtml}</div>
+                ${imageHtml}
+                ${likesCount > 0 || commentsCount > 0 ? `
+                <div class="post-stats">
+                    <div class="post-likes">
+                        ${likesCount > 0 ? `
+                        <div class="like-reactions">
+                            <div class="reaction-icon like-icon"><i class="fa fa-thumbs-up"></i></div>
+                        </div>
+                        ${likesCount} lượt thích` : ''}
+                    </div>
+                    <div class="post-comments-count">
+                        ${commentsCount > 0 ? `${commentsCount} bình luận` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                <div class="comments-section">
+                    <div id="comments-${post.id}">
+                        ${renderReadOnlyComments(post.comments || {}, post.id)}
+                    </div>
+                </div>
+            `;
+
+            return postDiv;
+        }
+
+        // Render comments chỉ đọc (không có form comment)
+        function renderReadOnlyComments(comments, postId, parentId = null, level = 0) {
+            if (!comments || Object.keys(comments).length === 0) return '';
+            let entries = Object.entries(comments);
+            
+            // Sắp xếp theo thời gian mới nhất
+            entries.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+            
+            let html = '';
+            entries.forEach(([id, comment]) => {
+                if (!comment || typeof comment !== 'object') return '';
+                const hasText = typeof comment.text === 'string' && comment.text.trim();
+                let repliesHtml = '';
+                if (comment.replies && typeof comment.replies === 'object') {
+                    repliesHtml = `<div class="comment-replies" style="margin-left:32px;">${renderReadOnlyComments(comment.replies, postId, id, level+1)}</div>`;
+                }
+                if (!hasText) {
+                    html += repliesHtml;
+                    return;
+                }
+                
+                const authorInitial = comment.authorName ? comment.authorName.charAt(0).toUpperCase() : comment.authorEmail ? comment.authorEmail.charAt(0).toUpperCase() : '?';
+                let avatarHtml = '';
+                if (comment.authorPhotoURL) {
+                    avatarHtml = `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                } else if (comment.authorId) {
+                    avatarHtml = `<div id="avatar-cmt-${id}" style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#a67c52;display:flex;align-items:center;justify-content:center;">
+                        <img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">
+                    </div>`;
+                    getUserProfile(comment.authorId).then(profile => {
+                        if (profile && profile.avatarUrl) {
+                            const el = document.getElementById('avatar-cmt-' + id);
+                            if (el) el.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                        }
+                    });
+                } else {
+                    avatarHtml = `<img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                }
+                
+                const timeAgo = formatTimeAgo(comment.timestamp);
+                const likesCount = comment.likes ? Object.keys(comment.likes).length : 0;
+                const authorNameHtml = `<span style='cursor:pointer;color:#a67c52;font-weight:600;' onclick="viewProfile('${comment.authorId}')">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</span>`;
+                
+                html += `
+                    <div class="comment" data-comment-id="${id}">
+                        <div class="comment-avatar">${avatarHtml}</div>
+                        <div class="comment-content">
+                            <div class="comment-bubble">
+                                <div class="comment-author">${authorNameHtml}</div>
+                                <div class="comment-text">${comment.text}</div>
+                            </div>
+                            <div class="comment-actions">
+                                <span class="comment-action">
+                                    Thích${likesCount > 0 ? ` (${likesCount})` : ''}
+                                </span>
+                                <span>${timeAgo}</span>
+                            </div>
+                            ${repliesHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
+        // Mở modal chi tiết bài viết
+        window.openPostDetailModal = function(postId) {
+            currentDetailPostId = postId;
+            const post = posts.find(p => p.id === postId);
+            if (!post) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Không tìm thấy bài viết',
+                    text: 'Bài viết này có thể đã bị xóa.',
+                    confirmButtonText: 'Được rồi'
+                });
+                return;
+            }
+
+            const modal = document.getElementById('postDetailModalBg');
+            const content = document.getElementById('postDetailContent');
+            
+            // Render bài viết chỉ đọc
+            const postElement = createReadOnlyPostElement(post);
+            
+            // Xóa tất cả nội dung cũ
+            content.innerHTML = '';
+            content.appendChild(postElement);
+            
+            modal.style.display = 'flex';
+            
+            // Ẩn scrollbar của body khi mở modal full màn hình
+            document.body.style.overflow = 'hidden';
+            
+            // Thêm class để ẩn các element khác nếu cần
+            document.body.classList.add('modal-open');
+        };
+
+        // Đóng modal chi tiết bài viết
+        window.closePostDetailModal = function() {
+            document.getElementById('postDetailModalBg').style.display = 'none';
+            currentDetailPostId = null;
+            
+            // Khôi phục scrollbar của body
+            document.body.style.overflow = '';
+            document.body.classList.remove('modal-open');
+        };
+
+        // Chia sẻ từ modal chi tiết
+        window.shareFromDetail = function() {
+            if (currentDetailPostId) {
+                closePostDetailModal();
+                setTimeout(() => {
+                    openShareModal(currentDetailPostId);
+                }, 300);
+            }
+        };
+
+        // Thêm nút xem chi tiết vào mỗi bài viết
+        function addViewDetailButton(postElement, postId) {
+            const postActions = postElement.querySelector('.post-actions');
+            if (postActions) {
+                const viewDetailBtn = document.createElement('div');
+                viewDetailBtn.className = 'post-action';
+                viewDetailBtn.innerHTML = '<i class="fa fa-eye"></i><span>Chi tiết</span>';
+                viewDetailBtn.onclick = () => openPostDetailModal(postId);
+                postActions.appendChild(viewDetailBtn);
+            }
+        }
+
+        window.sharePost = function(postId) {
+            openShareModal(postId);
         };
 
         window.likeComment = function(commentId) {
@@ -2760,6 +3181,34 @@
                 loadingOverlay.style.display = 'none';
             }
         }, 2000);
+
+        // Xử lý link chia sẻ khi truy cập trực tiếp
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedPostId = urlParams.get('post');
+            
+            if (sharedPostId) {
+                // Đợi posts load xong rồi mới xử lý
+                setTimeout(() => {
+                    const sharedPost = posts.find(p => p.id === sharedPostId);
+                    if (sharedPost) {
+                        // Mở modal chi tiết bài viết
+                        openPostDetailModal(sharedPostId);
+                        
+                        // Xóa parameter khỏi URL để tránh reload lại
+                        const newUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, newUrl);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không tìm thấy bài viết',
+                            text: 'Bài viết này có thể đã bị xóa hoặc không tồn tại.',
+                            confirmButtonText: 'Được rồi'
+                        });
+                    }
+                }, 2000); // Đợi 2 giây để posts load xong
+            }
+        });
 
         window.handleReplyKeypress = function(event, postId, commentId) {
             if (event.key === 'Enter') {
@@ -3531,6 +3980,326 @@
         font-size: 32px;
       }
     }
+
+        /* Modal chia sẻ bài viết */
+        .share-modal-bg {
+          display: none;
+          position: fixed;
+          z-index: 20002;
+          left: 0; top: 0; width: 100vw; height: 100vh;
+          background: rgba(0,0,0,0.55);
+          align-items: center;
+          justify-content: center;
+        }
+        .share-modal {
+          background: #fff;
+          border-radius: 18px;
+          max-width: 420px;
+          width: 95vw;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+          position: relative;
+          padding: 0 0 24px 0;
+          animation: fadeIn 0.25s;
+          z-index: 20003;
+        }
+        .share-modal .close {
+          position: absolute;
+          top: 16px; right: 22px;
+          font-size: 28px;
+          color: #65676b;
+          cursor: pointer;
+          font-weight: bold;
+          z-index: 2;
+        }
+        .share-modal-header {
+          padding: 24px 24px 0 24px;
+          text-align: center;
+          border-bottom: 1px solid #e4e6ea;
+          padding-bottom: 16px;
+        }
+        .share-modal-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #1c1e21;
+          margin-bottom: 8px;
+        }
+        .share-modal-subtitle {
+          font-size: 14px;
+          color: #65676b;
+        }
+        .share-options {
+          padding: 16px 24px;
+        }
+        .share-option {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 0;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: background 0.2s;
+        }
+        .share-option:hover {
+          background: #f0f2f5;
+        }
+        .share-option-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          color: #fff;
+        }
+        .share-option-icon.facebook { background: #1877f2; }
+        .share-option-icon.twitter { background: #1da1f2; }
+        .share-option-icon.copy { background: #a67c52; }
+        .share-option-icon.link { background: #4caf50; }
+        .share-option-text {
+          flex: 1;
+        }
+        .share-option-title {
+          font-weight: 600;
+          color: #1c1e21;
+          font-size: 15px;
+        }
+        .share-option-desc {
+          font-size: 13px;
+          color: #65676b;
+        }
+        .share-input {
+          margin: 16px 24px;
+          padding: 12px;
+          border: 1px solid #e4e6ea;
+          border-radius: 8px;
+          font-size: 14px;
+          width: calc(100% - 48px);
+          box-sizing: border-box;
+        }
+        .share-input:focus {
+          outline: none;
+          border-color: #a67c52;
+        }
+        .share-actions {
+          padding: 0 24px;
+          display: flex;
+          gap: 12px;
+        }
+        .share-btn {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .share-btn.primary {
+          background: #a67c52;
+          color: #fff;
+        }
+        .share-btn.primary:hover {
+          background: #8b6b42;
+        }
+        .share-btn.secondary {
+          background: #f0f2f5;
+          color: #1c1e21;
+        }
+        .share-btn.secondary:hover {
+          background: #e4e6ea;
+        }
+
+        /* Modal chi tiết bài viết - Full màn hình */
+        .post-detail-modal-bg {
+          display: none;
+          position: fixed;
+          z-index: 20004;
+          left: 0; top: 0; width: 100vw; height: 100vh;
+          background: #fff;
+          align-items: center;
+          justify-content: center;
+        }
+        .post-detail-modal {
+          background: #fff;
+          border-radius: 0;
+          width: 100vw;
+          height: 100vh;
+          max-width: 100vw;
+          max-height: 100vh;
+          box-shadow: none;
+          position: relative;
+          overflow: hidden;
+          animation: fadeIn 0.25s;
+        }
+        .post-detail-modal .close {
+          position: absolute;
+          top: 16px; right: 22px;
+          font-size: 28px;
+          color: #65676b;
+          cursor: pointer;
+          font-weight: bold;
+          z-index: 2;
+        }
+        .post-detail-header {
+          padding: 16px 24px 12px;
+          border-bottom: 1px solid #e4e6ea;
+          background: #fff;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+        }
+        .post-detail-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #1c1e21;
+          margin-bottom: 4px;
+        }
+        .post-detail-subtitle {
+          font-size: 14px;
+          color: #65676b;
+        }
+        .post-detail-content {
+          max-height: calc(100vh - 140px);
+          overflow-y: auto;
+          padding: 0;
+        }
+        .post-detail-post {
+          background: #fff;
+          border-radius: 0;
+          margin: 0;
+          box-shadow: none;
+          border-bottom: 1px solid #e4e6ea;
+        }
+        .post-detail-post .post-header {
+          padding: 16px 24px 0;
+        }
+        .post-detail-post .post-content {
+          padding: 12px 24px 16px;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        .post-detail-post .post-stats {
+          padding: 0 24px 8px;
+        }
+        .post-detail-post .post-actions {
+          margin: 0 24px;
+          border-top: 1px solid #e4e6ea;
+          border-bottom: 1px solid #e4e6ea;
+        }
+        .post-detail-post .comments-section {
+          padding: 8px 24px 16px;
+        }
+        .post-detail-actions {
+          padding: 16px 24px;
+          background: #f8f9fa;
+          border-top: 1px solid #e4e6ea;
+          display: flex;
+          gap: 12px;
+          position: sticky;
+          bottom: 0;
+          z-index: 10;
+        }
+        .post-detail-btn {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .post-detail-btn.primary {
+          background: #a67c52;
+          color: #fff;
+        }
+        .post-detail-btn.primary:hover {
+          background: #8b6b42;
+        }
+        .post-detail-btn.secondary {
+          background: #e4e6ea;
+          color: #1c1e21;
+        }
+        .post-detail-btn.secondary:hover {
+          background: #d8dadf;
+        }
+        /* Full màn hình cho tất cả thiết bị */
+        @media (max-width: 600px) {
+          .post-detail-modal {
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            border-radius: 0;
+          }
+          .post-detail-content {
+            max-height: calc(100vh - 140px);
+          }
+        }
+        
+        /* Đảm bảo full màn hình trên desktop */
+        @media (min-width: 601px) {
+          .post-detail-modal {
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            border-radius: 0;
+          }
+          .post-detail-content {
+            max-height: calc(100vh - 140px);
+          }
+        }
+
+        /* Ẩn scrollbar khi modal mở */
+        body.modal-open {
+          overflow: hidden !important;
+        }
+        
+        /* Cải thiện scrollbar trong modal */
+        .post-detail-content::-webkit-scrollbar {
+          width: 6px;
+        }
+        .post-detail-content::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        .post-detail-content::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
+        }
+        .post-detail-content::-webkit-scrollbar-thumb:hover {
+          background: #a8a8a8;
+        }
+
+        /* Ẩn các nút tương tác trong modal chi tiết */
+        .post-detail-post .post-actions {
+          display: none !important;
+        }
+        
+        .post-detail-post .comment-form {
+          display: none !important;
+        }
+        
+        .post-detail-post .reply-form {
+          display: none !important;
+        }
+        
+        .post-detail-post .comment-action {
+          pointer-events: none !important;
+          opacity: 0.6 !important;
+        }
+        
+        .post-detail-post .edit-post-btn,
+        .post-detail-post .delete-post-btn {
+          display: none !important;
+        }
+        
+        .post-detail-post .comment-action[onclick*="editComment"],
+        .post-detail-post .comment-action[onclick*="deleteComment"] {
+          display: none !important;
+        }
     </style>
     <div id="imageLightboxModal">
       <span class="close" onclick="closeImageModal()">&times;</span>
@@ -3702,6 +4471,77 @@
         <div style="font-size:20px;font-weight:700;color:#a67c52;text-align:center;margin:22px 0 10px 0;">Lời mời kết bạn</div>
         <div id="friendRequestsList" style="max-height:340px;overflow-y:auto;padding:0 24px;"></div>
         <div id="noFriendRequests" style="color:#aaa;text-align:center;display:none;">Bạn không có lời mời kết bạn nào.</div>
+      </div>
+    </div>
+
+    <!-- Modal chia sẻ bài viết -->
+    <div id="shareModalBg" class="share-modal-bg">
+      <div class="share-modal">
+        <span class="close" onclick="closeShareModal()">&times;</span>
+        <div class="share-modal-header">
+          <div class="share-modal-title">Chia sẻ bài viết</div>
+          <div class="share-modal-subtitle">Chọn cách chia sẻ bài viết này</div>
+        </div>
+        <div class="share-options">
+          <div class="share-option" onclick="shareToFacebook()">
+            <div class="share-option-icon facebook">
+              <i class="fa fa-facebook"></i>
+            </div>
+            <div class="share-option-text">
+              <div class="share-option-title">Facebook</div>
+              <div class="share-option-desc">Chia sẻ lên Facebook</div>
+            </div>
+          </div>
+          <div class="share-option" onclick="shareToTwitter()">
+            <div class="share-option-icon twitter">
+              <i class="fa fa-twitter"></i>
+            </div>
+            <div class="share-option-text">
+              <div class="share-option-title">Twitter</div>
+              <div class="share-option-desc">Chia sẻ lên Twitter</div>
+            </div>
+          </div>
+          <div class="share-option" onclick="copyPostLink()">
+            <div class="share-option-icon copy">
+              <i class="fa fa-link"></i>
+            </div>
+            <div class="share-option-text">
+              <div class="share-option-title">Sao chép liên kết</div>
+              <div class="share-option-desc">Copy link bài viết</div>
+            </div>
+          </div>
+          <div class="share-option" onclick="shareAsNewPost()">
+            <div class="share-option-icon link">
+              <i class="fa fa-share"></i>
+            </div>
+            <div class="share-option-text">
+              <div class="share-option-title">Đăng lại</div>
+              <div class="share-option-desc">Đăng lại bài viết này</div>
+            </div>
+          </div>
+        </div>
+        <input type="text" class="share-input" id="shareLinkInput" readonly placeholder="Liên kết bài viết sẽ hiển thị ở đây...">
+        <div class="share-actions">
+          <button class="share-btn secondary" onclick="closeShareModal()">Hủy</button>
+          <button class="share-btn primary" onclick="copyLinkToClipboard()">Sao chép</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal chi tiết bài viết -->
+    <div id="postDetailModalBg" class="post-detail-modal-bg">
+      <div class="post-detail-modal">
+        <span class="close" onclick="closePostDetailModal()">&times;</span>
+        <div class="post-detail-header">
+          <div class="post-detail-title">Xem bài viết</div>
+          <div class="post-detail-subtitle">Chế độ chỉ đọc - Không thể tương tác</div>
+        </div>
+        <div class="post-detail-content" id="postDetailContent">
+          <!-- Nội dung bài viết sẽ được render ở đây -->
+        </div>
+        <div class="post-detail-actions">
+          <button class="post-detail-btn secondary" onclick="closePostDetailModal()">Đóng</button>
+        </div>
       </div>
     </div>
     </body>
