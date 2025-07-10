@@ -455,70 +455,6 @@
       "time": "00:59:09",
       "updatedAt": "2025-07-08T17:59:33.448Z",
       "userId": "7cov2E1qtSRX1jZHY8ihK4NH6K43"
-    },
-    "-OUnunkMErLV0qySiyD5": {
-      "billingInfo": {
-        "address": "Cái Vồn,Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0795858581"
-      },
-      "cancelReason": "Đặt nhầm/Không còn nhu cầu",
-      "cancelledAt": "2025-07-10T10:40:33.488Z",
-      "confirmedAt": "2025-07-10T10:39:54.137Z",
-      "couponCode": "THAYKIENDEPTRAI",
-      "couponDiscount": 0,
-      "couponType": "",
-      "createdAt": "2025-07-10T10:39:29.195Z",
-      "customerInfo": {
-        "address": "Cái Vồn,Bình Minh, Vĩnh Long",
-        "email": "baokhangml99@gmail.com",
-        "fullName": "Võ Trần Hoàng Bảo Khang",
-        "name": "Võ Trần Hoàng Bảo Khang",
-        "phone": "0795858581"
-      },
-      "date": "10/7/2025",
-      "deliveryMethod": "standard",
-      "discountAmount": 60000,
-      "fullName": "Võ Trần Hoàng Bảo Khang",
-      "grandTotal": 60000,
-      "items": [
-        {
-          "image": "https://www.starbucks.com.hk/media/catalog/product/c/a/caramel_macchiato_hot.jpg",
-          "name": "Caramel nacchiato nóng",
-          "price": 55000,
-          "productId": "drinks-item11",
-          "quantity": 1
-        },
-        {
-          "image": "https://lh3.googleusercontent.com/proxy/louSyW0X3ipDL39quxzfLQ7nCeyIs9D8LTdfvNsy8qxHxHJEqU4cWsi82Aan03gMkYp2zJWZZ2mI7TwTkekKXeqeCEokKc-w0pRA4EzbXbQVFUUp6gTf-jo",
-          "name": "Caramel macchiato đá",
-          "price": 65000,
-          "productId": "drinks-item12",
-          "quantity": 1
-        }
-      ],
-      "orderNote": "",
-      "paymentDetails": {
-        "amount": 60000,
-        "payDate": "10/07/2025 17:40:43",
-        "responseCode": "00",
-        "transactionNo": "15066619",
-        "vnp_TxnRef": "0QYSIYD5"
-      },
-      "paymentMethod": "vnpay",
-      "paymentStatus": "paid",
-      "shippingFee": 0,
-      "shippingInfo": {
-        "address": "Cái Vồn,Bình Minh, Vĩnh Long",
-        "receiverName": "Võ Trần Hoàng Bảo Khang",
-        "receiverPhone": "0795858581"
-      },
-      "status": "cancelled",
-      "subtotal": 120000,
-      "time": "17:39:29",
-      "updatedAt": "2025-07-10T10:39:54.137Z",
-      "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
     }
   },
   "payment_results": {
@@ -580,36 +516,6 @@
         "responseCode": "00",
         "transactionNo": "15063231",
         "txnRef": "GDKYTRM7"
-      }
-    },
-    "15066619": {
-      "orderInfo": {
-        "customerName": "Võ Trần Hoàng Bảo Khang",
-        "orderKey": "-OUnunkMErLV0qySiyD5",
-        "totalAmount": 60000
-      },
-      "orderKey": "-OUnunkMErLV0qySiyD5",
-      "paymentInfo": {
-        "amount": 60000,
-        "responseCode": "00",
-        "responseMessage": "Giao dịch thành công"
-      },
-      "resultType": "success",
-      "timestamps": {
-        "createdAt": "2025-07-10T10:39:54.139Z",
-        "day": 10,
-        "month": 7,
-        "year": 2025
-      },
-      "transactionId": "15066619",
-      "txnRef": "0QYSIYD5",
-      "vnpayData": {
-        "amount": "6000000",
-        "bankCode": "NCB",
-        "payDate": "20250710174043",
-        "responseCode": "00",
-        "transactionNo": "15066619",
-        "txnRef": "0QYSIYD5"
       }
     }
   },
@@ -675,38 +581,6 @@
           "txnRef": "GDKYTRM7"
         }
       }
-    },
-    "2025-07-10": {
-      "15066619": {
-        "orderInfo": {
-          "customerName": "Võ Trần Hoàng Bảo Khang",
-          "orderKey": "-OUnunkMErLV0qySiyD5",
-          "totalAmount": 60000
-        },
-        "orderKey": "-OUnunkMErLV0qySiyD5",
-        "paymentInfo": {
-          "amount": 60000,
-          "responseCode": "00",
-          "responseMessage": "Giao dịch thành công"
-        },
-        "resultType": "success",
-        "timestamps": {
-          "createdAt": "2025-07-10T10:39:54.139Z",
-          "day": 10,
-          "month": 7,
-          "year": 2025
-        },
-        "transactionId": "15066619",
-        "txnRef": "0QYSIYD5",
-        "vnpayData": {
-          "amount": "6000000",
-          "bankCode": "NCB",
-          "payDate": "20250710174043",
-          "responseCode": "00",
-          "transactionNo": "15066619",
-          "txnRef": "0QYSIYD5"
-        }
-      }
     }
   },
   "payment_statistics": {
@@ -725,15 +599,6 @@
           "resultType": "success",
           "timestamp": "2025-07-08T17:59:33.549Z",
           "transactionId": "15063231"
-        }
-      },
-      "2025-07-10": {
-        "-OUnutrk9w8X4C4QbJHV": {
-          "amount": 60000,
-          "date": "2025-07-10",
-          "resultType": "success",
-          "timestamp": "2025-07-10T10:39:54.256Z",
-          "transactionId": "15066619"
         }
       }
     }
@@ -1225,11 +1090,11 @@
       },
       "memberCard": {
         "barcode": "60279",
-        "lastUpdate": "2025-07-10T10:40:33.511Z",
+        "lastUpdate": "2025-07-10T10:03:22.612Z",
         "nextRank": "Bạc",
-        "nextRankInfo": "Còn 8605 điểm để lên hạng Bạc",
+        "nextRankInfo": "Còn 10000 điểm để lên hạng Bạc",
         "nextRankPoint": 10000,
-        "points": 1395,
+        "points": 0,
         "rank": "Đồng",
         "rankClass": "rank-bronze"
       },
@@ -1238,12 +1103,6 @@
     }
   },
   "vnpay_transactions": {
-    "0QYSIYD5": {
-      "amount": 60000,
-      "createdAt": "2025-07-10T10:39:29.685Z",
-      "orderKey": "-OUnunkMErLV0qySiyD5",
-      "status": "pending"
-    },
     "GDKYTRM7": {
       "amount": 30000,
       "createdAt": "2025-07-08T17:59:09.933Z",

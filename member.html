@@ -451,6 +451,146 @@
             gap: 8px;
         }
 
+        /* Style cho đánh giá sao - Cải thiện */
+        .rating-container {
+            margin-bottom: 20px;
+        }
+
+        .rating-label {
+            display: block;
+            font-weight: 500;
+            color: #4A2F1A;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 4px;
+        }
+
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+
+        .rating-stars label {
+            cursor: pointer;
+            font-size: 32px;
+            color: #ddd;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label,
+        .rating-stars input[type="radio"]:checked ~ label {
+            color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        .rating-stars input[type="radio"]:checked ~ label {
+            color: #ffc107;
+        }
+
+        .rating-text {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .rating-display {
+            display: inline-flex;
+            gap: 2px;
+            margin-left: 8px;
+        }
+
+        .rating-display .star {
+            font-size: 16px;
+            color: #ffc107;
+        }
+
+        .rating-display .star.empty {
+            color: #ddd;
+        }
+
+        /* Hiệu ứng hover cho sao */
+        .rating-stars label:hover {
+            animation: starPulse 0.3s ease;
+        }
+
+        @keyframes starPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
+        }
+
+        .review-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .review-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .review-status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .review-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .review-form {
+            margin-top: 20px;
+        }
+
+        .review-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .review-form textarea:focus {
+            border-color: #f7544a;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(247, 84, 74, 0.1);
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .review-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
         .action-btn {
             padding: 6px 12px;
             border-radius: 6px;
@@ -1327,6 +1467,17 @@
             padding-left: 4px;
             padding-right: 4px;
           }
+          
+          /* Responsive cho rating stars */
+          .rating-stars label {
+            font-size: 28px;
+            gap: 3px;
+          }
+          
+          .rating-text {
+            font-size: 13px;
+            margin-left: 8px;
+          }
         }
         @media (max-width: 767px) {
           .transaction-table td:last-child,
@@ -2186,6 +2337,45 @@
                 </form>
             </div>
         </div>
+
+        <!-- Modal đánh giá đơn hàng -->
+        <div id="reviewModal" class="modal review-modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('reviewModal')">×</span>
+                <h2>Đánh Giá Đơn Hàng</h2>
+                <div id="reviewOrderInfo">
+                    <!-- Thông tin đơn hàng sẽ được load động -->
+                </div>
+                <form class="review-form">
+                    <div class="form-group rating-container">
+                        <label class="rating-label">Đánh giá tổng quan:</label>
+                        <div class="rating-stars">
+                            <input type="radio" name="rating" value="5" id="star5">
+                            <label for="star5" title="Tuyệt vời">★</label>
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4" title="Rất tốt">★</label>
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3" title="Tốt">★</label>
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2" title="Tạm được">★</label>
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1" title="Không hài lòng">★</label>
+                        </div>
+                        <span class="rating-text" id="ratingText">Chọn số sao để đánh giá</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewComment">Nhận xét chi tiết:</label>
+                        <textarea id="reviewComment" placeholder="Chia sẻ trải nghiệm của bạn về đơn hàng này..." maxlength="500"></textarea>
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            <span id="charCount">0</span>/500 ký tự
+                        </small>
+                    </div>
+                    <button type="button" onclick="submitReview()" id="submitReviewBtn">
+                        <i class="fa fa-paper-plane"></i> Gửi Đánh Giá
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
@@ -2309,6 +2499,9 @@
 
                 // Xử lý nút hành động
                 const canCancel = ['pending', 'processing', 'confirmed'].includes(status);
+                const canReview = status === 'delivered' && !order.review;
+                const hasReview = order.review;
+                
                 const actionButtons = `
                     <div class="action-buttons">
                         <button class="action-btn view-btn" onclick="viewOrder('${order.id}')">
@@ -2317,6 +2510,12 @@
                         ${canCancel ? `<button class="action-btn cancel-btn" onclick="cancelOrder('${order.id}')">
                             <i class="fa fa-times"></i> Hủy
                         </button>` : ''}
+                        ${canReview ? `<button class="action-btn review-btn" onclick="openReviewModal('${order.id}')" style="background: #28a745; color: #fff;">
+                            <i class="fa fa-star"></i> Đánh giá
+                        </button>` : ''}
+                        ${hasReview ? `<span class="review-status completed">
+                            <i class="fa fa-check"></i> Đã đánh giá
+                        </span>` : ''}
                     </div>`;
 
                 const row = `
@@ -2387,6 +2586,27 @@
                 'cancelled': { text: 'Đã hủy', color: '#ef4444' }
             }[order.status || 'pending'] || { text: 'Không xác định', color: '#6c757d' };
 
+            // Thêm phần đánh giá nếu có
+            let reviewSection = '';
+            if (order.review) {
+                const stars = '★'.repeat(order.review.rating) + '☆'.repeat(5 - order.review.rating);
+                reviewSection = `
+                    <div style="margin-top:20px;padding-top:15px;border-top:1px solid #eee;">
+                        <div style="color:#666;margin-bottom:10px;">Đánh giá của bạn</div>
+                        <div style="background:#f8f9fa;padding:15px;border-radius:8px;">
+                            <div style="margin-bottom:8px;">
+                                <span style="color:#ffc107;font-size:18px;">${stars}</span>
+                                <span style="margin-left:8px;font-weight:500;">${order.review.rating}/5 sao</span>
+                            </div>
+                            <div style="color:#333;font-style:italic;">"${order.review.comment}"</div>
+                            <div style="color:#666;font-size:12px;margin-top:8px;">
+                                Đánh giá ngày: ${new Date(order.review.createdAt).toLocaleDateString('vi-VN')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
             Swal.fire({
                 title: `Chi tiết đơn hàng #${order.id.slice(-8).toUpperCase()}`,
                 html: `
@@ -2439,6 +2659,7 @@
                                 </div>
                             </div>
                         </div>
+                        ${reviewSection}
                     </div>
                 `,
                 width: 600,
@@ -2526,6 +2747,117 @@
             });
         };
 
+        // Hàm mở modal đánh giá
+        window.openReviewModal = function(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Hiển thị thông tin đơn hàng trong modal
+            const orderDate = new Date(order.createdAt);
+            const formattedDate = orderDate.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            const productsList = order.items?.map(item => 
+                `<div style="margin-bottom:5px;">• ${item.name} (x${item.quantity})</div>`
+            ).join('') || 'Không có sản phẩm';
+
+            document.getElementById('reviewOrderInfo').innerHTML = `
+                <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:20px;">
+                    <div style="font-weight:600;margin-bottom:8px;">Đơn hàng #${order.id.slice(-8).toUpperCase()}</div>
+                    <div style="color:#666;font-size:14px;margin-bottom:5px;">Ngày đặt: ${formattedDate}</div>
+                    <div style="color:#666;font-size:14px;margin-bottom:5px;">Tổng tiền: ${(order.grandTotal || 0).toLocaleString('vi-VN')}đ</div>
+                    <div style="color:#666;font-size:14px;margin-bottom:5px;">Sản phẩm:</div>
+                    <div style="color:#333;font-size:13px;margin-left:10px;">${productsList}</div>
+                </div>
+            `;
+
+            // Reset form
+            document.querySelectorAll('input[name="rating"]').forEach(radio => radio.checked = false);
+            document.getElementById('reviewComment').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('ratingText').textContent = 'Chọn số sao để đánh giá';
+            document.getElementById('ratingText').style.color = '#666';
+            document.getElementById('ratingText').style.fontWeight = '500';
+
+            // Lưu orderId để sử dụng khi submit
+            document.getElementById('reviewModal').setAttribute('data-order-id', orderId);
+
+            // Hiển thị modal
+            document.getElementById('reviewModal').style.display = 'block';
+        };
+
+        // Hàm submit đánh giá
+        window.submitReview = async function() {
+            const orderId = document.getElementById('reviewModal').getAttribute('data-order-id');
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const comment = document.getElementById('reviewComment').value.trim();
+
+            if (!rating) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Vui lòng chọn đánh giá',
+                    text: 'Bạn cần chọn số sao để đánh giá đơn hàng.',
+                    confirmButtonColor: '#f7544a'
+                });
+                return;
+            }
+
+            if (!comment) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Vui lòng nhập nhận xét',
+                    text: 'Bạn cần nhập nhận xét chi tiết về đơn hàng.',
+                    confirmButtonColor: '#f7544a'
+                });
+                return;
+            }
+
+            try {
+                const btn = document.getElementById('submitReviewBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang gửi...';
+
+                const reviewData = {
+                    rating: parseInt(rating),
+                    comment: comment,
+                    createdAt: new Date().toISOString(),
+                    userId: auth.currentUser.uid,
+                    userName: auth.currentUser.displayName || auth.currentUser.email.split('@')[0]
+                };
+
+                const orderRef = ref(database, `orders/${orderId}`);
+                await update(orderRef, { review: reviewData });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đánh giá thành công!',
+                    text: 'Cảm ơn bạn đã chia sẻ trải nghiệm. Đánh giá của bạn sẽ giúp chúng tôi cải thiện dịch vụ.',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    closeModal('reviewModal');
+                    // Reload trang để cập nhật danh sách đơn hàng
+                    window.location.reload();
+                });
+
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: `Không thể gửi đánh giá: ${error.message}`,
+                    confirmButtonColor: '#f7544a'
+                });
+            } finally {
+                const btn = document.getElementById('submitReviewBtn');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa fa-paper-plane"></i> Gửi Đánh Giá';
+            }
+        };
+
         // Pagination Functions
         window.prevPage = function() {
             if (currentPage > 1) {
@@ -2553,6 +2885,46 @@
                 };
                 reader.readAsDataURL(file);
             }
+        });
+
+        // Character counter for review comment
+        document.getElementById('reviewComment')?.addEventListener('input', function() {
+            const maxLength = 500;
+            const currentLength = this.value.length;
+            const charCount = document.getElementById('charCount');
+            if (charCount) {
+                charCount.textContent = currentLength;
+                if (currentLength > maxLength) {
+                    charCount.style.color = '#ef4444';
+                } else {
+                    charCount.style.color = '#666';
+                }
+            }
+        });
+
+        // Rating stars functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratingStars = document.querySelectorAll('input[name="rating"]');
+            const ratingText = document.getElementById('ratingText');
+            
+            const ratingDescriptions = {
+                1: 'Không hài lòng',
+                2: 'Tạm được', 
+                3: 'Tốt',
+                4: 'Rất tốt',
+                5: 'Tuyệt vời'
+            };
+
+            ratingStars.forEach(star => {
+                star.addEventListener('change', function() {
+                    const rating = parseInt(this.value);
+                    if (ratingText) {
+                        ratingText.textContent = `${rating}/5 sao - ${ratingDescriptions[rating]}`;
+                        ratingText.style.color = '#f7544a';
+                        ratingText.style.fontWeight = '600';
+                    }
+                });
+            });
         });
 
         // Open Edit Profile Modal
@@ -2824,6 +3196,7 @@
                             id,
                             ...order
                         }));
+                        // Gọi hàm tính điểm với đúng đơn hàng của user
                         updateMemberPointsFromOrders(orders);
 
                         // Sắp xếp theo thời gian tạo (mới nhất trước)
@@ -2873,18 +3246,14 @@
                         renderPurchaseChart(sortedLabels, quantities, amounts);
                     } else {
                         orders = [];
+                        updateMemberPointsFromOrders([]);
                         displayTransactions(currentPage);
                         renderPurchaseChart(['Không có dữ liệu'], [0], [0]);
                     }
                 }, (error) => {
                     console.error('Error loading orders:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi tải đơn hàng!',
-                        text: `Không thể tải đơn hàng: ${error.message}`,
-                        showConfirmButton: true
-                    });
                     orders = [];
+                    updateMemberPointsFromOrders([]);
                     displayTransactions(currentPage);
                     renderPurchaseChart(['Lỗi tải dữ liệu'], [0], [0]);
                 });
@@ -3553,8 +3922,8 @@
           let totalPoints = 0;
           let historyHtml = '';
           orders.forEach(order => {
-            // Chỉ tính điểm cho đơn đã xác nhận
-            if (order.status !== 'confirmed') return;
+            // Tích điểm cho mọi trạng thái trừ 'pending' và 'cancelled'
+            if (["pending", "cancelled"].includes(order.status)) return;
             const points = Math.floor((order.grandTotal || 0) * 0.01);
             totalPoints += points;
             if (points > 0) {
