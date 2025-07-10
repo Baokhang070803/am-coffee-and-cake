@@ -1,29 +1,103 @@
-const CACHE_NAME = 'am-coffee-v5';
+const CACHE_NAME = 'am-coffee-v6';
 const OFFLINE_URL = '/offline.html';
 
 const urlsToCache = [
   '/',
   '/index.html',
+  '/MessengerList.html',
+  '/MessengerChat.html',
+  '/login.html',
+  '/register.html',
+  '/menu.html',
+  '/news.html',
+  '/about.html',
+  '/cart.html',
+  '/policy.html',
+  '/timeline.html',
   '/css/style.css',
   '/css/bootstrap.css',
   '/css/mobile.css',
+  '/css/font-awesome.min.css',
   '/js/script.min.js',
+  '/js/jquery-1.10.2.min.js',
+  '/js/bootstrap.min.js',
   '/images/LOGOapk.png',
+  '/images/logo.png',
+  '/images/favicon.png',
   '/images/screenshot1.png',
   '/images/screenshot2.png',
   '/manifest.json',
   OFFLINE_URL
 ];
 
+// Cache strategies
+const cacheStrategies = {
+  // Cache first for static assets
+  cacheFirst: async (request) => {
+    const cache = await caches.open(CACHE_NAME);
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    try {
+      const networkResponse = await fetch(request);
+      if (networkResponse.ok) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    } catch (error) {
+      console.log('Cache first failed:', error);
+      return new Response('Network error', { status: 503 });
+    }
+  },
+
+  // Network first for dynamic content
+  networkFirst: async (request) => {
+    try {
+      const networkResponse = await fetch(request);
+      if (networkResponse.ok) {
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    } catch (error) {
+      console.log('Network first failed, trying cache:', error);
+      const cachedResponse = await caches.match(request);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return new Response('Offline', { status: 503 });
+    }
+  },
+
+  // Stale while revalidate for API calls
+  staleWhileRevalidate: async (request) => {
+    const cache = await caches.open(CACHE_NAME);
+    const cachedResponse = await cache.match(request);
+    
+    const fetchPromise = fetch(request).then(networkResponse => {
+      if (networkResponse.ok) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    }).catch(() => cachedResponse);
+
+    return cachedResponse || fetchPromise;
+  }
+};
+
 self.addEventListener('install', event => {
+  console.log('Service Worker installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+      .catch(error => {
+        console.error('Cache installation failed:', error);
+      })
   );
-  // Skip waiting để activate ngay lập tức
   self.skipWaiting();
 });
 
@@ -31,45 +105,36 @@ self.addEventListener('fetch', event => {
   // Chỉ xử lý GET requests
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        
-        // Fetch from network
-        return fetch(event.request)
-          .then(response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
+  const url = new URL(event.request.url);
+  
+  // Skip Firebase and external requests
+  if (url.hostname.includes('firebase') || 
+      url.hostname.includes('googleapis') || 
+      url.hostname.includes('gstatic') ||
+      url.hostname.includes('tudongchat')) {
+    return;
+  }
 
-            // Clone the response
-            const responseToCache = response.clone();
+  // Choose strategy based on request type
+  let strategy;
+  if (url.pathname.includes('/css/') || 
+      url.pathname.includes('/js/') || 
+      url.pathname.includes('/images/') ||
+      url.pathname.includes('/manifest.json')) {
+    strategy = cacheStrategies.cacheFirst;
+  } else if (url.pathname.includes('/api/') || 
+             url.pathname.includes('firebase')) {
+    strategy = cacheStrategies.staleWhileRevalidate;
+  } else {
+    strategy = cacheStrategies.networkFirst;
+  }
 
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          })
-          .catch(() => {
-            // Network failed, return offline page for navigate requests
-            if (event.request.mode === 'navigate') {
-              return caches.match(OFFLINE_URL);
-            }
-          });
-      }
-    )
-  );
+  event.respondWith(strategy(event.request));
 });
 
 // Clean up old caches
 self.addEventListener('activate', event => {
+  console.log('Service Worker activating...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
@@ -82,27 +147,48 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  // Claim clients để control ngay lập tức
   return self.clients.claim();
 });
 
 // Background Sync for offline actions
 self.addEventListener('sync', event => {
+  console.log('Background sync triggered:', event.tag);
   if (event.tag === 'background-sync') {
     event.waitUntil(doBackgroundSync());
+  } else if (event.tag === 'messenger-sync') {
+    event.waitUntil(syncMessengerData());
   }
 });
 
 // Push notifications
 self.addEventListener('push', event => {
-  const options = {
-    body: event.data ? event.data.text() : 'Có tin tức mới từ Ấm Coffee!',
+  console.log('Push notification received');
+  
+  let notificationData = {
+    title: 'Ấm Coffee & Cake',
+    body: 'Có tin tức mới từ Ấm Coffee!',
     icon: '/images/LOGOapk.png',
-    badge: '/images/LOGOapk.png',
+    badge: '/images/LOGOapk.png'
+  };
+
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      notificationData = { ...notificationData, ...data };
+    } catch (error) {
+      notificationData.body = event.data.text();
+    }
+  }
+
+  const options = {
+    body: notificationData.body,
+    icon: notificationData.icon,
+    badge: notificationData.badge,
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
-      primaryKey: 1
+      primaryKey: 1,
+      url: notificationData.url || '/'
     },
     actions: [
       {
@@ -115,27 +201,42 @@ self.addEventListener('push', event => {
         title: 'Đóng',
         icon: '/images/LOGOapk.png'
       }
-    ]
+    ],
+    requireInteraction: true,
+    tag: 'am-coffee-notification'
   };
 
   event.waitUntil(
-    self.registration.showNotification('Ấm Coffee & Cake', options)
+    self.registration.showNotification(notificationData.title, options)
   );
 });
 
 // Notification click handling
 self.addEventListener('notificationclick', event => {
+  console.log('Notification clicked:', event.action);
   event.notification.close();
 
-  if (event.action === 'explore') {
+  if (event.action === 'explore' || event.action === '') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.matchAll({ type: 'window' }).then(clientList => {
+        // Check if app is already open
+        for (const client of clientList) {
+          if (client.url.includes(event.notification.data.url) && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        // Open new window if app is not open
+        if (clients.openWindow) {
+          return clients.openWindow(event.notification.data.url);
+        }
+      })
     );
   }
 });
 
 // Periodic background sync
 self.addEventListener('periodicsync', event => {
+  console.log('Periodic sync triggered:', event.tag);
   if (event.tag === 'content-sync') {
     event.waitUntil(updateContent());
   }
@@ -144,20 +245,36 @@ self.addEventListener('periodicsync', event => {
 // Helper functions
 async function doBackgroundSync() {
   try {
-    // Sync offline data when connection restored
+    console.log('Starting background sync...');
     const offlineData = await getOfflineData();
     if (offlineData.length > 0) {
       await syncDataToServer(offlineData);
       await clearOfflineData();
+      console.log('Background sync completed');
     }
   } catch (error) {
     console.error('Background sync failed:', error);
   }
 }
 
+async function syncMessengerData() {
+  try {
+    console.log('Syncing messenger data...');
+    // Sync chat messages, friend requests, etc.
+    const messengerData = await getMessengerOfflineData();
+    if (messengerData.length > 0) {
+      await syncMessengerToServer(messengerData);
+      await clearMessengerOfflineData();
+      console.log('Messenger sync completed');
+    }
+  } catch (error) {
+    console.error('Messenger sync failed:', error);
+  }
+}
+
 async function updateContent() {
   try {
-    // Update cache with fresh content
+    console.log('Updating content cache...');
     const cache = await caches.open(CACHE_NAME);
     await cache.addAll(urlsToCache);
     console.log('Content updated in background');
@@ -171,6 +288,11 @@ async function getOfflineData() {
   return [];
 }
 
+async function getMessengerOfflineData() {
+  // Get messenger data stored offline
+  return [];
+}
+
 async function syncDataToServer(data) {
   // Sync data to server
   return fetch('/api/sync', {
@@ -180,7 +302,21 @@ async function syncDataToServer(data) {
   });
 }
 
+async function syncMessengerToServer(data) {
+  // Sync messenger data to server
+  return fetch('/api/messenger/sync', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 async function clearOfflineData() {
   // Clear synced offline data
   console.log('Offline data cleared');
+}
+
+async function clearMessengerOfflineData() {
+  // Clear synced messenger offline data
+  console.log('Messenger offline data cleared');
 }
