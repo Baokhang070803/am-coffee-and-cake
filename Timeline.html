@@ -1987,6 +1987,11 @@
                 }
                 document.querySelector('.composer-input').placeholder = `Chào ${(profile && profile.name) || user.displayName || user.email.split('@')[0]}, bạn đang nghĩ gì?`;
                 window.currentUserProfile = profile;
+                
+                // Cập nhật avatar và tên cho tất cả bài viết của user
+                setTimeout(() => {
+                    updateAllPostsUserInfo();
+                }, 1000);
             } else {
                 document.getElementById('userAvatar').textContent = '?';
                 document.querySelector('.composer-input').placeholder = 'Đăng nhập để chia sẻ suy nghĩ của bạn';
@@ -2194,14 +2199,11 @@
             const postBtn = document.getElementById('postBtn');
             postBtn.disabled = true;
             postBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang đăng...';
-            const profile = window.currentUserProfile;
             try {
                 const postData = {
                     content: content,
                     authorId: currentUser.uid,
-                    authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
                     authorEmail: currentUser.email,
-                    authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
                     timestamp: serverTimestamp(),
                     likes: {},
                     comments: {},
@@ -2346,10 +2348,14 @@
             const commentsCount = countTotalComments(post.comments);
             const isLiked = currentUser && post.likes && post.likes[currentUser.uid];
             const timeAgo = formatTimeAgo(post.timestamp);
-            const authorInitial = post.authorName ? post.authorName.charAt(0).toUpperCase() : post.authorEmail.charAt(0).toUpperCase();
-            const avatarHtml = post.authorPhotoURL
-                ? `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')"><img src="${post.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></span>`
-                : `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')">${authorInitial}</span>`;
+            
+            // Tạo avatar và tên động từ authorId
+            const authorInitial = post.authorEmail.charAt(0).toUpperCase();
+            let avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">${authorInitial}</span>`;
+            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-${post.id}">${post.authorEmail.split('@')[0]}</span>`;
+            
+            // Load thông tin user mới nhất
+            loadUserInfoForPost(post.authorId, post.id);
             let imageHtml = '';
             if (post.image) {
                 // Thêm onclick để phóng to ảnh
@@ -2365,7 +2371,7 @@
                 <div class="post-header">
                     <div class="post-avatar">${avatarHtml}</div>
                     <div class="post-user-info">
-                        <div class="post-username"><span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')">${post.authorName || post.authorEmail.split('@')[0]}</span></div>
+                        <div class="post-username">${authorNameHtml}</div>
                         <div class="post-time">${timeAgo}</div>
                     </div>
                     <div">
@@ -3023,6 +3029,30 @@
             renderPosts();
         };
 
+        // Hàm cập nhật avatar và tên cho tất cả bài viết khi user thay đổi profile
+        window.updateAllPostsUserInfo = async function() {
+            if (!currentUser) return;
+            
+            const profile = await getUserProfile(currentUser.uid);
+            if (!profile) return;
+            
+            // Cập nhật tất cả bài viết của user hiện tại
+            posts.forEach(post => {
+                if (post.authorId === currentUser.uid) {
+                    const avatarElement = document.getElementById(`avatar-${post.id}`);
+                    const nameElement = document.getElementById(`name-${post.id}`);
+                    
+                    if (profile.avatarUrl && avatarElement) {
+                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    }
+                    
+                    if (profile.name && nameElement) {
+                        nameElement.textContent = profile.name;
+                    }
+                }
+            });
+        };
+
         // Thêm hàm JS cho chỉnh sửa bình luận
         window.editComment = function(postId, commentId, parentId = null) {
             let commentSelector = parentId && parentId !== 'null'
@@ -3073,6 +3103,25 @@
             }
             renderPosts();
         };
+
+        // Hàm load thông tin user mới nhất cho bài viết
+        async function loadUserInfoForPost(authorId, postId) {
+            try {
+                const profile = await getUserProfile(authorId);
+                const avatarElement = document.getElementById(`avatar-${postId}`);
+                const nameElement = document.getElementById(`name-${postId}`);
+                
+                if (profile && profile.avatarUrl && avatarElement) {
+                    avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                }
+                
+                if (profile && profile.name && nameElement) {
+                    nameElement.textContent = profile.name;
+                }
+            } catch (error) {
+                console.error('Error loading user info for post:', error);
+            }
+        }
 
         // Thêm hàm viewProfile
         window.viewProfile = async function(uid) {
