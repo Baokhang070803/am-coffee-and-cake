@@ -51,6 +51,19 @@
         };
         const app = initializeApp(firebaseConfig);
         window.auth = getAuth(app);
+        // Đặt hàm uploadToCloudinary lên đầu script, trước mọi hàm khác
+        window.uploadToCloudinary = async function(file) {
+            console.log('uploadToCloudinary called', file);
+            const url = 'https://api.cloudinary.com/v1_1/dfdsj2ena/upload';
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'am_coffee_and_cake');
+            const res = await fetch(url, { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.secure_url) return data.secure_url;
+            console.error('Cloudinary upload error:', data);
+            throw new Error(data.error?.message || 'Upload ảnh thất bại!');
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -2011,17 +2024,23 @@
         function closeStoryModal() {
             document.getElementById('storyModalBg').style.display = 'none';
         }
-        window.handleStoryImage = function(event) {
+        window.handleStoryImage = async function(event) {
+            console.log('handleStoryImage called', event);
             const file = event.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                storyImageBase64 = e.target.result;
-                document.getElementById('storyPreviewImg').src = storyImageBase64;
-                document.getElementById('storyPreviewImg').style.display = 'block';
-                checkStoryBtn();
-            };
-            reader.readAsDataURL(file);
+            document.getElementById('storyPreviewImg').style.display = 'block';
+            document.getElementById('storyPreviewImg').src = '';
+            document.getElementById('storyPostBtn').disabled = true;
+            try {
+                const imageUrl = await window.uploadToCloudinary(file);
+                window.storyImageCloudinaryUrl = imageUrl;
+                document.getElementById('storyPreviewImg').src = imageUrl;
+                document.getElementById('storyPostBtn').disabled = false;
+            } catch (e) {
+                document.getElementById('storyPreviewImg').style.display = 'none';
+                Swal.fire({ icon: 'error', title: 'Lỗi upload ảnh story!' });
+                console.error('Upload error:', e);
+            }
         };
         document.getElementById('storyText').addEventListener('input', checkStoryBtn);
         function checkStoryBtn() {
@@ -2030,13 +2049,13 @@
         }
         window.createStory = async function() {
             const text = document.getElementById('storyText').value.trim();
-            if (!storyImageBase64) return;
+            if (!window.storyImageCloudinaryUrl) return;
             const profile = window.currentUserProfile;
             const storyData = {
                 authorId: currentUser.uid,
                 authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
                 authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
-                image: storyImageBase64,
+                image: window.storyImageCloudinaryUrl,
                 text: text,
                 timestamp: Date.now()
             };
@@ -2170,7 +2189,7 @@
         // Create post function
         window.createPost = async function() {
             const content = document.getElementById('postContent').value.trim();
-            if (!content && !selectedImageBase64 && !selectedEmoji) return;
+            if (!content && !window.selectedImageCloudinaryUrl && !selectedEmoji) return;
             if (!currentUser) return;
             const postBtn = document.getElementById('postBtn');
             postBtn.disabled = true;
@@ -2186,12 +2205,12 @@
                     timestamp: serverTimestamp(),
                     likes: {},
                     comments: {},
-                    image: selectedImageBase64 || null,
+                    image: window.selectedImageCloudinaryUrl || null,
                     emoji: selectedEmoji || null
                 };
                 await push(ref(database, 'posts'), postData);
                 document.getElementById('postContent').value = '';
-                selectedImageBase64 = null;
+                window.selectedImageCloudinaryUrl = null;
                 selectedEmoji = '';
                 document.getElementById('imagePreviewContainer').innerHTML = '';
                 document.getElementById('imagePreviewContainer').style.display = 'none';
@@ -2224,7 +2243,7 @@
 
             const postsRef = ref(database, 'posts');
             onValue(postsRef, (snapshot) => {
-                console.log('Posts changed!');
+                console.log('Posts changed! (realtime triggered)');
                 posts = [];
                 snapshot.forEach((childSnapshot) => {
                     posts.push({
@@ -2233,6 +2252,7 @@
                     });
                 });
                 posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                console.log('posts after snapshot:', posts);
                 document.getElementById('loadingPosts').style.display = 'none';
                 postsToShow = 5; // Reset về 5 mỗi lần load mới
                 if (posts.length === 0) {
@@ -2249,26 +2269,53 @@
 
         // Sửa hàm renderPosts để chỉ append khi cuộn, đảm bảo hiệu ứng
         function renderPosts(appendOnly = false) {
+            console.log('renderPosts called, posts:', posts);
+            console.log('posts.length:', posts.length);
+            
             const feed = document.getElementById('postsFeed');
-            let filteredPosts = posts;
-            if (showMyPostsOnly && currentUser) {
-                filteredPosts = posts.filter(post => post.authorId === currentUser.uid);
+            if (!feed) {
+                console.error('Không tìm thấy #postsFeed trong DOM!');
+                return;
             }
-            if (appendOnly && lastRenderedCount < postsToShow) {
-                for (let i = lastRenderedCount; i < Math.min(postsToShow, filteredPosts.length); i++) {
-                    const postElement = createPostElement(filteredPosts[i]);
-                    postElement.style.animation = 'fadeInUp 0.3s ease-out';
-                    feed.appendChild(postElement);
-                }
-                lastRenderedCount = Math.min(postsToShow, filteredPosts.length);
-            } else {
+            
+            console.log('Before clearing feed, feed.innerHTML length:', feed.innerHTML.length);
+            console.log('feed.innerHTML preview:', feed.innerHTML.substring(0, 200));
+            
+            try {
+                // Luôn clear toàn bộ feed trước khi render lại
                 feed.innerHTML = '';
-                filteredPosts.slice(0, postsToShow).forEach(post => {
+                console.log('After clearing feed, feed.innerHTML length:', feed.innerHTML.length);
+                
+                let filteredPosts = posts;
+                console.log('filteredPosts:', filteredPosts);
+                console.log('filteredPosts.length:', filteredPosts.length);
+                
+                // Tạm thời bỏ filter để test
+                // if (showMyPostsOnly && currentUser) {
+                //     filteredPosts = posts.filter(post => post.authorId === currentUser.uid);
+                // }
+                
+                if (filteredPosts.length === 0) {
+                    console.log('No posts to render, feed should be empty');
+                    console.log('Final feed.innerHTML length:', feed.innerHTML.length);
+                    return;
+                }
+                
+                console.log('About to render', filteredPosts.length, 'posts');
+                filteredPosts.slice(0, postsToShow).forEach((post, index) => {
+                    console.log('Rendering post', index + 1, 'of', Math.min(postsToShow, filteredPosts.length), ':', post.id);
                     const postElement = createPostElement(post);
                     postElement.style.animation = 'fadeInUp 0.3s ease-out';
                     feed.appendChild(postElement);
                 });
+                
                 lastRenderedCount = Math.min(postsToShow, filteredPosts.length);
+                console.log('renderPosts done, feed.innerHTML length:', feed.innerHTML.length);
+                console.log('feed.innerHTML preview:', feed.innerHTML.substring(0, 200));
+                
+            } catch (error) {
+                console.error('Error in renderPosts:', error);
+                console.error('Error stack:', error.stack);
             }
         }
 
@@ -2719,20 +2766,29 @@
         let selectedEmoji = '';
 
         // Xử lý upload ảnh và preview
-        window.handleImageUpload = function(event) {
+        window.handleImageUpload = async function(event) {
+            console.log('handleImageUpload called', event);
             const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                selectedImageBase64 = e.target.result;
-                const preview = `<img src="${selectedImageBase64}" alt="preview" style="max-width:100%;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;">`;
+            console.log('file:', file);
+            if (!file) {
+                console.error('No file selected or file is invalid!');
+                return;
+            }
+            document.getElementById('imagePreviewContainer').innerHTML = '<span>Đang tải ảnh lên...</span>';
+            document.getElementById('imagePreviewContainer').style.display = 'block';
+            try {
+                console.log('Calling uploadToCloudinary...');
+                const imageUrl = await window.uploadToCloudinary(file);
+                window.selectedImageCloudinaryUrl = imageUrl;
+                const preview = `<img src="${imageUrl}" alt="preview" style="max-width:100%;max-height:180px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:4px;">`;
                 document.getElementById('imagePreviewContainer').innerHTML = preview + '<span style="display:block;color:#f7544a;cursor:pointer;font-size:13px;margin-top:2px;" onclick="removeImage()">Xóa ảnh</span>';
-                document.getElementById('imagePreviewContainer').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+            } catch (e) {
+                document.getElementById('imagePreviewContainer').innerHTML = '<span style="color:red">Lỗi upload ảnh!</span>';
+                console.error('Upload error:', e);
+            }
         };
         window.removeImage = function() {
-            selectedImageBase64 = null;
+            window.selectedImageCloudinaryUrl = null;
             document.getElementById('postImageInput').value = '';
             document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('imagePreviewContainer').style.display = 'none';
@@ -2803,7 +2859,9 @@
                 if (result.isConfirmed) {
                     try {
                         await set(ref(database, 'posts/' + postId), null);
-                        Swal.fire('Đã xóa!', 'Bài viết đã được xóa.', 'success');
+                        Swal.fire('Đã xóa!', 'Bài viết đã được xóa.', 'success').then(() => {
+                            location.reload();
+                        });
                     } catch (e) {
                         Swal.fire('Lỗi!', 'Không thể xóa bài viết.', 'error');
                     }

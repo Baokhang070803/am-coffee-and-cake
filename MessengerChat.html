@@ -533,6 +533,19 @@ const firebaseConfig = {
     const auth = getAuth(app);
     const database = getDatabase(app);
 
+// --- Cloudinary Upload Function ---
+window.uploadToCloudinary = async function(file) {
+  const url = 'https://api.cloudinary.com/v1_1/dfdsj2ena/image/upload';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'am_coffee_and_cake'); // đúng tên preset
+  const res = await fetch(url, { method: 'POST', body: formData });
+  const data = await res.json();
+  if (data.secure_url) return data.secure_url;
+  console.error('Cloudinary upload error:', data);
+  throw new Error(data.error?.message || 'Upload ảnh thất bại!');
+}
+
 // --- Biến toàn cục ---
 let currentUser = null;
 let friendUid = getQueryUid();
@@ -677,12 +690,16 @@ chatInput.addEventListener('keydown', function(e) {
       }
     });
 sendBtn.addEventListener('click', sendMessage);
-    let selectedImageBase64 = null;
+    let selectedImageFile = null;
+    let isUploading = false;
+    
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
-      if (!text && !selectedImageBase64) return;
+      if (!text && !selectedImageFile) return;
       if (!currentUser || !friendUid) return;
+      if (isUploading) return; // Không cho phép gửi khi đang upload
+      
       const convId = getConversationId(currentUser.uid, friendUid);
       const db = getDatabase();
 
@@ -693,21 +710,51 @@ sendBtn.addEventListener('click', sendMessage);
         [friendUid]: true
       });
 
-      // Tiếp tục push message như cũ
-      const msgRef = ref(db, 'messages/' + convId);
+      // Tạo message mới
       const newMsg = {
         sender: currentUser.uid,
         text: text || '',
         timestamp: Date.now()
       };
-      if (selectedImageBase64) {
-        newMsg.image = selectedImageBase64;
+
+      // Nếu có ảnh, upload lên Cloudinary trước
+      if (selectedImageFile) {
+        try {
+          isUploading = true;
+          // Disable nút gửi và hiển thị trạng thái upload
+          const sendBtn = document.getElementById('sendBtn');
+          const originalContent = sendBtn.innerHTML;
+          sendBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+          sendBtn.disabled = true;
+          
+          const imageUrl = await uploadToCloudinary(selectedImageFile);
+          newMsg.image = imageUrl;
+          
+          // Khôi phục nút gửi
+          sendBtn.innerHTML = originalContent;
+          sendBtn.disabled = false;
+        } catch (error) {
+          console.error('Lỗi upload ảnh:', error);
+          alert('Không thể gửi ảnh. Vui lòng thử lại!');
+          // Khôi phục nút gửi
+          const sendBtn = document.getElementById('sendBtn');
+          sendBtn.innerHTML = '<img src="https://cdn-icons-png.freepik.com/256/17731/17731920.png?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_incoming" alt="Gửi" style="width:50px;height:50px;object-fit:contain;">';
+          sendBtn.disabled = false;
+          isUploading = false;
+          return;
+        } finally {
+          isUploading = false;
+        }
       }
+
+      // Push message vào Firebase
+      const msgRef = ref(db, 'messages/' + convId);
       await push(msgRef, newMsg);
-      await set(ref(db, 'conversationMeta/' + convId + '/lastMessage'), text ? text : (selectedImageBase64 ? '[Đã gửi ảnh]' : ''));
+      await set(ref(db, 'conversationMeta/' + convId + '/lastMessage'), text ? text : (selectedImageFile ? '[Đã gửi ảnh]' : ''));
       await set(ref(db, 'conversationMeta/' + convId + '/updatedAt'), Date.now());
+      
       input.value = '';
-      selectedImageBase64 = null;
+      selectedImageFile = null;
       
       // Thêm cuộn xuống sau khi gửi tin nhắn
       setTimeout(() => {
@@ -722,33 +769,24 @@ imageBtn.onclick = () => chatImageInput.click();
 chatImageInput.addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const img = new Image();
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      // Thử chuyển sang WebP với chất lượng 0.7
-      let webpDataUrl;
-      try {
-        webpDataUrl = canvas.toDataURL('image/webp', 0.7);
-        // Nếu trình duyệt không hỗ trợ WebP, fallback sang JPEG
-        if (webpDataUrl.indexOf('data:image/webp') !== 0) {
-          webpDataUrl = canvas.toDataURL('image/jpeg', 0.7);
-        }
-      } catch (err) {
-        // Fallback nếu có lỗi
-        webpDataUrl = canvas.toDataURL('image/jpeg', 0.7);
-      }
-      selectedImageBase64 = webpDataUrl;
-      sendMessage();
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
+  
+  // Kiểm tra kích thước file (giới hạn 10MB)
+  if (file.size > 10 * 1024 * 1024) {
+    alert('Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 10MB!');
+    return;
+  }
+  
+  // Kiểm tra loại file
+  if (!file.type.startsWith('image/')) {
+    alert('Vui lòng chọn file ảnh!');
+    return;
+  }
+  
+  selectedImageFile = file;
+  sendMessage();
+  
+  // Reset input để có thể chọn lại cùng một file
+  e.target.value = '';
 });
 // Nút back
 const backBtn = document.getElementById('backBtn');

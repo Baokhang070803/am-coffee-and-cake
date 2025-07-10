@@ -1531,8 +1531,9 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="productImage" class="form-label">URL Hình Ảnh</label>
-              <input type="url" class="form-control" id="productImage">
+              <label class="form-label">Ảnh Sản Phẩm</label>
+              <input type="file" class="form-control" id="productImageFile" accept="image/*" required>
+              <div id="productImagePreview" style="margin-top:10px;"></div>
             </div>
             <div class="mb-3">
               <label for="productAttributes" class="form-label">Mô Tả</label>
@@ -1573,8 +1574,9 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="editProductImage" class="form-label">URL Hình Ảnh</label>
-              <input type="url" class="form-control" id="editProductImage">
+              <label class="form-label">Ảnh Sản Phẩm</label>
+              <input type="file" class="form-control" id="editProductImageFile" accept="image/*">
+              <div id="editProductImagePreview" style="margin-top:10px;"></div>
             </div>
             <div class="mb-3">
               <label for="editProductAttributes" class="form-label">Mô Tả</label>
@@ -1902,8 +1904,9 @@
             <input type="date" class="form-control" id="newsDate" required>
           </div>
           <div class="mb-3">
-            <label for="newsImage" class="form-label">URL Hình ảnh</label>
-            <input type="url" class="form-control" id="newsImage" required>
+            <label class="form-label">Hình ảnh</label>
+            <input type="file" class="form-control" id="newsImageFile" accept="image/*" required>
+            <div id="newsImagePreview" style="margin-top:10px;"></div>
           </div>
           <div class="mb-3">
             <label for="newsAlt" class="form-label">Alt Text cho hình ảnh</label>
@@ -1952,8 +1955,9 @@
             <input type="date" class="form-control" id="editNewsDate" required>
           </div>
           <div class="mb-3">
-            <label for="editNewsImage" class="form-label">URL Hình ảnh</label>
-            <input type="url" class="form-control" id="editNewsImage" required>
+            <label class="form-label">Hình ảnh</label>
+            <input type="file" class="form-control" id="editNewsImageFile" accept="image/*">
+            <div id="editNewsImagePreview" style="margin-top:10px;"></div>
           </div>
           <div class="mb-3">
             <label for="editNewsAlt" class="form-label">Alt Text cho hình ảnh</label>
@@ -2760,6 +2764,10 @@
       const category = document.getElementById('productCategory').value;
       const firebaseCategory = category === 'Thức Uống' ? 'drinks' : category === 'Bánh' ? 'cakes' : 'toppings';
       try {
+        if (!addProductImageUrl) {
+          Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Vui lòng chọn và upload ảnh sản phẩm!', showConfirmButton: true });
+          return;
+        }
         const snapshot = await get(ref(db, `products/${firebaseCategory}`));
         const items = snapshot.exists() ? snapshot.val() : {};
         const newIndex = Object.keys(items).length + 1;
@@ -2767,7 +2775,7 @@
         const newProduct = {
           name: document.getElementById('productName').value,
           price: parseInt(document.getElementById('productPrice').value),
-          image: document.getElementById('productImage').value || 'https://via.placeholder.com/120',
+          image: addProductImageUrl,
           attributes: document.getElementById('productAttributes').value || ''
         };
 
@@ -2783,6 +2791,8 @@
           showConfirmButton: false
         });
         document.getElementById('addProductForm').reset();
+        addProductImageUrl = '';
+        document.getElementById('productImagePreview').innerHTML = '';
       } catch (error) {
         console.error('Error adding product:', error);
         Swal.fire({
@@ -2815,8 +2825,9 @@
           document.getElementById('editProductName').value = product.name;
           document.getElementById('editProductPrice').value = product.price;
           document.getElementById('editProductCategory').value = firebaseCategory === 'drinks' ? 'Thức Uống' : firebaseCategory === 'cakes' ? 'Bánh' : 'Gọi Thêm';
-          document.getElementById('editProductImage').value = product.image;
           document.getElementById('editProductAttributes').value = product.attributes || '';
+          editProductImageUrl = product.image;
+          document.getElementById('editProductImagePreview').innerHTML = `<img src="${product.image}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
           new bootstrap.Modal(document.getElementById('editProductModal')).show();
         }
       } catch (error) {
@@ -2845,10 +2856,14 @@
       const firebaseCategory = id.startsWith('drinks') ? 'drinks' : id.startsWith('cakes') ? 'cakes' : 'toppings';
       const itemIndex = id.split('-')[1];
       try {
+        if (!editProductImageUrl) {
+          Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Vui lòng chọn và upload ảnh sản phẩm!', showConfirmButton: true });
+          return;
+        }
         const updatedProduct = {
           name: document.getElementById('editProductName').value,
           price: parseInt(document.getElementById('editProductPrice').value),
-          image: document.getElementById('editProductImage').value || 'https://via.placeholder.com/120',
+          image: editProductImageUrl,
           attributes: document.getElementById('editProductAttributes').value || ''
         };
         await set(ref(db, `products/${firebaseCategory}/item${itemIndex}`), updatedProduct);
@@ -2862,6 +2877,8 @@
           timer: 1500,
           showConfirmButton: false
         });
+        editProductImageUrl = '';
+        document.getElementById('editProductImagePreview').innerHTML = '';
       } catch (error) {
         console.error('Error updating product:', error);
         Swal.fire({
@@ -4829,11 +4846,15 @@
       }
 
       try {
+        if (!addNewsImageUrl) {
+          Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Vui lòng chọn và upload ảnh tin tức!', showConfirmButton: true });
+          return;
+        }
         const contentHtml = quillAdd.root.innerHTML;
         const newNews = {
           title: document.getElementById('newsTitle').value === 'other' ? document.getElementById('newsTitleOther').value : document.getElementById('newsTitle').value,
           date: document.getElementById('newsDate').value,
-          image: document.getElementById('newsImage').value,
+          image: addNewsImageUrl,
           alt: document.getElementById('newsAlt').value,
           summary: document.getElementById('newsSummary').value,
           content: contentHtml
@@ -4861,6 +4882,11 @@
         // Đóng modal
         const addNewsModal = bootstrap.Modal.getInstance(document.getElementById('addNewsModal'));
         if (addNewsModal) addNewsModal.hide();
+        // Reset form
+        document.getElementById('addNewsForm').reset();
+        addNewsImageUrl = '';
+        document.getElementById('newsImagePreview').innerHTML = '';
+        quillAdd.setContents([]);
       } catch (error) {
         console.error('Error adding news:', error);
         Swal.fire({
@@ -4889,7 +4915,8 @@
         document.getElementById('editNewsId').value = index; // Lưu index thay vì id
         document.getElementById('editNewsTitle').value = news.title;
         document.getElementById('editNewsDate').value = news.date;
-        document.getElementById('editNewsImage').value = news.image;
+        editNewsImageUrl = news.image;
+        document.getElementById('editNewsImagePreview').innerHTML = `<img src="${news.image}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
         document.getElementById('editNewsAlt').value = news.alt;
         document.getElementById('editNewsSummary').value = news.summary;
         quillEdit.root.innerHTML = news.content || '';
@@ -4919,12 +4946,16 @@
         return;
       }
       try {
+        if (!editNewsImageUrl) {
+          Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Vui lòng chọn và upload ảnh tin tức!', showConfirmButton: true });
+          return;
+        }
         const index = parseInt(document.getElementById('editNewsId').value, 10);
         const contentHtml = quillEdit.root.innerHTML;
         const updatedNews = {
           title: document.getElementById('editNewsTitle').value === 'other' ? document.getElementById('editNewsTitleOther').value : document.getElementById('editNewsTitle').value,
           date: document.getElementById('editNewsDate').value,
-          image: document.getElementById('editNewsImage').value,
+          image: editNewsImageUrl,
           alt: document.getElementById('editNewsAlt').value,
           summary: document.getElementById('editNewsSummary').value,
           content: contentHtml
@@ -4951,6 +4982,9 @@
         // Đóng modal
         const editNewsModal = bootstrap.Modal.getInstance(document.getElementById('editNewsModal'));
         if (editNewsModal) editNewsModal.hide();
+        // Reset form
+        editNewsImageUrl = '';
+        document.getElementById('editNewsImagePreview').innerHTML = '';
       } catch (error) {
         console.error('Error updating news:', error);
         Swal.fire({
@@ -5297,6 +5331,34 @@ window.deleteComment = async function(postId, commentId, parentId = null) {
         ]
       }
     });
+
+    // Xử lý upload ảnh trong Quill editor
+    const toolbar = quillAdd.getModule('toolbar');
+    toolbar.addHandler('image', function() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async function() {
+        const file = input.files[0];
+        if (file) {
+          try {
+            const url = await window.uploadToCloudinary(file);
+            const range = quillAdd.getSelection();
+            quillAdd.insertEmbed(range.index, 'image', url);
+          } catch (error) {
+            console.error('Lỗi upload ảnh vào nội dung:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi!',
+              text: 'Không thể upload ảnh vào nội dung!',
+              showConfirmButton: true
+            });
+          }
+        }
+      };
+    });
     // Khởi tạo Quill cho modal sửa tin tức
     quillEdit = new Quill('#editNewsContent', {
       theme: 'snow',
@@ -5313,6 +5375,34 @@ window.deleteComment = async function(postId, commentId, parentId = null) {
           ['clean']
         ]
       }
+    });
+
+    // Xử lý upload ảnh trong Quill editor (sửa tin tức)
+    const toolbarEdit = quillEdit.getModule('toolbar');
+    toolbarEdit.addHandler('image', function() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async function() {
+        const file = input.files[0];
+        if (file) {
+          try {
+            const url = await window.uploadToCloudinary(file);
+            const range = quillEdit.getSelection();
+            quillEdit.insertEmbed(range.index, 'image', url);
+          } catch (error) {
+            console.error('Lỗi upload ảnh vào nội dung:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi!',
+              text: 'Không thể upload ảnh vào nội dung!',
+              showConfirmButton: true
+            });
+          }
+        }
+      };
     });
     // Khi mở modal thêm mới, reset nội dung Quill
     document.getElementById('addNewsModal').addEventListener('show.bs.modal', function() {
@@ -5385,5 +5475,91 @@ window.deleteComment = async function(postId, commentId, parentId = null) {
     </div>
   </div>
 </div>
+
+<script>
+// ... existing code ...
+// --- Cloudinary Upload Function ---
+window.uploadToCloudinary = async function(file) {
+  const url = 'https://api.cloudinary.com/v1_1/dfdsj2ena/image/upload';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'am_coffee_and_cake');
+  const res = await fetch(url, { method: 'POST', body: formData });
+  const data = await res.json();
+  if (data.secure_url) return data.secure_url;
+  console.error('Cloudinary upload error:', data);
+  throw new Error(data.error?.message || 'Upload ảnh thất bại!');
+}
+
+// --- Xử lý chọn ảnh Thêm Sản Phẩm ---
+let addProductImageUrl = '';
+document.getElementById('productImageFile')?.addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const previewDiv = document.getElementById('productImagePreview');
+  previewDiv.innerHTML = '<span>Đang tải ảnh lên...</span>';
+  try {
+    const url = await window.uploadToCloudinary(file);
+    addProductImageUrl = url;
+    previewDiv.innerHTML = `<img src="${url}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
+  } catch (err) {
+    previewDiv.innerHTML = '<span style="color:red">Lỗi upload ảnh!</span>';
+    addProductImageUrl = '';
+  }
+});
+
+// --- Xử lý chọn ảnh Sửa Sản Phẩm ---
+let editProductImageUrl = '';
+document.getElementById('editProductImageFile')?.addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const previewDiv = document.getElementById('editProductImagePreview');
+  previewDiv.innerHTML = '<span>Đang tải ảnh lên...</span>';
+  try {
+    const url = await window.uploadToCloudinary(file);
+    editProductImageUrl = url;
+    previewDiv.innerHTML = `<img src="${url}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
+  } catch (err) {
+    previewDiv.innerHTML = '<span style="color:red">Lỗi upload ảnh!</span>';
+    editProductImageUrl = '';
+  }
+});
+
+// --- Xử lý chọn ảnh Thêm Tin Tức ---
+let addNewsImageUrl = '';
+document.getElementById('newsImageFile')?.addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const previewDiv = document.getElementById('newsImagePreview');
+  previewDiv.innerHTML = '<span>Đang tải ảnh lên...</span>';
+  try {
+    const url = await window.uploadToCloudinary(file);
+    addNewsImageUrl = url;
+    previewDiv.innerHTML = `<img src="${url}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
+  } catch (err) {
+    previewDiv.innerHTML = '<span style="color:red">Lỗi upload ảnh!</span>';
+    addNewsImageUrl = '';
+  }
+});
+
+// --- Xử lý chọn ảnh Sửa Tin Tức ---
+let editNewsImageUrl = '';
+document.getElementById('editNewsImageFile')?.addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const previewDiv = document.getElementById('editNewsImagePreview');
+  previewDiv.innerHTML = '<span>Đang tải ảnh lên...</span>';
+  try {
+    const url = await window.uploadToCloudinary(file);
+    editNewsImageUrl = url;
+    previewDiv.innerHTML = `<img src="${url}" alt="preview" style="max-width:120px;max-height:120px;border-radius:8px;">`;
+  } catch (err) {
+    previewDiv.innerHTML = '<span style="color:red">Lỗi upload ảnh!</span>';
+    editNewsImageUrl = '';
+  }
+});
+
+// ... existing code ...
+</script>
 </body>
 </html>

@@ -2386,6 +2386,17 @@
     <script defer src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/script.min.js"></script>
     <script type="module">
+        window.uploadToCloudinary = async function(file) {
+        const url = 'https://api.cloudinary.com/v1_1/dfdsj2ena/upload';
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'am_coffee_and_cake');
+        const res = await fetch(url, { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.secure_url) return data.secure_url;
+        console.error('Cloudinary upload error:', data);
+        throw new Error(data.error?.message || 'Upload ảnh thất bại!');
+    }
         // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -2975,97 +2986,54 @@
                 const newPhone = document.getElementById('editPhone').value;
                 const newAddress = document.getElementById('editAddress').value;
                 const avatarFile = document.getElementById('editAvatar').files[0];
-
+                const saveBtn = document.querySelector('#editProfileModal button[type="button"]');
+                let originalBtnHtml = saveBtn ? saveBtn.innerHTML : '';
                 try {
-                    // Validate file size (max 1MB for base64)
+                    if (saveBtn) {
+                        saveBtn.disabled = true;
+                        saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang lưu...';
+                    }
+                    // Validate file size (max 1MB for avatar)
                     if (avatarFile && avatarFile.size > 1 * 1024 * 1024) {
                         throw new Error('Kích thước ảnh không được vượt quá 1MB');
                     }
-
                     // Validate file type
                     if (avatarFile && !['image/jpeg', 'image/png', 'image/gif'].includes(avatarFile.type)) {
                         throw new Error('Chỉ chấp nhận file ảnh (JPEG, PNG, GIF)');
                     }
-
                     // Update email and profile name
                     await updateEmail(user, newEmail);
                     await updateProfile(user, { displayName: newName });
-
                     const userData = {
                         name: newName,
                         email: newEmail,
                         phone: newPhone,
                         address: newAddress
                     };
-
-                    // Handle avatar upload
+                    // Upload avatar lên Cloudinary nếu có file
                     if (avatarFile) {
                         try {
-                            // Convert image to base64
-                            const reader = new FileReader();
-                            reader.readAsDataURL(avatarFile);
-                            
-                            await new Promise((resolve, reject) => {
-                                reader.onload = () => {
-                                    // Compress image if needed
-                                    const img = new Image();
-                                    img.src = reader.result;
-                                    img.onload = () => {
-                                        const canvas = document.createElement('canvas');
-                                        const MAX_WIDTH = 200;
-                                        const MAX_HEIGHT = 200;
-                                        let width = img.width;
-                                        let height = img.height;
-                                        
-                                        if (width > height) {
-                                            if (width > MAX_WIDTH) {
-                                                height *= MAX_WIDTH / width;
-                                                width = MAX_WIDTH;
-                                            }
-                                        } else {
-                                            if (height > MAX_HEIGHT) {
-                                                width *= MAX_HEIGHT / height;
-                                                height = MAX_HEIGHT;
-                                            }
-                                        }
-                                        
-                                        canvas.width = width;
-                                        canvas.height = height;
-                                        const ctx = canvas.getContext('2d');
-                                        ctx.drawImage(img, 0, 0, width, height);
-                                        
-                                        // Convert to base64 with reduced quality
-                                        const base64String = canvas.toDataURL('image/jpeg', 0.7);
-                                        userData.avatarUrl = base64String;
-                                        resolve();
-                                    };
-                                    img.onerror = reject;
-                                };
-                                reader.onerror = reject;
-                            });
+                            const imageUrl = await window.uploadToCloudinary(avatarFile);
+                            userData.avatarUrl = imageUrl;
                         } catch (uploadError) {
-                            console.error('Avatar conversion error:', uploadError);
-                            throw new Error('Không thể xử lý ảnh đại diện');
+                            console.error('Cloudinary avatar upload error:', uploadError);
+                            throw new Error('Không thể upload ảnh đại diện');
                         }
                     }
-
                     // Update user data in database
                     const userRef = ref(database, `users/${user.uid}`);
                     await update(userRef, userData);
-
                     // Update UI
                     document.getElementById('userName').textContent = newName || "Người dùng chưa đặt tên";
                     document.getElementById('userEmail').textContent = newEmail || "Chưa có email";
                     document.getElementById('userPhone').textContent = newPhone || "Chưa có số điện thoại";
                     document.getElementById('userAddress').textContent = newAddress || "Chưa có địa chỉ";
-                    
                     // Update avatar images
                     if (userData.avatarUrl) {
                         document.querySelector('.avatar').src = userData.avatarUrl;
                         document.getElementById('sidebarAvatar').src = userData.avatarUrl;
                         document.getElementById('profileAvatar').src = userData.avatarUrl;
                     }
-
                     Swal.fire({
                         icon: 'success',
                         title: 'Cập nhật thành công!',
@@ -3082,6 +3050,11 @@
                         text: error.message || 'Không thể cập nhật thông tin',
                         showConfirmButton: true
                     });
+                } finally {
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.innerHTML = originalBtnHtml;
+                    }
                 }
             }
         };
@@ -3989,72 +3962,19 @@
             });
           }
         }
-    </script>
-    <!-- Order Detail Modal -->
-    <div class="modal fade" id="orderDetailModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <!-- Content will be loaded dynamically -->
-            </div>
-        </div>
-    </div>
-   <!-- Bottom Navigation Bar cho mobile -->
-   <div class="bottom-nav">
-    <a href="index.html" class="nav-home">
-      <img src="images/imagetrangchu.png" alt="Trang chủ" class="nav-icon"/>
-      <span>Trang chủ</span>
-    </a>
-    <a href="news.html" class="nav-news">
-      <img src="images/imagetintuc.png" alt="Tin tức" class="nav-icon"/>
-      <span>Tin tức</span>
-    </a>
-    <a href="menu.html" class="nav-account">
-      <img src="images/imagemenu.png" alt="Menu" class="nav-icon"/>
-      <span>Menu</span>
-    </a>
-    <a href="cart.html" class="nav-cart">
-      <img src="images/imagegiohang.png" alt="Giỏ hàng" class="nav-icon"/>
-      <span>Giỏ hàng</span>
-    </a>
-    <a href="policy.html" class="nav-policy">
-      <img src="images/imagechinhsach.png" alt="Bảo mật" class="nav-icon"/>
-      <span>Bảo mật</span>
-    </a>
-    <a href="about.html" class="nav-about">
-      <img src="images/imagegioithieu.png" alt="Giới thiệu" class="nav-icon"/>
-      <span>Giới thiệu</span>
-    </a>
-    <a href="timeline.html" class="nav-member">
-      <img src="images/LOGOapk.png" alt="Timeline" class="nav-icon"/>
-      <span>Xã hội Ấm</span>
-    </a>
-  </div>
-              
-  <div class="appbar-mobile">
-    <div class="appbar-left">
-      <a href="index.html"><img src="images/logo.png" alt="Ấm" class="appbar-logo"></a>
-    </div>
-    <div class="appbar-right">
-      <a href="#" class="appbar-account" id="appbarAccountLink"><img src="images/imageuser.png" alt="Ấm" class="appbar-logo"></a>
-      <a href="MessengerList.html" class="appbar-messenger" id="appbarMessengerLink" title="Messenger" style="margin-left:8px;display:inline-block;">
-        <img src="images/imagemessenger.png" alt="Messenger" class="appbar-logo" style="width:32px;height:32px;object-fit:contain;"/>
-      </a>
-    </div>
-  </div>
-                  
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ẩn overlay loading sau 300ms để đảm bảo hiệu ứng mượt
-        setTimeout(function() {
-            var overlay = document.querySelector('.loading-overlay');
-            if (overlay) {
-                overlay.classList.add('hide');
-                setTimeout(function() {
-                    overlay.style.display = 'none';
-                }, 600); // Đợi hiệu ứng mờ dần xong mới ẩn hẳn
-            }
-        }, 300);
-    });
+
+        // Thêm hàm uploadToCloudinary ra window scope ở đầu script type=module nếu chưa có
+        window.uploadToCloudinary = async function(file) {
+            const url = 'https://api.cloudinary.com/v1_1/dfdsj2ena/upload';
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'am_coffee_and_cake');
+            const res = await fetch(url, { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.secure_url) return data.secure_url;
+            console.error('Cloudinary upload error:', data);
+            throw new Error(data.error?.message || 'Upload ảnh thất bại!');
+        }
     </script>
         <script>
     // Xử lý chuyển trang khi click vào icon user trên mobile
