@@ -2416,10 +2416,6 @@
                         <i class="fa fa-share"></i>
                         <span>Chia sẻ</span>
                     </div>
-                    <div class="post-action" onclick="openPostDetailModal('${post.id}')">
-                        <i class="fa fa-eye"></i>
-                        <span>Chi tiết</span>
-                    </div>
                 </div>
                 <div class="comments-section">
                     <div id="comments-${post.id}">
@@ -3051,17 +3047,7 @@
             }
         };
 
-        // Thêm nút xem chi tiết vào mỗi bài viết
-        function addViewDetailButton(postElement, postId) {
-            const postActions = postElement.querySelector('.post-actions');
-            if (postActions) {
-                const viewDetailBtn = document.createElement('div');
-                viewDetailBtn.className = 'post-action';
-                viewDetailBtn.innerHTML = '<i class="fa fa-eye"></i><span>Chi tiết</span>';
-                viewDetailBtn.onclick = () => openPostDetailModal(postId);
-                postActions.appendChild(viewDetailBtn);
-            }
-        }
+
 
         window.sharePost = function(postId) {
             openShareModal(postId);
