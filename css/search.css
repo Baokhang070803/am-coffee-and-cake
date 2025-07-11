@@ -1,0 +1,106 @@
+.search {
+    position: relative;
+}
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;      /* Thêm dòng này */
+    min-width: 220px; /* Tuỳ chọn, tăng chiều rộng tối thiểu nếu cần */
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.search-results.show {
+    display: block;
+}
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.search-result-item:hover {
+    background: #f8f8f8;
+}
+.search-result-item:last-child {
+    border-bottom: none;
+}
+.search-result-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 12px;
+}
+.search-result-info {
+    flex: 1;
+}
+.search-result-name {
+    font-weight: 600;
+    color: #4A2F1A;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+.search-result-price {
+    color: #A67C52;
+    font-weight: 600;
+    font-size: 13px;
+}
+.search-result-category {
+    color: #888;
+    font-size: 12px;
+    margin-top: 2px;
+}
+.search-no-results {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+.search-loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+}
+.search-loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ddd;
+    border-top: 2px solid #A67C52;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+/* Responsive cho search */
+@media (max-width: 768px) {
+    .search-results {
+        position: fixed;
+        top: 60px;
+        left: 10px;
+        right: 10px;
+        max-height: 60vh;
+        border-radius: 5px;
+    }
+    .search-result-item {
+        padding: 10px;
+    }
+    .search-result-image {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+}
+
+/* CSS cho điện thoại */

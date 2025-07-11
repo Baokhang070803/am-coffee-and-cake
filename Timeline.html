@@ -28,6 +28,7 @@
     <link href="css/sequence-looptheme.css" rel="stylesheet" media="all"/>
     <link href="css/style.css" rel="stylesheet">
     <link href="css/mobile.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/search.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#A67C52">
     <!-- Thêm Material Icons để icon hiển thị đúng -->
@@ -1312,7 +1313,11 @@
                         <div class="header_bottom">
                             <ul class="option">
                                 <li id="search" class="search">
-                                    <form><input class="search-submit" type="submit" value=""><input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search"></form>
+                                    <form id="searchForm">
+                                        <input class="search-submit" type="submit" value="">
+                                        <input class="search-input" placeholder="Tìm kiếm đồ uống, bánh ngọt..." type="text" value="" name="search" id="searchInput" autocomplete="off">
+                                        <div id="searchResults" class="search-results"></div>
+                                    </form>
                                 </li>
                                 <li class="option-cart">
                                     <a href="cart.html" class="cart-icon">Giỏ Hàng <span class="cart_no">02</span></a>
@@ -4347,7 +4352,145 @@
                 }
             });
             </script>
+<script type="module">
+    import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
+    // Hàm debounce để tránh gọi API quá nhiều
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Hàm tìm kiếm sản phẩm
+    async function searchProducts(query) {
+        const searchResults = document.getElementById('searchResults');
+        
+        if (!query || query.trim().length < 2) {
+            searchResults.classList.remove('show');
+            return;
+        }
+
+        try {
+            // Hiển thị loading
+            searchResults.innerHTML = '<div class="search-loading">Đang tìm kiếm...</div>';
+            searchResults.classList.add('show');
+
+            const db = getDatabase();
+            const productsRef = ref(db, 'products');
+            const snapshot = await get(productsRef);
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                const results = [];
+                const searchTerm = query.toLowerCase().trim();
+
+                // Tìm trong drinks
+                if (data.drinks) {
+                    Object.entries(data.drinks).forEach(([id, item]) => {
+                        if (item.name.toLowerCase().includes(searchTerm) || 
+                            item.attributes.toLowerCase().includes(searchTerm)) {
+                            results.push({
+                                ...item,
+                                id,
+                                category: 'Đồ uống',
+                                type: 'drinks'
+                            });
+                        }
+                    });
+                }
+
+                // Tìm trong cakes
+                if (data.cakes) {
+                    Object.entries(data.cakes).forEach(([id, item]) => {
+                        if (item.name.toLowerCase().includes(searchTerm) || 
+                            item.attributes.toLowerCase().includes(searchTerm)) {
+                            results.push({
+                                ...item,
+                                id,
+                                category: 'Bánh ngọt',
+                                type: 'cakes'
+                            });
+                        }
+                    });
+                }
+
+                // Hiển thị kết quả
+                if (results.length > 0) {
+                    searchResults.innerHTML = results.slice(0, 8).map(item => `
+                        <div class="search-result-item" onclick="window.location.href='menu.html#${item.id}'">
+                            <img src="${item.image}" alt="${item.name}" class="search-result-image">
+                            <div class="search-result-info">
+                                <div class="search-result-name">${item.name}</div>
+                                <div class="search-result-price">${item.price.toLocaleString('vi-VN')} VND</div>
+                                <div class="search-result-category">${item.category}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    searchResults.innerHTML = '<div class="search-no-results">Không tìm thấy sản phẩm nào</div>';
+                }
+            } else {
+                searchResults.innerHTML = '<div class="search-no-results">Không có dữ liệu sản phẩm</div>';
+            }
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm:', error);
+            searchResults.innerHTML = '<div class="search-no-results">Có lỗi xảy ra khi tìm kiếm</div>';
+        }
+    }
+
+    // Debounced search function
+    const debouncedSearch = debounce(searchProducts, 300);
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const searchForm = document.getElementById('searchForm');
+
+        // Xử lý input tìm kiếm
+        searchInput.addEventListener('input', (e) => {
+            debouncedSearch(e.target.value);
+        });
+
+        // Xử lý submit form
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `menu.html?search=${encodeURIComponent(query)}`;
+            }
+        });
+
+        // Ẩn kết quả khi click ra ngoài
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search')) {
+                searchResults.classList.remove('show');
+            }
+        });
+
+        // Xử lý focus vào input
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim().length >= 2) {
+                searchResults.classList.add('show');
+            }
+        });
+
+        // Xử lý keydown
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('show');
+                searchInput.blur();
+            }
+        });
+    });
+</script>
     <!-- Bottom Navigation Bar cho mobile -->
    <div class="bottom-nav">
     <a href="index.html" class="nav-home">
