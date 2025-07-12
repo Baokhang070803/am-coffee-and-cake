@@ -240,52 +240,68 @@
       box-shadow: 0 0 0 2px rgba(166,124,82,0.2);
     }
 
-    /* Responsive */
+    /* Responsive - Mobile First Design */
     @media (max-width: 992px) {
       .sidebar {
-        left: -260px;
-        transition: left 0.3s ease;
-        padding-top: 60px; /* Thêm padding-top để tránh chồng lên mobile toggle */
+        left: -280px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: 70px;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border-right: 1px solid rgba(166,124,82,0.1);
       }
       
       .sidebar.open {
         left: 0;
+        box-shadow: 0 0 30px rgba(0,0,0,0.2);
       }
 
       .content {
         margin-left: 0;
-        padding: 18px 6px;
+        padding: 20px 12px;
+        min-height: 100vh;
       }
 
-      /* Điều chỉnh lại vị trí mobile toggle */
+      /* Mobile Toggle Button - Thương tích hơn */
       .mobile-toggle {
         position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 1060; /* Tăng z-index để luôn nổi lên trên */
-        background: #A67C52;
+        top: 20px;
+        left: 20px;
+        z-index: 1060;
+        background: linear-gradient(135deg, #A67C52, #8B6F47);
         color: #fff;
         border: none;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 2px 8px rgba(166,124,82,0.15);
+        box-shadow: 0 4px 20px rgba(166,124,82,0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 1.2rem;
       }
 
-      /* Thêm animation cho mobile toggle khi sidebar mở */
+      .mobile-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 25px rgba(166,124,82,0.4);
+      }
+
+      .mobile-toggle:active {
+        transform: scale(0.95);
+      }
+
+      /* Animation cho mobile toggle */
       .mobile-toggle i {
-        transition: transform 0.3s ease;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .sidebar.open + .mobile-toggle i {
         transform: rotate(180deg);
       }
 
-      /* Overlay khi sidebar mở */
+      /* Overlay với blur effect */
       .sidebar-overlay {
         display: none;
         position: fixed;
@@ -293,28 +309,199 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
         z-index: 1025;
+        transition: opacity 0.3s ease;
       }
 
       .sidebar-overlay.show {
         display: block;
+        animation: fadeIn 0.3s ease;
       }
 
-      /* Điều chỉnh logo và các phần tử trong sidebar */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      /* Sidebar improvements */
       .logo-img {
-        width: 40px;
+        width: 45px;
+        filter: drop-shadow(0 2px 8px rgba(166,124,82,0.2));
       }
       
       .sidebar .sidebar-toggle {
-        display: none; /* Ẩn nút toggle mặc định của sidebar trên mobile */
+        display: none;
+      }
+
+      /* Mobile navigation improvements */
+      .sidebar .nav-link {
+        margin: 6px 0;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background: linear-gradient(135deg, rgba(166,124,82,0.15), rgba(166,124,82,0.08));
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(166,124,82,0.15);
+      }
+
+      .sidebar .nav-link i {
+        font-size: 1.3rem;
+        margin-right: 12px;
       }
     }
 
+    /* Tablet optimizations */
+    @media (max-width: 768px) {
+      .content {
+        padding: 16px 10px;
+      }
+
+      .stat-card, .card {
+        padding: 20px;
+        margin-bottom: 16px;
+        border-radius: 12px;
+      }
+
+      .quick-stats {
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .quick-stat {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      .table-container {
+        padding: 16px;
+        border-radius: 12px;
+        overflow-x: auto;
+      }
+
+      .table {
+        font-size: 0.9rem;
+      }
+
+      .table td, .table th {
+        padding: 12px 8px;
+      }
+    }
+
+    /* Mobile optimizations */
     @media (max-width: 576px) {
+      .content {
+        padding: 12px 8px;
+      }
+
       .quick-stats {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+      }
+
+      .quick-stat {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 14px;
+      }
+
+      .stat-card, .card {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .stat-card h3, .card h3 {
+        font-size: 1.8rem;
+      }
+
+      .stat-card h5, .card h5 {
+        font-size: 0.8rem;
+      }
+
+      /* Mobile table improvements */
+      .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(166,124,82,0.08);
+      }
+
+      .table {
+        font-size: 0.85rem;
+      }
+
+      .table td, .table th {
+        padding: 10px 6px;
+        white-space: nowrap;
+      }
+
+      /* Mobile form improvements */
+      .form-control, .form-select {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+      }
+
+      /* Mobile modal improvements */
+      .modal-dialog {
+        margin: 10px;
+      }
+
+      .modal-content {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      }
+
+      .modal-header {
+        padding: 20px 20px 15px;
+        border-bottom: 1px solid rgba(166,124,82,0.1);
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .modal-footer {
+        padding: 15px 20px 20px;
+        border-top: 1px solid rgba(166,124,82,0.1);
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 375px) {
+      .content {
+        padding: 10px 6px;
+      }
+
+      .quick-stat {
+        padding: 12px;
+      }
+
+      .stat-card, .card {
+        padding: 14px;
+      }
+
+      .table td, .table th {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
       }
     }
 
@@ -5163,17 +5350,19 @@ window.renderPosts = function(posts) {
     container.innerHTML = '<div class="text-muted text-center">Chưa có bài đăng nào.</div>';
     return;
   }
+  
+  // Render posts với placeholder, sau đó load thông tin user
   container.innerHTML = Object.entries(posts).reverse().map(([postId, post]) => {
     const likeCount = post.likes ? Object.keys(post.likes).length : 0;
     const commentCount = post.comments ? Object.keys(post.comments).length : 0;
     const canDelete = window.isAdmin || (window.currentUser && window.currentUser.uid === post.authorId);
     return `
-      <div class="card mb-2" style="position:relative;">
+      <div class="card mb-2" style="position:relative;" data-post-id="${postId}">
         <div class="card-body d-flex align-items-center" onclick="showPostDetail('${postId}')">
-          <img src="${post.authorPhotoURL || 'https://i.pravatar.cc/32?u=' + post.authorId}" class="rounded-circle me-2" style="width:36px;height:36px;">
+          <img src="${post.authorPhotoURL || 'https://i.pravatar.cc/32?u=' + post.authorId}" class="rounded-circle me-2" style="width:36px;height:36px;" onerror="this.src='images/default-avatar.png'">
           <div style="flex:1;">
-            <b>${post.authorName || 'Ẩn danh'}</b>
-            <div class="text-muted" style="font-size:12px;">${post.authorEmail || ''} • ${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
+            <b class="author-name">${post.authorName || 'Ẩn danh'}</b>
+            <div class="text-muted author-email" style="font-size:12px;">${post.authorEmail || ''} • ${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
             <div>${post.content ? post.content.substring(0, 60) : ''}${post.content && post.content.length > 60 ? '...' : ''}</div>
             ${post.emoji ? `<span style=\"font-size:20px;\">${post.emoji}</span>` : ''}
           </div>
@@ -5188,18 +5377,74 @@ window.renderPosts = function(posts) {
       </div>
     `;
   }).join('');
+  
+  // Load thông tin user cho từng post
+  Object.entries(posts).reverse().forEach(async ([postId, post]) => {
+    if (post.authorId) {
+      try {
+        const userSnapshot = await get(ref(db, 'users/' + post.authorId));
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.val();
+          const postElement = container.querySelector(`[data-post-id="${postId}"]`);
+          if (postElement) {
+            const nameElement = postElement.querySelector('.author-name');
+            const emailElement = postElement.querySelector('.author-email');
+            const imgElement = postElement.querySelector('img');
+            
+            if (nameElement) {
+              nameElement.textContent = userData.fullName || userData.name || post.authorName || 'Ẩn danh';
+            }
+            if (emailElement) {
+              emailElement.textContent = (userData.email || post.authorEmail || '') + ' • ' + (post.timestamp ? new Date(post.timestamp).toLocaleString() : '');
+            }
+            if (imgElement) {
+              imgElement.src = userData.photoURL || userData.avatar || post.authorPhotoURL || 'images/default-avatar.png';
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user data for post:', postId, error);
+      }
+    }
+  });
 }
-window.showPostDetail = function(postId) {
-  get(ref(db, 'posts/' + postId)).then(snapshot => {
+window.showPostDetail = async function(postId) {
+  try {
+    const snapshot = await get(ref(db, 'posts/' + postId));
     if (!snapshot.exists()) return;
     const post = snapshot.val();
-    // Render phần author
+    
+    // Lấy thông tin tác giả từ users/{authorId}
+    let authorInfo = {
+      name: post.authorName || 'Ẩn danh',
+      email: post.authorEmail || '',
+      photoURL: post.authorPhotoURL || 'images/default-avatar.png'
+    };
+    
+    if (post.authorId) {
+      try {
+        const userSnapshot = await get(ref(db, 'users/' + post.authorId));
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.val();
+          authorInfo = {
+            name: userData.fullName || userData.name || post.authorName || 'Ẩn danh',
+            email: userData.email || post.authorEmail || '',
+            photoURL: userData.photoURL || userData.avatar || post.authorPhotoURL || 'images/default-avatar.png'
+          };
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Fallback to post data if user fetch fails
+      }
+    }
+    
+    // Render phần author với thông tin động
     const authorHtml = `
       <div class="post-detail-author">
-        <img src="${post.authorPhotoURL || 'images/default-avatar.png'}" alt="avatar">
+        <img src="${authorInfo.photoURL}" alt="avatar" onerror="this.src='images/default-avatar.png'">
         <div class="post-detail-author-info">
-          <div class="post-detail-author-name">${post.authorName || 'Ẩn danh'}</div>
-          <div class="post-detail-author-email">${post.authorEmail || ''}</div>
+          <div class="post-detail-author-name">${authorInfo.name}</div>
+          <div class="post-detail-author-email">${authorInfo.email}</div>
           <div class="post-detail-time">${post.timestamp ? new Date(post.timestamp).toLocaleString() : ''}</div>
         </div>
       </div>
@@ -5213,30 +5458,56 @@ window.showPostDetail = function(postId) {
     const commentCount = post.comments ? Object.keys(post.comments).length : 0;
     const statsHtml = `<div class="post-detail-stats"><span><i class="fas fa-heart"></i> ${likeCount} lượt thích</span><span><i class="fas fa-comment"></i> ${commentCount} bình luận</span></div>`;
     // Render bình luận & reply
-    function renderDetailComments(comments, level = 0) {
+    async function renderDetailComments(comments, level = 0) {
       if (!comments || Object.keys(comments).length === 0) return '';
       let html = '';
-      Object.entries(comments).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0)).forEach(([id, cmt]) => {
-        if (!cmt || typeof cmt !== 'object' || !cmt.text) return;
-        const displayName = cmt.authorName && cmt.authorName.trim() ? cmt.authorName : (cmt.authorEmail && cmt.authorEmail.trim() ? cmt.authorEmail : 'Ẩn danh');
+      
+      for (const [id, cmt] of Object.entries(comments).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0))) {
+        if (!cmt || typeof cmt !== 'object' || !cmt.text) continue;
+        
+        // Lấy thông tin tác giả bình luận từ users
+        let commentAuthorInfo = {
+          name: cmt.authorName && cmt.authorName.trim() ? cmt.authorName : (cmt.authorEmail && cmt.authorEmail.trim() ? cmt.authorEmail : 'Ẩn danh'),
+          email: cmt.authorEmail || '',
+          photoURL: cmt.authorPhotoURL || 'images/default-avatar.png'
+        };
+        
+        if (cmt.authorId) {
+          try {
+            const userSnapshot = await get(ref(db, 'users/' + cmt.authorId));
+            if (userSnapshot.exists()) {
+              const userData = userSnapshot.val();
+              commentAuthorInfo = {
+                name: userData.fullName || userData.name || cmt.authorName || 'Ẩn danh',
+                email: userData.email || cmt.authorEmail || '',
+                photoURL: userData.photoURL || userData.avatar || cmt.authorPhotoURL || 'images/default-avatar.png'
+              };
+            }
+          } catch (error) {
+            console.error('Error fetching comment author data:', error);
+            // Fallback to comment data if user fetch fails
+          }
+        }
+        
         html += `
           <div class="post-detail-comment${level > 0 ? ' post-detail-reply' : ''}">
-            <img src="${cmt.authorPhotoURL || 'images/default-avatar.png'}" alt="avatar">
+            <img src="${commentAuthorInfo.photoURL}" alt="avatar" onerror="this.src='images/default-avatar.png'">
             <div class="post-detail-comment-body">
-              <div class="post-detail-comment-name">${displayName}</div>
-              <div class="post-detail-comment-meta">${cmt.authorEmail && cmt.authorEmail !== displayName ? cmt.authorEmail : ''} • ${cmt.timestamp ? new Date(cmt.timestamp).toLocaleString() : ''}</div>
+              <div class="post-detail-comment-name">${commentAuthorInfo.name}</div>
+              <div class="post-detail-comment-meta">${commentAuthorInfo.email && commentAuthorInfo.email !== commentAuthorInfo.name ? commentAuthorInfo.email : ''} • ${cmt.timestamp ? new Date(cmt.timestamp).toLocaleString() : ''}</div>
               <div>${cmt.text}</div>
             </div>
-            ${(window.isAdmin || (window.currentUser && window.currentUser.uid === cmt.authorId)) ? `<button class="btn-delete-comment" onclick="deleteComment('${postId}','${id}',${level>0?`'${cmt.parentId||''}'`:'null'})"><i class="fas -trash"></i></button>` : ''}
+            ${(window.isAdmin || (window.currentUser && window.currentUser.uid === cmt.authorId)) ? `<button class="btn-delete-comment" onclick="deleteComment('${postId}','${id}',${level>0?`'${cmt.parentId||''}'`:'null'})"><i class="fas fa-trash"></i></button>` : ''}
           </div>
         `;
+        
         if (cmt.replies) {
-          html += renderDetailComments(cmt.replies, level + 1);
+          html += await renderDetailComments(cmt.replies, level + 1);
         }
-      });
+      }
       return html;
     }
-    const commentsHtml = `<div class="post-detail-comments">${renderDetailComments(post.comments || {})}</div>`;
+    const commentsHtml = `<div class="post-detail-comments">${await renderDetailComments(post.comments || {})}</div>`;
     document.getElementById('postDetailBody').innerHTML = authorHtml + contentHtml + imageHtml + statsHtml + commentsHtml;
     // Hiện nút xóa bài nếu là admin hoặc chính chủ
     const delBtn = document.getElementById('deletePostInModal');
@@ -5249,7 +5520,15 @@ window.showPostDetail = function(postId) {
     // Hiện modal
     const modal = new bootstrap.Modal(document.getElementById('postDetailModal'));
     modal.show();
-  });
+  } catch (error) {
+    console.error('Error showing post detail:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể tải chi tiết bài đăng.',
+      showConfirmButton: true
+    });
+  }
 };
 
 window.deletePost = async function(postId) {
