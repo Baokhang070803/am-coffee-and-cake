@@ -3103,11 +3103,14 @@
                 if (loginLink) loginLink.style.display = 'none';
                 if (registerLink) registerLink.style.display = 'none';
 
-                // Load user info
+                // Load user info và tự động cập nhật thông tin
                 const userRef = ref(database, `users/${user.uid}`);
                 onValue(userRef, async (snapshot) => {
                     const data = snapshot.val();
                     console.log("Dữ liệu người dùng:", data);
+                    
+                    // Tự động cập nhật thông tin người dùng vào Firebase
+                    await autoUpdateUserInfo(user, data);
                     
                     if (data) {
                         if (userNameElement) userNameElement.textContent = data.name || user.displayName || "Người dùng chưa đặt tên";
@@ -3115,7 +3118,8 @@
                         if (userPhoneElement) userPhoneElement.textContent = data.phone || "Chưa có số điện thoại";
                         if (userAddressElement) userAddressElement.textContent = data.address || "Chưa có địa chỉ";
                         
-                        const avatarUrl = data.avatarUrl || "images/nguoidung.png";
+                        // Ưu tiên avatar từ Firebase, sau đó từ Google, cuối cùng là ảnh mặc định
+                        const avatarUrl = data.avatarUrl || user.photoURL || "images/nguoidung.png";
                         if (avatarElement) avatarElement.src = avatarUrl;
                         if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
                         if (sidebarUserName) sidebarUserName.textContent = data.name || user.displayName || "Người dùng";
@@ -3128,9 +3132,10 @@
                         if (userPhoneElement) userPhoneElement.textContent = "Chưa có số điện thoại";
                         if (userAddressElement) userAddressElement.textContent = "Chưa có địa chỉ";
                         
-                        const defaultAvatar = "images/nguoidung.png";
-                        if (avatarElement) avatarElement.src = defaultAvatar;
-                        if (sidebarAvatar) sidebarAvatar.src = defaultAvatar;
+                        // Ưu tiên avatar từ Google (chỉ lần đầu), sau đó là ảnh mặc định
+                        const avatarUrl = user.photoURL || "images/nguoidung.png";
+                        if (avatarElement) avatarElement.src = avatarUrl;
+                        if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
                         if (sidebarUserName) sidebarUserName.textContent = user.displayName || "Người dùng";
                         
                         // Gọi hàm vẽ thẻ thành viên với thông tin cơ bản
@@ -3460,6 +3465,8 @@
                 document.querySelector('.loading-overlay').classList.add('hidden');
             }, 1000);
         });
+
+
 
         // Scroll animation - Tắt observer
         const elements = document.querySelectorAll('.membership-info, .purchase-chart, .transaction-history');
@@ -3966,6 +3973,62 @@
               update(userRef, { memberCard: memberCardInfo });
             });
           }
+        }
+
+        // Hàm tự động cập nhật thông tin người dùng vào Firebase
+        async function autoUpdateUserInfo(user, existingData) {
+            try {
+                const userRef = ref(database, `users/${user.uid}`);
+                const currentTime = new Date().toISOString();
+                
+                // Nếu chưa có dữ liệu người dùng, tạo mới với 4 thông tin cơ bản
+                if (!existingData) {
+                    const newUserData = {
+                        name: user.displayName || user.email.split('@')[0],
+                        email: user.email,
+                        phone: '',
+                        address: ''
+                    };
+                    
+                    // Lấy avatar từ Google chỉ lần đầu (khi tạo mới)
+                    if (user.photoURL) {
+                        newUserData.avatarUrl = user.photoURL;
+                    }
+                    
+                    // Sinh barcode mới nếu chưa có
+                    newUserData.barcode = await generateUniqueBarcode(database);
+                    
+                    await set(userRef, newUserData);
+                    console.log("Đã tạo thông tin người dùng mới:", newUserData);
+                } else {
+                    // Cập nhật thông tin hiện có - chỉ 4 thông tin cơ bản
+                    const updateFields = {};
+                    
+                    // Cập nhật thông tin từ Firebase Auth nếu có thay đổi
+                    if (user.displayName && user.displayName !== existingData.name) {
+                        updateFields.name = user.displayName;
+                    }
+                    
+                    if (user.email && user.email !== existingData.email) {
+                        updateFields.email = user.email;
+                    }
+                    
+                    // Sinh barcode mới nếu chưa có
+                    if (!existingData.barcode || existingData.barcode === "00000") {
+                        updateFields.barcode = await generateUniqueBarcode(database);
+                    }
+                    
+                    // Chỉ cập nhật nếu có thay đổi
+                    if (Object.keys(updateFields).length > 0) {
+                        await update(userRef, updateFields);
+                        console.log("Đã cập nhật thông tin người dùng:", updateFields);
+                    }
+                }
+                
+            } catch (error) {
+                console.error("Lỗi khi tự động cập nhật thông tin người dùng:", error);
+                // Không hiển thị lỗi cho người dùng vì đây là cập nhật tự động
+            }
         }
 
         // Thêm hàm uploadToCloudinary ra window scope ở đầu script type=module nếu chưa có
