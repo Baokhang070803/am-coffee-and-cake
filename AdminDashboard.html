@@ -1420,6 +1420,7 @@
               <option value="month" selected>12 tháng</option>
               <option value="thismonth">Tháng này</option>
               <option value="thisweek">Tuần này</option>
+              <option value="today">Hôm nay</option>
             </select>
           </div>
           <div class="chart-container">
@@ -2709,6 +2710,24 @@
         chartLabel = 'Doanh thu (triệu đồng)';
         yTitle = 'Triệu đồng';
         document.getElementById('revenueChartTitle').textContent = 'Tuần Này';
+      } else if (filter === 'today') {
+        // Hôm nay - từng giờ
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+        labels = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+        revenueData = Array.from({ length: 24 }, (_, i) => {
+          const hour = i.toString().padStart(2, '0');
+          return orders.filter(o => {
+            if (!o.createdAt) return false;
+            const orderDate = new Date(o.createdAt);
+            const orderDateStr = orderDate.toISOString().split('T')[0];
+            const orderHour = orderDate.getHours();
+            return orderDateStr === todayStr && orderHour === i;
+          }).reduce((sum, o) => sum + (o.grandTotal || 0), 0) / 1_000_000;
+        });
+        chartLabel = 'Doanh thu (triệu đồng)';
+        yTitle = 'Triệu đồng';
+        document.getElementById('revenueChartTitle').textContent = 'Hôm Nay';
       }
       if (revenueChartInstance) {
         revenueChartInstance.data.labels = labels;
