@@ -268,15 +268,16 @@
         }
 
         /* Style cho user-info (chỉ hiển thị nút Đăng Xuất) */
-        .usermenu li.user-info {
+        /* CSS cho usermenu (đồng bộ với index.html) */
+        .usermenu li {
             display: inline-block;
             margin-right: 10px;
         }
-        .usermenu li.user-info a {
+        .usermenu li a {
             color: #000000;
             text-decoration: none;
         }
-        .usermenu li.user-info a:hover {
+        .usermenu li a:hover {
             color: #A63C3C;
         }
 
@@ -902,7 +903,7 @@
         onAuthStateChanged(auth, (user) => {
             const loginLink = document.getElementById('loginLink');
             const registerLink = document.getElementById('registerLink');
-            const userInfo = document.querySelector('.user-info');
+            const userInfo = document.getElementById('userInfo');
 
             if (user) {
                 // User is logged in

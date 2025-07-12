@@ -354,15 +354,15 @@
             transform: translateY(0);
         }
         /* Style cho user-info (chỉ hiển thị nút Đăng Xuất) */
-        .usermenu li.user-info {
+        .usermenu li {
             display: inline-block;
             margin-right: 10px;
         }
-        .usermenu li.user-info a {
+        .usermenu li a {
             color: #000000;
             text-decoration: none;
         }
-        .usermenu li.user-info a:hover {
+        .usermenu li a:hover {
             color: #A63C3C;
         }
         /* Style cho modal */
@@ -1081,17 +1081,13 @@
       onAuthStateChanged(auth, (user) => {
           const loginLink = document.getElementById('loginLink');
           const registerLink = document.getElementById('registerLink');
-          const userInfo = document.querySelector('.user-info');
+          const userInfo = document.getElementById('userInfo');
 
           if (user) {
-              // User is logged in
               if (userInfo) {
                   userInfo.style.display = 'inline-block';
-                  // Thêm tên người dùng vào menu
                   const userName = user.displayName || user.email.split('@')[0];
                   userInfo.innerHTML = `<a href="member.html"><i class="fa fa-user"></i> ${userName}</a> | <a href="#" id="logoutLink"><i class="fa fa-sign-out"></i> Đăng Xuất</a>`;
-                  
-                  // Gắn lại sự kiện đăng xuất
                   const logoutLink = document.getElementById('logoutLink');
                   if (logoutLink) {
                       logoutLink.addEventListener('click', (e) => {
@@ -1100,11 +1096,9 @@
                       });
                   }
               }
-              
               if (loginLink) loginLink.style.display = 'none';
               if (registerLink) registerLink.style.display = 'none';
           } else {
-              // User is not logged in
               if (userInfo) userInfo.style.display = 'none';
               if (loginLink) loginLink.style.display = 'inline-block';
               if (registerLink) registerLink.style.display = 'inline-block';
