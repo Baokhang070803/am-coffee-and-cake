@@ -1268,6 +1268,23 @@
         text-align: center;
         transition: background 0.2s, color 0.2s, box-shadow 0.2s;
         }
+        .avatar-wrapper {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          overflow: hidden;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: #a67c52;
+        }
+        .avatar-wrapper img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+          display: block;
+        }
     </style>
 </head>
 <body id="home">
@@ -2208,10 +2225,17 @@
             postBtn.disabled = true;
             postBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang đăng...';
             try {
+                // Lấy thông tin user hiện tại từ Firebase
+                const profile = await getUserProfile(currentUser.uid);
+                
                 const postData = {
                     content: content,
                     authorId: currentUser.uid,
                     authorEmail: currentUser.email,
+                    // Lưu thêm thông tin user vào post
+                    authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
+                    authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
+                    authorProfileUpdatedAt: profile ? profile.updatedAt || Date.now() : Date.now(),
                     timestamp: serverTimestamp(),
                     likes: {},
                     comments: {},
@@ -2357,12 +2381,25 @@
             const isLiked = currentUser && post.likes && post.likes[currentUser.uid];
             const timeAgo = formatTimeAgo(post.timestamp);
             
-            // Tạo avatar và tên động từ authorId
-            const authorInitial = post.authorEmail.charAt(0).toUpperCase();
-            let avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">${authorInitial}</span>`;
-            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-${post.id}">${post.authorEmail.split('@')[0]}</span>`;
+            // Sử dụng dữ liệu có sẵn trong post
+            const authorName = post.authorName || post.authorEmail.split('@')[0];
+            const authorPhotoURL = post.authorPhotoURL;
             
-            // Load thông tin user mới nhất
+            let avatarHtml = '';
+            if (authorPhotoURL) {
+                // Có ảnh → hiển thị ảnh
+                avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">
+                    <img src="${authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                </span>`;
+            } else {
+                // Không có ảnh → hiển thị initial
+                const authorInitial = post.authorEmail.charAt(0).toUpperCase();
+                avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">${authorInitial}</span>`;
+            }
+            
+            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-${post.id}">${authorName}</span>`;
+            
+            // Vẫn gọi loadUserInfoForPost để cập nhật nếu có thay đổi
             loadUserInfoForPost(post.authorId, post.id);
             let imageHtml = '';
             if (post.image) {
@@ -2498,23 +2535,30 @@
                     html += repliesHtml;
                     return;
                 }
-                const authorInitial = comment.authorName ? comment.authorName.charAt(0).toUpperCase() : comment.authorEmail ? comment.authorEmail.charAt(0).toUpperCase() : '?';
+                // Vừa sử dụng dữ liệu có sẵn, vừa lấy động từ Firebase
+                const commentAuthorName = comment.authorName || (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng');
+                const commentAuthorPhotoURL = comment.authorPhotoURL;
+                const authorInitial = commentAuthorName.charAt(0).toUpperCase();
+                
                 let avatarHtml = '';
-                if (comment.authorPhotoURL) {
-                    avatarHtml = `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                let nameHtml = `<span id="name-cmt-${id}" style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${comment.authorId}')">${commentAuthorName}</span>`;
+                
+                if (commentAuthorPhotoURL) {
+                    // Có ảnh → hiển thị ảnh
+                    avatarHtml = `<span class="avatar-wrapper" id="avatar-cmt-${id}" onclick="viewProfile('${comment.authorId}')"><img src="${commentAuthorPhotoURL}" alt="avatar"></span>`;
                 } else if (comment.authorId) {
-                    avatarHtml = `<div id="avatar-cmt-${id}" style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#a67c52;display:flex;align-items:center;justify-content:center;">
-                        <img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">
-                    </div>`;
-                    getUserProfile(comment.authorId).then(profile => {
-                        if (profile && profile.avatarUrl) {
-                            const el = document.getElementById('avatar-cmt-' + id);
-                            if (el) el.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-                        }
-                    });
+                    // Không có ảnh → hiển thị initial
+                    avatarHtml = `<span class="avatar-wrapper" id="avatar-cmt-${id}" onclick="viewProfile('${comment.authorId}')">${authorInitial}</span>`;
                 } else {
-                    avatarHtml = `<img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                    // Fallback
+                    avatarHtml = `<span class="avatar-wrapper" id="avatar-cmt-${id}" onclick="viewProfile('${comment.authorId}')"><img src="images/default-avatar.png" alt="avatar"></span>`;
                 }
+                
+                // Luôn lấy động từ Firebase để cập nhật nếu có thay đổi
+                if (comment.authorId) {
+                    loadUserInfoForComment(comment.authorId, id);
+                }
+                
                 const timeAgo = formatTimeAgo(comment.timestamp);
                 const likesCount = comment.likes ? Object.keys(comment.likes).length : 0;
                 const isLiked = currentUser && comment.likes && comment.likes[currentUser.uid];
@@ -2531,13 +2575,12 @@
                     `;
                 }
                 const isAuthor = currentUser && comment.authorId === currentUser.uid;
-                const authorNameHtml = `<span style='cursor:pointer;color:#a67c52;font-weight:600;' onclick="viewProfile('${comment.authorId}')">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</span>`;
                 html += `
                     <div class="comment" data-comment-id="${id}">
                         <div class="comment-avatar">${avatarHtml}</div>
                         <div class="comment-content">
                             <div class="comment-bubble">
-                                <div class="comment-author">${authorNameHtml}</div>
+                                <div class="comment-author">${nameHtml}</div>
                                 <div class="comment-text">${comment.text}</div>
                             </div>
                             <div class="comment-actions">
@@ -2614,7 +2657,10 @@
             const commentInput = postElement.querySelector('.comment-form .comment-input');
             const commentText = commentInput.value.trim();
             if (!commentText) return;
-            const profile = window.currentUserProfile;
+            
+            // Lấy thông tin user hiện tại từ Firebase
+            const profile = await getUserProfile(currentUser.uid);
+            
             try {
                 const commentData = {
                     text: commentText,
@@ -2622,6 +2668,7 @@
                     authorName: (profile && profile.name) || currentUser.displayName || currentUser.email.split('@')[0],
                     authorEmail: currentUser.email,
                     authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
+                    authorProfileUpdatedAt: profile ? profile.updatedAt || Date.now() : Date.now(),
                     timestamp: serverTimestamp()
                 };
                 await push(ref(database, `posts/${postId}/comments`), commentData);
@@ -2882,13 +2929,26 @@
             const commentsCount = countTotalComments(post.comments);
             const timeAgo = formatTimeAgo(post.timestamp);
             
-            // Tạo avatar và tên động từ authorId
-            const authorInitial = post.authorEmail.charAt(0).toUpperCase();
-            let avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-${post.id}">${authorInitial}</span>`;
-            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-${post.id}">${post.authorEmail.split('@')[0]}</span>`;
+            // Sử dụng dữ liệu có sẵn trong post
+            const authorName = post.authorName || post.authorEmail.split('@')[0];
+            const authorPhotoURL = post.authorPhotoURL;
             
-            // Load thông tin user mới nhất
-            loadUserInfoForPost(post.authorId, post.id);
+            let avatarHtml = '';
+            if (authorPhotoURL) {
+                // Có ảnh → hiển thị ảnh
+                avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-modal-${post.id}">
+                    <img src="${authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                </span>`;
+            } else {
+                // Không có ảnh → hiển thị initial
+                const authorInitial = post.authorEmail.charAt(0).toUpperCase();
+                avatarHtml = `<span style="cursor:pointer;position:relative;" onclick="viewProfile('${post.authorId}')" id="avatar-modal-${post.id}">${authorInitial}</span>`;
+            }
+            
+            let authorNameHtml = `<span style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${post.authorId}')" id="name-modal-${post.id}">${authorName}</span>`;
+            
+            // Gọi hàm cập nhật với ID khác để tránh conflict
+            loadUserInfoForModal(post.authorId, post.id);
             
             let imageHtml = '';
             if (post.image) {
@@ -2955,34 +3015,41 @@
                     return;
                 }
                 
-                const authorInitial = comment.authorName ? comment.authorName.charAt(0).toUpperCase() : comment.authorEmail ? comment.authorEmail.charAt(0).toUpperCase() : '?';
+                // Vừa sử dụng dữ liệu có sẵn, vừa lấy động từ Firebase
+                const commentAuthorName = comment.authorName || (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng');
+                const commentAuthorPhotoURL = comment.authorPhotoURL;
+                const authorInitial = commentAuthorName.charAt(0).toUpperCase();
+                
                 let avatarHtml = '';
-                if (comment.authorPhotoURL) {
-                    avatarHtml = `<img src="${comment.authorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                let nameHtml = `<span id="name-cmt-modal-${id}" style="cursor:pointer;color:#a67c52;font-weight:600;" onclick="viewProfile('${comment.authorId}')">${commentAuthorName}</span>`;
+                
+                if (commentAuthorPhotoURL) {
+                    // Có ảnh → hiển thị ảnh
+                    avatarHtml = `<span id="avatar-cmt-modal-${id}" style="cursor:pointer;position:relative;" onclick="viewProfile('${comment.authorId}')">
+                        <img src="${commentAuthorPhotoURL}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                    </span>`;
                 } else if (comment.authorId) {
-                    avatarHtml = `<div id="avatar-cmt-${id}" style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#a67c52;display:flex;align-items:center;justify-content:center;">
-                        <img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">
-                    </div>`;
-                    getUserProfile(comment.authorId).then(profile => {
-                        if (profile && profile.avatarUrl) {
-                            const el = document.getElementById('avatar-cmt-' + id);
-                            if (el) el.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-                        }
-                    });
+                    // Không có ảnh → hiển thị initial
+                    avatarHtml = `<span id="avatar-cmt-modal-${id}" style="cursor:pointer;position:relative;width:32px;height:32px;border-radius:50%;overflow:hidden;background:#a67c52;display:flex;align-items:center;justify-content:center;color:white;font-weight:600;" onclick="viewProfile('${comment.authorId}')">${authorInitial}</span>`;
                 } else {
+                    // Fallback
                     avatarHtml = `<img src="images/default-avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                }
+                
+                // Luôn lấy động từ Firebase để cập nhật nếu có thay đổi
+                if (comment.authorId) {
+                    loadUserInfoForCommentModal(comment.authorId, id);
                 }
                 
                 const timeAgo = formatTimeAgo(comment.timestamp);
                 const likesCount = comment.likes ? Object.keys(comment.likes).length : 0;
-                const authorNameHtml = `<span style='cursor:pointer;color:#a67c52;font-weight:600;' onclick="viewProfile('${comment.authorId}')">${comment.authorName ? comment.authorName : (comment.authorEmail ? comment.authorEmail.split('@')[0] : 'Người dùng')}</span>`;
                 
                 html += `
                     <div class="comment" data-comment-id="${id}">
                         <div class="comment-avatar">${avatarHtml}</div>
                         <div class="comment-content">
                             <div class="comment-bubble">
-                                <div class="comment-author">${authorNameHtml}</div>
+                                <div class="comment-author">${nameHtml}</div>
                                 <div class="comment-text">${comment.text}</div>
                             </div>
                             <div class="comment-actions">
@@ -3087,7 +3154,10 @@
             const input = document.getElementById('reply-input-' + commentId);
             const text = input.value.trim();
             if (!text) return;
-            const profile = window.currentUserProfile;
+            
+            // Lấy thông tin user hiện tại từ Firebase
+            const profile = await getUserProfile(currentUser.uid);
+            
             try {
                 const replyData = {
                     text: text,
@@ -3095,6 +3165,7 @@
                     authorName: (profile && profile.name) || (currentUser.displayName ? currentUser.displayName : (currentUser.email ? currentUser.email.split('@')[0] : 'Người dùng')),
                     authorEmail: currentUser.email,
                     authorPhotoURL: (profile && profile.avatarUrl) || currentUser.photoURL || null,
+                    authorProfileUpdatedAt: profile ? profile.updatedAt || Date.now() : Date.now(),
                     timestamp: Date.now()
                 };
                 const repliesRef = ref(database, `posts/${postId}/comments/${commentId}/replies`);
@@ -3482,12 +3553,28 @@
                     const avatarElement = document.getElementById(`avatar-${post.id}`);
                     const nameElement = document.getElementById(`name-${post.id}`);
                     
+                    // Cập nhật avatar nếu khác
                     if (profile.avatarUrl && avatarElement) {
-                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                        const currentSrc = avatarElement.querySelector('img')?.src;
+                        if (currentSrc !== profile.avatarUrl) {
+                            avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                            
+                            // Cập nhật dữ liệu trong memory
+                            post.authorPhotoURL = profile.avatarUrl;
+                            post.authorProfileUpdatedAt = profile.updatedAt || Date.now();
+                        }
                     }
                     
+                    // Cập nhật tên nếu khác
                     if (profile.name && nameElement) {
-                        nameElement.textContent = profile.name;
+                        const currentName = nameElement.textContent;
+                        if (currentName !== profile.name) {
+                            nameElement.textContent = profile.name;
+                            
+                            // Cập nhật dữ liệu trong memory
+                            post.authorName = profile.name;
+                            post.authorProfileUpdatedAt = profile.updatedAt || Date.now();
+                        }
                     }
                 }
             });
@@ -3544,19 +3631,119 @@
             renderPosts();
         };
 
+        // Hàm load thông tin user mới nhất cho modal chi tiết
+        async function loadUserInfoForModal(authorId, postId) {
+            try {
+                const profile = await getUserProfile(authorId);
+                const avatarElement = document.getElementById(`avatar-modal-${postId}`);
+                const nameElement = document.getElementById(`name-modal-${postId}`);
+                
+                // Chỉ cập nhật nếu profile mới hơn hoặc khác với dữ liệu hiện tại
+                if (profile && profile.avatarUrl && avatarElement) {
+                    const currentSrc = avatarElement.querySelector('img')?.src;
+                    if (currentSrc !== profile.avatarUrl) {
+                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    }
+                }
+                
+                if (profile && profile.name && nameElement) {
+                    const currentName = nameElement.textContent;
+                    if (currentName !== profile.name) {
+                        nameElement.textContent = profile.name;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user info for modal:', error);
+            }
+        }
+
+        // Hàm load thông tin user mới nhất cho comment
+        async function loadUserInfoForComment(authorId, commentId) {
+            try {
+                const profile = await getUserProfile(authorId);
+                const avatarElement = document.getElementById(`avatar-cmt-${commentId}`);
+                const nameElement = document.getElementById(`name-cmt-${commentId}`);
+                
+                // Cập nhật avatar nếu có thay đổi
+                if (profile && profile.avatarUrl && avatarElement) {
+                    const currentSrc = avatarElement.querySelector('img')?.src;
+                    if (!currentSrc || currentSrc !== profile.avatarUrl) {
+                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    }
+                }
+                
+                // Cập nhật tên nếu có thay đổi
+                if (profile && profile.name && nameElement) {
+                    const currentName = nameElement.textContent;
+                    if (currentName !== profile.name) {
+                        nameElement.textContent = profile.name;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user info for comment:', error);
+            }
+        }
+
+        // Hàm load thông tin user mới nhất cho comment trong modal
+        async function loadUserInfoForCommentModal(authorId, commentId) {
+            try {
+                const profile = await getUserProfile(authorId);
+                const avatarElement = document.getElementById(`avatar-cmt-modal-${commentId}`);
+                const nameElement = document.getElementById(`name-cmt-modal-${commentId}`);
+                
+                // Cập nhật avatar nếu có thay đổi
+                if (profile && profile.avatarUrl && avatarElement) {
+                    const currentSrc = avatarElement.querySelector('img')?.src;
+                    if (!currentSrc || currentSrc !== profile.avatarUrl) {
+                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    }
+                }
+                
+                // Cập nhật tên nếu có thay đổi
+                if (profile && profile.name && nameElement) {
+                    const currentName = nameElement.textContent;
+                    if (currentName !== profile.name) {
+                        nameElement.textContent = profile.name;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user info for comment modal:', error);
+            }
+        }
+
         // Hàm load thông tin user mới nhất cho bài viết
         async function loadUserInfoForPost(authorId, postId) {
             try {
                 const profile = await getUserProfile(authorId);
+                const post = posts.find(p => p.id === postId);
                 const avatarElement = document.getElementById(`avatar-${postId}`);
                 const nameElement = document.getElementById(`name-${postId}`);
                 
+                // Chỉ cập nhật nếu profile mới hơn hoặc khác với dữ liệu hiện tại
                 if (profile && profile.avatarUrl && avatarElement) {
-                    avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    const currentSrc = avatarElement.querySelector('img')?.src;
+                    if (currentSrc !== profile.avatarUrl) {
+                        avatarElement.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                        
+                        // Cập nhật dữ liệu trong memory
+                        if (post) {
+                            post.authorPhotoURL = profile.avatarUrl;
+                            post.authorProfileUpdatedAt = profile.updatedAt || Date.now();
+                        }
+                    }
                 }
                 
                 if (profile && profile.name && nameElement) {
-                    nameElement.textContent = profile.name;
+                    const currentName = nameElement.textContent;
+                    if (currentName !== profile.name) {
+                        nameElement.textContent = profile.name;
+                        
+                        // Cập nhật dữ liệu trong memory
+                        if (post) {
+                            post.authorName = profile.name;
+                            post.authorProfileUpdatedAt = profile.updatedAt || Date.now();
+                        }
+                    }
                 }
             } catch (error) {
                 console.error('Error loading user info for post:', error);
