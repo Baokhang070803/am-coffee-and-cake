@@ -1022,7 +1022,7 @@
           border: 1.5px solid #a67c52;
         }
         .story-btn {
-          background: linear-gradient(90deg, #f7544a 60%, #a67c52 100%);
+          background: linear-gradient(90deg, #f7544a);
           color: #fff;
           border: none;
           border-radius: 10px;
@@ -1285,6 +1285,83 @@
           border-radius: 50%;
           display: block;
         }
+        .sidebar-left, .sidebar-right {
+          background: #fff;
+          border-radius: 14px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+          padding: 22px 18px 22px 18px;
+          min-height: 400px;
+          margin-top: 24px;
+          font-size: 15px;
+        }
+        .sidebar-section {
+          margin-bottom: 24px;
+          border-bottom: 1px solid #f0f0f0;
+          padding-bottom: 16px;
+        }
+        .sidebar-section:last-child {
+          margin-bottom: 0;
+          border-bottom: none;
+        }
+        .sidebar-avatar img {
+          border: 3px solid #a67c52;
+          box-shadow: 0 1px 6px rgba(166,124,82,0.08);
+        }
+        .sidebar-username {
+          font-size: 18px;
+          color: #a67c52;
+          margin-bottom: 2px;
+        }
+        .sidebar-level {
+          font-weight: 500;
+        }
+        .sidebar-left ul {
+          margin-top: 8px;
+        }
+        .sidebar-left ul li {
+          margin-bottom: 10px;
+        }
+        .sidebar-left ul li a {
+          color: #a67c52;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.2s;
+        }
+        .sidebar-left ul li a:hover {
+          color: #f7544a;
+          text-decoration: underline;
+        }
+        .ranking ol {
+          margin-top: 8px;
+        }
+        .ranking li {
+          margin-bottom: 6px;
+          font-weight: 500;
+        }
+        .container_fullwidth > .container {
+          max-width: 1440px !important;
+          width: 100%;
+          display: flex;
+          gap: 24px;
+          flex-wrap: nowrap;
+          margin: 0 auto;
+        }
+        .sidebar-left, .sidebar-right {
+          width: 220px;
+          min-width: 180px;
+          flex-shrink: 0;
+        }
+        .timeline-container {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+        @media (max-width: 1200px) {
+          .sidebar-left, .sidebar-right { width: 150px; }
+        }
+        @media (max-width: 991px) {
+          .sidebar-left, .sidebar-right { display: none !important; }
+          .container_fullwidth > .container { gap: 0 !important; }
+        }
     </style>
 </head>
 <body id="home">
@@ -1444,17 +1521,50 @@
         </div>
         <div class="clearfix"></div>
         <div class="container_fullwidth">
-            <div class="container">
-                <div class="timeline-container">
+            <div class="container" style="display:flex;gap:24px;">
+                <!-- Sidebar trái -->
+                <div class="sidebar-left" style="width:240px;flex-shrink:0;">
+                  <div class="sidebar-section user-info">
+                    <div class="sidebar-avatar" style="text-align:center;margin-bottom:12px;">
+                      <img src="images/default-avatar.png" alt="avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover;">
+                    </div>
+                    <div class="sidebar-username" style="font-weight:600;text-align:center;">Tên người dùng</div>
+                    <div class="sidebar-email" style="font-size:13px;color:#888;text-align:center;">user@email.com</div>
+                    <div class="sidebar-level" style="font-size:13px;color:#a67c52;text-align:center;">Thành viên hạng đồng</div>
+                  </div>
+                  <div class="sidebar-section quick-menu" style="margin-top:18px;">
+                    <div style="font-weight:600;margin-bottom:8px;">Menu nhanh</div>
+                    <ul style="list-style:none;padding:0;margin:0;">
+                      <li><a href="member.html"><i class="fa fa-user"></i> Trang cá nhân</a></li>
+                      <li><a href="#"><i class="fa fa-users"></i> Bạn bè</a></li>
+                      <li><a href="MessengerList.html"><i class="fa fa-comments"></i> Tin nhắn</a></li>
+                    
+                    </ul>
+                  </div>
+                  <div class="sidebar-section ranking" style="margin-top:18px;">
+                    <div style="font-weight:600;margin-bottom:8px;">Bảng xếp hạng</div>
+                    <ol style="padding-left:18px;">
+                      <li>Nguyễn Văn A <span style="color:#a67c52;font-weight:500;">1200đ</span></li>
+                      <li>Trần Thị B <span style="color:#a67c52;font-weight:500;">1100đ</span></li>
+                      <li>Lê Văn C <span style="color:#a67c52;font-weight:500;">950đ</span></li>
+                      <li>Phạm D <span style="color:#a67c52;font-weight:500;">900đ</span></li>
+                      <li>Võ E <span style="color:#a67c52;font-weight:500;">850đ</span></li>
+                    </ol>
+                  </div>
+                </div>
+                <!-- Kết thúc sidebar trái -->
+
+                <!-- Timeline chính -->
+                <div class="timeline-container" style="flex:1;min-width:0;">
                 <!-- Stories Section -->
-                <!-- <div class="stories-section">
-                    <div class="stories-container" id="storiesContainer">
-                        <div class="story-item story-create" onclick="openStoryModal()">
-                            <i class="fa fa-plus"></i>
-                            <span>Tạo tin</span>
+                    <div class="stories-section">
+                        <div class="stories-container" id="storiesContainer">
+                            <div class="story-item story-create" onclick="openStoryModal()">
+                                <i class="fa fa-plus"></i>
+                                <span>Tạo tin</span>
+                            </div>
                         </div>
                     </div>
-                </div> -->
 
                 <!-- Post Composer -->
                 <div class="post-composer" id="postComposer">
@@ -1525,10 +1635,53 @@
                     <i class="fa fa-newspaper-o"></i>
                     <h3>Chưa có bài viết nào</h3>
                     <p>Hãy là người đầu tiên chia sẻ câu chuyện của bạn!</p>
-                </div>
+                </div> 
             </div>
+                    
+    <!-- Sidebar phải -->
+    <div class="sidebar-right" style="width:260px;flex-shrink:0;">
+        <div class="sidebar-section friend-suggest">
+          <div style="font-weight:600;margin-bottom:8px;">Gợi ý kết bạn</div>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+              <img src="images/default-avatar.png" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+              <span>Nguyễn Văn F</span>
+              <button style="margin-left:auto;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;">Kết bạn</button>
+            </li>
+            <li style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+              <img src="images/default-avatar.png" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+              <span>Trần Thị G</span>
+              <button style="margin-left:auto;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;">Kết bạn</button>
+            </li>
+            <li style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+              <img src="images/default-avatar.png" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+              <span>Lê H</span>
+              <button style="margin-left:auto;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;">Kết bạn</button>
+            </li>
+          </ul>
         </div>
-        
+        <div class="sidebar-section promotion" style="margin-top:18px;">
+          <div style="font-weight:600;margin-bottom:8px;">Khuyến mãi</div>
+          <div style="background:#fffbe6;border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+            <div style="font-weight:500;color:#a67c52;">Giảm 20% cho đơn đầu tiên!</div>
+            <div style="font-size:13px;color:#888;">Nhập mã: <b>WELCOME20</b></div>
+          </div>
+          <div style="background:#e6f7ff;border-radius:8px;padding:10px 12px;">
+            <div style="font-weight:500;color:#1890ff;">Tặng 1 bánh ngọt khi mua combo 2 đồ uống</div>
+            <div style="font-size:13px;color:#888;">Áp dụng đến 31/7</div>
+          </div>
+        </div>
+        <div class="sidebar-section minigame" style="margin-top:18px;">
+          <div style="font-weight:600;margin-bottom:8px;">Game Đánh Bài</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3794/3794329.png" alt="Đánh bài" style="width:32px;height:32px;">
+            <span style="font-size:15px;">Chơi bài với người khác, thử vận may và trí tuệ!</span>
+          </div>
+          <button id="playCardGameBtn" style="margin-top:12px;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:15px;cursor:pointer;width:100%;">Chơi ngay</button>
+        </div>
+      </div>
+      <!-- Kết thúc sidebar phải -->
+        </div>
         <div class="clearfix"></div>
         <div class="footer">
             <div class="footer-info">
@@ -2045,7 +2198,7 @@
             document.getElementById('storyPreviewImg').style.display = 'none';
             document.getElementById('storyText').value = '';
             document.getElementById('storyPostBtn').disabled = true;
-            storyImageBase64 = null;
+            window.storyImageCloudinaryUrl = null; // reset đúng biến
             // Set avatar và tên
             document.getElementById('storyUserAvatar').src = currentUser.photoURL || 'images/default-avatar.png';
             document.getElementById('storyUserName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
@@ -2054,8 +2207,8 @@
         function closeStoryModal() {
             document.getElementById('storyModalBg').style.display = 'none';
         }
+        window.closeStoryModal = closeStoryModal;
         window.handleStoryImage = async function(event) {
-            console.log('handleStoryImage called', event);
             const file = event.target.files[0];
             if (!file) return;
             document.getElementById('storyPreviewImg').style.display = 'block';
@@ -2065,7 +2218,7 @@
                 const imageUrl = await window.uploadToCloudinary(file);
                 window.storyImageCloudinaryUrl = imageUrl;
                 document.getElementById('storyPreviewImg').src = imageUrl;
-                document.getElementById('storyPostBtn').disabled = false;
+                checkStoryBtn(); // Gọi lại hàm kiểm tra nút
             } catch (e) {
                 document.getElementById('storyPreviewImg').style.display = 'none';
                 Swal.fire({ icon: 'error', title: 'Lỗi upload ảnh story!' });
@@ -2074,8 +2227,7 @@
         };
         document.getElementById('storyText').addEventListener('input', checkStoryBtn);
         function checkStoryBtn() {
-            const text = document.getElementById('storyText').value.trim();
-            document.getElementById('storyPostBtn').disabled = !storyImageBase64;
+            document.getElementById('storyPostBtn').disabled = !window.storyImageCloudinaryUrl;
         }
         window.createStory = async function() {
             const text = document.getElementById('storyText').value.trim();
@@ -2133,9 +2285,19 @@
                 const s = snap.val();
                 document.getElementById('viewerImg').src = s.image;
                 document.getElementById('viewerAuthor').textContent = s.authorName || 'Người dùng';
+                document.getElementById('viewerAvatar').src = s.authorPhotoURL || 'images/default-avatar.png';
                 document.getElementById('viewerText').textContent = s.text || '';
                 document.getElementById('viewerTime').textContent = formatTimeAgo(s.timestamp);
                 document.getElementById('storyViewerBg').style.display = 'flex';
+                // Hiện nút xóa nếu là tác giả
+                const btn = document.getElementById('deleteStoryBtn');
+                if (window.auth && window.auth.currentUser && s.authorId === window.auth.currentUser.uid) {
+                  btn.style.display = '';
+                  btn.onclick = function() { window.deleteStory(storyId); };
+                } else {
+                  btn.style.display = 'none';
+                  btn.onclick = null;
+                }
             });
         };
         window.closeStoryViewer = function() {
@@ -4677,6 +4839,314 @@
             }
         });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+  // Hàm cập nhật sidebar-left
+  function updateSidebarLeft(user, profile) {
+    // Avatar
+    const avatarDiv = document.querySelector('.sidebar-avatar');
+    if (avatarDiv) {
+      if (profile && profile.avatarUrl) {
+        avatarDiv.innerHTML = `<img src="${profile.avatarUrl}" alt="avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover;">`;
+      } else if (user && user.photoURL) {
+        avatarDiv.innerHTML = `<img src="${user.photoURL}" alt="avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover;">`;
+      } else {
+        avatarDiv.innerHTML = `<img src="images/default-avatar.png" alt="avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover;">`;
+      }
+    }
+    // Tên
+    const nameDiv = document.querySelector('.sidebar-username');
+    if (nameDiv) {
+      nameDiv.textContent = (profile && profile.name) || (user && (user.displayName || user.email.split('@')[0])) || 'Tên người dùng';
+    }
+    // Email
+    const emailDiv = document.querySelector('.sidebar-email');
+    if (emailDiv) {
+      emailDiv.textContent = (user && user.email) || 'user@email.com';
+    }
+    // Trạng thái
+    const statusDiv = document.querySelector('.sidebar-status');
+    if (statusDiv) {
+      if (user) {
+        statusDiv.innerHTML = '● Online';
+        statusDiv.style.color = '#4caf50';
+      } else {
+        statusDiv.innerHTML = '● Offline';
+        statusDiv.style.color = '#aaa';
+      }
+    }
+    // Cấp độ
+    const levelDiv = document.querySelector('.sidebar-level');
+    if (levelDiv) {
+      if (profile && profile.memberCard && profile.memberCard.rank) {
+        levelDiv.textContent = `Thành viên hạng ${profile.memberCard.rank}`;
+      } else {
+        levelDiv.textContent = 'Thành viên hạng đồng';
+      }
+    }
+    // Điểm
+    let pointDiv = document.querySelector('.sidebar-point');
+    if (!pointDiv) {
+      // Nếu chưa có, thêm vào dưới cấp độ
+      if (levelDiv && profile && profile.memberCard && typeof profile.memberCard.points !== 'undefined') {
+        pointDiv = document.createElement('div');
+        pointDiv.className = 'sidebar-point';
+        pointDiv.style = 'font-size:13px;color:#a67c52;text-align:center;';
+        levelDiv.insertAdjacentElement('afterend', pointDiv);
+      }
+    }
+    if (pointDiv && profile && profile.memberCard) {
+      pointDiv.textContent = `Điểm: ${profile.memberCard.points}`;
+    }
+    // Barcode
+    let barcodeDiv = document.querySelector('.sidebar-barcode');
+    if (!barcodeDiv) {
+      if (levelDiv && profile && profile.memberCard && profile.memberCard.barcode) {
+        barcodeDiv = document.createElement('div');
+        barcodeDiv.className = 'sidebar-barcode';
+        barcodeDiv.style = 'font-size:13px;color:#888;text-align:center;';
+        pointDiv ? pointDiv.insertAdjacentElement('afterend', barcodeDiv) : levelDiv.insertAdjacentElement('afterend', barcodeDiv);
+      }
+    }
+    if (barcodeDiv && profile && profile.memberCard) {
+      barcodeDiv.textContent = `Mã thẻ: ${profile.memberCard.barcode}`;
+    }
+  }
+
+  // Lấy profile từ database nếu có user
+  async function refreshSidebarLeft(user) {
+    if (!user) {
+      updateSidebarLeft(null, null);
+      return;
+    }
+    try {
+      const { getDatabase, ref, get } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+      const db = getDatabase();
+      let profile = null;
+      if (user.uid) {
+        const snap = await get(ref(db, 'users/' + user.uid));
+        if (snap.exists()) profile = snap.val();
+      }
+      updateSidebarLeft(user, profile);
+    } catch (e) {
+      updateSidebarLeft(user, null);
+    }
+  }
+
+  // Theo dõi trạng thái đăng nhập
+  if (window.auth && window.auth.onAuthStateChanged) {
+    window.auth.onAuthStateChanged(function(user) {
+      refreshSidebarLeft(user);
+      updateSidebarQuickMenu(user);
+    });
+  } else {
+    // Nếu chưa có auth, vẫn cập nhật offline
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        refreshSidebarLeft(user);
+        updateSidebarQuickMenu(user);
+      } catch {}
+    }
+  }
+
+  // Cập nhật menu nhanh sidebar
+  function updateSidebarQuickMenu(user) {
+    const quickMenu = document.querySelector('.sidebar-section.quick-menu ul');
+    if (!quickMenu) return;
+    quickMenu.innerHTML = `
+      <li><a href="member.html"><i class="fa fa-user"></i> Trang cá nhân</a></li>
+      <li><a href="MessengerList.html"><i class="fa fa-comments"></i> Tin nhắn</a></li> `;
+    // Đổi mật khẩu
+    document.getElementById('sidebarChangePassword').onclick = function(e) {
+      e.preventDefault();
+      Swal.fire('Thông báo', 'Tính năng đổi mật khẩu sẽ có trong bản cập nhật tới!', 'info');
+    };
+    // Lịch sử đơn hàng
+    document.getElementById('sidebarOrderHistory').onclick = function(e) {
+      e.preventDefault();
+      if (!user) {
+        Swal.fire('Bạn cần đăng nhập để xem lịch sử đơn hàng!', '', 'warning');
+        return;
+      }
+      window.location.href = `order-history.html?uid=${user.uid}`;
+    };
+    // Đăng xuất
+    document.getElementById('sidebarLogout').onclick = async function(e) {
+      e.preventDefault();
+      if (!window.auth || !window.auth.signOut) {
+        window.location.href = 'login.html';
+        return;
+      }
+      Swal.fire({
+        title: 'Bạn có chắc?',
+        text: 'Bạn muốn đăng xuất khỏi hệ thống?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#A63C3C',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Đăng Xuất',
+        cancelButtonText: 'Hủy'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await window.auth.signOut();
+            localStorage.removeItem('user');
+            localStorage.removeItem('authToken');
+            Swal.fire({
+              icon: 'success',
+              title: 'Đăng xuất thành công!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi!',
+              text: 'Đã có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.',
+              showConfirmButton: true
+            });
+          }
+        }
+      });
+    };
+  }
+});
+// BẢNG XẾP HẠNG ĐỘNG
+async function updateSidebarRanking() {
+  const rankingOl = document.querySelector('.sidebar-section.ranking ol');
+  if (!rankingOl) return;
+  try {
+    const db = getDatabase();
+    const usersSnap = await get(ref(db, 'users'));
+    if (!usersSnap.exists()) return;
+    const users = usersSnap.val();
+    // Chỉ lấy user có điểm > 0
+    const userArr = Object.values(users)
+      .map(u => ({
+        name: u.name || u.email || 'Người dùng',
+        points: u.memberCard && typeof u.memberCard.points === 'number' ? u.memberCard.points : 0
+      }))
+      .filter(u => u.points > 0)
+      .sort((a, b) => b.points - a.points)
+      .slice(0, 5);
+    rankingOl.innerHTML = userArr.map(u => `<li>${u.name} <span style=\"color:#a67c52;font-weight:500;\">${u.points}đ</span></li>`).join('');
+  } catch (e) {
+    // Nếu lỗi, giữ nguyên bảng tĩnh
+  }
+}
+updateSidebarRanking();
+if (window.auth && window.auth.onAuthStateChanged) {
+  window.auth.onAuthStateChanged(updateSidebarRanking);
+}
+
+// GỢI Ý KẾT BẠN ĐỘNG
+async function updateFriendSuggest() {
+  const suggestBox = document.querySelector('.sidebar-section.friend-suggest ul');
+  if (!suggestBox) return;
+  try {
+    const db = getDatabase();
+    // Lấy user hiện tại
+    let myUid = null, myFriends = [];
+    if (window.auth && window.auth.currentUser) {
+      myUid = window.auth.currentUser.uid;
+      const mySnap = await get(ref(db, 'users/' + myUid));
+      if (mySnap.exists()) {
+        const me = mySnap.val();
+        myFriends = me.friends ? Object.keys(me.friends) : [];
+      }
+    }
+    // Lấy tất cả user
+    const usersSnap = await get(ref(db, 'users'));
+    if (!usersSnap.exists()) return;
+    const users = usersSnap.val();
+    // Lọc ra user chưa là bạn và không phải mình
+    const suggestArr = Object.entries(users)
+      .filter(([uid, u]) => uid !== myUid && (!myFriends.includes(uid)))
+      .map(([uid, u]) => ({
+        uid,
+        name: u.name || u.email || 'Người dùng',
+        avatar: u.avatarUrl || 'images/default-avatar.png'
+      }))
+      .slice(0, 3);
+    if (suggestArr.length === 0) {
+      suggestBox.innerHTML = '<li style="color:#aaa;text-align:center;">Không có gợi ý nào</li>';
+      return;
+    }
+    suggestBox.innerHTML = suggestArr.map(u => `
+      <li style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+        <img src="${u.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+        <span>${u.name}</span>
+        <button class="btn-add-friend" data-uid="${u.uid}" style="margin-left:auto;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;">Kết bạn</button>
+      </li>
+    `).join('');
+    // Gán sự kiện cho nút Kết bạn
+    suggestBox.querySelectorAll('.btn-add-friend').forEach(btn => {
+      btn.onclick = async function() {
+        const targetUid = btn.getAttribute('data-uid');
+        if (!window.auth || !window.auth.currentUser || !targetUid) {
+          Swal.fire({icon:'warning',title:'Bạn cần đăng nhập để kết bạn!'});
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Đang gửi...';
+        try {
+          await window.sendFriendRequest(targetUid);
+          btn.textContent = 'Đã gửi';
+          btn.style.background = '#aaa';
+        } catch (e) {
+          btn.textContent = 'Lỗi';
+          btn.style.background = '#d33';
+          Swal.fire({icon:'error',title:'Lỗi gửi lời mời!',text:e?.message||'Vui lòng thử lại.'});
+        }
+      };
+    });
+  } catch (e) {
+    suggestBox.innerHTML = '<li style="color:#aaa;text-align:center;">Không thể tải gợi ý</li>';
+  }
+}
+updateFriendSuggest();
+if (window.auth && window.auth.onAuthStateChanged) {
+  window.auth.onAuthStateChanged(updateFriendSuggest);
+}
+
+// KHUYẾN MÃI ĐỘNG
+async function updatePromotionSidebar() {
+  const promoBox = document.querySelector('.sidebar-section.promotion');
+  if (!promoBox) return;
+  try {
+    const db = getDatabase();
+    const promoSnap = await get(ref(db, 'promotions'));
+    if (!promoSnap.exists()) return;
+    const promos = Object.values(promoSnap.val());
+    const today = new Date();
+    // Lọc mã còn hiệu lực
+    const validPromos = promos.filter(p => {
+      if (p.status !== 'active') return false;
+      const start = new Date(p.startDate);
+      const end = new Date(p.endDate);
+      return today >= start && today <= end;
+    }).slice(0,2);
+    if (validPromos.length === 0) {
+      promoBox.innerHTML = '<div style="color:#aaa;text-align:center;">Hiện không có khuyến mãi nào</div>';
+      return;
+    }
+    promoBox.innerHTML = '<div style="font-weight:600;margin-bottom:8px;">Khuyến mãi</div>' +
+      validPromos.map(p => `
+        <div style="background:#fffbe6;border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+          <div style="font-weight:500;color:#a67c52;">Giảm ${p.discount}% với mã <b>${p.code}</b></div>
+          <div style="font-size:13px;color:#888;">Hiệu lực: ${p.startDate} - ${p.endDate}</div>
+        </div>
+      `).join('');
+  } catch (e) {
+    promoBox.innerHTML = '<div style="color:#aaa;text-align:center;">Không thể tải khuyến mãi</div>';
+  }
+}
+updatePromotionSidebar();
+// ... existing code ...
 </script>
     <!-- Bottom Navigation Bar cho mobile -->
    <div class="bottom-nav">
@@ -4860,5 +5330,73 @@
         </div>
       </div>
     </div>
+    <!-- Modal phòng chơi bài -->
+<div id="cardGameModal" style="display:none;position:fixed;z-index:20000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;max-width:420px;width:95vw;padding:28px 18px;position:relative;box-shadow:0 4px 32px rgba(0,0,0,0.18);">
+    <span style="position:absolute;top:12px;right:18px;font-size:28px;cursor:pointer;color:#a67c52;font-weight:bold;" onclick="document.getElementById('cardGameModal').style.display='none'">&times;</span>
+    <div style="font-size:20px;font-weight:700;color:#a67c52;text-align:center;margin-bottom:18px;">Phòng chơi Đánh Bài</div>
+    <div id="cardGameRoomStatus" style="text-align:center;color:#888;margin-bottom:16px;">Đang tìm đối thủ...</div>
+    <div id="cardGameTable" style="min-height:120px;text-align:center;">(Giao diện bàn bài sẽ hiển thị ở đây)</div>
+    <div style="text-align:center;margin-top:18px;">
+      <button style="background:#d33;color:#fff;border:none;border-radius:6px;padding:6px 18px;font-size:15px;cursor:pointer;" onclick="document.getElementById('cardGameModal').style.display='none'">Thoát phòng</button>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('playCardGameBtn');
+  if (btn) {
+    btn.onclick = function() {
+      document.getElementById('cardGameModal').style.display = 'flex';
+      document.getElementById('cardGameRoomStatus').textContent = 'Đang tìm đối thủ...';
+      document.getElementById('cardGameTable').innerHTML = '(Giao diện bàn bài sẽ hiển thị ở đây)';
+    };
+  }
+});
+</script>
+    <!-- Modal xem Story -->
+    <div id="storyViewerBg" style="display:none;position:fixed;z-index:20010;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:18px;max-width:380px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.22);position:relative;padding:0 0 24px 0;text-align:center;animation:fadeIn 0.25s;display:flex;flex-direction:column;align-items:center;">
+        <span class="close" onclick="closeStoryViewer()" style="position:absolute;top:16px;right:22px;font-size:28px;color:#65676b;cursor:pointer;font-weight:bold;z-index:2;">&times;</span>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:24px;">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;">
+            <img id="viewerAvatar" src="images/default-avatar.png" alt="avatar" style="width:44px;height:44px;object-fit:cover;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.10);">
+          </div>
+          <div style="font-weight:700;font-size:17px;color:#1c1e21;text-align:left;" id="viewerAuthor"></div>
+        </div>
+        <img id="viewerImg" src="" alt="story" style="width:90%;max-width:260px;max-height:320px;object-fit:cover;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.13);margin:18px 0 10px 0;">
+        <div id="viewerText" style="margin:0 0 8px 0;font-size:16px;color:#222;white-space:pre-line;"></div>
+        <div id="viewerTime" style="font-size:13px;color:#888;"></div>
+        <button id="deleteStoryBtn" style="display:none;margin-top:10px;background:#d33;color:#fff;border:none;border-radius:6px;padding:7px 22px;font-size:15px;font-weight:600;cursor:pointer;">Xóa tin</button>
+      </div>
+    </div>
+    <script>
+    window.deleteStory = async function(storyId) {
+      if (!window.auth || !window.auth.currentUser) return;
+      if (!storyId) return;
+      Swal.fire({
+        title: 'Xóa tin?',
+        text: 'Bạn có chắc muốn xóa tin này? Hành động này không thể hoàn tác!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const { getDatabase, ref, set } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+            const db = getDatabase();
+            await set(ref(db, 'stories/' + storyId), null);
+            Swal.fire('Đã xóa!', 'Tin đã được xóa.', 'success');
+            closeStoryViewer();
+          } catch (e) {
+            Swal.fire('Lỗi!', 'Không thể xóa tin.', 'error');
+          }
+        }
+      });
+    }
+    </script>
     </body>
 </html>
