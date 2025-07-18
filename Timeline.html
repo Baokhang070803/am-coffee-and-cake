@@ -1671,14 +1671,24 @@
             <div style="font-size:13px;color:#888;">Áp dụng đến 31/7</div>
           </div>
         </div>
-        <div class="sidebar-section minigame" style="margin-top:18px;">
-          <div style="font-weight:600;margin-bottom:8px;">Game Đánh Bài</div>
+        <!-- <div class="sidebar-section minigame" style="margin-top:18px;">
+          <div style="font-weight:600;margin-bottom:8px;">Cờ Caro Online</div>
           <div style="display:flex;align-items:center;gap:10px;">
-            <img src="https://cdn-icons-png.flaticon.com/512/3794/3794329.png" alt="Đánh bài" style="width:32px;height:32px;">
-            <span style="font-size:15px;">Chơi bài với người khác, thử vận may và trí tuệ!</span>
+            <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="Cờ Caro" style="width:32px;height:32px;">
+            <span style="font-size:15px;">Chơi cờ caro với người khác, thử trí tuệ và may mắn!</span>
           </div>
-          <button id="playCardGameBtn" style="margin-top:12px;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:15px;cursor:pointer;width:100%;">Chơi ngay</button>
-        </div>
+          <button id="playCaroGameBtn" style="margin-top:12px;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:15px;cursor:pointer;width:100%;">Chơi ngay</button>
+        </div> -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var btn = document.getElementById('playCaroGameBtn');
+          if (btn) {
+            btn.onclick = function() {
+              window.openCaroModal();
+            };
+          }
+        });
+        </script>
       </div>
       <!-- Kết thúc sidebar phải -->
         </div>
@@ -5397,6 +5407,306 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
+    </script>
+    <!-- Modal Cờ Caro Online -->
+    <div id="caroModal" style="display:none;position:fixed;z-index:20020;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:18px;max-width:420px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.22);position:relative;padding:0 0 24px 0;text-align:center;animation:fadeIn 0.25s;display:flex;flex-direction:column;align-items:center;">
+        <span class="close" onclick="closeCaroModal()" style="position:absolute;top:16px;right:22px;font-size:28px;color:#65676b;cursor:pointer;font-weight:bold;z-index:2;">&times;</span>
+        <div style="font-size:22px;font-weight:700;color:#a67c52;margin:28px 0 10px 0;">Cờ Caro Online</div>
+        <div id="caroRoomStatus" style="color:#888;margin-bottom:10px;">Đang ghép phòng...</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px;">
+          <div style="text-align:center;">
+            <img id="caroPlayer1Avatar" src="images/default-avatar.png" style="width:54px;height:54px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.10);border:2px solid #a67c52;">
+            <div id="caroPlayer1Name" style="font-weight:600;color:#a67c52;margin-top:6px;">Chờ người chơi...</div>
+            <div id="caroPlayer1Symbol" style="font-size:18px;color:#f7544a;font-weight:700;margin-top:2px;">X</div>
+          </div>
+          <div style="font-size:18px;color:#888;">VS</div>
+          <div style="text-align:center;">
+            <img id="caroPlayer2Avatar" src="images/default-avatar.png" style="width:54px;height:54px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.10);border:2px solid #a67c52;">
+            <div id="caroPlayer2Name" style="font-weight:600;color:#a67c52;margin-top:6px;">Chờ người chơi...</div>
+            <div id="caroPlayer2Symbol" style="font-size:18px;color:#1877f2;font-weight:700;margin-top:2px;">O</div>
+          </div>
+        </div>
+        <div id="caroBoard" style="display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:8px;margin:0 auto 18px auto;">
+          <!-- Các ô bàn cờ sẽ được render bằng JS -->
+        </div>
+        <div id="caroGameStatus" style="font-size:16px;color:#f7544a;font-weight:600;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button id="caroStartBtn" style="background:#a67c52;color:#fff;border:none;border-radius:6px;padding:8px 22px;font-size:15px;font-weight:600;cursor:pointer;">Bắt đầu</button>
+          <button id="caroLeaveBtn" style="background:#d33;color:#fff;border:none;border-radius:6px;padding:8px 22px;font-size:15px;font-weight:600;cursor:pointer;">Thoát</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Firebase logic cho Cờ Caro
+let caroRoomId = null;
+let caroRoomListener = null;
+let caroPlayerSymbol = null;
+
+window.openCaroModal = async function() {
+  document.getElementById('caroModal').style.display = 'flex';
+  document.getElementById('caroRoomStatus').textContent = 'Đang ghép phòng...';
+  document.getElementById('caroPlayer1Name').textContent = 'Chờ người chơi...';
+  document.getElementById('caroPlayer2Name').textContent = 'Chờ người chơi...';
+  document.getElementById('caroPlayer1Avatar').src = 'images/default-avatar.png';
+  document.getElementById('caroPlayer2Avatar').src = 'images/default-avatar.png';
+  document.getElementById('caroGameStatus').textContent = '';
+  renderCaroBoard([['','',''],['','',''],['','','']]);
+  caroRoomId = null;
+  caroPlayerSymbol = null;
+}
+window.closeCaroModal = function() {
+  document.getElementById('caroModal').style.display = 'none';
+  if (caroRoomListener) caroRoomListener();
+  caroRoomId = null;
+  caroPlayerSymbol = null;
+}
+// Render bàn cờ caro
+function renderCaroBoard(board, room = null, user = null) {
+  const caroBoard = document.getElementById('caroBoard');
+  caroBoard.innerHTML = '';
+  let gameOver = false;
+  let winner = null;
+  if (room && room.status === 'finished') {
+    gameOver = true;
+    winner = room.winner || null;
+  } else if (board) {
+    const res = checkCaroWinner(board);
+    if (res && res.winner) {
+      gameOver = true;
+      winner = res.winner;
+    }
+  }
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const cell = document.createElement('div');
+      cell.style.width = '60px';
+      cell.style.height = '60px';
+      cell.style.background = '#f8f8f8';
+      cell.style.borderRadius = '8px';
+      cell.style.display = 'flex';
+      cell.style.alignItems = 'center';
+      cell.style.justifyContent = 'center';
+      cell.style.fontSize = '32px';
+      cell.style.fontWeight = '700';
+      cell.style.cursor = board[i][j] || gameOver ? 'default' : 'pointer';
+      cell.style.boxShadow = '0 1px 4px rgba(0,0,0,0.08)';
+      cell.textContent = board[i][j];
+      // Gán sự kiện click nếu hợp lệ
+      if (!board[i][j] && !gameOver && room && user && room.status === 'playing' && room.turn === user.uid) {
+        cell.onclick = async function() {
+          await caroMakeMove(i, j);
+        };
+        cell.style.background = '#fffbe6';
+      }
+      caroBoard.appendChild(cell);
+    }
+  }
+}
+// Gửi nước đi lên Firebase
+async function caroMakeMove(i, j) {
+  if (!caroRoomId) return;
+  const { getDatabase, ref, get, update } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+  const db = getDatabase();
+  const user = window.auth && window.auth.currentUser;
+  const roomRef = ref(db, 'caroRooms/' + caroRoomId);
+  const snap = await get(roomRef);
+  if (!snap.exists()) return;
+  const room = snap.val();
+  if (room.status !== 'playing' || room.turn !== user.uid) return;
+  const board = room.board || [['','',''],['','',''],['','','']];
+  if (board[i][j]) return;
+  // Đánh dấu nước đi
+  board[i][j] = caroPlayerSymbol;
+  // Kiểm tra thắng/thua/hòa
+  const res = checkCaroWinner(board);
+  let updates = { board };
+  if (res && res.winner) {
+    updates.status = 'finished';
+    updates.winner = res.winner;
+  } else if (res && res.draw) {
+    updates.status = 'finished';
+    updates.winner = null;
+  } else {
+    // Đổi lượt
+    const nextUid = Object.keys(room.players).find(uid => uid !== user.uid);
+    updates.turn = nextUid;
+  }
+  await update(roomRef, updates);
+}
+
+// Kiểm tra thắng/thua/hòa caro 3x3
+function checkCaroWinner(board) {
+  // Kiểm tra hàng, cột, chéo
+  for (let i = 0; i < 3; i++) {
+    if (board[i][0] && board[i][0] === board[i][1] && board[i][1] === board[i][2]) return { winner: board[i][0] };
+    if (board[0][i] && board[0][i] === board[1][i] && board[1][i] === board[2][i]) return { winner: board[0][i] };
+  }
+  if (board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2]) return { winner: board[0][0] };
+  if (board[0][2] && board[0][2] === board[1][1] && board[1][1] === board[2][0]) return { winner: board[0][2] };
+  // Kiểm tra hòa
+  if (board.flat().every(cell => cell)) return { draw: true };
+  return null;
+}
+// Ghép phòng khi bấm Bắt đầu
+setTimeout(() => {
+  const btnStart = document.getElementById('caroStartBtn');
+  const btnLeave = document.getElementById('caroLeaveBtn');
+  if (btnStart) btnStart.onclick = async function() {
+    btnStart.disabled = true;
+    document.getElementById('caroGameStatus').textContent = 'Đang ghép phòng...';
+    await joinOrCreateCaroRoom();
+  };
+  if (btnLeave) btnLeave.onclick = function() {
+    closeCaroModal();
+  };
+}, 500);
+
+async function joinOrCreateCaroRoom() {
+  const { getDatabase, ref, push, set, onValue, update, get, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+  const db = getDatabase();
+  const user = window.auth && window.auth.currentUser;
+  if (!user) {
+    Swal.fire('Bạn cần đăng nhập để chơi!');
+    return;
+  }
+  // Tìm phòng đang chờ
+  const roomsRef = ref(db, 'caroRooms');
+  const snap = await get(roomsRef);
+  let foundRoom = null;
+  if (snap.exists()) {
+    snap.forEach(child => {
+      const val = child.val();
+      if (val.status === 'waiting' && (!val.players || Object.keys(val.players).length < 2)) {
+        foundRoom = { id: child.key, ...val };
+        return true;
+      }
+    });
+  }
+  if (foundRoom) {
+    // Vào phòng đã có 1 người
+    caroRoomId = foundRoom.id;
+    caroPlayerSymbol = 'O';
+    await update(ref(db, 'caroRooms/' + caroRoomId + '/players/' + user.uid), {
+      name: user.displayName || user.email.split('@')[0],
+      avatar: user.photoURL || 'images/default-avatar.png',
+      symbol: 'O',
+      joinedAt: serverTimestamp()
+    });
+    await update(ref(db, 'caroRooms/' + caroRoomId), { status: 'playing' });
+  } else {
+    // Tạo phòng mới
+    const newRoomRef = push(roomsRef);
+    caroRoomId = newRoomRef.key;
+    caroPlayerSymbol = 'X';
+    await set(newRoomRef, {
+      status: 'waiting',
+      createdAt: serverTimestamp(),
+      board: [['','',''],['','',''],['','','']],
+      turn: user.uid,
+      players: {
+        [user.uid]: {
+          name: user.displayName || user.email.split('@')[0],
+          avatar: user.photoURL || 'images/default-avatar.png',
+          symbol: 'X',
+          joinedAt: serverTimestamp()
+        }
+      }
+    });
+  }
+  listenCaroRoom();
+}
+
+function listenCaroRoom() {
+  if (caroRoomListener) caroRoomListener();
+  import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js').then(({ getDatabase, ref, onValue }) => {
+    const db = getDatabase();
+    const roomRef = ref(db, 'caroRooms/' + caroRoomId);
+    caroRoomListener = onValue(roomRef, (snap) => {
+      if (!snap.exists()) return;
+      const room = snap.val();
+      // Hiển thị thông tin người chơi
+      const playerUids = Object.keys(room.players || {});
+      const user = window.auth && window.auth.currentUser;
+      let p1 = room.players[playerUids[0]] || {};
+      let p2 = room.players[playerUids[1]] || {};
+      if (p1.symbol === 'O') [p1, p2] = [p2, p1]; // Đảm bảo X luôn bên trái
+      document.getElementById('caroPlayer1Name').textContent = p1.name || 'Chờ người chơi...';
+      document.getElementById('caroPlayer2Name').textContent = p2.name || 'Chờ người chơi...';
+      document.getElementById('caroPlayer1Avatar').src = p1.avatar || 'images/default-avatar.png';
+      document.getElementById('caroPlayer2Avatar').src = p2.avatar || 'images/default-avatar.png';
+      document.getElementById('caroRoomStatus').textContent = room.status === 'waiting' ? 'Đang chờ người chơi khác...' : (room.status === 'playing' ? 'Đang chơi...' : 'Đã kết thúc');
+      renderCaroBoard(room.board || [['','',''],['','',''],['','','']], room, user);
+      // Hiển thị lượt đi hoặc kết quả
+      const statusDiv = document.getElementById('caroGameStatus');
+      if (room.status === 'playing') {
+        if (room.turn === user.uid) {
+          statusDiv.textContent = 'Đến lượt bạn!';
+        } else {
+          statusDiv.textContent = 'Đến lượt đối thủ!';
+        }
+      } else if (room.status === 'finished') {
+        if (room.winner === caroPlayerSymbol) {
+          statusDiv.textContent = 'Bạn thắng!';
+        } else if (room.winner && room.winner !== caroPlayerSymbol) {
+          statusDiv.textContent = 'Bạn thua!';
+        } else {
+          statusDiv.textContent = 'Hòa!';
+        }
+      } else {
+        statusDiv.textContent = '';
+      }
+    });
+  });
+}
+    // Mở modal Cờ Caro
+    window.openCaroModal = function() {
+      document.getElementById('caroModal').style.display = 'flex';
+      document.getElementById('caroRoomStatus').textContent = 'Đang ghép phòng...';
+      document.getElementById('caroPlayer1Name').textContent = 'Chờ người chơi...';
+      document.getElementById('caroPlayer2Name').textContent = 'Chờ người chơi...';
+      document.getElementById('caroPlayer1Avatar').src = 'images/default-avatar.png';
+      document.getElementById('caroPlayer2Avatar').src = 'images/default-avatar.png';
+      document.getElementById('caroGameStatus').textContent = '';
+      renderCaroBoard([['','',''],['','',''],['','','']]);
+    }
+    window.closeCaroModal = function() {
+      document.getElementById('caroModal').style.display = 'none';
+    }
+    // Render bàn cờ caro
+    function renderCaroBoard(board) {
+      const caroBoard = document.getElementById('caroBoard');
+      caroBoard.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          const cell = document.createElement('div');
+          cell.style.width = '60px';
+          cell.style.height = '60px';
+          cell.style.background = '#f8f8f8';
+          cell.style.borderRadius = '8px';
+          cell.style.display = 'flex';
+          cell.style.alignItems = 'center';
+          cell.style.justifyContent = 'center';
+          cell.style.fontSize = '32px';
+          cell.style.fontWeight = '700';
+          cell.style.cursor = 'pointer';
+          cell.style.boxShadow = '0 1px 4px rgba(0,0,0,0.08)';
+          cell.textContent = board[i][j];
+          caroBoard.appendChild(cell);
+        }
+      }
+    }
+    // Gắn sự kiện nút
+    setTimeout(() => {
+      const btnStart = document.getElementById('caroStartBtn');
+      const btnLeave = document.getElementById('caroLeaveBtn');
+      if (btnStart) btnStart.onclick = function() {
+        document.getElementById('caroGameStatus').textContent = 'Đang chờ người chơi khác...';
+      };
+      if (btnLeave) btnLeave.onclick = function() {
+        closeCaroModal();
+      };
+    }, 500);
     </script>
     </body>
 </html>
