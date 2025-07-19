@@ -1362,6 +1362,35 @@
           .sidebar-left, .sidebar-right { display: none !important; }
           .container_fullwidth > .container { gap: 0 !important; }
         }
+        .share-input {
+  margin: 16px 24px;
+  padding: 12px;
+  border: 1px solid #e4e6ea;
+  border-radius: 8px;
+  font-size: 14px;
+  width: calc(100% - 48px);
+  box-sizing: border-box;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100%;
+  display: block;
+  resize: none;
+  height: 40px;
+}
+@media (max-width: 600px) {
+  .share-modal {
+    width: 98vw !important;
+    max-width: 99vw !important;
+    min-width: 0 !important;
+    padding: 8px 0 18px 0 !important;
+  }
+  .share-input {
+    font-size: 13px;
+    width: 90vw;
+    max-width: 95vw;
+    margin: 12px 2vw;
+  }
+}
     </style>
 </head>
 <body id="home">
@@ -2876,12 +2905,24 @@
             currentSharingPostId = postId;
             const modal = document.getElementById('shareModalBg');
             const linkInput = document.getElementById('shareLinkInput');
+            const mobileHint = document.getElementById('mobileHint');
             
             // Tạo link chia sẻ
             const shareLink = `${window.location.origin}${window.location.pathname}?post=${postId}`;
             linkInput.value = shareLink;
             
+            // Hiển thị hint trên mobile
+            if (window.innerWidth <= 600) {
+                mobileHint.style.display = 'block';
+            } else {
+                mobileHint.style.display = 'none';
+            }
+            
+            // Tự động scroll đến cuối input để hiển thị phần quan trọng
             modal.style.display = 'flex';
+            setTimeout(() => {
+                linkInput.scrollLeft = linkInput.scrollWidth;
+            }, 100);
         };
 
         // Đóng modal chia sẻ
@@ -4426,15 +4467,49 @@
           font-size: 14px;
           width: calc(100% - 48px);
           box-sizing: border-box;
+          overflow-x: auto;
+          white-space: nowrap;
+          max-width: 100%;
+          display: block;
+          resize: none;
+          height: 40px;
+          font-family: monospace;
+          background: #f8f9fa;
         }
         .share-input:focus {
           outline: none;
           border-color: #a67c52;
         }
+        
+        /* Responsive cho mobile */
+        @media (max-width: 600px) {
+          .share-modal {
+            width: 98vw !important;
+            max-width: 99vw !important;
+            min-width: 0 !important;
+            padding: 8px 0 18px 0 !important;
+          }
+          .share-input {
+            font-size: 13px;
+            width: 90vw;
+            max-width: 95vw;
+            margin: 12px 2vw;
+          }
+          .share-actions {
+            padding: 0 16px;
+            gap: 8px;
+          }
+          .share-btn {
+            padding: 12px 8px;
+            font-size: 14px;
+            min-width: 80px;
+          }
+        }
         .share-actions {
           padding: 0 24px;
           display: flex;
           gap: 12px;
+          justify-content: space-between;
         }
         .share-btn {
           flex: 1;
@@ -4445,6 +4520,7 @@
           font-weight: 600;
           cursor: pointer;
           transition: background 0.2s;
+          min-width: 0;
         }
         .share-btn.primary {
           background: #a67c52;
@@ -5060,22 +5136,25 @@ async function updateFriendSuggest() {
   try {
     const db = getDatabase();
     // Lấy user hiện tại
-    let myUid = null, myFriends = [];
+    let myUid = null, myFriends = [], mySentRequests = [];
     if (window.auth && window.auth.currentUser) {
       myUid = window.auth.currentUser.uid;
       const mySnap = await get(ref(db, 'users/' + myUid));
       if (mySnap.exists()) {
         const me = mySnap.val();
         myFriends = me.friends ? Object.keys(me.friends) : [];
+        mySentRequests = me.sentRequests ? Object.keys(me.sentRequests) : [];
       }
     }
     // Lấy tất cả user
     const usersSnap = await get(ref(db, 'users'));
     if (!usersSnap.exists()) return;
     const users = usersSnap.val();
-    // Lọc ra user chưa là bạn và không phải mình
+    // Lọc ra user chưa là bạn, chưa gửi lời mời và không phải mình
     const suggestArr = Object.entries(users)
-      .filter(([uid, u]) => uid !== myUid && (!myFriends.includes(uid)))
+      .filter(([uid, u]) => uid !== myUid && 
+                           !myFriends.includes(uid) && 
+                           !mySentRequests.includes(uid))
       .map(([uid, u]) => ({
         uid,
         name: u.name || u.email || 'Người dùng',
@@ -5083,18 +5162,45 @@ async function updateFriendSuggest() {
       }))
       .slice(0, 3);
     if (suggestArr.length === 0) {
-      suggestBox.innerHTML = '<li style="color:#aaa;text-align:center;">Không có gợi ý nào</li>';
+      if (myUid && mySentRequests.length > 0) {
+        suggestBox.innerHTML = '<li style="color:#aaa;text-align:center;">Đã gửi lời mời tất cả gợi ý</li>';
+      } else {
+        suggestBox.innerHTML = '<li style="color:#aaa;text-align:center;">Không có gợi ý nào</li>';
+      }
       return;
     }
-    suggestBox.innerHTML = suggestArr.map(u => `
+    // Kiểm tra trạng thái lời mời cho từng user
+    const suggestWithStatus = await Promise.all(suggestArr.map(async (u) => {
+      let buttonText = 'Kết bạn';
+      let buttonStyle = 'background:#a67c52;color:#fff;';
+      let isDisabled = false;
+      
+      if (myUid) {
+        // Kiểm tra xem đã gửi lời mời chưa
+        if (mySentRequests.includes(u.uid)) {
+          buttonText = 'Đã gửi';
+          buttonStyle = 'background:#aaa;color:#fff;';
+          isDisabled = true;
+        }
+      }
+      
+      return {
+        ...u,
+        buttonText,
+        buttonStyle,
+        isDisabled
+      };
+    }));
+
+    suggestBox.innerHTML = suggestWithStatus.map(u => `
       <li style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
         <img src="${u.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
         <span>${u.name}</span>
-        <button class="btn-add-friend" data-uid="${u.uid}" style="margin-left:auto;background:#a67c52;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;">Kết bạn</button>
+        <button class="btn-add-friend" data-uid="${u.uid}" style="margin-left:auto;${u.buttonStyle}border:none;border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer;" ${u.isDisabled ? 'disabled' : ''}>${u.buttonText}</button>
       </li>
     `).join('');
-    // Gán sự kiện cho nút Kết bạn
-    suggestBox.querySelectorAll('.btn-add-friend').forEach(btn => {
+    // Gán sự kiện cho nút Kết bạn (chỉ những nút chưa disabled)
+    suggestBox.querySelectorAll('.btn-add-friend:not([disabled])').forEach(btn => {
       btn.onclick = async function() {
         const targetUid = btn.getAttribute('data-uid');
         if (!window.auth || !window.auth.currentUser || !targetUid) {
@@ -5107,9 +5213,15 @@ async function updateFriendSuggest() {
           await window.sendFriendRequest(targetUid);
           btn.textContent = 'Đã gửi';
           btn.style.background = '#aaa';
+          btn.disabled = true;
+          // Cập nhật lại danh sách gợi ý sau khi gửi thành công
+          setTimeout(() => {
+            updateFriendSuggest();
+          }, 1000);
         } catch (e) {
           btn.textContent = 'Lỗi';
           btn.style.background = '#d33';
+          btn.disabled = false;
           Swal.fire({icon:'error',title:'Lỗi gửi lời mời!',text:e?.message||'Vui lòng thử lại.'});
         }
       };
@@ -5120,7 +5232,17 @@ async function updateFriendSuggest() {
 }
 updateFriendSuggest();
 if (window.auth && window.auth.onAuthStateChanged) {
-  window.auth.onAuthStateChanged(updateFriendSuggest);
+  window.auth.onAuthStateChanged((user) => {
+    updateFriendSuggest();
+    // Lắng nghe thay đổi realtime cho sentRequests
+    if (user) {
+      const db = getDatabase();
+      const sentRequestsRef = ref(db, 'users/' + user.uid + '/sentRequests');
+      onValue(sentRequestsRef, () => {
+        updateFriendSuggest();
+      });
+    }
+  });
 }
 
 // KHUYẾN MÃI ĐỘNG
@@ -5316,7 +5438,8 @@ updatePromotionSidebar();
             </div>
           </div>
         </div>
-        <input type="text" class="share-input" id="shareLinkInput" readonly placeholder="Liên kết bài viết sẽ hiển thị ở đây...">
+        <input type="text" class="share-input" id="shareLinkInput" readonly placeholder="Liên kết bài viết sẽ hiển thị ở đây..." title="Liên kết bài viết - Vuốt để xem đầy đủ">
+        <div style="text-align:center;font-size:12px;color:#888;margin:0 24px 8px 24px;display:none;" id="mobileHint">📱 Vuốt sang trái/phải để xem đầy đủ link</div>
         <div class="share-actions">
           <button class="share-btn secondary" onclick="closeShareModal()">Hủy</button>
           <button class="share-btn primary" onclick="copyLinkToClipboard()">Sao chép</button>
