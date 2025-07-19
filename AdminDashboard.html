@@ -1679,13 +1679,12 @@
             <th>Email</th>
             <th>Họ tên</th>
             <th>Địa chỉ</th>
-            <th>Vai trò</th>
             <th>Hành động</th>
           </tr>
         </thead>
         <tbody id="usersList">
           <tr>
-            <td colspan="6" class="text-center text-muted">Đang tải...</td>
+            <td colspan="5" class="text-center text-muted">Đang tải...</td>
           </tr>
         </tbody>
       </table>
@@ -4698,7 +4697,7 @@
       if (!db) {
         console.error('Firebase database is not initialized');
         const usersList = document.getElementById('usersList');
-        usersList.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Không thể kết nối Firebase.</td></tr>`;
+        usersList.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Không thể kết nối Firebase.</td></tr>`;
         return;
       }
 
@@ -4719,7 +4718,7 @@
 
           if (Object.keys(usersObj).length === 0) {
             console.log('No users found');
-            usersList.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Không có người dùng nào.</td></tr>`;
+            usersList.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Không có người dùng nào.</td></tr>`;
             return;
           }
 
@@ -4737,7 +4736,6 @@
                 <td>${user.email || 'N/A'}</td>
                 <td>${user.name || 'N/A'}</td>
                 <td>${user.address || 'N/A'}</td>
-                <td>${user.role === 'admin' ? 'Admin' : 'User'}</td>
                 <td>
                   <button class="btn btn-warning btn-sm" onclick="editUser('${id}')"><i class="fas fa-edit"></i> Sửa</button>
                   <button class="btn btn-danger btn-sm" onclick="deleteUser('${id}')"><i class="fas fa-trash"></i> Xóa</button>
@@ -4759,7 +4757,7 @@
             } else if (error && error.message) {
               msg += `<br>${error.message}`;
             }
-            usersList.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${msg}</td></tr>`;
+            usersList.innerHTML = `<tr><td colspan="5" class="text-center text-danger">${msg}</td></tr>`;
           }
         });
     }
@@ -4782,13 +4780,6 @@
               <label class="form-label">Địa chỉ</label>
               <input type="text" class="form-control" id="userAddress">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Vai trò</label>
-              <select class="form-control" id="userRole">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
           </form>
         `,
         showCancelButton: true,
@@ -4798,14 +4789,11 @@
           const email = document.getElementById('userEmail').value;
           const name = document.getElementById('userName').value;
           const address = document.getElementById('userAddress').value;
-          const role = document.getElementById('userRole').value;
-          
           if (!email || !name) {
             Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
             return false;
           }
-          
-          return { email, name, address, role };
+          return { email, name, address };
         }
       }).then((result) => {
         if (result.isConfirmed) {
@@ -4863,13 +4851,6 @@
                 <input type="text" class="form-control" id="userAddress" value="${user.address || ''}">
               </div>
               <div class="mb-3">
-                <label class="form-label">Vai trò</label>
-                <select class="form-control" id="userRole">
-                  <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
-                  <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                </select>
-              </div>
-              <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-control" id="userStatus">
                   <option value="active" ${user.status === 'active' ? 'selected' : ''}>Active</option>
@@ -4885,15 +4866,12 @@
             const email = document.getElementById('userEmail').value;
             const name = document.getElementById('userName').value;
             const address = document.getElementById('userAddress').value;
-            const role = document.getElementById('userRole').value;
             const status = document.getElementById('userStatus').value;
-            
             if (!email || !name) {
               Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
               return false;
             }
-            
-            return { email, name, address, role, status };
+            return { email, name, address, status };
           }
         }).then((result) => {
           if (result.isConfirmed) {
