@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Cây thư mục AM-COFFEE-AND-CAKE</title>
+  <style>
+    .tree, .tree ul {
+      list-style-type: none;
+      position: relative;
+      padding-left: 1em;
+    }
+    .tree ul {
+      margin-left: 1em;
+    }
+    .tree li {
+      margin: 0.5em 0;
+      padding-left: 1.2em;
+      position: relative;
+    }
+    .tree li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.9em;
+      width: 1em;
+      height: 0;
+      border-top: 1px solid #888;
+    }
+    .tree li::after {
+      content: "";
+      position: absolute;
+      left: 0.5em;
+      top: 0;
+      width: 0;
+      height: 1em;
+      border-left: 1px solid #888;
+    }
+    .tree > li::before, .tree > li::after {
+      display: none;
+    }
+    .folder {
+      font-weight: bold;
+      color: #2a5d9f;
+    }
+    .file {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <ul class="tree">
+    <li class="folder">AM-COFFEE-AND-CAKE
+      <ul>
+        <li class="folder">css</li>
+        <li class="folder">fonts</li>
+        <li class="folder">images</li>
+        <li class="folder">js</li>
+        <li class="folder">music</li>
+        <li class="folder">video</li>
+        <li class="file">about.html</li>
+        <li class="file">AdminDashboard.html</li>
+        <li class="file">cart.html</li>
+        <li class="file">checkout.html</li>
+        <li class="file">forgot-password.html</li>
+        <li class="file">index.html</li>
+        <li class="file">login.html</li>
+        <li class="file">manifest.json</li>
+        <li class="file">member.html</li>
+        <li class="file">menu.html</li>
+        <li class="file">MessengerChat.html</li>
+        <li class="file">MessengerList.html</li>
+        <li class="file">news.html</li>
+        <li class="file">policy.html</li>
+        <li class="file">readme.md</li>
+        <li class="file">register.html</li>
+        <li class="file">robots.txt</li>
+        <li class="file">service-worker.js</li>
+        <li class="file">sitemap.xml</li>
+        <li class="file">Timeline.html</li>
+        <li class="file">vnpay_return.html</li>
+      </ul>
+    </li>
+  </ul>
+</body>
+</html>
