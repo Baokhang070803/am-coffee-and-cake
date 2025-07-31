@@ -568,6 +568,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
         const firebaseConfig = {
             apiKey: "AIzaSyA5NhPnsfXEUbXYzkdB5kvfaE0swtViJaI",
             authDomain: "coffee-and-cake-e2f5d.firebaseapp.com",
@@ -580,6 +581,44 @@
         };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Hàm kiểm tra role và chuyển hướng
+        async function checkUserRoleAndRedirect(user) {
+            try {
+                // Kiểm tra trong node staffs
+                const staffsRef = ref(db, 'staffs');
+                const staffsSnap = await get(staffsRef);
+                
+                if (staffsSnap.exists()) {
+                    const staffs = staffsSnap.val();
+                    let hasRole = false;
+                    
+                    // Tìm user trong staffs
+                    for (const [key, staff] of Object.entries(staffs)) {
+                        if (staff.email === user.email && staff.role) {
+                            hasRole = true;
+                            break;
+                        }
+                    }
+                    
+                    if (hasRole) {
+                        // User có role trong staffs -> chuyển đến dashboard-timesheet.html
+                        window.location.href = 'dashboard-timesheet.html';
+                        return;
+                    }
+                }
+                
+                // User không có role hoặc không tìm thấy -> chuyển đến index.html
+                window.location.replace('index.html');
+                
+            } catch (error) {
+                console.error('Lỗi kiểm tra role:', error);
+                // Nếu có lỗi, chuyển đến index.html
+                window.location.replace('index.html');
+            }
+        }
+
         // Toggle password visibility
         document.querySelectorAll('.toggle-password').forEach(toggle => {
             toggle.addEventListener('click', function() {
@@ -644,9 +683,9 @@
                 if (email === 'quantri1amcoffeeandcake@gmail.com' || email === 'nhanvienorders@gmail.com') {
                     window.location.href = 'AdminDashboard.html';
                 } else {
-                    // Đảm bảo chuyển hướng đúng và xóa cache
+                    // Kiểm tra role và chuyển hướng
                     setTimeout(() => {
-                        window.location.replace('index.html');
+                        checkUserRoleAndRedirect(user);
                     }, 1500);
                 }
             } catch (error) {
@@ -693,9 +732,9 @@
                     timer: 1500
                 });
                 
-                // Đảm bảo chuyển hướng đúng và xóa cache
+                // Kiểm tra role và chuyển hướng
                 setTimeout(() => {
-                    window.location.replace('index.html');
+                    checkUserRoleAndRedirect(user);
                 }, 1500);
             } catch (error) {
                 let errorMessage = 'Đăng nhập bằng Google thất bại. ';

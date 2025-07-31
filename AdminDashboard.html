@@ -31,6 +31,544 @@
       color: #222; /* Sáng: chữ đen rõ */
     }
 
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      /* Sidebar adjustments */
+      .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100vh;
+        z-index: 1050;
+        transition: left 0.3s ease;
+        width: 280px;
+      }
+      
+      .sidebar.show {
+        left: 0;
+      }
+      
+      /* Main content adjustments */
+      .content {
+        margin-left: 0 !important;
+        padding: 15px !important;
+      }
+      
+      /* Mobile menu button */
+      .mobile-toggle {
+        display: block !important;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1060;
+        background: #A67C52;
+        border: none;
+        color: white;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 18px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .mobile-toggle:hover {
+        background: #8B6F47;
+        transform: scale(1.05);
+      }
+      
+      /* Overlay for mobile menu */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1040;
+      }
+      
+      .sidebar-overlay.show {
+        display: block;
+      }
+      
+      /* Card adjustments */
+      .card {
+        margin-bottom: 15px;
+      }
+      
+      .card-body {
+        padding: 15px;
+      }
+      
+      /* Table responsive */
+      .table-responsive {
+        font-size: 12px;
+      }
+      
+      .table-responsive th,
+      .table-responsive td {
+        padding: 8px 4px;
+        white-space: nowrap;
+      }
+      
+      /* Modal adjustments */
+      .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+      }
+      
+      .modal-body {
+        padding: 15px;
+      }
+      
+      /* Form adjustments */
+      .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+      
+      /* Button adjustments */
+      .btn {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      
+      /* Navigation adjustments */
+      .nav-link {
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+      
+      .nav-link i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+      }
+      
+      /* Stats cards */
+      .stats-card {
+        margin-bottom: 15px;
+      }
+      
+      .stats-card .card-body {
+        padding: 15px;
+      }
+      
+      /* Search forms */
+      .search-form {
+        margin-bottom: 15px;
+      }
+      
+      .search-form .form-control {
+        margin-bottom: 10px;
+      }
+      
+      /* Action buttons in tables */
+      .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .action-buttons .btn {
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      /* Extra small devices */
+      .content {
+        padding: 10px !important;
+      }
+      
+      .card-body {
+        padding: 10px;
+      }
+      
+      .table-responsive {
+        font-size: 11px;
+      }
+      
+      .btn {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+      
+      .modal-dialog {
+        margin: 5px;
+        max-width: calc(100% - 10px);
+      }
+      
+      /* Hide less important columns on very small screens */
+      .table-responsive .d-none-xs {
+        display: none !important;
+      }
+      
+      /* Stack form elements */
+      .form-row {
+        flex-direction: column;
+      }
+      
+      .form-row > * {
+        margin-bottom: 10px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      /* Very small devices */
+      .sidebar {
+        width: 100%;
+      }
+      
+      .nav-link span {
+        font-size: 16px;
+      }
+      
+      .card-header {
+        padding: 10px 15px;
+      }
+      
+      .card-header h5,
+      .card-header h6 {
+        font-size: 16px;
+      }
+      
+      /* Reduce padding in modals */
+      .modal-header,
+      .modal-footer {
+        padding: 10px 15px;
+      }
+      
+      .modal-body {
+        padding: 10px;
+      }
+    }
+
+/* Staff Details Modal Styles */
+#staffDetailsModal .modal-content {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 15px 50px rgba(166,124,82,0.2);
+  overflow: hidden;
+}
+
+#staffDetailsModal .modal-header {
+  background: linear-gradient(135deg, #A67C52, #8B6F47);
+  color: white;
+  border-bottom: none;
+  padding: 25px 30px 20px;
+}
+
+#staffDetailsModal .modal-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+#staffDetailsModal .modal-body {
+  padding: 30px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f3ede6 100%);
+}
+
+#staffDetailsModal .staff-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 4px solid #A67C52;
+  box-shadow: 0 8px 25px rgba(166,124,82,0.3);
+  transition: transform 0.3s ease;
+}
+
+#staffDetailsModal .staff-avatar:hover {
+  transform: scale(1.05);
+}
+
+#staffDetailsModal .staff-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #464f5c;
+  margin-bottom: 5px;
+}
+
+#staffDetailsModal .staff-email {
+  color: #8391a7;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+#staffDetailsModal .staff-status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+#staffDetailsModal .info-section {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(166,124,82,0.08);
+  border: 1px solid rgba(166,124,82,0.1);
+}
+
+#staffDetailsModal .info-section h6 {
+  color: #A67C52;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+#staffDetailsModal .info-section h6 i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+#staffDetailsModal .info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#staffDetailsModal .info-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f6f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#staffDetailsModal .info-list li:last-child {
+  border-bottom: none;
+}
+
+#staffDetailsModal .info-list li strong {
+  color: #464f5c;
+  font-weight: 600;
+}
+
+#staffDetailsModal .info-list li .badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+#staffDetailsModal .salary-highlight {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 10px 0;
+  box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+}
+
+#staffDetailsModal .formula-text {
+  background: #f8f9fa;
+  border-left: 4px solid #A67C52;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 8px 0;
+}
+
+#staffDetailsModal .attendance-list,
+#staffDetailsModal .requests-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 10px;
+  background: #f8f9fa;
+  padding: 10px;
+}
+
+#staffDetailsModal .attendance-item,
+#staffDetailsModal .request-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+#staffDetailsModal .attendance-item:hover,
+#staffDetailsModal .request-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(166,124,82,0.15);
+}
+
+#staffDetailsModal .attendance-date {
+  font-weight: 600;
+  color: #464f5c;
+}
+
+#staffDetailsModal .attendance-time {
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+#staffDetailsModal .request-type {
+  font-weight: 700;
+  color: #A67C52;
+  font-size: 0.9rem;
+}
+
+#staffDetailsModal .request-dates {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+#staffDetailsModal .request-reason {
+  color: #8391a7;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+  #staffDetailsModal .request-status {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  #staffDetailsModal .location-info {
+    background: #e8f4fd;
+    border: 1px solid #bee5eb;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 8px 0;
+  }
+
+  #staffDetailsModal .location-coordinates {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #495057;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 4px 0;
+  }
+
+  #staffDetailsModal .location-map-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  #staffDetailsModal .location-map-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  #staffDetailsModal .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #A67C52, transparent);
+    margin: 25px 0;
+    border-radius: 1px;
+  }
+
+/* Responsive for staff details modal */
+@media (max-width: 768px) {
+  #staffDetailsModal .modal-body {
+    padding: 20px;
+  }
+  
+  #staffDetailsModal .staff-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  #staffDetailsModal .staff-name {
+    font-size: 1.2rem;
+  }
+  
+  #staffDetailsModal .info-section {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  #staffDetailsModal .attendance-list,
+  #staffDetailsModal .requests-list {
+    max-height: 150px;
+  }
+}
+/* Staff Statistics Cards - Black Text */
+#staffManagement .card {
+  color: #000 !important;
+}
+
+#staffManagement .card-body {
+  color: #000 !important;
+}
+
+#staffManagement .card-title {
+  color: #000 !important;
+}
+
+#staffManagement .card h3 {
+  color: #000 !important;
+}
+
+#staffManagement .card small {
+  color: #000 !important;
+}
+
+/* Override Bootstrap text-white class for staff management cards */
+#staffManagement .card.bg-primary,
+#staffManagement .card.bg-success,
+#staffManagement .card.bg-info,
+#staffManagement .card.bg-warning {
+  color: #000 !important;
+}
+
+#staffManagement .card.bg-primary .card-body,
+#staffManagement .card.bg-success .card-body,
+#staffManagement .card.bg-info .card-body,
+#staffManagement .card.bg-warning .card-body {
+  color: #000 !important;
+}
+
+#staffManagement .card.bg-primary .card-title,
+#staffManagement .card.bg-success .card-title,
+#staffManagement .card.bg-info .card-title,
+#staffManagement .card.bg-warning .card-title {
+  color: #000 !important;
+}
+
+#staffManagement .card.bg-primary h3,
+#staffManagement .card.bg-success h3,
+#staffManagement .card.bg-info h3,
+#staffManagement .card.bg-warning h3 {
+  color: #000 !important;
+}
+
+#staffManagement .card.bg-primary small,
+#staffManagement .card.bg-success small,
+#staffManagement .card.bg-info small,
+#staffManagement .card.bg-warning small {
+  color: #000 !important;
+}
+
+    /* Mobile toggle button - hidden by default */
+    .mobile-toggle {
+      display: none;
+    }
+    
     /* Sidebar */
     .sidebar {
       min-height: 100vh;
@@ -415,6 +953,1330 @@
       .stat-card, .card {
         padding: 16px;
         margin-bottom: 12px;
+        border-radius: 12px;
+      }
+
+      .stat-card h3, .card h3 {
+        font-size: 1.8rem;
+      }
+
+      .stat-card h5, .card h5 {
+        font-size: 0.8rem;
+      }
+
+      /* Mobile table improvements */
+      .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(166,124,82,0.08);
+      }
+
+      .table {
+        font-size: 0.85rem;
+      }
+
+      .table td, .table th {
+        padding: 10px 6px;
+        white-space: nowrap;
+      }
+
+      /* Mobile form improvements */
+      .form-control, .form-select {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+      }
+
+      /* Mobile modal improvements */
+      .modal-dialog {
+        margin: 10px;
+      }
+
+      .modal-content {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      }
+
+      .modal-header {
+        padding: 20px 20px 15px;
+        border-bottom: 1px solid rgba(166,124,82,0.1);
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .modal-footer {
+        padding: 15px 20px 20px;
+        border-top: 1px solid rgba(166,124,82,0.1);
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 375px) {
+      .content {
+        padding: 10px 6px;
+      }
+
+      .quick-stat {
+        padding: 12px;
+      }
+
+      .stat-card, .card {
+        padding: 14px;
+      }
+
+      .table td, .table th {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Dashboard stats visual enhancements */
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      color: #A67C52;
+      font-size: 0.875rem;
+    }
+
+    .stat-trend.up {
+      color: #8B6F47;
+    }
+
+    .stat-trend.down {
+      color: #A63C3C;
+    }
+
+    .stat-trend i {
+      margin-right: 5px;
+    }
+
+    /* Chart container improvements */
+    .chart-container {
+      position: relative;
+      margin-top: 15px;
+      height: 300px;
+      background: linear-gradient(135deg, #f3ede6 0%, #f3f6f9 100%);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.07);
+      padding: 10px;
+    }
+
+    /* Section Visibility Control */
+    section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    section.active-section {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Active Navigation Indicator */
+    .nav-link {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 3px;
+      background: #A67C52;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link.active::after {
+      transform: translateX(0);
+    }
+
+    /* Section Title Animation */
+    section h2 {
+      position: relative;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 3px;
+      background: #A67C52;
+    }
+
+    /* Order Management Styles */
+    .order-tabs {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .order-tab {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 24px;
+      color: #64748b;
+      border: none;
+      background: none;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .order-tab.active {
+      color: #A67C52;
+      font-weight: 500;
+    }
+    
+    .order-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #A67C52;
+    }
+    
+    .order-count {
+      margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      background: #e2e8f0;
+      color: #64748b;
+    }
+    
+    .order-tab.active .order-count {
+      background: rgba(166,124,82,0.1);
+      color: #A67C52;
+    }
+
+    .order-filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .order-search {
+      flex: 1;
+    }
+
+    .order-table td {
+      vertical-align: middle;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes counterUp {
+      from { opacity: 0.5; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+
+    /* Quick Stats */
+    .quick-stats {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .quick-stat {
+      flex: 1 1 180px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.06);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 160px;
+      animation: fadeInUp 0.7s;
+    }
+    .quick-stat .icon {
+      font-size: 2rem;
+      color: #A67C52;
+      background: #f3ede6;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .quick-stat .label {
+      font-size: 0.95rem;
+      color: #8391a7;
+      font-weight: 500;
+    }
+    .quick-stat .value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #464f5c;
+    }
+
+    /* Timeline */
+    .timeline {
+      border-left: 3px solid #A67C52;
+      margin-left: 10px;
+      padding-left: 18px;
+      margin-bottom: 0;
+      list-style: none;
+    }
+    .timeline li {
+      margin-bottom: 18px;
+      position: relative;
+      padding-left: 12px;
+      font-size: 1rem;
+      color: #464f5c;
+      animation: fadeInUp 0.7s;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      background: #A67C52;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(166,124,82,0.15);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #A67C52;
+      font-size: 0.95rem;
+      padding: 18px 0 8px 0;
+      background: none;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background: #181a20 !important;
+      color: #A67C52 !important; /* Tối: chữ nâu */
+    }
+    body.dark-mode .sidebar {
+      background: #23272f;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    }
+    body.dark-mode .content,
+    body.dark-mode .stat-card,
+    body.dark-mode .card,
+    body.dark-mode .quick-stat,
+    body.dark-mode .table-container {
+      background: #2d323c !important;
+      color: #e2e8f0;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.09);
+    }
+    body.dark-mode .table thead th {
+      background: #23272f !important;
+      color: #ffe082 !important;
+    }
+    body.dark-mode .table tbody tr:hover {
+      background: #23272f !important;
+    }
+    body.dark-mode .footer {
+      color: #ffe082 !important;
+    }
+    body.dark-mode .chart-container {
+      background: #23272f;
+    }
+
+    /* Dark mode toggle */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 32px;
+      z-index: 2000;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5, #42e695, #ff6ec4);
+      background-size: 400% 400%;
+      color: #fff;
+      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.13);
+      cursor: pointer;
+      font-size: 1.7rem;
+      border: 2px solid #fff;
+      animation: rgb-gradient 6s ease-in-out infinite;
+      transition: background 0.3s, color 0.3s;
+    }
+    @keyframes rgb-gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .dark-mode .dark-mode-toggle {
+      background: linear-gradient(135deg, #42e695, #ff6ec4, #7873f5, #42e695);
+      color: #fff;
+      border: 2px solid #A67C52;
+      animation: rgb-gradient 6s ease-in-out infinite;
+    }
+    .dark-mode-toggle i {
+      pointer-events: none;
+      transition: transform 0.3s;
+    }
+    .dark-mode .dark-mode-toggle i {
+      transform: rotate(-30deg);
+    }
+
+    /* Message Management Styles */
+    .message-container {
+      display: flex;
+      flex-direction: row;
+      height: 500px;
+      min-height: 350px;
+      max-height: 600px;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.07);
+      border: 1px solid #eee;
+    }
+    .message-list-users {
+      width: 320px;
+      min-width: 220px;
+      max-width: 340px;
+      border-right: 1px solid #eee;
+      overflow-y: auto;
+      background: #f8fafc;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .message-list-users .user-item {
+      cursor: pointer;
+      padding: 14px 18px;
+      border-bottom: 1px solid #f3ede6;
+      font-weight: 500;
+      color: #464f5c;
+      transition: background 0.18s, color 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      background: transparent;
+    }
+    .message-list-users .user-item.active,
+    .message-list-users .user-item:hover {
+      background: #e7eaf1;
+      color: #A67C52;
+    }
+    .message-list-users .user-item .fa-user-circle {
+      font-size: 2.1em;
+      color: #A67C52;
+      background: #fff;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .message-list-users .user-item .user-name {
+      font-weight: 600;
+      font-size: 1.05em;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .message-list-users .user-item .last-time {
+      font-size: 0.85em;
+      color: #8391a7;
+      margin-left: 6px;
+      min-width: 56px;
+      text-align: right;
+    }
+    .message-list-users .user-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: #A67C52;
+      border-radius: 4px;
+    }
+
+    .message-chatbox {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f3f6fa;
+      position: relative;
+      min-width: 0;
+      height: 100%;
+    }
+    .message-chatbox .chat-thread {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 18px 12px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .message-chatbox .chat-msg {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 2px;
+    }
+    .message-chatbox .chat-msg.user {
+      justify-content: flex-start;
+    }
+    .message-chatbox .chat-msg.admin {
+      justify-content: flex-end;
+    }
+    .message-chatbox .chat-bubble {
+      max-width: 70%;
+      padding: 12px 18px;
+      border-radius: 22px;
+      font-size: 1em;
+      position: relative;
+      word-break: break-word;
+      box-shadow: 0 1px 4px rgba(166,124,82,0.07);
+      margin-bottom: 2px;
+      background: #fff;
+      color: #464f5c;
+      border: 1px solid #e2e8f0;
+      transition: background 0.2s;
+    }
+    .message-chatbox .chat-msg.admin .chat-bubble {
+      background: #ffffff;
+      color: #464f5c;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 22px;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      margin-left: 30%;
+      border: none;
+    }
+    .message-chatbox .chat-msg.user .chat-bubble {
+      background: #fff;
+      color: #464f5c;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 22px;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      margin-right: 30%;
+      border: 1px solid #e2e8f0;
+    }
+    .message-chatbox .chat-bubble .chat-time {
+      font-size: 0.85em;
+      color: #8391a7;
+      text-align: right;
+      margin-top: 4px;
+      margin-bottom: -2px;
+    }
+    .message-chatbox .chatbox-footer {
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      bottom: 0;
+      z-index: 2;
+    }
+    .message-chatbox .chatbox-footer form {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .message-chatbox #quickReplyInput {
+      border-radius: 22px;
+      padding: 10px 18px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      font-size: 1em;
+      transition: border 0.2s;
+    }
+    .message-chatbox #quickReplyInput:focus {
+      border-color: #A67C52;
+      box-shadow: 0 0 0 2px rgba(166,124,82,0.13);
+    }
+    .message-chatbox .btn-primary {
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3em;
+      padding: 0;
+      background: #A67C52;
+      border: none;
+      transition: background 0.2s;
+    }
+    .message-chatbox .btn-primary:hover {
+      background: #8B6F47;
+    }
+
+    @media (max-width: 900px) {
+      .message-container {
+        flex-direction: column;
+        height: 420px;
+        min-height: 300px;
+        max-height: 500px;
+      }
+      .message-list-users {
+        flex-direction: row;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        overflow-x: auto;
+        overflow-y: hidden;
+        height: 70px;
+      }
+      .message-list-users .user-item {
+        flex: 1 0 120px;
+        border-bottom: none;
+        border-right: 1px solid #eee;
+        padding: 10px 8px;
+        min-width: 100px;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .message-list-users .user-item .user-name {
+        font-size: 0.95em;
+      }
+      .message-list-users .user-item .last-time {
+        font-size: 0.8em;
+      }
+      .message-chatbox {
+        padding: 0;
+      }
+      .message-chatbox .chat-thread {
+        padding: 12px 6px 8px 6px;
+      }
+      .message-chatbox .chatbox-footer {
+        padding: 10px 6px;
+      }
+    }
+    body.dark-mode .message-list-users {
+      background: #23272f;
+      border-right: 1px solid #2d323c;
+    }
+    body.dark-mode .message-list-users .user-item {
+      color: #e2e8f0;
+      border-bottom: 1px solid #2d323c;
+      background: transparent;
+    }
+    body.dark-mode .message-list-users .user-item.active,
+    body.dark-mode .message-list-users .user-item:hover {
+      background: #2d323c;
+      color: #A67C52;
+    }
+    body.dark-mode .message-chatbox {
+      background: #23272f;
+    }
+    body.dark-mode .message-chatbox .chat-bubble {
+      background: #23272f;
+      color: #e2e8f0;
+      border: 1px solid #393e4a;
+    }
+    body.dark-mode .message-chatbox .chat-msg.admin .chat-bubble {
+      background: #A67C52;
+      color: #fff;
+      border: none;
+    }
+    body.dark-mode .message-chatbox .chatbox-footer {
+      background: #23272f;
+      border-top: 1px solid #393e4a;
+    }
+    body.dark-mode .message-chatbox #quickReplyInput {
+      background: #23272f;
+      color: #e2e8f0;
+      border: 1px solid #393e4a;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      .print-bill-area, .print-bill-area * {
+        visibility: visible !important;
+      }
+      .print-bill-area {
+        position: absolute !important;
+        left: 0; top: 0; width: 100vw; min-width: 0; background: #fff !important; color: #000 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      /* Ẩn header/footer/modal khi in */
+      .modal-header, .modal-footer, .sidebar, .footer, .dark-mode-toggle, #notificationBell, #notificationHistoryModal {
+        display: none !important;
+      }
+      .print-bill-area, .print-bill-area * {
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border-color: #000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .print-bill-area img {
+        filter: grayscale(100%) contrast(1.2) brightness(1.1) !important;
+        -webkit-filter: grayscale(100%) contrast(1.2) brightness(1.1) !important;
+      }
+      .print-bill-area .table th,
+      .print-bill-area .table td,
+      .print-bill-area .table,
+      .print-bill-area .table-bordered,
+      .print-bill-area .table-sm,
+      .print-bill-area .table-light {
+        background: #fff !important;
+        color: #000 !important;
+        border-color: #000 !important;
+      }
+      .print-bill-area hr {
+        border-color: #000 !important;
+        background: #000 !important;
+        color: #000 !important;
+      }
+      .print-bill-area [class*="text-"],
+      .print-bill-area [class*="bg-"] {
+        color: #000 !important;
+        background: #fff !important;
+      }
+      .print-bill-area b, .print-bill-area strong {
+        color: #000 !important;
+        font-weight: bold !important;
+      }
+      .print-bill-area h5, .print-bill-area h6 {
+        color: #000 !important;
+      }
+      /* Ẩn mọi hiệu ứng màu sắc khác */
+      .print-bill-area [style*="color:"], .print-bill-area [style*="background"] {
+        color: #000 !important;
+        background: #fff !important;
+      }
+    }
+
+    .content-section {
+      padding: 20px;
+      margin-bottom: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #newsManagement {
+      margin-top: 20px;
+    }
+
+    #newsManagement .table-responsive {
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #newsManagement .table {
+      margin-bottom: 0;
+    }
+
+    #newsManagement .table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+
+    #newsManagement .table td img {
+      max-width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    #newsManagement .btn-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    #newsManagement .badge {
+      padding: 6px 12px;
+      font-weight: 500;
+    }
+
+    body.dark-mode, body.dark-mode * {
+      color: #d49854 !important;
+      border-color: #393e4a !important;
+      text-shadow: none !important;
+    }
+
+    /* Story Management Styles */
+    #storyManagement .table img {
+      transition: transform 0.2s ease;
+    }
+    
+    #storyManagement .table img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(166,124,82,0.2);
+    }
+    
+    #storyManagement .badge {
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
+    }
+    
+    #storyManagement .btn-group .btn {
+      margin: 0 2px;
+    }
+    
+    #storyManagement .table td {
+      vertical-align: middle;
+    }
+    
+    /* Story status indicators */
+    .story-status-active {
+      background: linear-gradient(45deg, #28a745, #20c997);
+      color: white;
+    }
+    
+    .story-status-expired {
+      background: linear-gradient(45deg, #dc3545, #fd7e14);
+      color: white;
+    }
+  </style>
+  <!-- Thêm QuillJS -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <!-- Thêm vào <style> hoặc file css -->
+  <style>
+  .post-detail-modal {
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: #fff;
+  }
+  .post-detail-modal .modal-header {
+    border-bottom: 1px solid #eee;
+    align-items: center;
+  }
+  .post-detail-modal .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #a67c52;
+  }
+  .post-detail-modal .modal-body {
+    padding: 24px 18px 18px 18px;
+  }
+  .post-detail-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .post-detail-author img {
+    width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+  .post-detail-author-info {
+    flex: 1;
+  }
+  .post-detail-author-name {
+    font-weight: 600; font-size: 1.1rem; color: #a67c52;
+  }
+  .post-detail-author-email {
+    font-size: 0.95rem; color: #888;
+  }
+  .post-detail-time {
+    font-size: 0.92rem; color: #bbb;
+  }
+  .post-detail-content {
+    font-size: 1.15rem; color: #222; margin: 12px 0 8px 0;
+  }
+  .post-detail-image {
+    max-width: 100%; max-height: 340px; border-radius: 12px; margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+  .post-detail-stats {
+    display: flex; gap: 18px; align-items: center; margin: 10px 0 18px 0;
+    color: #a67c52; font-size: 1.05rem;
+  }
+  .post-detail-comments {
+    margin-top: 10px;
+  }
+  .post-detail-comment {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;
+  }
+  .post-detail-comment img {
+    width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+  }
+  .post-detail-comment-body {
+    flex: 1;
+    background: #f8f8f8;
+    border-radius: 12px;
+    padding: 8px 12px;
+  }
+  .post-detail-comment-name {
+    font-weight: 600; color: #a67c52; font-size: 1rem;
+  }
+  .post-detail-comment-meta {
+    font-size: 0.92rem; color: #888; margin-bottom: 2px;
+  }
+  .post-detail-reply {
+    margin-left: 38px;
+    border-left: 2px solid #eee;
+    padding-left: 10px;
+  }
+  .btn-delete-comment {
+    background: none; border: none; color: #d33; font-size: 1.1rem; cursor: pointer;
+    margin-left: 6px;
+  }
+  </style>
+</head>
+<!--
+  File: AdminDashboard.html
+  Công dụng:
+    - Trang quản trị dành cho admin hệ thống.
+  Các chức năng chính:
+    1. Quản lý đơn hàng, sản phẩm, người dùng, thống kê doanh thu, v.v.
+    2. Có các bảng, biểu đồ, chức năng duyệt đơn, cập nhật trạng thái đơn hàng.
+    3. Chỉ admin mới truy cập được.
+    4. Giao diện quản trị chuyên nghiệp, tối ưu cho desktop.
+-->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="PaAsbmk1XWa3-fOeh2_9aTtEK38RChaUkzoLMp8MIko" />
+  <title>Admin Dashboard - Coffee & Cake</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="css/mobile.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f3f6f9;
+      font-family: 'Poppins', sans-serif;
+      color: #222; /* Sáng: chữ đen rõ */
+    }
+
+    /* Sidebar */
+    .sidebar {
+      min-height: 100vh;
+      background: #fff;
+      padding: 25px;
+      position: fixed;
+      width: 260px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+      z-index: 1030;
+    }
+    .sidebar.collapsed {
+      width: 70px;
+      padding: 25px 10px;
+    }
+    .sidebar .sidebar-toggle {
+      position: absolute;
+      top: 20px;
+      right: -18px;
+      background: #A67C52;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(166,124,82,0.15);
+      z-index: 1040;
+      transition: right 0.3s;
+    }
+    .sidebar.collapsed .sidebar-toggle {
+      right: -18px;
+    }
+    .sidebar .admin-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 3px solid #A67C52;
+      box-shadow: 0 2px 8px rgba(166,124,82,0.15);
+      transition: all 0.3s;
+    }
+    .sidebar.collapsed .logo-img,
+    .sidebar.collapsed .admin-avatar,
+    .sidebar.collapsed h6,
+    .sidebar.collapsed .nav-link span {
+      display: none !important;
+    }
+    .sidebar .nav-link i {
+      width: 22px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .sidebar .nav-link {
+      color: #8391a7;
+      padding: 12px 20px;
+      margin: 4px 0;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      color: #A67C52 !important;
+      background: rgba(166,124,82,0.1);
+    }
+    .sidebar .nav-link span {
+      transition: opacity 0.2s;
+    }
+    .sidebar.collapsed .nav-link {
+      justify-content: center;
+      padding: 12px 0;
+    }
+
+    /* Content Area */
+    .content {
+      margin-left: 260px;
+      padding: 30px;
+      background: #f3f6f9;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+
+    /* Dashboard Cards */
+    .stat-card, .card {
+      background: linear-gradient(135deg, #f8fafc 60%, #f3ede6 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(166,124,82,0.07);
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.7s;
+    }
+    .stat-card .stat-icon {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      font-size: 3.5rem;
+      color: #f3ede6;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .stat-card h5 {
+      color: #8391a7;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+    .stat-card h3, .card h3 {
+      color: #464f5c;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0;
+      letter-spacing: -1px;
+      animation: counterUp 1s;
+    }
+
+    /* Charts */
+    .chart-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      height: 100%;
+    }
+
+    .chart-card h5 {
+      color: #464f5c;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* Tables */
+    .table-container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(166,124,82,0.07);
+      animation: fadeInUp 0.7s;
+    }
+
+    .table thead th {
+      background: #f8fafc;
+      color: #A67C52;
+      font-weight: 600;
+      border-bottom: 2px solid #A67C52;
+    }
+
+    .table td {
+      padding: 15px;
+      color: #464f5c;
+      border-bottom: 1px solid #f3f6f9;
+    }
+
+    .table tbody tr:hover {
+      background: #f3ede6;
+      transition: background 0.2s;
+    }
+
+    .table td .btn {
+      transition: transform 0.1s;
+    }
+
+    .table td .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 2px 8px rgba(166,124,82,0.12);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: #A67C52;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #8B6F47;
+      transform: translateY(-2px);
+    }
+
+    /* Search Inputs */
+    .search-input {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 20px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: #A67C52;
+      box-shadow: 0 0 0 2px rgba(166,124,82,0.2);
+    }
+
+    /* Responsive - Mobile First Design */
+    @media (max-width: 992px) {
+      .sidebar {
+        left: -280px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: 70px;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border-right: 1px solid rgba(166,124,82,0.1);
+      }
+      
+      .sidebar.open {
+        left: 0;
+        box-shadow: 0 0 30px rgba(0,0,0,0.2);
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px 12px;
+        min-height: 100vh;
+      }
+
+      /* Mobile Toggle Button - Thương tích hơn */
+      .mobile-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1060;
+        background: linear-gradient(135deg, #A67C52, #8B6F47);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(166,124,82,0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 1.2rem;
+      }
+
+      .mobile-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 25px rgba(166,124,82,0.4);
+      }
+
+      .mobile-toggle:active {
+        transform: scale(0.95);
+      }
+
+      /* Animation cho mobile toggle */
+      .mobile-toggle i {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .sidebar.open + .mobile-toggle i {
+        transform: rotate(180deg);
+      }
+
+      /* Overlay với blur effect */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+        z-index: 1025;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      /* Sidebar improvements */
+      .logo-img {
+        width: 45px;
+        filter: drop-shadow(0 2px 8px rgba(166,124,82,0.2));
+      }
+      
+      .sidebar .sidebar-toggle {
+        display: none;
+      }
+
+      /* Mobile navigation improvements */
+      .sidebar .nav-link {
+        margin: 6px 0;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background: linear-gradient(135deg, rgba(166,124,82,0.15), rgba(166,124,82,0.08));
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(166,124,82,0.15);
+      }
+
+      .sidebar .nav-link i {
+        font-size: 1.3rem;
+        margin-right: 12px;
+      }
+    }
+
+    /* Tablet optimizations */
+    @media (max-width: 768px) {
+      .content {
+        padding: 16px 10px;
+      }
+
+      .stat-card, .card {
+        padding: 20px;
+        margin-bottom: 16px;
+        border-radius: 12px;
+      }
+
+      .quick-stats {
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .quick-stat {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      .table-container {
+        padding: 16px;
+        border-radius: 12px;
+        overflow-x: auto;
+      }
+
+      .table {
+        font-size: 0.9rem;
+      }
+
+      .table td, .table th {
+        padding: 12px 8px;
+      }
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 576px) {
+      .content {
+        padding: 12px 8px;
+      }
+
+      .quick-stats {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .quick-stat {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 14px;
+      }
+
+      .stat-card, .card {
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
       }
 
       .stat-card h3, .card h3 {
@@ -1363,6 +3225,15 @@
         <i class="fas fa-clock"></i>
         <span>Quản lý tin 24h</span>
       </a>
+      <a href="#staffManagement" class="nav-link" id="navStaffManagement" data-bs-toggle="tab">
+        <i class="fas fa-user-tie"></i>
+        <span>Quản lý nhân viên & chấnmcông</span>
+      </a>
+      <a href="#roleManagement" class="nav-link" id="navRoleManagement" data-bs-toggle="tab">
+        <i class="fas fa-id-badge"></i>
+        <span>Quản lý chức vụ</span>
+      </a>
+
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
   </div>
@@ -1577,6 +3448,8 @@
     </table>
   </section>
 
+
+  
   <!-- Order Management Section -->
   <section id="orderManagement">
     <h2>Quản Lý Đơn Hàng</h2>
@@ -2250,6 +4123,379 @@
   </div>
 </section>
 
+<!-- Staff Management Section -->
+<section id="staffManagement" class="content-section">
+  <h2>Quản Lý Nhân Viên & Chấm Công</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+        <i class="fas fa-user-plus me-2"></i> Thêm nhân viên
+      </button>
+      <button type="button" class="btn btn-success" onclick="loadStaffs()">
+        <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-warning" onclick="exportStaffReport()">
+        <i class="fas fa-file-excel me-2"></i> Xuất Excel
+      </button>
+    </div>
+  </div>
+  
+  <!-- Thông báo về cách tính lương -->
+  <div class="alert alert-info mb-3">
+    <i class="fas fa-info-circle me-2"></i>
+    <strong>Lưu ý:</strong> Lương thực nhận được tính theo quy tắc:<br>
+    <strong>Ngày bắt đầu làm việc:</strong> Chỉ tính lương từ ngày nhân viên bắt đầu làm việc (những ngày trước đó không tính)<br>
+    <strong>Giờ làm việc:</strong> Tính thời gian thực tế từ lúc check-in đến check-out mỗi ngày<br>
+    <strong>Ngày công:</strong> Chỉ tính khi có đủ chấm công vào (Vào) và chấm công ra (Ra) trong cùng một ngày<br>
+    <strong>Thời gian tối thiểu:</strong> Phải làm việc ít nhất 30 phút/ngày để được tính công (dưới 30 phút hoặc checkin không checkout sẽ tính là ngày nghỉ)<br>
+    <strong>Ngày nghỉ có phép:</strong> Tính từ tất cả yêu cầu nghỉ phép đã được duyệt (bất kể tháng nào)<br>
+    <strong>Ngày nghỉ không phép:</strong> Bị trừ 5% lương cơ bản cho mỗi ngày<br>
+    <strong>≥ 392 giờ/tháng (28 ngày × 14 giờ):</strong> Lãnh toàn bộ lương cơ bản<br>
+    <strong>< 392 giờ/tháng:</strong> Số giờ thực tế × Lương giờ cơ bản<br>
+    <small class="text-muted">Lương giờ cơ bản = Lương tháng ÷ (28 ngày × 14 giờ/ngày) (làm tròn theo quy tắc: < 5 làm tròn xuống, ≥ 5 làm tròn lên)</small>
+  </div>
+  
+  <!-- Thống kê tổng quan -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng nhân viên</h6>
+          <h3 id="totalStaffCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Đang làm việc</h6>
+          <h3 id="activeStaffCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng lương tháng này</h6>
+          <h3 id="totalSalary">0 đ</h3>
+          <small>Lương theo số ngày công</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng ngày nghỉ</h6>
+          <h3 id="totalAbsentDays">0</h3>
+          <small>
+            <span class="badge bg-success">0 có phép</span>
+            <span class="badge bg-danger">0 không phép</span>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form id="staffSearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-6">
+        <input type="text" id="staffSearch" class="form-control" placeholder="Tìm kiếm nhân viên...">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Ảnh đại diện</th>
+          <th>Email</th>
+          <th>Họ tên</th>
+          <th>Số điện thoại</th>
+          <th>Địa chỉ</th>
+          <th>Chức vụ</th>
+          <th>Ngày vào làm</th>
+          <th>Lương cơ bản</th>
+          <th>Số ngày công<br><small class="text-muted">(Giờ làm việc)</small></th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="staffList">
+        <tr>
+          <td colspan="13" class="text-center text-muted">Đang tải...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<!-- Add Staff Modal -->
+<div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addStaffModalLabel">Thêm Nhân Viên</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addStaffForm">
+          <div class="mb-3">
+            <label class="form-label">Ảnh đại diện</label>
+            <input type="file" class="form-control" id="staffAvatarFile" accept="image/*">
+            <div id="staffAvatarPreview" style="margin-top:10px;"></div>
+          </div>
+          <div class="mb-3">
+            <label for="staffEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="staffEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="staffName" class="form-label">Họ tên</label>
+            <input type="text" class="form-control" id="staffName" required>
+          </div>
+          <div class="mb-3">
+            <label for="staffPhone" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="staffPhone">
+          </div>
+          <div class="mb-3">
+            <label for="staffAddress" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="staffAddress">
+          </div>
+          <div class="mb-3">
+            <label for="staffRole" class="form-label">Chức vụ</label>
+            <select class="form-select" id="staffRole" required>
+              <option value="">-- Chọn chức vụ --</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="staffStartDate" class="form-label">Ngày vào làm</label>
+            <input type="date" class="form-control" id="staffStartDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="staffBaseSalary" class="form-label">Lương cơ bản (VNĐ/tháng)</label>
+            <input type="number" class="form-control" id="staffBaseSalary" required>
+          </div>
+          <div class="mb-3">
+            <label for="staffStatus" class="form-label">Trạng thái</label>
+            <select class="form-select" id="staffStatus" required>
+              <option value="active">Đang làm</option>
+              <option value="inactive">Nghỉ việc</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="userSelect" class="form-label">Chọn từ thành viên</label>
+            <select id="userSelect" class="form-select">
+              <option value="">-- Không chọn --</option>
+              <!-- JS sẽ render thêm các option user -->
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Thêm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Staff Details Modal -->
+<div class="modal fade" id="staffDetailsModal" tabindex="-1" aria-labelledby="staffDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header bg-gradient-primary text-white">
+        <h3 class="modal-title" id="staffDetailsModalLabel">
+          <i class="fas fa-user-circle me-3"></i>Chi Tiết Nhân Viên
+        </h3>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0" id="staffDetailsBody">
+        <!-- Nội dung chi tiết sẽ được render bằng JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Staff Modal -->
+<div class="modal fade" id="editStaffModal" tabindex="-1" aria-labelledby="editStaffModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editStaffModalLabel">Sửa Nhân Viên</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editStaffForm">
+          <input type="hidden" id="editStaffId">
+          <div class="mb-3">
+            <label class="form-label">Ảnh đại diện</label>
+            <input type="file" class="form-control" id="editStaffAvatarFile" accept="image/*">
+            <div id="editStaffAvatarPreview" style="margin-top:10px;"></div>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editStaffEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffName" class="form-label">Họ tên</label>
+            <input type="text" class="form-control" id="editStaffName" required>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffPhone" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="editStaffPhone">
+          </div>
+          <div class="mb-3">
+            <label for="editStaffAddress" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="editStaffAddress">
+          </div>
+          <div class="mb-3">
+            <label for="editStaffRole" class="form-label">Chức vụ</label>
+            <select class="form-select" id="editStaffRole" required>
+              <option value="">-- Chọn chức vụ --</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffStartDate" class="form-label">Ngày vào làm</label>
+            <input type="date" class="form-control" id="editStaffStartDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffBaseSalary" class="form-label">Lương cơ bản (VNĐ/tháng)</label>
+            <input type="number" class="form-control" id="editStaffBaseSalary" required>
+          </div>
+          <div class="mb-3">
+            <label for="editStaffStatus" class="form-label">Trạng thái</label>
+            <select class="form-select" id="editStaffStatus" required>
+              <option value="active">Đang làm</option>
+              <option value="inactive">Nghỉ việc</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Cập nhật</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Role Management Section -->
+<section id="roleManagement" class="content-section">
+  <h2>Quản Lý Chức Vụ</h2>
+  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRoleModal">
+    <i class="fas fa-id-badge me-2"></i> Thêm chức vụ
+  </button>
+  <form id="roleSearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-6">
+        <input type="text" id="roleSearch" class="form-control" placeholder="Tìm kiếm chức vụ...">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Tên chức vụ</th>
+          <th>Mô tả</th>
+          <th>Quyền hạn</th>
+          <th>Lương cơ bản</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="roleList">
+        <tr>
+          <td colspan="5" class="text-center text-muted">Đang tải...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- Edit Role Modal -->
+<div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="editRoleForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRoleModalLabel">Sửa Chức Vụ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editRoleId">
+          <div class="mb-3">
+            <label for="editRoleName" class="form-label">Tên chức vụ</label>
+            <input type="text" class="form-control" id="editRoleName" required>
+          </div>
+          <div class="mb-3">
+            <label for="editRoleDescription" class="form-label">Mô tả</label>
+            <input type="text" class="form-control" id="editRoleDescription">
+          </div>
+          <div class="mb-3">
+            <label for="editRolePermissions" class="form-label">Quyền hạn</label>
+            <input type="text" class="form-control" id="editRolePermissions">
+          </div>
+          <div class="mb-3">
+            <label for="editRoleBaseSalary" class="form-label">Lương cơ bản (VNĐ/tháng)</label>
+            <input type="number" class="form-control" id="editRoleBaseSalary" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Add Role Modal -->
+<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="addRoleForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRoleModalLabel">Thêm Chức Vụ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="roleName" class="form-label">Tên chức vụ</label>
+            <input type="text" class="form-control" id="roleName" required>
+          </div>
+          <div class="mb-3">
+            <label for="roleDescription" class="form-label">Mô tả</label>
+            <input type="text" class="form-control" id="roleDescription">
+          </div>
+          <div class="mb-3">
+            <label for="rolePermissions" class="form-label">Quyền hạn</label>
+            <input type="text" class="form-control" id="rolePermissions">
+          </div>
+          <div class="mb-3">
+            <label for="roleBaseSalary" class="form-label">Lương cơ bản (VNĐ/tháng)</label>
+            <input type="number" class="form-control" id="roleBaseSalary" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Thêm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
   <div class="footer">
     <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
   </div>
@@ -2259,7 +4505,7 @@
   </div>
   <!-- Nút chuông thông báo -->
   <div id="notificationBell" title="Xem lịch sử thông báo"
-    style="position:fixed;bottom:90px;right:32px;z-index:2001;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;color:#A67C52;border-radius:50%;box-shadow:0 2px 12px rgba(166,124,82,0.13);font-size:1.5rem;">
+    style="position:fixed;bottom:90px;right:36.5px;z-index:2001;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;color:#A67C52;border-radius:50%;box-shadow:0 2px 12px rgba(166,124,82,0.13);font-size:1.5rem;">
     <i class="fas fa-bell"></i>
     <span id="notificationBellDot" style="position:absolute;top:10px;right:10px;width:10px;height:10px;background:#dc3545;border-radius:50%;display:none;"></span>
   </div>
@@ -2330,6 +4576,13 @@
       app = initializeApp(firebaseConfig);
       auth = getAuth(app);
       db = getDatabase(app);
+      // Thêm các biến Firebase ra window để các script module khác dùng được
+      window.db = db;
+      window.ref = ref;
+      window.get = get;
+      window.set = set;
+      window.push = push;
+      window.remove = remove;
       console.log('Firebase initialized successfully');
     } catch (error) {
       console.error('Error initializing Firebase:', error);
@@ -2340,6 +4593,22 @@
         showConfirmButton: true
       });
     }
+
+    // Hàm tính lương giờ cơ bản
+    function calculateHourlySalary(baseSalary) {
+      // Công thức: Lương Giờ Cơ Bản = (Lương tháng) / (Số ngày làm việc chuẩn trong tháng × Số giờ làm việc chuẩn mỗi ngày)
+      // Với 28 ngày/tháng và 14 tiếng/ngày
+      const standardDaysPerMonth = 28;
+      const standardHoursPerDay = 14;
+      const hourlySalaryRaw = baseSalary / (standardDaysPerMonth * standardHoursPerDay);
+      
+      // Làm tròn theo quy tắc: < 5 làm tròn xuống, ≥ 5 làm tròn lên
+      const decimalPart = hourlySalaryRaw - Math.floor(hourlySalaryRaw);
+      return decimalPart < 0.5 ? Math.floor(hourlySalaryRaw) : Math.ceil(hourlySalaryRaw);
+    }
+
+    // Thêm hàm vào window object để có thể truy cập từ bên ngoài
+    window.calculateHourlySalary = calculateHourlySalary;
 
     // Thêm biến kiểm tra tài khoản nhân viên
     let isOrderStaff = false;
@@ -2540,6 +4809,14 @@
           case 'storyManagement':
             loadStories();
             break;
+          case 'staffManagement':
+            loadStaffs();
+            break;
+          case 'roleManagement':
+            loadRoles();
+            break;
+
+
         }
       }
     }
@@ -4438,6 +6715,336 @@
       }
     };
 
+    // Xuất báo cáo nhân viên & chấm công
+    window.exportStaffReport = async function() {
+      try {
+        // Lấy dữ liệu nhân viên
+        const staffSnap = await get(ref(db, 'staffs'));
+        if (!staffSnap.exists()) {
+          throw new Error('Không có dữ liệu nhân viên');
+        }
+        const staffs = Object.values(staffSnap.val());
+
+        // Lấy dữ liệu chấm công
+        const attendanceSnap = await get(ref(db, 'attendances'));
+        const attendances = attendanceSnap.exists() ? Object.values(attendanceSnap.val()) : [];
+
+        // Lấy dữ liệu yêu cầu nghỉ phép
+        const leaveSnap = await get(ref(db, 'leaveRequests'));
+        const leaveRequests = leaveSnap.exists() ? Object.values(leaveSnap.val()) : [];
+
+        // Lấy dữ liệu yêu cầu làm thêm giờ
+        const overtimeSnap = await get(ref(db, 'overtimeRequests'));
+        const overtimeRequests = overtimeSnap.exists() ? Object.values(overtimeSnap.val()) : [];
+
+        // Lấy dữ liệu roles
+        const rolesSnap = await get(ref(db, 'roles'));
+        const roles = rolesSnap.exists() ? Object.values(rolesSnap.val()) : [];
+
+        // Tính toán thống kê cho từng nhân viên
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
+
+        const staffStats = await Promise.all(staffs.map(async (staff) => {
+          // Tính toán tương tự như trong loadStaffs
+          const staffAttendances = attendances.filter(att => 
+            att.email === staff.email && 
+            new Date(att.time).getMonth() + 1 === currentMonth &&
+            new Date(att.time).getFullYear() === currentYear
+          );
+
+          // Nhóm theo ngày
+          const attendanceByDate = {};
+          staffAttendances.forEach(att => {
+            const dateKey = new Date(att.time).toDateString();
+            if (!attendanceByDate[dateKey]) {
+              attendanceByDate[dateKey] = { 
+                checkin: null, 
+                checkout: null,
+                checkinTime: null,
+                checkoutTime: null
+              };
+            }
+            if (att.type === 'checkin') {
+              attendanceByDate[dateKey].checkin = true;
+              attendanceByDate[dateKey].checkinTime = new Date(att.time);
+            } else if (att.type === 'checkout') {
+              attendanceByDate[dateKey].checkout = true;
+              attendanceByDate[dateKey].checkoutTime = new Date(att.time);
+            }
+          });
+
+          // Tính tổng giờ làm việc
+          let totalWorkingHours = 0;
+          let workingDays = 0;
+          let incompleteDays = 0;
+
+          Object.values(attendanceByDate).forEach(day => {
+            if (day.checkin && day.checkout && day.checkinTime && day.checkoutTime) {
+              const timeDiffMs = day.checkoutTime - day.checkinTime;
+              const hoursWorked = timeDiffMs / (1000 * 60 * 60);
+              const minutesWorked = hoursWorked * 60;
+              
+              if (minutesWorked >= 30) {
+                totalWorkingHours += hoursWorked;
+                workingDays++;
+              } else {
+                incompleteDays++;
+              }
+            } else if (day.checkin && !day.checkout) {
+              incompleteDays++;
+            }
+          });
+
+          // Tính ngày nghỉ có phép
+          const approvedLeavesInMonth = leaveRequests.filter(leave => 
+            leave.email === staff.email && 
+            leave.status === 'approved'
+          );
+
+          let absentDaysWithLeave = approvedLeavesInMonth.reduce((total, leave) => {
+            const startDate = new Date(leave.startDate);
+            const endDate = new Date(leave.endDate);
+            const staffStartDate = staff.startDate ? new Date(staff.startDate) : null;
+            
+            if (staffStartDate) {
+              if (endDate < staffStartDate) return total;
+              if (startDate < staffStartDate && endDate >= staffStartDate) {
+                const adjustedStartDate = staffStartDate;
+                const daysDiff = Math.ceil((endDate - adjustedStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                return total + daysDiff;
+              }
+            }
+            
+            const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            return total + daysDiff;
+          }, 0);
+
+          // Tính ngày nghỉ không phép
+          const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          const daysFromStart = staff.startDate ? 
+            (() => {
+              const startDate = new Date(staff.startDate);
+              const startDay = startDate.getDate();
+              const startMonth = startDate.getMonth() + 1;
+              const startYear = startDate.getFullYear();
+              const currentDate = new Date(currentYear, currentMonth, 1);
+              const startDateObj = new Date(startDate);
+              
+              if (startMonth === currentMonth && startYear === currentYear) {
+                return totalDaysInMonth - startDay + 1;
+              } else if (startDateObj < currentDate) {
+                return totalDaysInMonth;
+              } else {
+                return 0;
+              }
+            })() : totalDaysInMonth;
+
+          const totalAbsentDays = daysFromStart - workingDays;
+          const absentDaysWithoutLeave = Math.max(0, totalAbsentDays - absentDaysWithLeave + incompleteDays);
+
+          // Tính lương
+          const roleData = roles.find(role => role && role.name === staff.role);
+          const baseSalary = roleData && roleData.baseSalary ? Number(roleData.baseSalary) : 0;
+          const hourlySalary = calculateHourlySalary(baseSalary);
+          
+          const workingRatio = daysFromStart / totalDaysInMonth;
+          const adjustedStandardHours = 28 * 14 * workingRatio;
+          
+          let actualSalary;
+          if (totalWorkingHours >= adjustedStandardHours) {
+            actualSalary = Math.round(baseSalary * workingRatio);
+          } else {
+            actualSalary = Math.round(totalWorkingHours * hourlySalary);
+          }
+          
+          const penaltyPerDay = baseSalary * 0.05;
+          const adjustedPenaltyPerDay = penaltyPerDay * workingRatio;
+          const totalPenalty = absentDaysWithoutLeave * adjustedPenaltyPerDay;
+          const finalSalary = actualSalary - totalPenalty;
+
+          return {
+            ...staff,
+            workingDays,
+            totalWorkingHours: Math.round(totalWorkingHours * 10) / 10,
+            absentDaysWithLeave,
+            absentDaysWithoutLeave,
+            actualSalary,
+            finalSalary,
+            baseSalary,
+            hourlySalary,
+            workingRatio: Math.round(workingRatio * 100) / 100
+          };
+        }));
+
+        // Tạo file Excel
+        const wb = XLSX.utils.book_new();
+        
+        // Styling
+        const titleStyle = {
+          font: { bold: true, size: 16, color: { rgb: "8B6F47" } },
+          alignment: { horizontal: "center" },
+          fill: { fgColor: { rgb: "F3EDE6" } }
+        };
+
+        const headerStyle = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          fill: { fgColor: { rgb: "A67C52" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          border: {
+            top: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+            right: { style: "thin" }
+          }
+        };
+
+        // Sheet 1: Tổng quan nhân viên
+        const summaryData = [
+          [`BÁO CÁO NHÂN VIÊN & CHẤM CÔNG THÁNG ${currentMonth}/${currentYear}`],
+          [''],
+          ['THÔNG TIN TỔNG QUAN'],
+          ['Chỉ số', 'Giá trị', 'Ghi chú'],
+          ['Tổng số nhân viên', staffs.length, ''],
+          ['Nhân viên đang làm việc', staffs.filter(s => s.status === 'active').length, ''],
+          ['Tổng lương tháng này', staffStats.reduce((sum, s) => sum + (s.actualSalary || 0), 0).toLocaleString('vi-VN') + ' đ', ''],
+          ['Tổng ngày nghỉ', staffStats.reduce((sum, s) => sum + (s.absentDaysWithLeave || 0) + (s.absentDaysWithoutLeave || 0), 0), ''],
+          ['Tổng giờ làm việc', staffStats.reduce((sum, s) => sum + (s.totalWorkingHours || 0), 0).toFixed(1) + ' giờ', ''],
+          [''],
+          ['Được tạo bởi:', 'Admin'],
+          ['Ngày xuất báo cáo:', new Date().toLocaleDateString('vi-VN')],
+        ];
+
+        // Sheet 2: Chi tiết từng nhân viên
+        const staffDetailsData = [
+          [`CHI TIẾT NHÂN VIÊN THÁNG ${currentMonth}/${currentYear}`],
+          [''],
+          ['STT', 'Họ tên', 'Email', 'Chức vụ', 'Ngày vào làm', 'Lương cơ bản', 'Ngày công', 'Giờ làm việc', 'Ngày nghỉ có phép', 'Ngày nghỉ không phép', 'Lương thực nhận', 'Trạng thái'],
+          ...staffStats.map((staff, index) => [
+            index + 1,
+            staff.name || '',
+            staff.email || '',
+            staff.role || '',
+            staff.startDate ? new Date(staff.startDate).toLocaleDateString('vi-VN') : '',
+            staff.baseSalary ? staff.baseSalary.toLocaleString('vi-VN') + ' đ' : '',
+            staff.workingDays || 0,
+            staff.totalWorkingHours || 0,
+            staff.absentDaysWithLeave || 0,
+            staff.absentDaysWithoutLeave || 0,
+            staff.finalSalary ? staff.finalSalary.toLocaleString('vi-VN') + ' đ' : '',
+            staff.status === 'active' ? 'Đang làm' : 'Nghỉ việc'
+          ])
+        ];
+
+        // Sheet 3: Thống kê lương
+        const salaryStatsData = [
+          [`THỐNG KÊ LƯƠNG THÁNG ${currentMonth}/${currentYear}`],
+          [''],
+          ['Chức vụ', 'Số nhân viên', 'Tổng lương cơ bản', 'Tổng lương thực nhận', 'Trung bình lương/nhân viên'],
+          ...(() => {
+            const roleStats = {};
+            staffStats.forEach(staff => {
+              const role = staff.role || 'Chưa phân công';
+              if (!roleStats[role]) {
+                roleStats[role] = {
+                  count: 0,
+                  totalBaseSalary: 0,
+                  totalActualSalary: 0
+                };
+              }
+              roleStats[role].count++;
+              roleStats[role].totalBaseSalary += staff.baseSalary || 0;
+              roleStats[role].totalActualSalary += staff.actualSalary || 0;
+            });
+
+            return Object.entries(roleStats).map(([role, stats]) => [
+              role,
+              stats.count,
+              stats.totalBaseSalary.toLocaleString('vi-VN') + ' đ',
+              stats.totalActualSalary.toLocaleString('vi-VN') + ' đ',
+              Math.round(stats.totalActualSalary / stats.count).toLocaleString('vi-VN') + ' đ'
+            ]);
+          })()
+        ];
+
+        // Tạo sheets
+        const ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+        const ws2 = XLSX.utils.aoa_to_sheet(staffDetailsData);
+        const ws3 = XLSX.utils.aoa_to_sheet(salaryStatsData);
+
+        // Column widths
+        ws1['!cols'] = [{ wch: 25 }, { wch: 30 }, { wch: 20 }];
+        ws2['!cols'] = [
+          { wch: 8 },   // STT
+          { wch: 25 },  // Họ tên
+          { wch: 30 },  // Email
+          { wch: 20 },  // Chức vụ
+          { wch: 15 },  // Ngày vào làm
+          { wch: 20 },  // Lương cơ bản
+          { wch: 12 },  // Ngày công
+          { wch: 15 },  // Giờ làm việc
+          { wch: 18 },  // Ngày nghỉ có phép
+          { wch: 20 },  // Ngày nghỉ không phép
+          { wch: 20 },  // Lương thực nhận
+          { wch: 15 }   // Trạng thái
+        ];
+        ws3['!cols'] = [
+          { wch: 25 },  // Chức vụ
+          { wch: 15 },  // Số nhân viên
+          { wch: 25 },  // Tổng lương cơ bản
+          { wch: 25 },  // Tổng lương thực nhận
+          { wch: 25 }   // Trung bình lương
+        ];
+
+        // Merged cells
+        ws1['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+          { s: { r: 2, c: 0 }, e: { r: 2, c: 2 } }
+        ];
+        ws2['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 11 } }
+        ];
+        ws3['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }
+        ];
+
+        // Add sheets
+        XLSX.utils.book_append_sheet(wb, ws1, "Tổng Quan");
+        XLSX.utils.book_append_sheet(wb, ws2, "Chi Tiết Nhân Viên");
+        XLSX.utils.book_append_sheet(wb, ws3, "Thống Kê Lương");
+
+        // File properties
+        wb.Props = {
+          Title: `Báo Cáo Nhân Viên Tháng ${currentMonth}/${currentYear}`,
+          Subject: "Báo cáo nhân viên & chấm công",
+          Author: "Admin",
+          CreatedDate: new Date()
+        };
+
+        // Save file
+        const fileName = `Bao_Cao_Nhan_Vien_T${currentMonth}_${currentYear}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+
+        // Success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Xuất báo cáo thành công!',
+          text: `File đã được tải xuống: ${fileName}`,
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+      } catch (error) {
+        console.error('Error generating staff report:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: `Không thể tạo báo cáo: ${error.message}`
+        });
+      }
+    };
+
     // ==== BEGIN: POS functions lấy dữ liệu từ Firebase ====
 
     // Lưu menu POS vào biến toàn cục để không phải load lại nhiều lần
@@ -4701,7 +7308,7 @@
       document.getElementById('posBillBody').innerHTML = `
         <div class="text-center mb-2">
           <img src="images/logo.png" alt="Logo" style="height:48px;margin-bottom:8px;">
-          <h5 style="font-weight:700;color:#A67C52;">ẤM - COFFEE & CAKE</h5>
+          <h5 style="font-weight:700;color:#A67C52;">Ấm - COFFEE & CAKE</h5>
           <div>ĐC: 123 Đường ABC, Quận 1, TP.HCM</div>
           <div>ĐT: 0123 456 789</div>
           <hr>
@@ -6260,5 +8867,2002 @@ document.getElementById('editNewsImageFile')?.addEventListener('change', async f
 
 // ... existing code ...
 </script>
+<script type="module">
+// ==== CRUD CHỨC VỤ (ROLE) ====
+window.loadRoles = async function() {
+  if (!db) return;
+  const tbody = document.getElementById('roleList');
+  tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Đang tải...</td></tr>';
+  try {
+    const snap = await get(ref(db, 'roles'));
+    if (!snap.exists()) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Chưa có chức vụ nào.</td></tr>';
+      return;
+    }
+    const roles = Object.entries(snap.val()).map(([id, r]) => ({ id, ...r }));
+    tbody.innerHTML = roles.map(role => `
+      <tr>
+        <td>${role.name || ''}</td>
+        <td>${role.description || ''}</td>
+        <td>${role.permissions || ''}</td>
+        <td>${role.baseSalary ? Number(role.baseSalary).toLocaleString('vi-VN') + ' đ' : ''}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-1" onclick="showEditRoleModal('${role.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRole('${role.id}')"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Lỗi tải dữ liệu!</td></tr>';
+  }
+}
+
+// Thêm chức vụ
+const addRoleForm = document.getElementById('addRoleForm');
+addRoleForm?.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!db) return;
+  const name = document.getElementById('roleName').value.trim();
+  const description = document.getElementById('roleDescription').value.trim();
+  const permissions = document.getElementById('rolePermissions').value.trim();
+  const baseSalary = document.getElementById('roleBaseSalary').value.trim();
+  if (!name) return Swal.fire('Thiếu tên chức vụ!','Vui lòng nhập tên chức vụ','warning');
+  try {
+    const newRef = push(ref(db, 'roles'));
+    await set(newRef, { name, description, permissions, baseSalary });
+    Swal.fire('Thành công','Đã thêm chức vụ mới!','success');
+    bootstrap.Modal.getInstance(document.getElementById('addRoleModal')).hide();
+    addRoleForm.reset();
+    loadRoles();
+  } catch (e) {
+    Swal.fire('Lỗi', e.message, 'error');
+  }
+});
+
+// Hiện modal sửa chức vụ
+window.showEditRoleModal = async function(id) {
+  if (!db) return;
+  const snap = await get(ref(db, 'roles/' + id));
+  if (!snap.exists()) return Swal.fire('Không tìm thấy chức vụ!','','error');
+  const role = snap.val();
+  document.getElementById('editRoleId').value = id;
+  document.getElementById('editRoleName').value = role.name || '';
+  document.getElementById('editRoleDescription').value = role.description || '';
+  document.getElementById('editRolePermissions').value = role.permissions || '';
+  document.getElementById('editRoleBaseSalary').value = role.baseSalary || '';
+  new bootstrap.Modal(document.getElementById('editRoleModal')).show();
+}
+
+// Sửa chức vụ
+const editRoleForm = document.getElementById('editRoleForm');
+editRoleForm?.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!db) return;
+  const id = document.getElementById('editRoleId').value;
+  const name = document.getElementById('editRoleName').value.trim();
+  const description = document.getElementById('editRoleDescription').value.trim();
+  const permissions = document.getElementById('editRolePermissions').value.trim();
+  const baseSalary = document.getElementById('editRoleBaseSalary').value.trim();
+  if (!name) return Swal.fire('Thiếu tên chức vụ!','Vui lòng nhập tên chức vụ','warning');
+  try {
+    await set(ref(db, 'roles/' + id), { name, description, permissions, baseSalary });
+    Swal.fire('Thành công','Đã cập nhật chức vụ!','success');
+    bootstrap.Modal.getInstance(document.getElementById('editRoleModal')).hide();
+    loadRoles();
+  } catch (e) {
+    Swal.fire('Lỗi', e.message, 'error');
+  }
+});
+
+// Xoá chức vụ
+window.deleteRole = function(id) {
+  Swal.fire({
+    title: 'Bạn có chắc muốn xoá chức vụ này?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Xoá',
+    cancelButtonText: 'Hủy',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await remove(ref(db, 'roles/' + id));
+        Swal.fire('Đã xoá!','Chức vụ đã được xoá.','success');
+        loadRoles();
+      } catch (e) {
+        Swal.fire('Lỗi', e.message, 'error');
+      }
+    }
+  });
+}
+
+// Tự động load danh sách chức vụ khi vào tab roleManagement
+if (window.location.hash === '#roleManagement') loadRoles();
+document.getElementById('navRoleManagement')?.addEventListener('click', loadRoles);
+
+// Thêm event listener cho tìm kiếm chức vụ
+document.addEventListener('DOMContentLoaded', function() {
+  const roleSearchForm = document.getElementById('roleSearchForm');
+  const roleSearchInput = document.getElementById('roleSearch');
+  
+  if (roleSearchForm) {
+    roleSearchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const searchTerm = roleSearchInput.value.toLowerCase().trim();
+      filterRoleTable(searchTerm);
+    });
+  }
+  
+  if (roleSearchInput) {
+    roleSearchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      filterRoleTable(searchTerm);
+    });
+  }
+});
+
+// Hàm lọc bảng chức vụ
+function filterRoleTable(searchTerm) {
+  const table = document.querySelector('#roleManagement .table tbody');
+  if (!table) return;
+  
+  const rows = table.querySelectorAll('tr');
+  
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    if (searchTerm === '' || text.includes(searchTerm)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+
+// ... existing code ...
+
+// ==== CRUD NHÂN VIÊN (STAFFS) ====
+const ref = window.ref;
+const get = window.get;
+const set = window.set;
+const push = window.push;
+const remove = window.remove;
+
+window.loadStaffs = async function() {
+  if (!db) {
+    console.error('Database not initialized');
+    return;
+  }
+  
+  const tbody = document.getElementById('staffList');
+  if (!tbody) {
+    console.error('Staff list table body not found');
+    return;
+  }
+  
+      tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted">Đang tải...</td></tr>';
+  
+  try {
+    console.log('Loading staff data...');
+    
+    // Lấy dữ liệu nhân viên
+    const staffSnap = await get(ref(db, 'staffs'));
+    console.log('Staff data:', staffSnap.exists() ? staffSnap.val() : 'No staff data');
+    
+    if (!staffSnap.exists()) {
+      tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted">Chưa có nhân viên nào.</td></tr>';
+      return;
+    }
+    
+    // Lấy dữ liệu chấm công
+    const attendanceSnap = await get(ref(db, 'attendances'));
+    const attendances = attendanceSnap.exists() ? Object.values(attendanceSnap.val()) : [];
+    console.log('Attendance data:', attendances.length, 'records');
+    
+    // Lấy dữ liệu yêu cầu nghỉ phép
+    const leaveSnap = await get(ref(db, 'leaveRequests'));
+    const leaveRequests = leaveSnap.exists() ? Object.values(leaveSnap.val()) : [];
+    console.log('Leave requests:', leaveRequests.length, 'records');
+    
+    // Lấy dữ liệu yêu cầu làm thêm giờ
+    const overtimeSnap = await get(ref(db, 'overtimeRequests'));
+    const overtimeRequests = overtimeSnap.exists() ? Object.values(overtimeSnap.val()) : [];
+    console.log('Overtime requests:', overtimeRequests.length, 'records');
+    
+    // Lấy dữ liệu roles để lấy lương cơ bản
+    const rolesSnap = await get(ref(db, 'roles'));
+    const roles = rolesSnap.exists() ? Object.values(rolesSnap.val()) : [];
+    console.log('Roles data:', roles.length, 'roles');
+    
+    const staffs = Object.entries(staffSnap.val()).map(([id, s]) => ({ id, ...s }));
+    console.log('Processed staffs:', staffs.length, 'staff members');
+    
+    // Tính toán thống kê cho từng nhân viên
+    const staffsWithStats = staffs.map(staff => {
+      try {
+      // Sử dụng tháng của dữ liệu chấm công thay vì tháng hiện tại
+      const attendanceDates = attendances.filter(att => att.email === staff.email).map(att => new Date(att.time));
+      const currentMonth = attendanceDates.length > 0 ? 
+        attendanceDates[0].getMonth() + 1 : new Date().getMonth() + 1;
+      const currentYear = attendanceDates.length > 0 ? 
+        attendanceDates[0].getFullYear() : new Date().getFullYear();
+      const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+      
+      // Lấy dữ liệu chấm công của nhân viên trong tháng hiện tại
+      const staffAttendances = attendances.filter(att => 
+        att.email === staff.email && 
+        new Date(att.time).getMonth() + 1 === currentMonth &&
+        new Date(att.time).getFullYear() === currentYear
+      );
+      
+      // Nhóm theo ngày và tính giờ làm việc thực tế
+      const attendanceByDate = {};
+      staffAttendances.forEach(att => {
+        const dateKey = new Date(att.time).toDateString();
+        if (!attendanceByDate[dateKey]) {
+          attendanceByDate[dateKey] = { 
+            checkin: null, 
+            checkout: null,
+            checkinTime: null,
+            checkoutTime: null
+          };
+        }
+        if (att.type === 'checkin') {
+          attendanceByDate[dateKey].checkin = true;
+          attendanceByDate[dateKey].checkinTime = new Date(att.time);
+        } else if (att.type === 'checkout') {
+          attendanceByDate[dateKey].checkout = true;
+          attendanceByDate[dateKey].checkoutTime = new Date(att.time);
+        }
+      });
+      
+      // Tính tổng giờ làm việc thực tế và phân loại ngày nghỉ
+      let totalWorkingHours = 0;
+      let workingDays = 0;
+      let absentDaysWithLeave = 0; // Ngày nghỉ có phép
+      let absentDaysWithoutLeave = 0; // Ngày nghỉ không phép
+      let incompleteDays = 0; // Ngày checkin nhưng không checkout hoặc dưới 30p
+      
+      console.log('Processing attendance for', staff.name, ':', {
+        attendanceByDate,
+        currentMonth,
+        currentYear,
+        attendanceDates: attendanceDates.map(d => d.toISOString())
+      });
+      
+      // Lấy danh sách ngày nghỉ có phép đã được duyệt (tất cả các tháng)
+      const approvedLeavesInMonth = leaveRequests.filter(leave => 
+        leave.email === staff.email && 
+        leave.status === 'approved'
+      );
+      
+      console.log('Approved leaves calculation for', staff.name, ':', {
+        staffEmail: staff.email,
+        currentMonth,
+        currentYear,
+        allLeaveRequests: leaveRequests.filter(leave => leave.email === staff.email),
+        approvedLeavesInMonth,
+        approvedCount: approvedLeavesInMonth.length,
+        rejectedCount: leaveRequests.filter(leave => leave.email === staff.email && leave.status === 'rejected').length,
+        pendingCount: leaveRequests.filter(leave => leave.email === staff.email && leave.status === 'pending').length
+      });
+      
+      // Tạo danh sách các ngày nghỉ có phép
+      const leaveDates = new Set();
+      approvedLeavesInMonth.forEach(leave => {
+        const startDate = new Date(leave.startDate);
+        const endDate = new Date(leave.endDate);
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+          leaveDates.add(d.toDateString());
+        }
+      });
+      
+      Object.values(attendanceByDate).forEach(day => {
+        const dayDateString = new Date(day.checkinTime).toDateString();
+        
+        if (day.checkin && day.checkout && day.checkinTime && day.checkoutTime) {
+          const timeDiffMs = day.checkoutTime - day.checkinTime;
+          const hoursWorked = timeDiffMs / (1000 * 60 * 60); // Chuyển từ milliseconds sang giờ
+          const minutesWorked = hoursWorked * 60; // Chuyển sang phút
+          
+          // Kiểm tra điều kiện: nếu làm dưới 30 phút thì hủy công ngày đó
+          if (minutesWorked >= 30) {
+            totalWorkingHours += hoursWorked;
+            workingDays++;
+            console.log('Day worked (valid):', {
+              checkinTime: day.checkinTime,
+              checkoutTime: day.checkoutTime,
+              timeDiffMs: timeDiffMs,
+              hoursWorked: hoursWorked,
+              minutesWorked: minutesWorked,
+              totalWorkingHours: totalWorkingHours
+            });
+          } else {
+            incompleteDays++;
+            console.log('Day worked (invalid - under 30 minutes):', {
+              checkinTime: day.checkinTime,
+              checkoutTime: day.checkoutTime,
+              timeDiffMs: timeDiffMs,
+              hoursWorked: hoursWorked,
+              minutesWorked: minutesWorked,
+              reason: 'Dưới 30 phút - tính là ngày nghỉ'
+            });
+          }
+        } else if (day.checkin && !day.checkout) {
+          // Checkin nhưng không checkout
+          incompleteDays++;
+          console.log('Day worked (invalid - no checkout):', {
+            checkinTime: day.checkinTime,
+            reason: 'Checkin nhưng không checkout - tính là ngày nghỉ'
+          });
+        }
+      });
+      
+      // Tính ngày nghỉ có phép và không phép
+      const totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+      const daysFromStart = staff.startDate ? 
+        (() => {
+        const startDate = new Date(staff.startDate);
+        const startDay = startDate.getDate();
+        const startMonth = startDate.getMonth() + 1;
+        const startYear = startDate.getFullYear();
+        const currentDate = new Date(currentYear, currentMonth, 1);
+        const startDateObj = new Date(startDate);
+          
+          console.log('DaysFromStart calculation:', {
+            startDate: staff.startDate,
+            startDay,
+            startMonth,
+            startYear,
+            currentMonth,
+            currentYear,
+            totalDaysInMonth,
+            currentDate: currentDate.toISOString(),
+            startDateObj: startDateObj.toISOString()
+          });
+        
+        // Nếu ngày bắt đầu làm việc trong tháng hiện tại
+        if (startMonth === currentMonth && startYear === currentYear) {
+            const result = totalDaysInMonth - startDay + 1;
+            console.log('Same month calculation:', { result });
+            return result;
+        } 
+        // Nếu ngày bắt đầu làm việc trước tháng hiện tại
+        else if (startDateObj < currentDate) {
+            console.log('Previous month calculation:', { result: totalDaysInMonth });
+            return totalDaysInMonth;
+        } 
+        // Nếu ngày bắt đầu làm việc trong tương lai
+        else {
+            console.log('Future month calculation:', { result: 0 });
+            return 0;
+          }
+        })() : totalDaysInMonth;
+      
+      console.log('Days calculation for', staff.name, ':', {
+        staffStartDate: staff.startDate,
+        currentMonth,
+        currentYear,
+        totalDaysInMonth,
+        daysFromStart,
+        startDate: staff.startDate ? new Date(staff.startDate) : null,
+        startDay: staff.startDate ? new Date(staff.startDate).getDate() : null,
+        startMonth: staff.startDate ? new Date(staff.startDate).getMonth() + 1 : null,
+        startYear: staff.startDate ? new Date(staff.startDate).getFullYear() : null
+      });
+      
+      // Tính số ngày nghỉ có phép từ leaveRequests - chỉ tính từ ngày bắt đầu làm việc
+      console.log('All approved leaves for', staff.name, ':', approvedLeavesInMonth);
+      
+      absentDaysWithLeave = approvedLeavesInMonth.reduce((total, leave) => {
+        const startDate = new Date(leave.startDate);
+        const endDate = new Date(leave.endDate);
+        const staffStartDate = staff.startDate ? new Date(staff.startDate) : null;
+        
+        // Nếu nhân viên có ngày bắt đầu làm việc, chỉ tính nghỉ phép từ ngày đó
+        if (staffStartDate) {
+          // Nếu ngày nghỉ phép trước ngày bắt đầu làm việc, bỏ qua
+          if (endDate < staffStartDate) {
+            console.log('Leave before start date, skipping:', {
+              leaveStart: leave.startDate,
+              leaveEnd: leave.endDate,
+              staffStart: staff.startDate
+            });
+            return total;
+          }
+          
+          // Nếu ngày nghỉ phép bắt đầu trước ngày làm việc nhưng kết thúc sau, chỉ tính phần từ ngày làm việc
+          if (startDate < staffStartDate && endDate >= staffStartDate) {
+            const adjustedStartDate = staffStartDate;
+            const daysDiff = Math.ceil((endDate - adjustedStartDate) / (1000 * 60 * 60 * 24)) + 1;
+            console.log('Leave adjusted for start date:', {
+              originalStart: leave.startDate,
+              originalEnd: leave.endDate,
+              adjustedStart: adjustedStartDate.toISOString(),
+              daysDiff,
+              total: total + daysDiff
+            });
+            return total + daysDiff;
+          }
+        }
+        
+        const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        console.log('Leave calculation:', {
+          leaveId: leave.id || 'unknown',
+          email: leave.email,
+          startDate: leave.startDate,
+          endDate: leave.endDate,
+          daysDiff,
+          total: total + daysDiff,
+          reason: leave.reason
+        });
+        return total + daysDiff;
+      }, 0);
+      
+      // Tính số ngày nghỉ không phép - chỉ tính từ ngày bắt đầu làm việc
+      const totalAbsentDays = daysFromStart - workingDays;
+      absentDaysWithoutLeave = Math.max(0, totalAbsentDays - absentDaysWithLeave + incompleteDays);
+      
+      console.log('Absent days calculation for', staff.name, ':', {
+        daysFromStart,
+        workingDays,
+        totalAbsentDays,
+        absentDaysWithLeave,
+        incompleteDays,
+        absentDaysWithoutLeave,
+        currentMonth,
+        currentYear,
+        calculation: `${daysFromStart} - ${workingDays} = ${totalAbsentDays}`
+      });
+      
+      console.log('Absent days calculation for', staff.name, ':', {
+        daysFromStart,
+        workingDays,
+        totalAbsentDays,
+        absentDaysWithLeave,
+        incompleteDays,
+        absentDaysWithoutLeave,
+        currentMonth,
+        currentYear,
+        calculation: `${daysFromStart} - ${workingDays} = ${totalAbsentDays}`
+      });
+      
+      // Tính tổng ngày nghỉ (bao gồm cả có phép và không phép)
+      const absentDays = absentDaysWithLeave + absentDaysWithoutLeave;
+      
+      console.log('Leave calculation for', staff.name, ':', {
+        workingDays,
+        incompleteDays,
+        absentDaysWithLeave,
+        absentDaysWithoutLeave,
+        totalAbsentDays,
+        daysFromStart,
+        absentDays
+      });
+      
+      // Đếm số ngày nghỉ phép được chấp thuận
+      const approvedLeaves = leaveRequests.filter(leave => 
+        leave.email === staff.email && 
+        leave.status === 'approved' &&
+        new Date(leave.startDate).getMonth() + 1 === currentMonth &&
+        new Date(leave.startDate).getFullYear() === currentYear
+      );
+      
+      // Đếm số ngày làm thêm giờ được chấp thuận
+      const approvedOvertimes = overtimeRequests.filter(overtime => 
+        overtime.email === staff.email && 
+        overtime.status === 'approved' &&
+        new Date(overtime.date).getMonth() + 1 === currentMonth &&
+        new Date(overtime.date).getFullYear() === currentYear
+      );
+      
+      // Lấy lương cơ bản từ roles thay vì từ staff
+      const roleData = roles.find(role => role && role.name === staff.role);
+      const baseSalary = roleData && roleData.baseSalary ? Number(roleData.baseSalary) : 0;
+      
+      // Tính lương giờ cơ bản
+      const hourlySalary = calculateHourlySalary(baseSalary);
+      
+      // Tính lương thực nhận theo giờ làm việc - điều chỉnh theo ngày bắt đầu làm việc
+      let actualSalary;
+      const standardHoursPerMonth = 28 * 14; // 28 ngày × 14 giờ/ngày = 392 giờ/tháng
+      
+      // Tính tỷ lệ thời gian làm việc thực tế so với tháng đầy đủ
+      const workingRatio = daysFromStart / totalDaysInMonth;
+      const adjustedStandardHours = standardHoursPerMonth * workingRatio;
+      
+      console.log('Salary adjustment for start date:', {
+        daysFromStart,
+        totalDaysInMonth,
+        workingRatio,
+        standardHoursPerMonth,
+        adjustedStandardHours,
+        totalWorkingHours
+      });
+      
+      if (totalWorkingHours >= adjustedStandardHours) {
+        // Nếu làm đủ hoặc vượt giờ chuẩn điều chỉnh: lãnh lương theo tỷ lệ
+        actualSalary = Math.round(baseSalary * workingRatio);
+        console.log('Adjusted full salary case:', { 
+          totalWorkingHours, 
+          adjustedStandardHours, 
+          workingRatio,
+          actualSalary 
+        });
+      } else {
+        // Nếu làm ít hơn giờ chuẩn điều chỉnh: tính theo số giờ thực tế
+        const rawSalary = totalWorkingHours * hourlySalary;
+        actualSalary = Math.round(rawSalary);
+        console.log('Adjusted partial salary case:', { 
+          totalWorkingHours, 
+          hourlySalary, 
+          rawSalary, 
+          actualSalary,
+          workingRatio
+        });
+      }
+      
+      // Tính phạt cho ngày nghỉ không phép (5% lương cơ bản cho mỗi ngày) - điều chỉnh theo tỷ lệ
+      const penaltyPerDay = baseSalary * 0.05; // 5% lương cơ bản
+      const adjustedPenaltyPerDay = penaltyPerDay * workingRatio; // Điều chỉnh theo tỷ lệ thời gian
+      const totalPenalty = absentDaysWithoutLeave * adjustedPenaltyPerDay;
+      const finalSalary = actualSalary - totalPenalty; // Hiển thị cả giá trị âm
+      
+      console.log('Penalty adjustment for start date:', {
+        penaltyPerDay,
+        workingRatio,
+        adjustedPenaltyPerDay,
+        absentDaysWithoutLeave,
+        totalPenalty
+      });
+      
+      console.log('Penalty calculation for', staff.name, ':', {
+        absentDaysWithoutLeave,
+        penaltyPerDay,
+        totalPenalty,
+        actualSalary,
+        finalSalary
+      });
+      
+      // Debug log để kiểm tra
+      console.log('Salary calculation for', staff.name, ':', {
+        totalWorkingHours,
+        hourlySalary,
+        actualSalary,
+        baseSalary,
+        standardHoursPerMonth: 28 * 14
+      });
+      
+      const result = {
+        ...staff,
+        workingDays,
+        totalWorkingHours,
+        absentDays,
+        absentDaysWithLeave,
+        absentDaysWithoutLeave,
+        incompleteDays,
+        actualSalary,
+        finalSalary,
+        totalPenalty,
+        penaltyPerDay,
+        baseSalary, // Thêm baseSalary từ roles vào staff object
+        hourlySalary,
+        approvedLeaves: approvedLeaves.length,
+        approvedOvertimes: approvedOvertimes.length
+      };
+      
+      console.log('Final staff data for', staff.name, ':', {
+        actualSalary: result.actualSalary,
+        totalPenalty: result.totalPenalty,
+        finalSalary: result.finalSalary,
+        calculation: `${result.actualSalary} - ${result.totalPenalty} = ${result.finalSalary}`
+      });
+      
+      return result;
+      } catch (staffError) {
+        console.error('Lỗi xử lý nhân viên:', staff, staffError);
+        return {
+          ...staff,
+          workingDays: 0,
+          absentDays: 0,
+          actualSalary: 0,
+          approvedLeaves: 0,
+          approvedOvertimes: 0
+        };
+      }
+    });
+    
+    // Cập nhật thống kê tổng quan
+    const totalStaff = staffsWithStats.length;
+    const activeStaff = staffsWithStats.filter(s => s.status === 'active').length;
+    const totalSalary = staffsWithStats.reduce((sum, s) => {
+      console.log('Adding salary for', s.name, ':', s.actualSalary);
+      return sum + (s.actualSalary || 0);
+    }, 0);
+    const totalAbsentDays = staffsWithStats.reduce((sum, s) => sum + s.absentDays, 0);
+    const totalAbsentDaysWithLeave = staffsWithStats.reduce((sum, s) => sum + (s.absentDaysWithLeave || 0), 0);
+    const totalAbsentDaysWithoutLeave = staffsWithStats.reduce((sum, s) => sum + (s.absentDaysWithoutLeave || 0), 0);
+    
+    console.log('Staff statistics:', {
+      totalStaff,
+      activeStaff,
+      totalSalary,
+      totalAbsentDays,
+      totalAbsentDaysWithLeave,
+      totalAbsentDaysWithoutLeave,
+      staffsWithStats
+    });
+    
+    // Cập nhật UI
+    const totalStaffElement = document.getElementById('totalStaffCount');
+    const activeStaffElement = document.getElementById('activeStaffCount');
+    const totalSalaryElement = document.getElementById('totalSalary');
+    const totalAbsentDaysElement = document.getElementById('totalAbsentDays');
+    
+    if (totalStaffElement) totalStaffElement.textContent = totalStaff;
+    if (activeStaffElement) activeStaffElement.textContent = activeStaff;
+    if (totalSalaryElement) {
+      totalSalaryElement.textContent = totalSalary.toLocaleString('vi-VN') + ' đ';
+    }
+    if (totalAbsentDaysElement) {
+      totalAbsentDaysElement.textContent = totalAbsentDays;
+      const smallElement = totalAbsentDaysElement.parentElement.querySelector('small');
+      if (smallElement) {
+        smallElement.innerHTML = `
+          <span class="badge bg-success">${totalAbsentDaysWithLeave} có phép</span>
+          <span class="badge bg-danger">${totalAbsentDaysWithoutLeave} không phép</span>
+        `;
+      }
+    }
+    
+    tbody.innerHTML = staffsWithStats.map(staff => `
+      <tr>
+        <td><img src="${staff.avatarUrl || 'https://i.pravatar.cc/60?u=' + staff.email}" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
+        <td>${staff.email || ''}</td>
+        <td>${staff.name || ''}</td>
+        <td>${staff.phone || ''}</td>
+        <td>${staff.address || ''}</td>
+        <td>${staff.role || ''}</td>
+        <td>${staff.startDate || ''}</td>
+        <td>${staff.baseSalary ? Number(staff.baseSalary).toLocaleString('vi-VN') + ' đ' : 'Chưa có lương'}</td>
+        <td>
+          <span class="badge ${staff.workingDays >= 28 ? 'bg-primary' : 'bg-success'}">${staff.workingDays}</span><br>
+          <small class="text-muted">${Math.round(staff.totalWorkingHours || 0).toFixed(1)} giờ</small>
+          ${staff.startDate ? `<br><small class="text-info">Từ ${new Date(staff.startDate).toLocaleDateString('vi-VN')}</small>` : ''}
+        </td>
+        <td>${staff.status === 'active' ? '<span class=\'badge bg-success\'>Đang làm</span>' : '<span class=\'badge bg-secondary\'>Nghỉ việc</span>'}</td>
+        <td>
+          <button class="btn btn-sm btn-info me-1" onclick="showStaffDetails('${staff.id}')" title="Xem chi tiết"><i class="fas fa-eye"></i></button>
+          <button class="btn btn-sm btn-warning me-1" onclick="showEditStaffModal('${staff.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteStaff('${staff.id}')"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (e) {
+    console.error('Lỗi load staffs:', e);
+    console.error('Chi tiết lỗi:', {
+      message: e.message,
+      stack: e.stack,
+      name: e.name
+    });
+    tbody.innerHTML = '<tr><td colspan="11" class="text-center text-danger">Lỗi tải dữ liệu! Vui lòng kiểm tra console để biết chi tiết.</td></tr>';
+  }
+}
+
+// Thêm nhân viên
+const addStaffForm = document.getElementById('addStaffForm');
+addStaffForm?.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!db) return;
+  const email = document.getElementById('staffEmail').value.trim();
+  const name = document.getElementById('staffName').value.trim();
+  const phone = document.getElementById('staffPhone').value.trim();
+  const address = document.getElementById('staffAddress').value.trim();
+  const role = document.getElementById('staffRole').value.trim();
+  const startDate = document.getElementById('staffStartDate').value.trim();
+  const baseSalary = document.getElementById('staffBaseSalary').value.trim();
+  const status = document.getElementById('staffStatus').value;
+  // Ảnh đại diện (nếu có)
+  let avatarUrl = '';
+  const file = document.getElementById('staffAvatarFile').files[0];
+  if (file) {
+    avatarUrl = await uploadToCloudinary(file);
+  }
+  if (!email || !name || !role || !startDate || !baseSalary) return Swal.fire('Thiếu thông tin!','Vui lòng nhập đủ các trường bắt buộc','warning');
+  try {
+    const newRef = push(ref(db, 'staffs'));
+    await set(newRef, { email, name, phone, address, role, startDate, baseSalary, status, avatarUrl });
+    Swal.fire('Thành công','Đã thêm nhân viên mới!','success');
+    bootstrap.Modal.getInstance(document.getElementById('addStaffModal')).hide();
+    addStaffForm.reset();
+    loadStaffs();
+  } catch (e) {
+    Swal.fire('Lỗi', e.message, 'error');
+  }
+});
+
+// Hiện modal sửa nhân viên
+window.showEditStaffModal = async function(id) {
+  if (!db) return;
+  const snap = await get(ref(db, 'staffs/' + id));
+  if (!snap.exists()) return Swal.fire('Không tìm thấy nhân viên!','','error');
+  const staff = snap.val();
+  document.getElementById('editStaffId').value = id;
+  document.getElementById('editStaffEmail').value = staff.email || '';
+  document.getElementById('editStaffName').value = staff.name || '';
+  document.getElementById('editStaffPhone').value = staff.phone || '';
+  document.getElementById('editStaffAddress').value = staff.address || '';
+  document.getElementById('editStaffRole').value = staff.role || '';
+  document.getElementById('editStaffStartDate').value = staff.startDate || '';
+  document.getElementById('editStaffBaseSalary').value = staff.baseSalary || '';
+  document.getElementById('editStaffStatus').value = staff.status || 'active';
+  // Không load lại avatar vào input file (bảo mật)
+  new bootstrap.Modal(document.getElementById('editStaffModal')).show();
+}
+
+// Sửa nhân viên
+const editStaffForm = document.getElementById('editStaffForm');
+editStaffForm?.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!db) return;
+  const id = document.getElementById('editStaffId').value;
+  const email = document.getElementById('editStaffEmail').value.trim();
+  const name = document.getElementById('editStaffName').value.trim();
+  const phone = document.getElementById('editStaffPhone').value.trim();
+  const address = document.getElementById('editStaffAddress').value.trim();
+  const role = document.getElementById('editStaffRole').value.trim();
+  const startDate = document.getElementById('editStaffStartDate').value.trim();
+  const baseSalary = document.getElementById('editStaffBaseSalary').value.trim();
+  const status = document.getElementById('editStaffStatus').value;
+  let avatarUrl = '';
+  const file = document.getElementById('editStaffAvatarFile').files[0];
+  if (file) {
+    avatarUrl = await uploadToCloudinary(file);
+  } else {
+    // Giữ nguyên avatar cũ nếu không upload mới
+    const snap = await get(ref(db, 'staffs/' + id));
+    avatarUrl = snap.exists() ? snap.val().avatarUrl || '' : '';
+  }
+  if (!email || !name || !role || !startDate || !baseSalary) return Swal.fire('Thiếu thông tin!','Vui lòng nhập đủ các trường bắt buộc','warning');
+  try {
+    await set(ref(db, 'staffs/' + id), { email, name, phone, address, role, startDate, baseSalary, status, avatarUrl });
+    Swal.fire('Thành công','Đã cập nhật nhân viên!','success');
+    bootstrap.Modal.getInstance(document.getElementById('editStaffModal')).hide();
+    loadStaffs();
+  } catch (e) {
+    Swal.fire('Lỗi', e.message, 'error');
+  }
+});
+
+// Xoá nhân viên
+window.deleteStaff = function(id) {
+  Swal.fire({
+    title: 'Bạn có chắc muốn xoá nhân viên này?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Xoá',
+    cancelButtonText: 'Hủy',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await remove(ref(db, 'staffs/' + id));
+        Swal.fire('Đã xoá!','Nhân viên đã được xoá.','success');
+        loadStaffs();
+      } catch (e) {
+        Swal.fire('Lỗi', e.message, 'error');
+      }
+    }
+  });
+}
+
+// Hiển thị chi tiết nhân viên
+window.showStaffDetails = async function(id) {
+  if (!db) return;
+  
+  try {
+    // Lấy thông tin nhân viên
+    const staffSnap = await get(ref(db, 'staffs/' + id));
+    if (!staffSnap.exists()) {
+      Swal.fire('Không tìm thấy nhân viên!', '', 'error');
+      return;
+    }
+    const staff = staffSnap.val();
+    
+    // Lấy dữ liệu chấm công
+    const attendanceSnap = await get(ref(db, 'attendances'));
+    const attendances = attendanceSnap.exists() ? Object.values(attendanceSnap.val()) : [];
+    
+    // Lấy dữ liệu yêu cầu nghỉ phép
+    const leaveSnap = await get(ref(db, 'leaveRequests'));
+    const leaveRequests = leaveSnap.exists() ? Object.values(leaveSnap.val()) : [];
+    
+    // Lấy dữ liệu yêu cầu làm thêm giờ
+    const overtimeSnap = await get(ref(db, 'overtimeRequests'));
+    const overtimeRequests = overtimeSnap.exists() ? Object.values(overtimeSnap.val()) : [];
+    
+    // Lấy dữ liệu roles để lấy lương cơ bản
+    const rolesSnap = await get(ref(db, 'roles'));
+    const roles = rolesSnap.exists() ? Object.values(rolesSnap.val()) : [];
+    
+    // Sử dụng tháng của dữ liệu chấm công thay vì tháng hiện tại
+    const attendanceDates = attendances.filter(att => att.email === staff.email).map(att => new Date(att.time));
+    const currentMonth = attendanceDates.length > 0 ? 
+      attendanceDates[0].getMonth() + 1 : new Date().getMonth() + 1;
+    const currentYear = attendanceDates.length > 0 ? 
+      attendanceDates[0].getFullYear() : new Date().getFullYear();
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+    
+    // Tính số ngày từ ngày bắt đầu làm việc
+    const daysFromStart = staff.startDate ? 
+      (() => {
+        const startDate = new Date(staff.startDate);
+        const startDay = startDate.getDate();
+        const startMonth = startDate.getMonth() + 1;
+        const startYear = startDate.getFullYear();
+        const currentDate = new Date(currentYear, currentMonth, 1);
+        const startDateObj = new Date(startDate);
+        
+        console.log('DaysFromStart calculation in details:', {
+          startDate: staff.startDate,
+          startDay,
+          startMonth,
+          startYear,
+          currentMonth,
+          currentYear,
+          daysInMonth,
+          currentDate: currentDate.toISOString(),
+          startDateObj: startDateObj.toISOString()
+        });
+        
+        // Nếu ngày bắt đầu làm việc trong tháng hiện tại
+        if (startMonth === currentMonth && startYear === currentYear) {
+          const result = daysInMonth - startDay + 1;
+          console.log('Same month calculation in details:', { result });
+          return result;
+        } 
+        // Nếu ngày bắt đầu làm việc trước tháng hiện tại
+        else if (startDateObj < currentDate) {
+          console.log('Previous month calculation in details:', { result: daysInMonth });
+          return daysInMonth;
+        } 
+        // Nếu ngày bắt đầu làm việc trong tương lai
+        else {
+          console.log('Future month calculation in details:', { result: 0 });
+          return 0;
+        }
+      })() : daysInMonth;
+    
+    // Lọc dữ liệu theo nhân viên và tháng hiện tại
+    const staffAttendances = attendances.filter(att => 
+      att.email === staff.email && 
+      new Date(att.time).getMonth() + 1 === currentMonth &&
+      new Date(att.time).getFullYear() === currentYear
+    );
+    
+    // Nhóm theo ngày và tính giờ làm việc thực tế
+    const attendanceByDate = {};
+    staffAttendances.forEach(att => {
+      const dateKey = new Date(att.time).toDateString();
+      if (!attendanceByDate[dateKey]) {
+        attendanceByDate[dateKey] = { 
+          checkin: null, 
+          checkout: null,
+          checkinTime: null,
+          checkoutTime: null
+        };
+      }
+      if (att.type === 'checkin') {
+        attendanceByDate[dateKey].checkin = true;
+        attendanceByDate[dateKey].checkinTime = new Date(att.time);
+      } else if (att.type === 'checkout') {
+        attendanceByDate[dateKey].checkout = true;
+        attendanceByDate[dateKey].checkoutTime = new Date(att.time);
+      }
+    });
+    
+    // Tính tổng giờ làm việc thực tế và phân loại ngày nghỉ
+    let totalWorkingHours = 0;
+    let workingDays = 0;
+    let absentDaysWithLeave = 0; // Ngày nghỉ có phép
+    let absentDaysWithoutLeave = 0; // Ngày nghỉ không phép
+    let incompleteDays = 0; // Ngày checkin nhưng không checkout hoặc dưới 30p
+    
+    // Lấy danh sách ngày nghỉ có phép đã được duyệt (tất cả các tháng)
+    const approvedLeavesInMonth = leaveRequests.filter(leave => 
+      leave.email === staff.email && 
+      leave.status === 'approved'
+    );
+    
+    Object.values(attendanceByDate).forEach(day => {
+      if (day.checkin && day.checkout && day.checkinTime && day.checkoutTime) {
+        const timeDiffMs = day.checkoutTime - day.checkinTime;
+        const hoursWorked = timeDiffMs / (1000 * 60 * 60); // Chuyển từ milliseconds sang giờ
+        const minutesWorked = hoursWorked * 60; // Chuyển sang phút
+        
+        // Kiểm tra điều kiện: nếu làm dưới 30 phút thì hủy công ngày đó
+        if (minutesWorked >= 30) {
+          totalWorkingHours += hoursWorked;
+          workingDays++;
+        } else {
+          incompleteDays++;
+        }
+      } else if (day.checkin && !day.checkout) {
+        // Checkin nhưng không checkout
+        incompleteDays++;
+      }
+    });
+    
+    // Tính số ngày nghỉ có phép từ leaveRequests - chỉ tính từ ngày bắt đầu làm việc
+    absentDaysWithLeave = approvedLeavesInMonth.reduce((total, leave) => {
+      const startDate = new Date(leave.startDate);
+      const endDate = new Date(leave.endDate);
+      const staffStartDate = staff.startDate ? new Date(staff.startDate) : null;
+      
+      // Nếu nhân viên có ngày bắt đầu làm việc, chỉ tính nghỉ phép từ ngày đó
+      if (staffStartDate) {
+        // Nếu ngày nghỉ phép trước ngày bắt đầu làm việc, bỏ qua
+        if (endDate < staffStartDate) {
+          console.log('Leave before start date, skipping:', {
+            leaveStart: leave.startDate,
+            leaveEnd: leave.endDate,
+            staffStart: staff.startDate
+          });
+          return total;
+        }
+        
+        // Nếu ngày nghỉ phép bắt đầu trước ngày làm việc nhưng kết thúc sau, chỉ tính phần từ ngày làm việc
+        if (startDate < staffStartDate && endDate >= staffStartDate) {
+          const adjustedStartDate = staffStartDate;
+          const daysDiff = Math.ceil((endDate - adjustedStartDate) / (1000 * 60 * 60 * 24)) + 1;
+          console.log('Leave adjusted for start date:', {
+            originalStart: leave.startDate,
+            originalEnd: leave.endDate,
+            adjustedStart: adjustedStartDate.toISOString(),
+            daysDiff,
+            total: total + daysDiff
+          });
+          return total + daysDiff;
+        }
+      }
+      
+      const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+      return total + daysDiff;
+    }, 0);
+    
+    // Tính số ngày nghỉ không phép - chỉ tính từ ngày bắt đầu làm việc
+    const totalAbsentDays = daysFromStart - workingDays;
+    absentDaysWithoutLeave = Math.max(0, totalAbsentDays - absentDaysWithLeave + incompleteDays);
+    
+    // Tính tổng ngày nghỉ (bao gồm cả có phép và không phép)
+    const absentDays = absentDaysWithLeave + absentDaysWithoutLeave;
+    
+    // Lấy tất cả yêu cầu của nhân viên (không giới hạn tháng)
+    const staffLeaves = leaveRequests.filter(leave => 
+      leave.email === staff.email
+    );
+    
+    const staffOvertimes = overtimeRequests.filter(overtime => 
+      overtime.email === staff.email
+    );
+    
+    // Debug log để kiểm tra dữ liệu
+    console.log('Staff email:', staff.email);
+    console.log('All leave requests:', leaveRequests);
+    console.log('All overtime requests:', overtimeRequests);
+    console.log('Staff leaves:', staffLeaves);
+    console.log('Staff overtimes:', staffOvertimes);
+    console.log('Leave calculation for', staff.name, ':', {
+      workingDays,
+      incompleteDays,
+      absentDaysWithLeave,
+      absentDaysWithoutLeave,
+      totalAbsentDays,
+      absentDays
+    });
+    
+    // Lấy lương cơ bản từ roles thay vì từ staff
+    const roleData = roles.find(role => role && role.name === staff.role);
+    const baseSalary = roleData && roleData.baseSalary ? Number(roleData.baseSalary) : 0;
+    
+    // Tính lương giờ cơ bản
+    const hourlySalary = calculateHourlySalary(baseSalary);
+    
+    // Tính lương thực nhận theo giờ làm việc - điều chỉnh theo ngày bắt đầu làm việc
+    let actualSalary;
+    const standardHoursPerMonth = 28 * 14; // 28 ngày × 14 giờ/ngày = 392 giờ/tháng
+    
+    // Tính tỷ lệ thời gian làm việc thực tế so với tháng đầy đủ
+    const workingRatio = daysFromStart / daysInMonth;
+    const adjustedStandardHours = standardHoursPerMonth * workingRatio;
+    
+    console.log('Salary adjustment for start date in details:', {
+      daysFromStart,
+      daysInMonth,
+      workingRatio,
+      standardHoursPerMonth,
+      adjustedStandardHours,
+      totalWorkingHours
+    });
+    
+    if (totalWorkingHours >= adjustedStandardHours) {
+      // Nếu làm đủ hoặc vượt giờ chuẩn điều chỉnh: lãnh lương theo tỷ lệ
+      actualSalary = Math.round(baseSalary * workingRatio);
+      console.log('Adjusted full salary case in details:', { 
+        totalWorkingHours, 
+        adjustedStandardHours, 
+        workingRatio,
+        actualSalary 
+      });
+    } else {
+      // Nếu làm ít hơn giờ chuẩn điều chỉnh: tính theo số giờ thực tế
+      const rawSalary = totalWorkingHours * hourlySalary;
+      actualSalary = Math.round(rawSalary);
+      console.log('Adjusted partial salary case in details:', { 
+        totalWorkingHours, 
+        hourlySalary, 
+        rawSalary, 
+        actualSalary,
+        workingRatio
+      });
+    }
+    
+    // Tính phạt cho ngày nghỉ không phép (5% lương cơ bản cho mỗi ngày) - điều chỉnh theo tỷ lệ
+    const penaltyPerDay = baseSalary * 0.05; // 5% lương cơ bản
+    const adjustedPenaltyPerDay = penaltyPerDay * workingRatio; // Điều chỉnh theo tỷ lệ thời gian
+    const totalPenalty = absentDaysWithoutLeave * adjustedPenaltyPerDay;
+    const finalSalary = actualSalary - totalPenalty; // Hiển thị cả giá trị âm
+    
+    console.log('Penalty adjustment for start date in details:', {
+      penaltyPerDay,
+      workingRatio,
+      adjustedPenaltyPerDay,
+      absentDaysWithoutLeave,
+      totalPenalty
+    });
+    
+    // Render chi tiết
+    const detailsBody = document.getElementById('staffDetailsBody');
+    detailsBody.innerHTML = `
+      <div class="row">
+        <!-- Thông tin cá nhân -->
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <img src="${staff.avatarUrl || 'https://i.pravatar.cc/150?u=' + staff.email}" 
+                   alt="avatar" class="rounded-circle mb-3" style="width:150px;height:150px;object-fit:cover;border:4px solid #f8f9fa;">
+              <h4 class="card-title text-primary mb-2">${staff.name || 'Chưa có tên'}</h4>
+              <p class="text-muted mb-3"><i class="fas fa-envelope me-2"></i>${staff.email}</p>
+              <span class="badge ${staff.status === 'active' ? 'bg-success' : 'bg-secondary'} fs-6 px-3 py-2">
+                <i class="fas ${staff.status === 'active' ? 'fa-user-check' : 'fa-user-times'} me-2"></i>
+                ${staff.status === 'active' ? 'Đang làm việc' : 'Nghỉ việc'}
+          </span>
+              
+              <hr class="my-4">
+              
+              <div class="text-start">
+                <h6 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Thông tin cá nhân</h6>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <div class="d-flex align-items-center p-2 bg-light rounded">
+                      <i class="fas fa-phone text-primary me-3"></i>
+                      <div>
+                        <small class="text-muted d-block">Số điện thoại</small>
+                        <strong>${staff.phone || 'Chưa có'}</strong>
+        </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex align-items-center p-2 bg-light rounded">
+                      <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                      <div>
+                        <small class="text-muted d-block">Địa chỉ</small>
+                        <strong>${staff.address || 'Chưa có'}</strong>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex align-items-center p-2 bg-light rounded">
+                      <i class="fas fa-briefcase text-primary me-3"></i>
+                      <div>
+                        <small class="text-muted d-block">Chức vụ</small>
+                        <strong>${staff.role || 'Chưa có'}</strong>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex align-items-center p-2 bg-light rounded">
+                      <i class="fas fa-calendar-plus text-primary me-3"></i>
+                      <div>
+                        <small class="text-muted d-block">Ngày vào làm</small>
+                        <strong>${staff.startDate ? new Date(staff.startDate).toLocaleDateString('vi-VN') : 'Chưa có'}</strong>
+                        ${staff.startDate ? `<br><small class="text-info">Tính lương từ ngày này</small>` : ''}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex align-items-center p-2 bg-light rounded">
+                      <i class="fas fa-money-bill-wave text-primary me-3"></i>
+                      <div>
+                        <small class="text-muted d-block">Lương cơ bản</small>
+                        <strong class="text-success">${baseSalary.toLocaleString('vi-VN')} đ/tháng</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Thống kê và chi tiết -->
+        <div class="col-lg-8 col-md-12">
+          <div class="row">
+            <!-- Thống kê tháng -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-info text-white">
+                  <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Thống kê tháng ${currentMonth}/${currentYear}</h6>
+                  ${staff.startDate ? `<small class="text-light">Tính lương từ ${new Date(staff.startDate).toLocaleDateString('vi-VN')}</small>` : ''}
+            </div>
+                                 <div class="card-body">
+                   <div class="row g-3">
+                     <!-- Ngày công -->
+                     <div class="col-6">
+                       <div class="text-center p-3 bg-primary text-dark rounded h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
+                         <h3 class="mb-2">${workingDays}</h3>
+                         <div class="mb-1">Ngày công</div>
+                         <small class="text-dark">${Math.round(totalWorkingHours || 0).toFixed(1)} giờ</small>
+                       </div>
+                     </div>
+                     <!-- Ngày nghỉ -->
+                     <div class="col-6">
+                       <div class="text-center p-3 bg-warning text-dark rounded h-100 d-flex flex-column justify-content-center" style="min-height: 120px;">
+                         <h3 class="mb-2">${absentDays}</h3>
+                         <div class="mb-1">Tổng ngày nghỉ</div>
+                         <small class="text-dark">
+                           <span class="badge bg-success">${absentDaysWithLeave} có phép</span><br>
+                           <span class="badge bg-danger">${absentDaysWithoutLeave} không phép</span>
+                         </small>
+                       </div>
+                     </div>
+                     <!-- Lương thực nhận -->
+                     <div class="col-12">
+                       <div class="p-3 bg-success text-white rounded">
+                         <h5 class="mb-2">Lương thực nhận</h5>
+                         <h4 class="mb-1 ${finalSalary >= 0 ? 'text-success' : 'text-danger'}">${finalSalary.toLocaleString('vi-VN')} đ</h4>
+                         <small>${totalWorkingHours >= (28 * 14 * (daysFromStart / daysInMonth)) ? '✓ Lương theo tỷ lệ thời gian' : `${Math.round(totalWorkingHours || 0).toFixed(1)} giờ × ${hourlySalary.toLocaleString('vi-VN')} đ/giờ`}</small>
+                         ${totalPenalty > 0 ? `<br><small class="text-danger">-${totalPenalty.toLocaleString('vi-VN')} đ (phạt ${absentDaysWithoutLeave} ngày)</small>` : ''}
+                         ${staff.startDate ? `<br><small class="text-info">Tính từ ${new Date(staff.startDate).toLocaleDateString('vi-VN')} (${Math.round((daysFromStart / daysInMonth) * 100)}% tháng)</small>` : ''}
+                       </div>
+                     </div>
+                     <!-- Yêu cầu nghỉ phép -->
+                     <div class="col-6">
+                       <div class="text-center p-3 bg-info text-dark rounded h-100 d-flex flex-column justify-content-center" style="min-height: 100px;">
+                         <h4 class="mb-1">${staffLeaves.length}</h4>
+                         <small>Tổng yêu cầu</small>
+                         <div class="mt-1">
+                           <small class="text-dark">
+                             <span class="badge bg-success">${staffLeaves.filter(l => l.status === 'approved').length} duyệt</span>
+                             <span class="badge bg-warning">${staffLeaves.filter(l => l.status === 'pending').length} chờ</span>
+                             <span class="badge bg-danger">${staffLeaves.filter(l => l.status === 'rejected').length} từ chối</span>
+                           </small>
+                         </div>
+                       </div>
+                     </div>
+                     <!-- Yêu cầu làm thêm -->
+                     <div class="col-6">
+                       <div class="text-center p-3 bg-primary text-dark rounded h-100 d-flex flex-column justify-content-center" style="min-height: 100px;">
+                         <h4 class="mb-1">${staffOvertimes.length}</h4>
+                         <small>Tổng yêu cầu</small>
+                         <div class="mt-1">
+                           <small class="text-dark">
+                             <span class="badge bg-success">${staffOvertimes.filter(o => o.status === 'approved').length} duyệt</span>
+                             <span class="badge bg-warning">${staffOvertimes.filter(o => o.status === 'pending').length} chờ</span>
+                             <span class="badge bg-danger">${staffOvertimes.filter(o => o.status === 'rejected').length} từ chối</span>
+                           </small>
+                         </div>
+                       </div>
+            </div>
+          </div>
+          
+                  ${totalWorkingHours < (28 * 14 * (daysFromStart / daysInMonth)) ? `
+                    <div class="mt-3 p-3 bg-light rounded">
+                      <small class="text-muted">
+                        <strong>Công thức tính:</strong><br>
+                        Lương giờ cơ bản = ${baseSalary.toLocaleString('vi-VN')} ÷ (28 ngày × 14 giờ) = ${(baseSalary / (28 * 14)).toFixed(2)} → ${hourlySalary.toLocaleString('vi-VN')} đ/giờ<br>
+                        <strong>Điều chỉnh theo thời gian:</strong> ${daysFromStart} ngày / ${daysInMonth} ngày = ${((daysFromStart / daysInMonth) * 100).toFixed(1)}% tháng
+                      </small>
+                    </div>
+                  ` : ''}
+                  
+                  <!-- Chi tiết nghỉ phép đã duyệt -->
+                  <div class="mt-3 p-3 bg-light rounded">
+                    <h6 class="text-primary mb-2"><i class="fas fa-calendar-minus me-2"></i>Chi tiết nghỉ phép đã duyệt</h6>
+                    ${(() => {
+                      const approvedLeaves = staffLeaves.filter(leave => leave.status === 'approved');
+                      
+                      if (approvedLeaves.length === 0) {
+                        return '<small class="text-muted">Không có yêu cầu nghỉ phép nào được duyệt</small>';
+                      }
+                      
+                      return approvedLeaves.map(leave => {
+                        const startDate = new Date(leave.startDate);
+                        const endDate = new Date(leave.endDate);
+                        const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                        
+                        return `
+                          <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-white rounded border">
+                            <div>
+                              <strong>${leave.startDate} - ${leave.endDate}</strong>
+                              <br><small class="text-muted">${leave.reason}</small>
+                            </div>
+                            <div class="text-end">
+                              <span class="badge bg-success">Đã duyệt</span>
+                              <br><small class="text-muted">${daysDiff} ngày</small>
+                            </div>
+                          </div>
+                        `;
+                      }).join('');
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+                         <!-- Lịch chấm công -->
+             <div class="col-md-6 mb-4">
+               <div class="card h-100 border-0 shadow-sm">
+                 <div class="card-header bg-success text-white">
+                   <h6 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Lịch chấm công gần đây</h6>
+                 </div>
+                 <div class="card-body" style="height:400px;overflow-y:auto;padding:15px;">
+                ${staffAttendances.length > 0 ? 
+                     staffAttendances.slice(-20).map(att => {
+                    const hasLocation = att.location && att.location.latitude && att.location.longitude;
+                       const isCheckin = att.type === 'checkin';
+                       const isCheckout = att.type === 'checkout';
+                    return `
+                         <div class="mb-3 p-3 bg-white rounded border shadow-sm">
+                           <div class="row align-items-center">
+                             <div class="col-md-4">
+                               <div class="fw-bold text-primary">${new Date(att.time).toLocaleDateString('vi-VN')}</div>
+                               <small class="text-muted">${new Date(att.time).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit', second:'2-digit'})}</small>
+                              </div>
+                             <div class="col-md-4 text-center">
+                               <span class="badge ${isCheckin ? 'bg-primary' : 'bg-success'} fs-6 px-3 py-2">
+                                 <i class="fas ${isCheckin ? 'fa-sign-in-alt' : 'fa-sign-out-alt'} me-1"></i>
+                                 ${isCheckin ? 'Vào' : 'Ra'}
+                               </span>
+                             </div>
+                             <div class="col-md-4 text-end">
+                               ${hasLocation ? `
+                              <a href="https://www.google.com/maps?q=${att.location.latitude},${att.location.longitude}" 
+                                    target="_blank" class="btn btn-sm btn-outline-primary">
+                                   <i class="fas fa-map-marker-alt me-1"></i>Bản đồ
+                              </a>
+                               ` : '<small class="text-muted">Không có định vị</small>'}
+                            </div>
+                        </div>
+                           ${hasLocation ? `
+                             <div class="mt-2 pt-2 border-top">
+                               <div class="row">
+                                 <div class="col-md-6">
+                                   <small class="text-muted">
+                                     <i class="fas fa-location-arrow text-primary me-1"></i>
+                                     <strong>Tọa độ:</strong><br>
+                                     ${att.location.latitude.toFixed(6)}, ${att.location.longitude.toFixed(6)}
+                                   </small>
+                                 </div>
+                                 <div class="col-md-6">
+                                   <small class="text-muted">
+                                     <i class="fas fa-map-marker-alt text-success me-1"></i>
+                                     <strong>Địa chỉ:</strong><br>
+                                     <span class="address-text" data-lat="${att.location.latitude}" data-lng="${att.location.longitude}">
+                                       <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                                     </span>
+                                   </small>
+                                 </div>
+                               </div>
+                             </div>
+                           ` : ''}
+                      </div>
+                    `;
+                  }).join('') : 
+                     '<div class="text-center text-muted py-5"><i class="fas fa-calendar-times fa-3x mb-3"></i><br><h6>Chưa có dữ liệu chấm công</h6></div>'
+                }
+              </div>
+            </div>
+            </div>
+          </div>
+          
+                     <!-- Yêu cầu nghỉ phép & làm thêm -->
+           <div class="row">
+             <div class="col-12">
+               <div class="card border-0 shadow-sm">
+                 <div class="card-header bg-warning text-white">
+                   <h6 class="mb-0"><i class="fas fa-clock me-2"></i>Yêu cầu nghỉ phép & Làm thêm</h6>
+                 </div>
+                 <div class="card-body" style="height:300px;overflow-y:auto;padding:15px;">
+                ${staffLeaves.length > 0 || staffOvertimes.length > 0 ? 
+                     [...staffLeaves, ...staffOvertimes]
+                       .sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date))
+                       .slice(0, 15)
+                       .map(item => {
+                    const isLeave = item.hasOwnProperty('startDate');
+                         const createdAt = item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : '';
+                         const identifier = isLeave ? item.startDate : item.date;
+                         console.log('Rendering item:', { item, isLeave, identifier });
+                    return `
+                           <div class="mb-3 p-3 bg-white rounded border shadow-sm">
+                             <div class="row align-items-center">
+                               <div class="col-md-2">
+                                 <span class="badge ${isLeave ? 'bg-info' : 'bg-primary'} fs-6 px-2 py-2">
+                                   <i class="fas ${isLeave ? 'fa-calendar-minus' : 'fa-clock'} me-1"></i>
+                                   ${isLeave ? 'Nghỉ phép' : 'Làm thêm'}
+                                 </span>
+                        </div>
+                                                                <div class="col-md-5">
+                                   <div class="fw-bold text-primary">
+                                     ${isLeave ? `${item.startDate} - ${item.endDate}` : `${item.date} ${item.startTime}-${item.endTime}`}
+                                   </div>
+                                   <div class="text-muted small">${item.reason}</div>
+                                   ${createdAt ? `<small class="text-muted">Tạo: ${createdAt}</small>` : ''}
+                                   ${item.status === 'approved' && item.approvedAt ? 
+                                     `<small class="text-success"><i class="fas fa-check me-1"></i>Phê duyệt: ${new Date(item.approvedAt).toLocaleDateString('vi-VN')}</small>` : ''}
+                                   ${item.status === 'rejected' && item.rejectedAt ? 
+                                     `<small class="text-danger"><i class="fas fa-times me-1"></i>Từ chối: ${new Date(item.rejectedAt).toLocaleDateString('vi-VN')}</small>` : ''}
+
+                                 </div>
+                               <div class="col-md-3 text-center">
+                                 <span class="badge ${item.status === 'approved' ? 'bg-success' : item.status === 'pending' ? 'bg-warning' : 'bg-danger'} fs-6 px-3 py-2">
+                                   <i class="fas ${item.status === 'approved' ? 'fa-check' : item.status === 'pending' ? 'fa-clock' : 'fa-times'} me-1"></i>
+                          ${item.status === 'approved' ? 'Đã duyệt' : item.status === 'pending' ? 'Chờ duyệt' : 'Từ chối'}
+                        </span>
+                               </div>
+                                                                <div class="col-md-2 text-end">
+                                   <small class="text-muted">
+                                     <i class="fas fa-user me-1"></i>
+                                     ${item.email}
+                                   </small>
+                                   ${item.status === 'pending' ? `
+                                     <div class="mt-2">
+                                       <button class="btn btn-sm btn-success me-1" onclick="approveRequest('${isLeave ? 'leave' : 'overtime'}', '${isLeave ? item.startDate : item.date}', '${item.email}')" title="Phê duyệt">
+                                         <i class="fas fa-check"></i>
+                                       </button>
+                                       <button class="btn btn-sm btn-danger" onclick="rejectRequest('${isLeave ? 'leave' : 'overtime'}', '${isLeave ? item.startDate : item.date}', '${item.email}')" title="Từ chối">
+                                         <i class="fas fa-times"></i>
+                                       </button>
+                                     </div>
+                                   ` : ''}
+                                 </div>
+                             </div>
+                      </div>
+                    `;
+                  }).join('') : 
+                     '<div class="text-center text-muted py-5"><i class="fas fa-inbox fa-3x mb-3"></i><br><h6>Chưa có yêu cầu nào</h6></div>'
+                }
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+     // Cập nhật địa chỉ từ tọa độ GPS
+     setTimeout(() => {
+       updateAddresses();
+     }, 500);
+    
+    // Lưu staff ID vào modal để refresh sau khi phê duyệt/từ chối
+    const modal = document.getElementById('staffDetailsModal');
+    modal.setAttribute('data-staff-id', id);
+    
+    new bootstrap.Modal(modal).show();
+  } catch (e) {
+    console.error('Lỗi load staff details:', e);
+    console.error('Chi tiết lỗi:', {
+      message: e.message,
+      stack: e.stack,
+      name: e.name
+    });
+    Swal.fire('Lỗi', 'Không thể tải chi tiết nhân viên. Vui lòng kiểm tra console để biết chi tiết.', 'error');
+  }
+}
+
+
+
+// Hàm tính số công theo ngày với làm tròn chính xác (giữ lại cho tương thích)
+function calculateDailySalary(baseSalary) {
+  const dailySalaryRaw = baseSalary / 28;
+  const decimalPart = dailySalaryRaw - Math.floor(dailySalaryRaw);
+  return decimalPart < 0.5 ? Math.floor(dailySalaryRaw) : Math.ceil(dailySalaryRaw);
+}
+
+// Hàm lấy địa chỉ từ tọa độ GPS
+async function getAddressFromCoordinates(lat, lng) {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=vi`);
+    const data = await response.json();
+    
+    if (data.display_name) {
+      // Tách địa chỉ thành các phần nhỏ hơn
+      const addressParts = data.display_name.split(', ');
+      // Lấy phần địa chỉ chính (thường là 3-4 phần đầu)
+      const mainAddress = addressParts.slice(0, 4).join(', ');
+      return mainAddress;
+    } else {
+      return 'Không thể xác định địa chỉ';
+    }
+  } catch (error) {
+    console.error('Lỗi khi lấy địa chỉ:', error);
+    return 'Lỗi khi tải địa chỉ';
+  }
+}
+
+// Hàm cập nhật địa chỉ cho tất cả các element có class address-text
+async function updateAddresses() {
+  const addressElements = document.querySelectorAll('.address-text');
+  
+  for (const element of addressElements) {
+    const lat = element.getAttribute('data-lat');
+    const lng = element.getAttribute('data-lng');
+    
+    if (lat && lng) {
+      try {
+        const address = await getAddressFromCoordinates(lat, lng);
+        element.innerHTML = address;
+      } catch (error) {
+        element.innerHTML = '<span class="text-danger">Lỗi tải địa chỉ</span>';
+      }
+    }
+  }
+}
+
+// Hàm phê duyệt yêu cầu
+window.approveRequest = async function(type, identifier, email) {
+  try {
+    const { ref, get, update } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+    
+    console.log('Phê duyệt yêu cầu:', { type, identifier, email });
+    
+    // Xác nhận phê duyệt
+    const result = await Swal.fire({
+      title: 'Xác nhận phê duyệt',
+      text: `Bạn có chắc muốn phê duyệt yêu cầu ${type === 'leave' ? 'nghỉ phép' : 'làm thêm'} này?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Phê duyệt',
+      cancelButtonText: 'Hủy',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#6c757d'
+    });
+    
+    if (result.isConfirmed) {
+      // Tìm và cập nhật yêu cầu
+      const nodeName = type === 'leave' ? 'leaveRequests' : 'overtimeRequests';
+      const requestsRef = ref(db, nodeName);
+      const snapshot = await get(requestsRef);
+      
+      if (snapshot.exists()) {
+        const requests = snapshot.val();
+        console.log('Tất cả yêu cầu:', requests);
+        let updated = false;
+        
+        for (const [key, request] of Object.entries(requests)) {
+          console.log('Kiểm tra yêu cầu:', { key, request, email, identifier });
+          
+          // Kiểm tra email và identifier
+          const emailMatch = request.email === email;
+          const identifierMatch = type === 'leave' ? 
+            (request.startDate === identifier || request.createdAt === identifier) : 
+            (request.date === identifier || request.createdAt === identifier);
+          
+          // Thêm kiểm tra thêm để đảm bảo chính xác
+          const timeMatch = type === 'leave' ? 
+            (request.startDate === identifier) : 
+            (request.date === identifier);
+          
+          if (emailMatch && (identifierMatch || timeMatch)) {
+            console.log('Tìm thấy yêu cầu để phê duyệt:', key);
+            
+            await update(ref(db, `${nodeName}/${key}`), {
+              ...request,
+              status: 'approved',
+              approvedAt: new Date().toISOString(),
+              approvedBy: 'admin'
+            });
+            
+            updated = true;
+            break;
+          }
+        }
+        
+        if (updated) {
+          Swal.fire({
+            title: 'Thành công!',
+            text: 'Đã phê duyệt yêu cầu',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+          // Refresh modal nếu đang mở
+          const modal = document.getElementById('staffDetailsModal');
+          if (modal && modal.classList.contains('show')) {
+            const staffId = modal.getAttribute('data-staff-id');
+            if (staffId) {
+              console.log('Refresh modal với staff ID:', staffId);
+              showStaffDetails(staffId);
+            }
+          }
+        } else {
+          console.log('Không tìm thấy yêu cầu phù hợp');
+          Swal.fire('Lỗi', 'Không tìm thấy yêu cầu để phê duyệt', 'error');
+        }
+      } else {
+        console.log('Không có dữ liệu yêu cầu');
+        Swal.fire('Lỗi', 'Không có dữ liệu yêu cầu', 'error');
+      }
+    }
+  } catch (error) {
+    console.error('Lỗi khi phê duyệt:', error);
+    Swal.fire('Lỗi', 'Không thể phê duyệt yêu cầu. Vui lòng thử lại.', 'error');
+  }
+};
+
+// Hàm từ chối yêu cầu
+window.rejectRequest = async function(type, identifier, email) {
+  try {
+    const { ref, get, update } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+    
+    console.log('Từ chối yêu cầu:', { type, identifier, email });
+    
+    // Xác nhận từ chối
+    const result = await Swal.fire({
+      title: 'Xác nhận từ chối',
+      text: `Bạn có chắc muốn từ chối yêu cầu ${type === 'leave' ? 'nghỉ phép' : 'làm thêm'} này?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Từ chối',
+      cancelButtonText: 'Hủy',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d'
+    });
+    
+    if (result.isConfirmed) {
+      // Tìm và cập nhật yêu cầu
+      const nodeName = type === 'leave' ? 'leaveRequests' : 'overtimeRequests';
+      const requestsRef = ref(db, nodeName);
+      const snapshot = await get(requestsRef);
+      
+      if (snapshot.exists()) {
+        const requests = snapshot.val();
+        console.log('Tất cả yêu cầu:', requests);
+        let updated = false;
+        
+        for (const [key, request] of Object.entries(requests)) {
+          console.log('Kiểm tra yêu cầu:', { key, request, email, identifier });
+          
+          // Kiểm tra email và identifier
+          const emailMatch = request.email === email;
+          const identifierMatch = type === 'leave' ? 
+            (request.startDate === identifier || request.createdAt === identifier) : 
+            (request.date === identifier || request.createdAt === identifier);
+          
+          // Thêm kiểm tra thêm để đảm bảo chính xác
+          const timeMatch = type === 'leave' ? 
+            (request.startDate === identifier) : 
+            (request.date === identifier);
+          
+          if (emailMatch && (identifierMatch || timeMatch)) {
+            console.log('Tìm thấy yêu cầu để từ chối:', key);
+            
+            await update(ref(db, `${nodeName}/${key}`), {
+              ...request,
+              status: 'rejected',
+              rejectedAt: new Date().toISOString(),
+              rejectedBy: 'admin'
+            });
+            
+            updated = true;
+            break;
+          }
+        }
+        
+        if (updated) {
+          Swal.fire({
+            title: 'Thành công!',
+            text: 'Đã từ chối yêu cầu',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+          // Refresh modal nếu đang mở
+          const modal = document.getElementById('staffDetailsModal');
+          if (modal && modal.classList.contains('show')) {
+            const staffId = modal.getAttribute('data-staff-id');
+            if (staffId) {
+              console.log('Refresh modal với staff ID:', staffId);
+              showStaffDetails(staffId);
+            }
+          }
+        } else {
+          console.log('Không tìm thấy yêu cầu phù hợp');
+          Swal.fire('Lỗi', 'Không tìm thấy yêu cầu để từ chối', 'error');
+        }
+      } else {
+        console.log('Không có dữ liệu yêu cầu');
+        Swal.fire('Lỗi', 'Không có dữ liệu yêu cầu', 'error');
+      }
+    }
+  } catch (error) {
+    console.error('Lỗi khi từ chối:', error);
+    Swal.fire('Lỗi', 'Không thể từ chối yêu cầu. Vui lòng thử lại.', 'error');
+  }
+};
+
+// Tự động load danh sách nhân viên khi vào tab staffManagement
+if (window.location.hash === '#staffManagement') loadStaffs();
+document.getElementById('navStaffManagement')?.addEventListener('click', loadStaffs);
+
+// Khi chọn chức vụ, tự động gợi ý lương cơ bản
+async function updateSalarySuggestion(selectId, salaryInputId) {
+  const roleId = document.getElementById(selectId).value;
+  if (!roleId) return;
+  const snap = await get(ref(db, 'roles'));
+  if (!snap.exists()) return;
+  const roles = Object.values(snap.val());
+  const role = roles.find(r => r.name === roleId);
+  if (role && role.baseSalary) {
+    document.getElementById(salaryInputId).value = role.baseSalary;
+  }
+}
+document.getElementById('staffRole')?.addEventListener('change', () => updateSalarySuggestion('staffRole', 'staffBaseSalary'));
+document.getElementById('editStaffRole')?.addEventListener('change', () => updateSalarySuggestion('editStaffRole', 'editStaffBaseSalary'));
+// ... existing code ...
+
+async function loadRolesToSelect(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  select.innerHTML = '<option value="">-- Chọn chức vụ --</option>';
+  try {
+    const snap = await get(ref(db, 'roles'));
+    if (!snap.exists()) return;
+    const roles = Object.values(snap.val());
+    roles.forEach(role => {
+      const opt = document.createElement('option');
+      opt.value = role.name;
+      opt.textContent = role.name;
+      select.appendChild(opt);
+    });
+  } catch (e) {
+    // Có thể báo lỗi nếu cần
+  }
+}
+document.getElementById('userSelect').addEventListener('change', function() {
+    const userId = this.value;
+    if (!userId) return;
+    const user = usersData[userId]; // usersData là object lưu tạm danh sách user
+    if (user) {
+      document.getElementById('staffName').value = user.name || '';
+      document.getElementById('staffEmail').value = user.email || '';
+      document.getElementById('staffPhone').value = user.phone || '';
+      document.getElementById('staffAddress').value = user.address || '';
+      // Nếu có avatar
+      if (user.avatarUrl) {
+        document.getElementById('staffAvatarPreview').src = user.avatarUrl;
+      }
+    }
+  });
+// Gọi hàm này mỗi khi mở modal Thêm/Sửa nhân viên:
+document.getElementById('addStaffModal')?.addEventListener('show.bs.modal', () => loadRolesToSelect('staffRole'));
+document.getElementById('editStaffModal')?.addEventListener('show.bs.modal', () => loadRolesToSelect('editStaffRole'));
+
+// ... existing code ...
+// ==== LOAD USERS TO SELECT (CHỌN TỪ THÀNH VIÊN) ====
+let usersData = {};
+async function loadUsersToSelect() {
+  const select = document.getElementById('userSelect');
+  if (!select) return;
+  select.innerHTML = '<option value="">-- Không chọn --</option>';
+  try {
+    const snap = await window.get(window.ref(window.db, 'users'));
+    if (!snap.exists()) return;
+    usersData = snap.val();
+    Object.entries(usersData).forEach(([id, user]) => {
+      const name = user.name || user.email || id;
+      select.innerHTML += `<option value="${id}">${name} (${user.email || ''})</option>`;
+    });
+  } catch (e) {
+    select.innerHTML = '<option value="">-- Không chọn --</option>';
+  }
+}
+// Gọi hàm này khi mở modal Thêm/Sửa nhân viên
+const addStaffModal = document.getElementById('addStaffModal');
+if (addStaffModal) {
+  addStaffModal.addEventListener('show.bs.modal', loadUsersToSelect);
+}
+// Khi chọn user, tự động điền thông tin vào form
+const userSelect = document.getElementById('userSelect');
+if (userSelect) {
+  userSelect.addEventListener('change', function() {
+    const userId = this.value;
+    if (!userId || !usersData[userId]) return;
+    const user = usersData[userId];
+    document.getElementById('staffName').value = user.name || '';
+    document.getElementById('staffEmail').value = user.email || '';
+    document.getElementById('staffPhone').value = user.phone || '';
+    document.getElementById('staffAddress').value = user.address || '';
+    if (user.avatarUrl && document.getElementById('staffAvatarPreview')) {
+      document.getElementById('staffAvatarPreview').src = user.avatarUrl;
+    }
+  });
+}
+
+// Tải danh sách nhân viên từ node 'staffs' trong Firebase
+async function loadEmployees() {
+  try {
+    // Lấy dữ liệu từ node 'staffs'
+    const staffRef = ref(db, 'staffs');
+    const snapshot = await get(staffRef);
+    const employees = snapshot.val() || {};
+    // Lấy các phần tử dropdown trong form thêm, sửa và lọc
+    const employeeSelect = document.getElementById('employeeSelect');
+    const editEmployeeSelect = document.getElementById('editEmployeeSelect');
+    const employeeFilter = document.getElementById('employeeFilter');
+    // Xóa nội dung cũ và thêm tùy chọn mặc định
+    employeeSelect.innerHTML = '<option value="" selected disabled>Chọn nhân viên</option>';
+    editEmployeeSelect.innerHTML = '<option value="" selected disabled>Chọn nhân viên</option>';
+    employeeFilter.innerHTML = '<option value="" selected>Tất cả nhân viên</option>';
+    // Duyệt qua danh sách nhân viên và thêm vào các dropdown
+    Object.keys(employees).forEach(key => {
+      const emp = employees[key];
+      const option = `<option value="${key}">${emp.name}</option>`;
+      employeeSelect.innerHTML += option;
+      editEmployeeSelect.innerHTML += option;
+      employeeFilter.innerHTML += option;
+    });
+  } catch (error) {
+    // Ghi log lỗi nếu không tải được danh sách nhân viên
+    console.error('Lỗi khi tải danh sách nhân viên:', error);
+  }
+}
+
+// Thêm event listener cho tìm kiếm nhân viên
+document.addEventListener('DOMContentLoaded', function() {
+  const staffSearchForm = document.getElementById('staffSearchForm');
+  const staffSearchInput = document.getElementById('staffSearch');
+  
+  if (staffSearchForm) {
+    staffSearchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const searchTerm = staffSearchInput.value.toLowerCase().trim();
+      filterStaffTable(searchTerm);
+    });
+  }
+  
+  if (staffSearchInput) {
+    staffSearchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      filterStaffTable(searchTerm);
+    });
+  }
+});
+
+// Hàm lọc bảng nhân viên
+function filterStaffTable(searchTerm) {
+  const table = document.querySelector('#staffManagement .table tbody');
+  if (!table) return;
+  
+  const rows = table.querySelectorAll('tr');
+  
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    if (searchTerm === '' || text.includes(searchTerm)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// Mobile Menu Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileToggle = document.querySelector('.mobile-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.querySelector('.sidebar-overlay');
+  
+  // Mobile menu toggle
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('show');
+      sidebarOverlay.classList.toggle('show');
+      document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+    });
+  }
+  
+  // Close sidebar when clicking overlay
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', function() {
+      sidebar.classList.remove('show');
+      sidebarOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    });
+  }
+  
+  // Close sidebar when clicking on nav links (mobile)
+  const navLinks = document.querySelectorAll('.sidebar .nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+  
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('show');
+      sidebarOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Add touch support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    // Swipe right to open menu
+    if (diff > swipeThreshold && touchStartX < 50) {
+      sidebar.classList.add('show');
+      sidebarOverlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    // Swipe left to close menu
+    else if (diff < -swipeThreshold && sidebar.classList.contains('show')) {
+      sidebar.classList.remove('show');
+      sidebarOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  }
+});
+
+// Optimize table display for mobile
+function optimizeTableForMobile() {
+  const tables = document.querySelectorAll('.table-responsive');
+  tables.forEach(table => {
+    const isMobile = window.innerWidth <= 768;
+    const cells = table.querySelectorAll('td, th');
+    
+    cells.forEach(cell => {
+      if (isMobile) {
+        // Add data attributes for mobile display
+        const text = cell.textContent.trim();
+        if (text.length > 20) {
+          cell.setAttribute('title', text);
+          cell.textContent = text.substring(0, 20) + '...';
+        }
+      }
+    });
+  });
+}
+
+// Call optimization on page load and resize
+window.addEventListener('load', optimizeTableForMobile);
+window.addEventListener('resize', optimizeTableForMobile);
+
+// Fix modal staff details colors
+document.addEventListener('DOMContentLoaded', function() {
+  // Override CSS for staff details modal
+  const style = document.createElement('style');
+  style.textContent = `
+    #staffDetailsModal .modal-content {
+      background: #fff !important;
+      color: #333 !important;
+    }
+
+    #staffDetailsModal .modal-header {
+      background: linear-gradient(135deg, #A67C52, #8B6F47) !important;
+      color: white !important;
+    }
+
+    #staffDetailsModal .modal-body {
+      background: linear-gradient(135deg, #f8fafc 0%, #f3ede6 100%) !important;
+      color: #333 !important;
+    }
+
+    #staffDetailsModal .card {
+      background: #fff !important;
+      color: #333 !important;
+    }
+
+    #staffDetailsModal .card-header {
+      color: white !important;
+    }
+
+    #staffDetailsModal .text-primary {
+      color: #A67C52 !important;
+    }
+
+    #staffDetailsModal .text-success {
+      color: #ffffff !important;
+    }
+
+    #staffDetailsModal .text-danger {
+      color: #dc3545 !important;
+    }
+
+    #staffDetailsModal .text-warning {
+      color: #ffc107 !important;
+    }
+
+    #staffDetailsModal .text-info {
+      color: #ffffff !important;
+    }
+
+    #staffDetailsModal .text-muted {
+      color: #6c757d !important;
+    }
+
+    #staffDetailsModal .bg-primary {
+      background-color: #007bff !important;
+    }
+
+    #staffDetailsModal .bg-success {
+      background-color: #28a745 !important;
+    }
+
+    #staffDetailsModal .bg-danger {
+      background-color: #dc3545 !important;
+    }
+
+    #staffDetailsModal .bg-warning {
+      background-color: #ffc107 !important;
+    }
+
+    #staffDetailsModal .bg-info {
+      background-color: #17a2b8 !important;
+    }
+
+    #staffDetailsModal .bg-light {
+      background-color: #f8f9fa !important;
+    }
+
+    #staffDetailsModal .bg-white {
+      background-color: #fff !important;
+    }
+
+    /* Override dark mode for staff details modal */
+    body.dark-mode #staffDetailsModal,
+    body.dark-mode #staffDetailsModal * {
+      color: inherit !important;
+      text-shadow: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+
 </body>
-</html>
+</html> 

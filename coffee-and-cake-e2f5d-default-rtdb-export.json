@@ -1,4 +1,30 @@
 {
+  "attendances": {
+    "-OWRYBCBAPHJv9Ao4Sj-": {
+      "date": "31/7/2025",
+      "email": "baokhangml99@gmail.com",
+      "location": {
+        "latitude": 10.059776,
+        "longitude": 105.8144256
+      },
+      "status": "ontime",
+      "time": "2025-07-30T18:16:19.320Z",
+      "type": "checkin",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OWRY_TU9Tp1czuP-B0A": {
+      "date": "31/7/2025",
+      "email": "baokhangml99@gmail.com",
+      "location": {
+        "latitude": 10.059776,
+        "longitude": 105.8144256
+      },
+      "status": "checkout",
+      "time": "2025-07-30T19:18:08.348Z",
+      "type": "checkout",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    }
+  },
   "chatMessages": {
     "-OUxeVgK_wma4OfA1hzF": {
       "message": "chào",
@@ -56,6 +82,13 @@
       "sender": "Nguyễn Quí",
       "senderId": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2",
       "timestamp": "2025-07-24T10:37:36.711Z"
+    },
+    "-OWS3ZIqtiREwmHEiFlm": {
+      "message": "?",
+      "replyTo": "Võ Tắc Thiên",
+      "sender": "quantri1amcoffeeandcake@gmail.com",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-07-30T20:42:15.303Z"
     }
   },
   "contactMessages": {
@@ -83,6 +116,14 @@
       },
       "updatedAt": 1753353881625
     },
+    "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_coTgqFWGm2g4ZI3h0u0UHKmC0gB2": {
+      "lastMessage": "cứt",
+      "members": {
+        "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": true,
+        "coTgqFWGm2g4ZI3h0u0UHKmC0gB2": true
+      },
+      "updatedAt": 1753783621842
+    },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_jjdXoKbp0fUa1E5neR1DN6pQ4f62": {
       "lastMessage": "à",
       "members": {
@@ -90,6 +131,59 @@
         "jjdXoKbp0fUa1E5neR1DN6pQ4f62": true
       },
       "updatedAt": 1752307198803
+    }
+  },
+  "leaveRequests": {
+    "-OWPV4KOgFOiURYWP8P7": {
+      "createdAt": "2025-07-30T08:43:37.246Z",
+      "email": "nguyentrongqui201919@gmail.com",
+      "endDate": "2025-07-31",
+      "reason": "đi chơi",
+      "startDate": "2025-07-30",
+      "status": "pending",
+      "uid": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2"
+    },
+    "-OWPVqLyuNJ43oVlM3ZO": {
+      "createdAt": "2025-07-30T08:46:58.582Z",
+      "email": "nguyentrongqui201919@gmail.com",
+      "endDate": "2025-07-31",
+      "reason": "đi chơi",
+      "startDate": "2025-07-30",
+      "status": "pending",
+      "uid": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2"
+    },
+    "-OWRpUuExcXqvjb4Y_xl": {
+      "approvedAt": "2025-07-30T19:46:42.094Z",
+      "approvedBy": "admin",
+      "createdAt": "2025-07-30T19:36:25.129Z",
+      "email": "baokhangml99@gmail.com",
+      "endDate": "2025-08-03",
+      "reason": "bệnh cảm",
+      "startDate": "2025-08-01",
+      "status": "approved",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OWRsKqiFCA4FhB3ErVa": {
+      "createdAt": "2025-07-30T19:48:50.359Z",
+      "email": "baokhangml99@gmail.com",
+      "endDate": "2025-08-09",
+      "reason": "bệnh cảm 2",
+      "rejectedAt": "2025-07-30T19:50:17.799Z",
+      "rejectedBy": "admin",
+      "startDate": "2025-08-08",
+      "status": "rejected",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OWUAHznLDFCdNQ96pUk": {
+      "approvedAt": "2025-07-31T06:31:18.897Z",
+      "approvedBy": "admin",
+      "createdAt": "2025-07-31T06:30:53.609Z",
+      "email": "baokhangml99@gmail.com",
+      "endDate": "2025-08-18",
+      "reason": "bệnh cảm cúm",
+      "startDate": "2025-08-17",
+      "status": "approved",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
     }
   },
   "messages": {
@@ -194,6 +288,108 @@
         "sender": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2",
         "text": "",
         "timestamp": 1753353878755
+      },
+      "-OWHsdddPtvAQWxH5_Vh": {
+        "callType": "voice",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1753737239609,
+        "type": "call"
+      }
+    },
+    "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_coTgqFWGm2g4ZI3h0u0UHKmC0gB2": {
+      "-OWKdV_iWVxeQhm_A6Fe": {
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "?",
+        "timestamp": 1753783601298
+      },
+      "-OWKd__N4SfL4GRYexHi": {
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "text": "cứt",
+        "timestamp": 1753783621764
+      },
+      "-OWKdgCXlRylxOnK35zZ": {
+        "callType": "video",
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "status": "started",
+        "timestamp": 1753783648911,
+        "type": "call"
+      },
+      "-OWKdktJLoD9eE_3igvV": {
+        "callType": "video",
+        "duration": 9,
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "ended",
+        "timestamp": 1753783668074,
+        "type": "call"
+      },
+      "-OWKdl4udKUjyE9l9Q8Q": {
+        "callType": "video",
+        "duration": 10,
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "status": "ended",
+        "timestamp": 1753783668903,
+        "type": "call"
+      },
+      "-OWKdmpsPciaq355NmnB": {
+        "callType": "video",
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "status": "started",
+        "timestamp": 1753783676072,
+        "type": "call"
+      },
+      "-OWKdn2BA71459MPZYui": {
+        "callType": "video",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1753783676898,
+        "type": "call"
+      },
+      "-OWKdpxsatFX3_od-yi4": {
+        "callType": "voice",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1753783688846,
+        "type": "call"
+      },
+      "-OWKdrRanoS09jjb62Ld": {
+        "callType": "voice",
+        "duration": 3,
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "ended",
+        "timestamp": 1753783694908,
+        "type": "call"
+      },
+      "-OWKdrdAmQajpX0j2nRh": {
+        "callType": "voice",
+        "duration": 4,
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "status": "ended",
+        "timestamp": 1753783695740,
+        "type": "call"
+      },
+      "-OWKdrfrOX8fhSVE1d4Z": {
+        "callType": "video",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1753783695885,
+        "type": "call"
+      },
+      "-OWKdtZdIFBcv2IDceKt": {
+        "callType": "video",
+        "duration": 2,
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "ended",
+        "timestamp": 1753783703615,
+        "type": "call"
+      },
+      "-OWKdtl6tCOBVtz8RIm_": {
+        "callType": "video",
+        "duration": 3,
+        "sender": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+        "status": "ended",
+        "timestamp": 1753783704440,
+        "type": "call"
       }
     },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_jjdXoKbp0fUa1E5neR1DN6pQ4f62": {
@@ -1422,6 +1618,56 @@
       "userId": "b0VnI35OlKe9Bk6Nx4zM6gn1M173"
     }
   },
+  "overtimeRequests": {
+    "-OWPVshrrzj7yhFdsXAt": {
+      "createdAt": "2025-07-30T08:47:08.240Z",
+      "date": "2025-07-30",
+      "email": "nguyentrongqui201919@gmail.com",
+      "endTime": "19:47",
+      "reason": "haha",
+      "rejectedAt": "2025-07-30T19:55:20.449Z",
+      "rejectedBy": "admin",
+      "startTime": "15:47",
+      "status": "rejected",
+      "uid": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2"
+    },
+    "-OWU5rVwkoNFCGT-SqXK": {
+      "approvedAt": "2025-07-31T06:12:59.370Z",
+      "approvedBy": "admin",
+      "createdAt": "2025-07-31T06:11:33.227Z",
+      "date": "2025-07-31",
+      "email": "baokhangml99@gmail.com",
+      "endTime": "15:11",
+      "reason": "thêm tiền",
+      "startTime": "13:11",
+      "status": "approved",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OWUA1HhJtqht-y4ZN3K": {
+      "approvedAt": "2025-07-31T06:40:58.568Z",
+      "approvedBy": "admin",
+      "createdAt": "2025-07-31T06:29:45.412Z",
+      "date": "2025-08-13",
+      "email": "baokhangml99@gmail.com",
+      "endTime": "23:29",
+      "reason": "aaaa",
+      "startTime": "22:29",
+      "status": "approved",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OWUIUHagt2jhdRqcGzl": {
+      "approvedAt": "2025-07-31T07:06:54.295Z",
+      "approvedBy": "admin",
+      "createdAt": "2025-07-31T07:06:41.169Z",
+      "date": "2025-07-30",
+      "email": "baokhangml99@gmail.com",
+      "endTime": "12:06",
+      "reason": "aa",
+      "startTime": "21:06",
+      "status": "approved",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    }
+  },
   "payment_results": {
     "15069725": {
       "orderInfo": {
@@ -2081,14 +2327,84 @@
       "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
       "authorProfileUpdatedAt": 1753734772183,
       "content": "hi",
+      "timestamp": 1753734771768
+    },
+    "-OWHrqEfnC_Fi0NH_4WH": {
+      "authorEmail": "baokhangml99@gmail.com",
+      "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+      "authorName": "Võ Trần Hoàng Bảo Khang ",
+      "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+      "authorProfileUpdatedAt": 1753737029048,
+      "comments": {
+        "-OWKEQmJOie4ES97Rr6R": {
+          "authorEmail": "baokhangml99@gmail.com",
+          "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+          "authorName": "Võ Trần Hoàng Bảo Khang ",
+          "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+          "authorProfileUpdatedAt": 1753776765910,
+          "replies": {
+            "-OWKETIohJNRfSGaYGRh": {
+              "authorEmail": "baokhangml99@gmail.com",
+              "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+              "authorName": "Võ Trần Hoàng Bảo Khang ",
+              "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+              "authorProfileUpdatedAt": 1753776776246,
+              "text": "?",
+              "timestamp": 1753776776246
+            }
+          },
+          "text": "?",
+          "timestamp": 1753776766141
+        }
+      },
+      "content": "mua túi đi",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1753737023/yswauyjfolsg83vnwvji.jpg",
       "likes": {
         "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
           "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
           "authorName": "Võ Trần Hoàng Bảo Khang ",
-          "timestamp": 1753735025582
+          "timestamp": 1753776789356
         }
       },
-      "timestamp": 1753734771768
+      "timestamp": 1753737028638
+    },
+    "-OWKd5IWf55H4BYWkTEH": {
+      "authorEmail": "ntho0124@gmail.com",
+      "authorId": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+      "authorName": "Anh Thơ",
+      "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocLlxilORMbw1yQ5RLSZjSFGgnJdwHT9maKnvWaQ6EG5qH5AUvc=s96-c",
+      "authorProfileUpdatedAt": 1753783493648,
+      "comments": {
+        "-OWPJJPx3BVoPcxHjdfa": {
+          "authorEmail": "nguyentrongqui201919@gmail.com",
+          "authorId": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2",
+          "authorName": "Nguyễn Quí",
+          "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocIC8s7Ca-nHpUj2L9YRjMZcnDJ81SaZHsEHUxEfNfQNqcEVYJ93=s96-c",
+          "authorProfileUpdatedAt": 1753861933312,
+          "text": "học gì dị",
+          "timestamp": 1753861932781
+        }
+      },
+      "content": "??",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1753783483/vbnvicurkkcushrjcq5t.jpg",
+      "likes": {
+        "H5KHrwyop7Q9mB8i7z5PXF6eEJo2": {
+          "authorId": "H5KHrwyop7Q9mB8i7z5PXF6eEJo2",
+          "authorName": "Nguyễn Quí",
+          "timestamp": 1753861925914
+        },
+        "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
+          "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+          "authorName": "Võ Trần Hoàng Bảo Khang ",
+          "timestamp": 1753808155649
+        },
+        "coTgqFWGm2g4ZI3h0u0UHKmC0gB2": {
+          "authorId": "coTgqFWGm2g4ZI3h0u0UHKmC0gB2",
+          "authorName": "Anh Thơ",
+          "timestamp": 1753783757881
+        }
+      },
+      "timestamp": 1753783493897
     }
   },
   "products": {
@@ -2398,6 +2714,55 @@
       "status": "inactive"
     }
   },
+  "roles": {
+    "-OWLE1blFaOEvVeyTWjL": {
+      "baseSalary": "15000000",
+      "description": "Quản lý quán và nhân viên",
+      "name": "Quản lí",
+      "permissions": "không"
+    },
+    "-OWQaxQ-kkwExvaIVW3a": {
+      "baseSalary": "5000000",
+      "description": "dọn tác , bưng bàn",
+      "name": "Tạp vụ",
+      "permissions": "không"
+    }
+  },
+  "staffs": {
+    "-OWOxSERg9MsyUbEZmEE": {
+      "address": "cần thơ thơ thơ",
+      "avatarUrl": "",
+      "baseSalary": "12000000",
+      "email": "ntho0124@gmail.com",
+      "name": "Anh Thơ",
+      "phone": "234256235657",
+      "role": "Quản lí",
+      "startDate": "2025-07-30",
+      "status": "active"
+    },
+    "-OWOy373zkY99mt8uRMg": {
+      "address": "bình thủy cần thơ",
+      "avatarUrl": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1753856097/kmmdxxx13szokty8wtqr.jpg",
+      "baseSalary": "5000000",
+      "email": "nguyentrongqui201919@gmail.com",
+      "name": "Nguyễn Quí",
+      "phone": "456787654344",
+      "role": "Tạp vụ",
+      "startDate": "2025-07-30",
+      "status": "active"
+    },
+    "-OWU2nKyBnpJTN17ggiP": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long",
+      "avatarUrl": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1753941488/cgfj0ikgiwv9myzbpllt.webp",
+      "baseSalary": "15000000",
+      "email": "baokhangml99@gmail.com",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581",
+      "role": "Quản lí",
+      "startDate": "2025-07-27",
+      "status": "active"
+    }
+  },
   "stories": {
     "-OVJ7GbWXm1MZ5xjbtiA": {
       "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
@@ -2406,14 +2771,6 @@
       "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752684364/yrxvk8wbuhvitfuo3pei.jpg",
       "text": "hẹ hẹ hẹ",
       "timestamp": 1752684370271
-    },
-    "-OVJ7wP2f6SLzNZy02lz": {
-      "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
-      "authorName": "Võ Trần Hoàng Bảo Khang ",
-      "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752684537/w2ptmiygoxu3qsqj6si7.jpg",
-      "text": "mew mew mew",
-      "timestamp": 1752684545542
     },
     "-OVMfaWW2WPTdpC5I77q": {
       "authorId": "dovlU9vGCIfzWiqYRjXcOYXHFLv1",
@@ -2488,7 +2845,7 @@
       },
       "memberCard": {
         "barcode": "63002",
-        "lastUpdate": "2025-07-24T10:36:29.773Z",
+        "lastUpdate": "2025-07-30T06:14:20.968Z",
         "nextRank": "Bạc",
         "nextRankInfo": "Còn 8983 điểm để lên hạng Bạc",
         "nextRankPoint": 10000,
@@ -2497,16 +2854,25 @@
         "rankClass": "rank-bronze"
       },
       "name": "Nguyễn Quí",
-      "phone": "456787654344"
+      "phone": "456787654342"
     },
-    "Q1YYsoo4jLYShEmFe1SIrYgTRX83": {
-      "friends": {
-        "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": true
+    "Nt4988nd2wNiGy1kUHZ1UFLCtxH3": {
+      "address": "Cái Vồn, Bình Minh, Vĩnh Long",
+      "avatarUrl": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1753737490/gup0kblnuxoidwreepfv.jpg",
+      "barcode": "19208",
+      "email": "quantri1amcoffeeandcake@gmail.com",
+      "memberCard": {
+        "barcode": "19208",
+        "lastUpdate": "2025-07-30T03:36:04.392Z",
+        "nextRank": "Bạc",
+        "nextRankInfo": "Còn 10000 điểm để lên hạng Bạc",
+        "nextRankPoint": 10000,
+        "points": 0,
+        "rank": "Đồng",
+        "rankClass": "rank-bronze"
       },
-      "sentRequests": {
-        "dovlU9vGCIfzWiqYRjXcOYXHFLv1": true,
-        "jjdXoKbp0fUa1E5neR1DN6pQ4f62": true
-      }
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
     },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
       "address": "Cái Vồn, Bình Minh, Vĩnh Long",
@@ -2516,11 +2882,12 @@
       "friends": {
         "H5KHrwyop7Q9mB8i7z5PXF6eEJo2": true,
         "Q1YYsoo4jLYShEmFe1SIrYgTRX83": true,
+        "coTgqFWGm2g4ZI3h0u0UHKmC0gB2": true,
         "jjdXoKbp0fUa1E5neR1DN6pQ4f62": true
       },
       "memberCard": {
         "barcode": "28595",
-        "lastUpdate": "2025-07-18T08:03:05.121Z",
+        "lastUpdate": "2025-07-31T05:57:07.698Z",
         "nextRank": "Bạc",
         "nextRankInfo": "Còn 7600 điểm để lên hạng Bạc",
         "nextRankPoint": 10000,
@@ -2534,6 +2901,27 @@
         "5yS2Oh7WguVYbL6UcK2xTKzjEvv1": true,
         "dovlU9vGCIfzWiqYRjXcOYXHFLv1": true
       }
+    },
+    "coTgqFWGm2g4ZI3h0u0UHKmC0gB2": {
+      "address": "",
+      "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLlxilORMbw1yQ5RLSZjSFGgnJdwHT9maKnvWaQ6EG5qH5AUvc=s96-c",
+      "barcode": "41325",
+      "email": "ntho0124@gmail.com",
+      "friends": {
+        "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": true
+      },
+      "memberCard": {
+        "barcode": "92074",
+        "lastUpdate": "2025-07-29T10:02:05.628Z",
+        "nextRank": "Bạc",
+        "nextRankInfo": "Còn 10000 điểm để lên hạng Bạc",
+        "nextRankPoint": 10000,
+        "points": 0,
+        "rank": "Đồng",
+        "rankClass": "rank-bronze"
+      },
+      "name": "Anh Thơ",
+      "phone": ""
     },
     "dovlU9vGCIfzWiqYRjXcOYXHFLv1": {
       "address": "",
