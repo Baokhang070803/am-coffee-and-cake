@@ -1,0 +1,401 @@
+// 👤 Quản lý Người dùng & Thành viên
+Table NguoiDung {
+  maNguoiDung varchar [pk]
+  hoTen varchar
+  email varchar [unique]
+  soDienThoai varchar
+  diaChi varchar
+  anhDaiDien varchar
+  maVach varchar [unique]
+  ngayTao datetime
+}
+
+Table NhatKy {
+  maNhatKy varchar [pk]
+  maNguoiDung varchar
+  hanhDong varchar
+  chiTiet text
+  thoiGian datetime
+}
+Ref: NhatKy.maNguoiDung > NguoiDung.maNguoiDung
+
+Table TheThanhVien {
+  maNguoiDung varchar [pk]
+  diemTichLuy int
+  hang varchar
+  hangTiepTheo varchar
+  thongTinHangTiepTheo varchar
+  diemHangTiepTheo int
+  ngayCapNhat datetime
+  loaiHang varchar
+  maVach varchar [unique]
+}
+Ref: TheThanhVien.maNguoiDung > NguoiDung.maNguoiDung
+
+// 🤝 Mạng xã hội
+Table BanBe {
+  maNguoiDung1 varchar
+  maNguoiDung2 varchar
+  ngayKetBan datetime
+  Note: "PRIMARY KEY (maNguoiDung1, maNguoiDung2)"
+}
+Ref: BanBe.maNguoiDung1 > NguoiDung.maNguoiDung
+Ref: BanBe.maNguoiDung2 > NguoiDung.maNguoiDung
+
+Table LoiMoiKetBan {
+  maNguoiGui varchar
+  maNguoiNhan varchar
+  thoiGian datetime
+  trangThai varchar
+  Note: "PRIMARY KEY (maNguoiGui, maNguoiNhan)"
+}
+Ref: LoiMoiKetBan.maNguoiGui > NguoiDung.maNguoiDung
+Ref: LoiMoiKetBan.maNguoiNhan > NguoiDung.maNguoiDung
+
+Table BaiDang {
+  maBaiDang varchar [pk]
+  maTacGia varchar
+  noiDung varchar
+  hinhAnh varchar
+  thoiGian datetime
+  emoji varchar
+  trangThai varchar
+}
+Ref: BaiDang.maTacGia > NguoiDung.maNguoiDung
+
+Table ThichBaiDang {
+  maBaiDang varchar
+  maNguoiDung varchar
+  thoiGian datetime
+  Note: "PRIMARY KEY (maBaiDang, maNguoiDung)"
+}
+Ref: ThichBaiDang.maBaiDang > BaiDang.maBaiDang
+Ref: ThichBaiDang.maNguoiDung > NguoiDung.maNguoiDung
+
+Table BinhLuan {
+  maBinhLuan varchar [pk]
+  maBaiDang varchar
+  maTacGia varchar
+  noiDung varchar
+  thoiGian datetime
+  trangThai varchar
+}
+Ref: BinhLuan.maBaiDang > BaiDang.maBaiDang
+Ref: BinhLuan.maTacGia > NguoiDung.maNguoiDung
+
+Table ThichBinhLuan {
+  maBinhLuan varchar
+  maNguoiDung varchar
+  thoiGian datetime
+  Note: "PRIMARY KEY (maBinhLuan, maNguoiDung)"
+}
+Ref: ThichBinhLuan.maBinhLuan > BinhLuan.maBinhLuan
+Ref: ThichBinhLuan.maNguoiDung > NguoiDung.maNguoiDung
+
+Table TraLoiBinhLuan {
+  maTraLoi varchar [pk]
+  maBinhLuan varchar
+  maTacGia varchar
+  noiDung varchar
+  thoiGian datetime
+  trangThai varchar
+}
+Ref: TraLoiBinhLuan.maBinhLuan > BinhLuan.maBinhLuan
+Ref: TraLoiBinhLuan.maTacGia > NguoiDung.maNguoiDung
+
+Table DangTin24Gio {
+  maDangTin varchar [pk]
+  maNguoiDung varchar
+  noiDung varchar
+  hinhAnh varchar
+  thoiGian datetime
+  thoiHan datetime
+  trangThai varchar
+}
+Ref: DangTin24Gio.maNguoiDung > NguoiDung.maNguoiDung
+
+// 💬 Tin nhắn & Cuộc gọi
+Table CuocTroChuyen {
+  maCuocTroChuyen varchar [pk]
+  tinNhanCuoi varchar
+  ngayCapNhat datetime
+  loaiCuocTroChuyen varchar
+}
+
+Table ThanhVienTroChuyen {
+  maCuocTroChuyen varchar
+  maNguoiDung varchar
+  ngayThamGia datetime
+  Note: "PRIMARY KEY (maCuocTroChuyen, maNguoiDung)"
+}
+Ref: ThanhVienTroChuyen.maCuocTroChuyen > CuocTroChuyen.maCuocTroChuyen
+Ref: ThanhVienTroChuyen.maNguoiDung > NguoiDung.maNguoiDung
+
+Table TinNhan {
+  maTinNhan varchar [pk]
+  maCuocTroChuyen varchar
+  nguoiGui varchar
+  noiDung varchar
+  hinhAnh varchar
+  thoiGian datetime
+  loaiTinNhan varchar
+  trangThai varchar
+  thoiLuong int
+  loai varchar
+}
+Ref: TinNhan.maCuocTroChuyen > CuocTroChuyen.maCuocTroChuyen
+Ref: TinNhan.nguoiGui > NguoiDung.maNguoiDung
+
+Table CuocGoi {
+  maCuocGoi varchar [pk]
+  loaiCuocGoi varchar
+  candidate varchar
+  sdpMLineIndex int
+  sdpMid varchar
+  usernameFragment varchar
+  nguoiGoi varchar
+  nguoiNhan varchar
+  thoiGian datetime
+  trangThai varchar
+  thoiLuong int
+}
+Ref: CuocGoi.nguoiGoi > NguoiDung.maNguoiDung
+Ref: CuocGoi.nguoiNhan > NguoiDung.maNguoiDung
+
+// 🎧 Hỗ trợ & Liên hệ
+Table TinNhanHoTro {
+  maTinNhan varchar [pk]
+  noiDung varchar
+  nguoiGui varchar
+  maNguoiGui varchar
+  thoiGian datetime
+  traLoi varchar
+  trangThai varchar
+}
+Ref: TinNhanHoTro.maNguoiGui > NguoiDung.maNguoiDung
+
+Table TinNhanLienHe {
+  maTinNhanLienHe varchar [pk]
+  ngayTao datetime
+  email varchar
+  noiDung varchar
+  hoTen varchar
+  soDienThoai varchar
+  maNguoiDung varchar
+  trangThai varchar
+}
+Ref: TinNhanLienHe.maNguoiDung > NguoiDung.maNguoiDung
+
+// 🛒 E-Commerce - Sản phẩm
+Table DanhMuc {
+  maDanhMuc varchar [pk]
+  tenDanhMuc varchar
+  moTa varchar
+  hinhAnh varchar
+  trangThai varchar
+  thuTu int
+}
+
+Table SanPham {
+  maSanPham varchar [pk]
+  tenSanPham varchar
+  thuocTinh varchar
+  hinhAnh varchar
+  giaSanPham int
+  maDanhMuc varchar
+  moTa varchar
+  trangThai varchar
+  ngayTao datetime
+  ngayCapNhat datetime
+}
+Ref: SanPham.maDanhMuc > DanhMuc.maDanhMuc
+
+Table KhuyenMai {
+  maKhuyenMai varchar [pk]
+  maGiamGia varchar [unique]
+  mucGiamGia int
+  ngayBatDau datetime
+  ngayKetThuc datetime
+  trangThai varchar
+  moTa varchar
+  soLuongToiDa int
+  soLuongDaSuDung int
+}
+
+Table DonHang {
+  maDonHang varchar [pk]
+  maNguoiDung varchar
+  tenNguoiNhan varchar
+  soDienThoaiNhan varchar
+  diaChiGiaoHang varchar
+  ngayTao datetime
+  ngayCapNhat datetime
+  ngayGiaoYeuCau date
+  gioGiaoYeuCau time
+  maGiamGia varchar
+  phiVanChuyen int
+  trangThai varchar
+  ghiChu varchar
+}
+Ref: DonHang.maNguoiDung > NguoiDung.maNguoiDung
+Ref: DonHang.maGiamGia > KhuyenMai.maGiamGia
+
+Table ThanhToanDonHang {
+  maThanhToan varchar [pk]
+  maDonHang varchar [unique]
+  tongTienHang int
+  soTienGiamGia int
+  phiVanChuyen int
+  tongThanhToan int
+  phuongThucThanhToan varchar
+  trangThaiThanhToan varchar
+  ngayThanhToan datetime
+  maGiaoDichNganHang varchar
+}
+Ref: ThanhToanDonHang.maDonHang > DonHang.maDonHang
+
+Table ChiTietDonHang {
+  maChiTietDonHang varchar [pk]
+  maDonHang varchar
+  maSanPham varchar
+  tenSanPham varchar
+  giaSanPham int
+  soLuong int
+  hinhAnh varchar
+  ghiChu varchar
+}
+Ref: ChiTietDonHang.maDonHang > DonHang.maDonHang
+Ref: ChiTietDonHang.maSanPham > SanPham.maSanPham
+
+// 💳 Thanh toán
+Table KetQuaThanhToan {
+  maGiaoDich varchar [pk]
+  maThanhToan varchar
+  soTien int
+  maPhieuThuHoi varchar
+  ngayThanhToan datetime
+  soGiaoDich varchar
+  trangThai varchar
+}
+Ref: KetQuaThanhToan.maThanhToan > ThanhToanDonHang.maThanhToan
+
+Table GiaoDichVnpay {
+  maGiaoDichRef varchar [pk]
+  maThanhToan varchar
+  soTien int
+  ngayTao datetime
+  trangThai varchar
+  orderKey varchar
+  maGiaoDichVnp varchar
+  thongTinTraVe text
+}
+Ref: GiaoDichVnpay.maThanhToan > ThanhToanDonHang.maThanhToan
+
+Table ThongKeThanhToan {
+  maThongKe varchar [pk]
+  ngay date
+  tongSoGiaoDich int
+  tongTien int
+  soGiaoDichThanhCong int
+  soGiaoDichThatBai int
+  ngayCapNhat datetime
+}
+
+// 📰 Nội dung & Tin tức
+Table TinTuc {
+  maTinTuc varchar [pk]
+  tieuDe varchar
+  tomTat varchar
+  noiDung text
+  hinhAnh varchar
+  moTaAnh varchar
+  ngayDang datetime
+  tacGia varchar
+  trangThai varchar
+  luotXem int
+}
+
+// Đánh giá & phản hồi
+Table DanhGiaDonHang {
+  maDanhGia varchar [pk]
+  maDonHang varchar [unique]
+  maNguoiDung varchar
+  tenNguoiDung varchar
+  diemDanhGia int
+  nhanXet varchar
+  thoiGian datetime
+  trangThai varchar
+}
+Ref: DanhGiaDonHang.maDonHang > DonHang.maDonHang
+Ref: DanhGiaDonHang.maNguoiDung > NguoiDung.maNguoiDung
+
+// 👥 Nhân sự
+Table ChucVu {
+  maChucVu varchar [pk]
+  tenChucVu varchar [unique]
+  moTa varchar
+  luongCoBan int
+  quyenHan varchar
+}
+
+Table NhanVien {
+  maNhanVien varchar [pk]
+  hoTen varchar
+  email varchar [unique]
+  soDienThoai varchar
+  diaChi varchar
+  anhDaiDien varchar
+  luongCoBan int
+  chucVu varchar
+  ngayBatDau date
+  trangThai varchar
+}
+Ref: NhanVien.chucVu > ChucVu.tenChucVu
+
+Table ChamCong {
+  maChamCong varchar [pk]
+  uid varchar
+  email varchar
+  ngay date
+  thoiGian datetime
+  loai varchar
+  trangThai varchar
+  viDo float
+  kinhDo float
+}
+Ref: ChamCong.email > NhanVien.email
+
+Table DonNghiPhep {
+  maDonNghiPhep varchar [pk]
+  uid varchar
+  email varchar
+  lyDo varchar
+  ngayBatDau date
+  ngayKetThuc date
+  trangThai varchar
+  ngayTao datetime
+  ngayDuyet datetime
+  nguoiDuyet varchar
+  ngayTuChoi datetime
+  nguoiTuChoi varchar
+}
+Ref: DonNghiPhep.email > NhanVien.email
+
+Table DonTangCa {
+  maDonTangCa varchar [pk]
+  uid varchar
+  email varchar
+  lyDo varchar
+  ngay date
+  thoiGianBatDau varchar
+  thoiGianKetThuc varchar
+  trangThai varchar
+  ngayTao datetime
+  ngayDuyet datetime
+  nguoiDuyet varchar
+  ngayTuChoi datetime
+  nguoiTuChoi varchar
+}
+Ref: DonTangCa.email > NhanVien.email
+Ref: DonTangCa.nguoiDuyet > NhanVien.email
+Ref: DonTangCa.nguoiTuChoi > NhanVien.email

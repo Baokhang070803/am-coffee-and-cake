@@ -691,15 +691,15 @@ skinparam sequence {
 actor User
 participant "Profile Page" as ProfilePage
 participant "Firebase Auth" as Firebase
-participant "Firebase Storage" as Storage
+participant "Cloudinary" as Cloudinary
 
 User -> ProfilePage: Truy cập trang hồ sơ cá nhân
 ProfilePage -> Firebase: Lấy thông tin cá nhân
 Firebase -> ProfilePage: Trả về thông tin hiện tại
 User -> ProfilePage: Chỉnh sửa thông tin/Upload ảnh đại diện
 alt Upload ảnh đại diện
-    ProfilePage -> Storage: Upload ảnh mới lên cloudinary
-    Storage -> ProfilePage: Cloudinary Trả về URL ảnh
+    ProfilePage -> Cloudinary: Upload ảnh mới lên cloudinary
+    Cloudinary -> ProfilePage: Cloudinary Trả về URL ảnh
 end
 ProfilePage -> Firebase: Lưu thông tin cập nhật
 Firebase -> ProfilePage: Thông báo thành công/hoặc lỗi
@@ -734,7 +734,6 @@ participant "Home Page" as HomePage
 participant "Firebase Database" as FirebaseDB
 
 User -> HomePage: Truy cập trang chủ
-HomePage -> FirebaseDB: Lấy banner quảng cáo
 HomePage -> FirebaseDB: Lấy sản phẩm nổi bật
 HomePage -> FirebaseDB: Lấy tin tức mới nhất
 HomePage -> FirebaseDB: Lấy thông tin liên hệ
@@ -841,16 +840,13 @@ actor User
 participant "Event Page" as EventPage
 participant "Firebase Database" as FirebaseDB
 
-User -> EventPage: Truy cập trang sự kiện
-EventPage -> FirebaseDB: Lấy danh sách sự kiện
-FirebaseDB -> EventPage: Trả về danh sách sự kiện
-User -> EventPage: Xem chi tiết sự kiện
-EventPage -> FirebaseDB: Lấy chi tiết sự kiện
-FirebaseDB -> EventPage: Trả về chi tiết sự kiện
-User -> EventPage: Tham gia sự kiện (nếu đã đăng nhập)
-EventPage -> FirebaseDB: Đăng ký tham gia sự kiện (nếu có)
-FirebaseDB -> EventPage: Xác nhận tham gia
-EventPage -> User: Hiển thị thông tin sự kiện
+User -> EventPage: Truy cập trang sự kiện tin tức và khuyến mãi
+EventPage -> FirebaseDB: Lấy danh sách sự kiện tin tức và khuyến mãi
+FirebaseDB -> EventPage: Trả về danh sách sự kiện tin tức và khuyến mãi
+User -> EventPage: Xem chi tiết sự kiện tin tức và khuyến mãi
+EventPage -> FirebaseDB: Lấy chi tiết sự kiện tin tức và khuyến mãi
+FirebaseDB -> EventPage: Trả về chi tiết ssự kiện tin tức và khuyến mãi
+EventPage -> User: Hiển thị thông tin sự kiện tin tức và khuyến mãi
 @enduml
 ```
 - **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
@@ -880,16 +876,13 @@ actor User
 participant "News Page" as NewsPage
 participant "Firebase Database" as FirebaseDB
 
-User -> NewsPage: Truy cập trang tin tức
-NewsPage -> FirebaseDB: Lấy danh sách tin tức
-FirebaseDB -> NewsPage: Trả về danh sách tin tức
-User -> NewsPage: Đọc chi tiết tin tức
-NewsPage -> FirebaseDB: Lấy chi tiết tin tức
-FirebaseDB -> NewsPage: Trả về chi tiết tin tức
-User -> NewsPage: Bình luận (nếu đã đăng nhập)
-NewsPage -> FirebaseDB: Lưu bình luận (nếu có)
-FirebaseDB -> NewsPage: Xác nhận lưu bình luận
-NewsPage -> User: Hiển thị tin tức và bình luận
+User -> NewsPage: Truy cập trang sự kiện tin tức và khuyến mãi
+NewsPage -> FirebaseDB: Lấy danh sách sự kiện tin tức và khuyến mãi
+FirebaseDB -> NewsPage: Trả về danh sách sự kiện tin tức và khuyến mãi
+User -> NewsPage: Đọc chi tiết sự kiện tin tức và khuyến mãi
+NewsPage -> FirebaseDB: Lấy chi tiết sự kiện tin tức và khuyến mãi
+FirebaseDB -> NewsPage: Trả về chi tiết sự kiện tin tức và khuyến mãi
+NewsPage -> User: Hiển thị sự kiện tin tức và khuyến mãi 
 @enduml
 ```
 - **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
@@ -963,15 +956,12 @@ participant "Firebase Database" as FirebaseDB
 participant "Cart Page" as CartPage
 
 User -> ProductPage: Chọn sản phẩm
-User -> ProductPage: Chọn số lượng, tùy chọn (nếu có)
-ProductPage -> FirebaseDB: Kiểm tra tồn kho
+User -> ProductPage: Chọn số lượng, tùy chọn 
 alt Còn hàng
     ProductPage -> CartPage: Thêm sản phẩm vào giỏ hàng
     CartPage -> FirebaseDB: Lưu thông tin giỏ hàng
     FirebaseDB -> CartPage: Xác nhận lưu thành công
     CartPage -> User: Hiển thị thông báo thành công
-else Hết hàng
-    ProductPage -> User: Hiển thị thông báo hết hàng
 end
 @enduml
 ```
@@ -1018,7 +1008,7 @@ alt Thanh toán thành công
     CartPage -> FirebaseDB: Tạo đơn hàng
     FirebaseDB -> OrderPage: Xác nhận đơn hàng
     OrderPage -> User: Hiển thị xác nhận đơn hàng
-else Thanh toán thất bại/hết hàng
+else Thanh toán thất bại
     VNPay -> CartPage: Thông báo lỗi
     CartPage -> User: Hiển thị thông báo lỗi
 end
@@ -1143,7 +1133,7 @@ end
 
 ---
 
-## Sequence Diagram UC017: Chat tư vấn AI
+## Sequence Diagram UC017: Box chat trực tiếp với quản trị viên CSKH
 
 ```plantuml
 @startuml
@@ -1162,21 +1152,50 @@ skinparam sequence {
     AltBackgroundColor #f5eee6
     AltBorderColor #8d6748
 }
-actor User
-participant "AI Chat Page" as AIChat
-participant "AI Service" as AIService
+actor "Khách hàng" as Customer
+participant "Chat Box Widget" as ChatBox
+participant "Firebase Realtime DB" as Firebase
+participant "Admin Dashboard" as AdminDash
+actor "NV CSKH" as CSAgent
 
-User -> AIChat: Mở chat AI
-User -> AIChat: Đặt câu hỏi
-AIChat -> AIService: Gửi câu hỏi
-alt AI hoạt động bình thường
-    AIService -> AIChat: Trả về phản hồi
-    AIChat -> User: Hiển thị phản hồi từ AI
-    User -> AIChat: Tiếp tục trò chuyện
-else Hệ thống AI gặp sự cố
-    AIService -> AIChat: Trả về lỗi
-    AIChat -> User: Hiển thị thông báo lỗi
+Customer -> ChatBox: Click icon chat trên website
+ChatBox -> Firebase: Khởi tạo session chat
+Firebase -> AdminDash: Thông báo có khách hàng online
+AdminDash -> CSAgent: Hiển thị yêu cầu chat mới
+
+Customer -> ChatBox: Gửi tin nhắn hỗ trợ
+ChatBox -> Firebase: Lưu tin nhắn realtime
+Firebase -> AdminDash: Hiển thị tin nhắn khách hàng
+AdminDash -> CSAgent: Thông báo tin nhắn mới
+
+alt NV CSKH phản hồi trong 30s
+    CSAgent -> AdminDash: Nhập và gửi phản hồi
+    AdminDash -> Firebase: Lưu phản hồi CSKH
+    Firebase -> ChatBox: Cập nhật tin nhắn realtime
+    ChatBox -> Customer: Hiển thị phản hồi từ CSKH
+    
+    opt Khách hàng tiếp tục hỏi
+        Customer -> ChatBox: Gửi câu hỏi tiếp theo
+        ChatBox -> Firebase: Lưu tin nhắn
+        Firebase -> AdminDash: Cập nhật cho NV CSKH
+        CSAgent -> AdminDash: Trả lời câu hỏi
+        AdminDash -> Firebase: Lưu câu trả lời
+        Firebase -> ChatBox: Hiển thị cho khách hàng
+    end
+else Không có phản hồi sau 30s
+    ChatBox -> ChatBox: Timeout 30 giây
+    ChatBox -> Customer: Hiển thị "Hệ thống đang bận, vui lòng thử lại sau"
+    
+    opt Khách hàng gửi tin nhắn lại
+        Customer -> ChatBox: Gửi tin nhắn mới
+        ChatBox -> Firebase: Lưu tin nhắn
+        Firebase -> AdminDash: Thông báo NV CSKH
+    end
 end
+
+Customer -> ChatBox: Đóng chat box
+ChatBox -> Firebase: Đánh dấu session kết thúc
+Firebase -> AdminDash: Thông báo khách hàng offline
 @enduml
 ```
 - **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
@@ -1207,7 +1226,7 @@ participant "Social Page" as SocialPage
 participant "Firebase Database" as FirebaseDB
 
 User -> SocialPage: Truy cập trang mạng xã hội
-User -> SocialPage: Tạo bài viết mới (nội dung, hình ảnh, quyền riêng tư)
+User -> SocialPage: Tạo bài viết mới (nội dung, hình ảnh)
 SocialPage -> FirebaseDB: Lưu bài viết mới
 alt Nội dung hợp lệ
     FirebaseDB -> SocialPage: Xác nhận đăng bài thành công
@@ -1438,15 +1457,15 @@ skinparam sequence {
 actor Admin
 participant "Product Management Page" as ProductPage
 participant "Firebase Database" as FirebaseDB
-participant "Firebase Storage" as Storage
+participant "cloudinary" as Cloudinary
 
 Admin -> ProductPage: Xem danh sách sản phẩm
 ProductPage -> FirebaseDB: Lấy danh sách sản phẩm
 FirebaseDB -> ProductPage: Trả về danh sách sản phẩm
 Admin -> ProductPage: Thêm/Sửa/Xóa sản phẩm
 alt Thêm/Sửa sản phẩm có upload hình ảnh
-    ProductPage -> Storage: Upload hình ảnh sản phẩm
-    Storage -> ProductPage: Trả về URL hình ảnh
+    ProductPage -> Cloudinary: Upload hình ảnh sản phẩm
+    Cloudinary -> ProductPage: Trả về URL hình ảnh
 end
 ProductPage -> FirebaseDB: Lưu thông tin sản phẩm
 FirebaseDB -> ProductPage: Trả về kết quả thao tác
@@ -1528,6 +1547,124 @@ CouponPage -> Admin: Hiển thị kết quả quản lý mã giảm giá
 - **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
 
 ---
+## Sequence Diagram UC027: Quản lý tin nhắn & đánh giá
+
+```plantuml
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+actor User
+participant "Message & Review Management Page" as MsgReviewPage
+participant "Firebase Database" as FirebaseDB
+
+== Quản lý tin nhắn ==
+User -> MsgReviewPage: Gửi/Xem tin nhắn
+MsgReviewPage -> FirebaseDB: Lưu/Lấy tin nhắn (real-time)
+FirebaseDB -> MsgReviewPage: Đẩy/Trả về tin nhắn mới
+MsgReviewPage -> User: Hiển thị tin nhắn
+Admin -> MsgReviewPage: Xem/Xóa tin nhắn
+MsgReviewPage -> FirebaseDB: Lấy/Xóa tin nhắn
+FirebaseDB -> MsgReviewPage: Trả về kết quả
+MsgReviewPage -> Admin: Hiển thị kết quả
+
+== Quản lý đánh giá ==
+User -> MsgReviewPage: Gửi/Xem đánh giá
+MsgReviewPage -> FirebaseDB: Lưu/Lấy đánh giá
+FirebaseDB -> MsgReviewPage: Trả về danh sách/đánh giá mới
+MsgReviewPage -> User: Hiển thị đánh giá
+Admin -> MsgReviewPage: Xem/Xóa/Sửa đánh giá
+MsgReviewPage -> FirebaseDB: Lấy/Xóa/Sửa đánh giá
+FirebaseDB -> MsgReviewPage: Trả về kết quả
+MsgReviewPage -> Admin: Hiển thị kết quả
+@enduml
+```
+
+- **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
+
+
+## Sequence Diagram UC028: Quản lý bài đăng mạng xã hội
+
+```plantuml
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "Social Post Management Page" as SocialPostPage
+participant "Firebase Database" as FirebaseDB
+
+Admin -> SocialPostPage: Xem danh sách bài đăng
+SocialPostPage -> FirebaseDB: Lấy danh sách bài đăng
+FirebaseDB -> SocialPostPage: Trả về danh sách bài đăng
+Admin -> SocialPostPage: Xóa bài đăng, bình luận
+SocialPostPage -> FirebaseDB: Thực hiện thao tác tương ứng
+FirebaseDB -> SocialPostPage: Trả về kết quả thao tác
+SocialPostPage -> Admin: Hiển thị kết quả quản lý bài đăng
+@enduml
+```
+- **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
+
+---
+
+## Sequence Diagram UC027: Xuất báo cáo thống kê
+
+```plantuml
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "24h News Management Page" as News24hPage
+participant "Firebase Database" as FirebaseDB
+
+Admin -> News24hPage: Xem danh sách tin 24h
+News24hPage -> FirebaseDB: Lấy danh sách tin 24h
+FirebaseDB -> News24hPage: Trả về danh sách tin 24h
+Admin -> News24hPage: Xem/Xóa tin 24h
+News24hPage -> FirebaseDB: Thực hiện thao tác tương ứng
+FirebaseDB -> News24hPage: Trả về kết quả thao tác
+News24hPage -> Admin: Hiển thị kết quả quản lý tin 24h
+@enduml
+```
+- **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
+
+---
+
 
 ## Sequence Diagram UC027: Xuất báo cáo thống kê
 
@@ -1742,15 +1879,15 @@ skinparam sequence {
 actor Admin
 participant "Staff Management Page" as StaffPage
 participant "Firebase Database" as FirebaseDB
-participant "Firebase Storage" as Storage
+participant "Cloudinary" as Cloudinary
 
 Admin -> StaffPage: Xem danh sách nhân viên
 StaffPage -> FirebaseDB: Lấy danh sách nhân viên
 FirebaseDB -> StaffPage: Trả về danh sách nhân viên
 Admin -> StaffPage: Thêm/Sửa/Xóa thông tin nhân viên
 alt Thêm/Sửa nhân viên có upload ảnh
-    StaffPage -> Storage: Upload ảnh nhân viên
-    Storage -> StaffPage: Trả về URL ảnh
+    StaffPage -> Cloudinary: Upload ảnh nhân viên
+    Cloudinary -> StaffPage: Trả về URL ảnh
 end
 StaffPage -> FirebaseDB: Lưu thông tin nhân viên
 FirebaseDB -> StaffPage: Trả về kết quả thao tác
@@ -1893,7 +2030,7 @@ participant "Firebase Database" as FirebaseDB
 Employee -> TimeSheet: Truy cập chức năng chấm công
 Employee -> TimeSheet: Chọn "Chấm công vào"
 TimeSheet -> FirebaseDB: Lưu thời gian chấm công vào
-FirebaseDB -> TimeSheet: Xác nhận lưu thời gian
+FirebaseDB -> TimeSheet: Xác nhận lưu thời gian, kinh độ vĩ độ
 TimeSheet -> Employee: Hiển thị xác nhận chấm công vào thành công
 @enduml
 ```
@@ -1929,7 +2066,7 @@ TimeSheet -> FirebaseDB: Kiểm tra đã chấm công vào
 alt Đã chấm công vào
     Employee -> TimeSheet: Chọn "Chấm công ra"
     TimeSheet -> FirebaseDB: Lưu thời gian chấm công ra
-    FirebaseDB -> TimeSheet: Xác nhận lưu thời gian
+    FirebaseDB -> TimeSheet: Xác nhận lưu thời gian, kinh độ, vĩ độ
     TimeSheet -> Employee: Hiển thị xác nhận chấm công ra thành công
 else Chưa chấm công vào
     FirebaseDB -> TimeSheet: Trả về thông báo lỗi

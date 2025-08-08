@@ -15,6 +15,12 @@ Table NguoiDung {
   anhDaiDien string [not null]
   maVach string [not null, unique]
   ngayTao datetime [not null]
+  
+  indexes {
+    email [unique]
+    maVach [unique]
+    ngayTao
+  }
 }
 
 // Bảng NhatKy: Nhật ký hệ thống của người dùng
@@ -214,6 +220,16 @@ Table TinNhanLienHe {
 // 6. E-COMMERCE - SẢN PHẨM
 // ========================================
 
+// Bảng DanhMuc: Danh mục sản phẩm
+Table DanhMuc {
+  maDanhMuc string [pk, not null]
+  tenDanhMuc string [not null]
+  moTa string
+  hinhAnh string
+  trangThai string [not null]
+  thuTu int [default: 0]
+}
+
 // Bảng SanPham: Sản phẩm
 Table SanPham {
   maSanPham string [pk, not null]
@@ -226,6 +242,13 @@ Table SanPham {
   trangThai string [not null]
   ngayTao datetime [not null]
   ngayCapNhat datetime [not null]
+  
+  indexes {
+    maDanhMuc
+    trangThai
+    (maDanhMuc, trangThai)
+    ngayTao
+  }
 }
 
 // Bảng KhuyenMai: Khuyến mãi
@@ -245,59 +268,59 @@ Table KhuyenMai {
 // 7. E-COMMERCE - ĐƠN HÀNG
 // ========================================
 
-// Bảng DonHang: Đơn hàng
+// Bảng DonHang: Đơn hàng (Đã tối ưu)
 Table DonHang {
   maDonHang string [pk, not null]
   maNguoiDung string [ref: > NguoiDung.maNguoiDung, not null]
   
-  // Thông tin hóa đơn
-  thongTinHoaDon_ten string [not null]
-  thongTinHoaDon_email string [not null]
-  thongTinHoaDon_soDienThoai string [not null]
-  thongTinHoaDon_diaChi string [not null]
-  
-  // Thông tin khách hàng
-  thongTinKhachHang_ten string [not null]
-  thongTinKhachHang_email string [not null]
-  thongTinKhachHang_soDienThoai string [not null]
-  thongTinKhachHang_diaChi string [not null]
-  
   // Thông tin giao hàng
-  thongTinGiaoHang_ten string [not null]
-  thongTinGiaoHang_soDienThoai string [not null]
-  thongTinGiaoHang_diaChi string [not null]
+  tenNguoiNhan string [not null]
+  soDienThoaiNhan string [not null]
+  diaChiGiaoHang string [not null]
   
   // Thời gian
-  ngayXacNhan datetime
   ngayTao datetime [not null]
   ngayCapNhat datetime [not null]
+  ngayGiaoYeuCau date [not null]
+  gioGiaoYeuCau time [not null]
   
   // Khuyến mãi
-  maGiamGia string [ref: > KhuyenMai.maKhuyenMai]
-  giamGiaMaGiamGia int [not null]
-  loaiMaGiamGia string [not null]
+  maGiamGia string [ref: > KhuyenMai.maGiamGia]
   
-  // Thông tin giao hàng
-  ngayGiao date [not null]
-  gioGiao time [not null]
-  
-  // Tài chính
-  soTienGiamGia int [not null, default: 0]
-  tongCong int [not null]
-  tongTien int [not null]
+  // Chi phí
   phiVanChuyen int [not null, default: 0]
-  
-  // Thanh toán
-  trangThaiThanhToan string [not null]
-  chiTietThanhToan_soTien int
-  chiTietThanhToan_ngayThanhToan datetime
-  chiTietThanhToan_maPhieuThuHoi string
-  chiTietThanhToan_soGiaoDich string
-  chiTietThanhToan_maGiaoDichVnp string
   
   // Trạng thái
   trangThai string [not null]
   ghiChu string
+  
+  indexes {
+    maNguoiDung
+    trangThai
+    ngayTao
+    (maNguoiDung, trangThai)
+    (ngayTao, trangThai)
+  }
+}
+
+// Bảng ThanhToanDonHang: Chi tiết thanh toán đơn hàng
+Table ThanhToanDonHang {
+  maThanhToan string [pk, not null]
+  maDonHang string [ref: > DonHang.maDonHang, not null, unique]
+  tongTienHang int [not null]
+  soTienGiamGia int [not null, default: 0]
+  phiVanChuyen int [not null, default: 0]
+  tongThanhToan int [not null]
+  phuongThucThanhToan string [not null]
+  trangThaiThanhToan string [not null]
+  ngayThanhToan datetime
+  maGiaoDichNganHang string
+  
+  indexes {
+    maDonHang [unique]
+    trangThaiThanhToan
+    ngayThanhToan
+  }
 }
 
 // Bảng ChiTietDonHang: Mục hàng trong đơn hàng
@@ -319,7 +342,7 @@ Table ChiTietDonHang {
 // Bảng KetQuaThanhToan: Kết quả thanh toán
 Table KetQuaThanhToan {
   maGiaoDich string [pk, not null]
-  maDonHang string [ref: > DonHang.maDonHang, not null]
+  maThanhToan string [ref: > ThanhToanDonHang.maThanhToan, not null]
   soTien int [not null]
   maPhieuThuHoi string
   ngayThanhToan datetime [not null]
@@ -330,7 +353,7 @@ Table KetQuaThanhToan {
 // Bảng GiaoDichVnpay: Giao dịch VNPay
 Table GiaoDichVnpay {
   maGiaoDichRef string [pk, not null]
-  maDonHang string [ref: > DonHang.maDonHang, not null]
+  maThanhToan string [ref: > ThanhToanDonHang.maThanhToan, not null]
   soTien int [not null]
   ngayTao datetime [not null]
   trangThai string [not null]
@@ -389,17 +412,7 @@ Table DanhGiaDonHang {
 
 // ========================================
 // DANH MỤC & PHÂN LOẠI
-// ========================================
-
-// Bảng DanhMuc: Danh mục sản phẩm
-Table DanhMuc {
-  maDanhMuc string [pk, not null]
-  tenDanhMuc string [not null]
-  moTa string
-  hinhAnh string
-  trangThai string [not null]
-  thuTu int [default: 0]
-} 
+// ======================================== 
 
 // ========================================
 // 11. QUẢN LÝ NHÂN SỰ
@@ -430,7 +443,7 @@ Table ChamCong {
   maChamCong string [pk, not null]
   uid string [not null]
   email string [ref: > NhanVien.email, not null]
-  ngay string [not null]
+  ngay date [not null]
   thoiGian datetime [not null]
   loai string [not null]
   trangThai string [not null]
@@ -464,9 +477,68 @@ Table DonTangCa {
   trangThai string [not null]
   ngayTao datetime [not null]
   ngayDuyet datetime
-  nguoiDuyet string
+  nguoiDuyet string [ref: > NhanVien.email]
   ngayTuChoi datetime
-  nguoiTuChoi string
+  nguoiTuChoi string [ref: > NhanVien.email]
 }
 
-Ref: "DanhGiaDonHang"."maDanhGia" < "CuocGoi"."candidate"
+// ========================================
+// NHÓM BẢNG ĐỂ TỔ CHỨC ERD
+// ========================================
+
+TableGroup "👤 Quản lý Người dùng" {
+  NguoiDung
+  NhatKy
+  TheThanhVien
+}
+
+TableGroup "🤝 Mạng xã hội" {
+  BanBe
+  LoiMoiKetBan
+  BaiDang
+  ThichBaiDang
+  BinhLuan
+  ThichBinhLuan
+  TraLoiBinhLuan
+  DangTin24Gio
+}
+
+TableGroup "💬 Tin nhắn & Cuộc gọi" {
+  CuocTroChuyen
+  ThanhVienTroChuyen
+  TinNhan
+  CuocGoi
+}
+
+TableGroup "🛒 E-Commerce" {
+  SanPham
+  DanhMuc
+  DonHang
+  ThanhToanDonHang
+  ChiTietDonHang
+  KhuyenMai
+  DanhGiaDonHang
+}
+
+TableGroup "💳 Thanh toán" {
+  KetQuaThanhToan
+  GiaoDichVnpay
+  ThongKeThanhToan
+}
+
+TableGroup "📰 Nội dung" {
+  TinTuc
+}
+
+TableGroup "🎧 Hỗ trợ" {
+  TinNhanHoTro
+  TinNhanLienHe
+}
+
+TableGroup "👥 Nhân sự" {
+  ChucVu
+  NhanVien
+  ChamCong
+  DonNghiPhep
+  DonTangCa
+} 
