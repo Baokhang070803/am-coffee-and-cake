@@ -395,8 +395,6 @@
                                                     <h5 id="customer-title">Thông Tin Khách Hàng</h5>
                                                     <div id="userInfoDisplay" style="display: none;">
                                                         <p><strong>Họ và Tên:</strong> <span id="display-fullname"></span></p>
-                                                        <p><strong>Ngày Sinh:</strong> <span id="display-dob"></span></p>
-                                                        <p><strong>Giới tính:</strong> <span id="display-gender"></span></p>
                                                         <p><strong>Địa Chỉ:</strong> <span id="display-address"></span></p>
                                                         <p><strong>Số Điện Thoại:</strong> <span id="display-phone"></span></p>
                                                         <p><strong>Email:</strong> <span id="display-email"></span></p>
@@ -554,8 +552,6 @@
                                         <div id="orderDetails">
                                             <h6>Thông Tin Khách Hàng</h6><br>
                                             <p><strong>Họ và Tên:</strong> <span id="order-fullname"></span></p>
-                                            <p><strong>Ngày Sinh:</strong> <span id="order-dob"></span></p>
-                                            <p><strong>Giới Tính:</strong> <span id="order-gender"></span></p>
                                             <p><strong>Địa Chỉ:</strong> <span id="order-address"></span></p>
                                             <p><strong>Số Điện Thoại:</strong> <span id="order-phone"></span></p>
                                             <p><strong>Email:</strong> <span id="order-email"></span></p>
@@ -792,16 +788,12 @@
                     document.getElementById('display-email').textContent = user.email || 'Chưa cập nhật';
                     document.getElementById('display-phone').textContent = user.phoneNumber || 'Chưa cập nhật';
                     document.getElementById('display-address').textContent = 'Chưa cập nhật';
-                    document.getElementById('display-dob').textContent = 'Chưa cập nhật';
-                    document.getElementById('display-gender').textContent = 'Chưa cập nhật';
 
                     db.ref('users/' + user.uid).once('value').then((snapshot) => {
                         const userData = snapshot.val();
                         if (userData) {
                             document.getElementById('display-fullname').textContent = userData.fullName || user.displayName || 'Chưa cập nhật';
                             document.getElementById('display-address').textContent = userData.address || 'Chưa cập nhật';
-                            document.getElementById('display-dob').textContent = userData.dob || 'Chưa cập nhật';
-                            document.getElementById('display-gender').textContent = userData.gender || 'Chưa cập nhật';
                             document.getElementById('display-phone').textContent = userData.phone || user.phoneNumber || 'Chưa cập nhật';
                         }
                         syncCustomerInfo(user, userData);
@@ -975,21 +967,17 @@
         });
 
         function syncCustomerInfo(user, userData) {
-            let fullName, email, phone, address, dob, gender;
+            let fullName, email, phone, address;
             if (user && userData) {
                 fullName = userData.fullName || user.displayName || 'Chưa cập nhật';
                 email = user.email || 'Chưa cập nhật';
                 phone = userData.phone || user.phoneNumber || 'Chưa cập nhật';
                 address = userData.address || 'Chưa cập nhật';
-                dob = userData.dob || 'Chưa cập nhật';
-                gender = userData.gender || 'Chưa cập nhật';
             } else {
                 fullName = document.getElementById('guest-fullname').value || 'Chưa nhập';
                 email = document.getElementById('guest-email').value || 'Chưa nhập';
                 phone = document.getElementById('guest-phone').value || 'Chưa nhập';
                 address = document.getElementById('guest-address').value || 'Chưa nhập';
-                dob = 'Chưa nhập';
-                gender = 'Chưa nhập';
             }
 
             document.getElementById('full_name').value = fullName;
@@ -1003,8 +991,6 @@
             document.getElementById('order-email').textContent = email;
             document.getElementById('order-phone').textContent = phone;
             document.getElementById('order-address').textContent = address;
-            document.getElementById('order-dob').textContent = dob;
-            document.getElementById('order-gender').textContent = gender;
         }
 
         function loadDropdownMenu() {
