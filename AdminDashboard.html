@@ -31,7 +31,10 @@
         height: 100vh;
         z-index: 1050;
         transition: left 0.3s ease;
-        width: 280px;
+        width: 100%;
+        max-width: 320px;
+        overflow-y: auto;
+        padding: 15px;
       }
       
       .sidebar.show {
@@ -82,6 +85,53 @@
         display: block;
       }
       
+      /* Mobile Navigation Optimizations */
+      .sidebar .nav {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      
+      .sidebar .nav-link {
+        padding: 10px 12px;
+        font-size: 13px;
+        margin: 2px 0;
+        border-radius: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+      }
+      
+      .sidebar .nav-link i {
+        width: 18px;
+        text-align: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      
+      .sidebar .nav-link span {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+      /* Compact admin info */
+      .sidebar .admin-avatar {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 8px;
+      }
+      
+      .sidebar h6 {
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      
       /* Card adjustments */
       .card {
         margin-bottom: 15px;
@@ -123,18 +173,6 @@
         font-size: 14px;
       }
       
-      /* Navigation adjustments */
-      .nav-link {
-        padding: 12px 15px;
-        font-size: 14px;
-      }
-      
-      .nav-link i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-      }
-      
       /* Stats cards */
       .stats-card {
         margin-bottom: 15px;
@@ -168,6 +206,33 @@
     
     @media (max-width: 576px) {
       /* Extra small devices */
+      .sidebar {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+      }
+      
+      .sidebar .nav-link {
+        padding: 8px 10px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+      
+      .sidebar .nav-link i {
+        width: 16px;
+        font-size: 13px;
+      }
+      
+      .sidebar .admin-avatar {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .sidebar h6 {
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      
       .content {
         padding: 10px !important;
       }
@@ -209,10 +274,34 @@
       /* Very small devices */
       .sidebar {
         width: 100%;
+        padding: 8px;
       }
       
-      .nav-link span {
-        font-size: 16px;
+      .sidebar .nav-link {
+        padding: 6px 8px;
+        font-size: 11px;
+        min-height: 36px;
+        margin: 1px 0;
+      }
+      
+      .sidebar .nav-link i {
+        width: 14px;
+        font-size: 12px;
+      }
+      
+      .sidebar .nav-link span {
+        font-size: 11px;
+      }
+      
+      .sidebar .admin-avatar {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 6px;
+      }
+      
+      .sidebar h6 {
+        font-size: 12px;
+        margin-bottom: 10px;
       }
       
       .card-header {
@@ -557,6 +646,1553 @@
     /* Mobile toggle button - hidden by default */
     .mobile-toggle {
       display: none;
+    }
+    
+    /* Mobile sidebar optimizations */
+    @media (max-width: 768px) {
+      .sidebar .nav {
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        padding-right: 5px;
+        scrollbar-width: thin;
+        scrollbar-color: #A67C52 #f3f6f9;
+      }
+      
+      .sidebar .nav::-webkit-scrollbar {
+        width: 4px;
+      }
+      
+      .sidebar .nav::-webkit-scrollbar-track {
+        background: #f3f6f9;
+        border-radius: 2px;
+      }
+      
+      .sidebar .nav::-webkit-scrollbar-thumb {
+        background: #A67C52;
+        border-radius: 2px;
+      }
+      
+      .sidebar .nav::-webkit-scrollbar-thumb:hover {
+        background: #8B6F47;
+      }
+    }
+    
+    /* User Management Mobile Card Styles */
+    .user-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+      border: 1px solid rgba(166,124,82,0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .user-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #A67C52, #8B6F47);
+    }
+    
+    .user-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+    }
+    
+    .user-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #A67C52;
+      flex-shrink: 0;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    
+    .user-avatar i {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #A67C52;
+    }
+    
+    /* Avatar upload styles */
+    .avatar-upload-container {
+      border: 2px dashed #A67C52;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+    
+    .avatar-upload-container:hover {
+      border-color: #8B6F47;
+      background: #f3ede6;
+    }
+    
+    .avatar-upload-container.dragover {
+      border-color: #28a745;
+      background: #d4edda;
+    }
+    
+    .avatar-preview-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 10px;
+      background: #e8f5e8;
+      border-radius: 6px;
+      border: 1px solid #28a745;
+    }
+    
+    .avatar-preview-container img {
+      border-radius: 50%;
+      border: 2px solid #28a745;
+    }
+    
+    /* Mobile responsive for modals */
+    @media (max-width: 768px) {
+      
+      /* File input optimization */
+      .form-control {
+        font-size: 0.875rem;
+        padding: 0.375rem 0.5rem;
+      }
+      
+      /* Modal optimization */
+      .swal2-popup {
+        width: 95% !important;
+        max-width: 400px !important;
+        margin: 1rem auto !important;
+      }
+      
+      .swal2-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 1rem !important;
+      }
+      
+      .swal2-html-container {
+        font-size: 0.875rem !important;
+        margin: 0.5rem 0 !important;
+      }
+      
+      /* Modal action buttons */
+      .swal2-actions {
+        gap: 0.5rem !important;
+        margin-top: 1rem !important;
+      }
+      
+      .swal2-confirm,
+      .swal2-cancel {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.875rem !important;
+        min-width: 80px !important;
+        max-width: 120px !important;
+      }
+      
+      /* Form elements in modal */
+      .form-label {
+        font-size: 0.875rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      
+      .form-text {
+        font-size: 0.75rem !important;
+      }
+      
+      /* Avatar preview container */
+      .avatar-preview-container {
+        padding: 8px !important;
+        margin-top: 8px !important;
+      }
+      
+      .avatar-preview-container img {
+        width: 50px !important;
+        height: 50px !important;
+      }
+      
+      .avatar-preview-container small {
+        font-size: 0.75rem !important;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      /* Even smaller screens */
+      
+      .form-control {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.4rem;
+      }
+      
+      /* Modal optimization for very small screens */
+      .swal2-popup {
+        width: 98% !important;
+        max-width: 350px !important;
+        margin: 0.5rem auto !important;
+      }
+      
+      .swal2-title {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+      
+      .swal2-html-container {
+        font-size: 0.8rem !important;
+        margin: 0.25rem 0 !important;
+      }
+      
+      /* Modal action buttons for very small screens */
+      .swal2-actions {
+        gap: 0.25rem !important;
+        margin-top: 0.75rem !important;
+      }
+      
+      .swal2-confirm,
+      .swal2-cancel {
+        padding: 0.375rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        min-width: 70px !important;
+        max-width: 100px !important;
+      }
+      
+      /* Form elements for very small screens */
+      .form-label {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.2rem !important;
+      }
+      
+      .form-text {
+        font-size: 0.7rem !important;
+      }
+      
+      /* Avatar preview for very small screens */
+      .avatar-preview-container {
+        padding: 6px !important;
+        margin-top: 6px !important;
+      }
+      
+      .avatar-preview-container img {
+        width: 45px !important;
+        height: 45px !important;
+      }
+      
+      .avatar-preview-container small {
+        font-size: 0.7rem !important;
+      }
+      
+      /* Readonly email field styling */
+      input[readonly] {
+        background-color: #f8f9fa !important;
+        cursor: not-allowed !important;
+        opacity: 0.8;
+      }
+      
+      input[readonly]:focus {
+        box-shadow: none !important;
+        border-color: #ced4da !important;
+      }
+      
+      /* Optimize spacing in modal */
+      .mb-3 {
+        margin-bottom: 0.75rem !important;
+      }
+      
+      .d-flex.gap-2 {
+        gap: 0.5rem !important;
+      }
+      
+      /* Reduce padding in modal content */
+      .swal2-html-container {
+        padding: 0.5rem !important;
+      }
+    }
+    
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      .swal2-popup {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+      }
+      
+      .swal2-title {
+        font-size: 1rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+      
+      .swal2-html-container {
+        font-size: 0.75rem !important;
+        padding: 0.25rem !important;
+      }
+      
+      .swal2-actions {
+        gap: 0.2rem !important;
+        margin-top: 0.5rem !important;
+      }
+      
+      .swal2-confirm,
+      .swal2-cancel {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+        min-width: 60px !important;
+        max-width: 80px !important;
+      }
+      
+      .form-control {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.3rem;
+      }
+      
+      .avatar-preview-container {
+        padding: 4px !important;
+        margin-top: 4px !important;
+      }
+      
+      .avatar-preview-container img {
+        width: 40px !important;
+        height: 40px !important;
+      }
+    }
+    
+    /* Product Management Mobile Optimizations */
+    /* Hide mobile cards on desktop by default */
+    .mobile-product-cards {
+      display: none;
+    }
+    
+    /* Promotion Management Mobile Optimizations */
+    /* Hide mobile cards on desktop by default */
+    .mobile-promotion-cards {
+      display: none;
+    }
+    
+    /* Message Management Mobile Optimizations */
+    /* Hide mobile cards on desktop by default */
+    .mobile-message-cards,
+    .mobile-reviews-cards,
+    .mobile-news-cards,
+    .mobile-order-cards {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      /* Hide table on mobile */
+      #productManagement .table {
+        display: none !important;
+      }
+      
+      /* Show mobile card view */
+      #productManagement .mobile-product-cards {
+        display: block !important;
+      }
+      
+      /* Show mobile promotion card view */
+      #promotionManagement .mobile-promotion-cards {
+        display: block !important;
+      }
+      
+      /* Show mobile message and reviews card view */
+      #messageManagement .mobile-message-cards,
+      #messageManagement .mobile-reviews-cards {
+        display: block !important;
+      }
+      
+      /* Show mobile news card view */
+      #newsManagement .mobile-news-cards {
+        display: block !important;
+      }
+      
+      /* Show mobile order card view */
+      #orderManagement .mobile-order-cards {
+        display: block !important;
+      }
+      
+      /* Search form optimization */
+      #productSearchForm .row,
+      #promotionSearchForm .row,
+      #messageSearchForm .row,
+      #newsSearchForm .row {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      #productSearchForm .col-md-6,
+      #productSearchForm .col-md-4,
+      #productSearchForm .col-md-2,
+      #promotionSearchForm .col-md-6,
+      #promotionSearchForm .col-md-4,
+      #promotionSearchForm .col-md-2,
+      #messageSearchForm .col-md-6,
+      #messageSearchForm .col-md-2,
+      #newsSearchForm .col-md-6,
+      #newsSearchForm .col-md-2 {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      #productSearchForm .btn,
+      #promotionSearchForm .btn,
+      #messageSearchForm .btn,
+      #newsSearchForm .btn {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      
+      /* Mobile product card styles */
+      .product-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+        border: 1px solid rgba(166,124,82,0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .product-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+      }
+      
+      .product-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .product-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid #A67C52;
+        flex-shrink: 0;
+      }
+      
+      .product-info {
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .product-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #464f5c;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .product-id {
+        color: #8391a7;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      
+      .product-price {
+        font-weight: 600;
+        color: #A67C52;
+        font-size: 1rem;
+      }
+      
+      .product-details {
+        margin-bottom: 12px;
+      }
+      
+      .product-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+      }
+      
+      .product-detail-label {
+        font-weight: 500;
+        color: #464f5c;
+        min-width: 60px;
+      }
+      
+      .product-detail-value {
+        color: #8391a7;
+        flex: 1;
+      }
+      
+      .product-description {
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      
+      .product-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .product-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .product-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .product-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .product-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .product-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Mobile promotion card styles */
+      .promotion-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+        border: 1px solid rgba(166,124,82,0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .promotion-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+      }
+      
+      .promotion-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f3f6f9;
+      }
+      
+      .promotion-code {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #A67C52;
+        background: #f3ede6;
+        padding: 6px 12px;
+        border-radius: 8px;
+        letter-spacing: 1px;
+      }
+      
+      .promotion-discount {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #28a745;
+        background: #d4edda;
+        padding: 6px 12px;
+        border-radius: 8px;
+      }
+      
+      .promotion-details {
+        margin-bottom: 12px;
+      }
+      
+      .promotion-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+      }
+      
+      .promotion-detail-label {
+        font-weight: 500;
+        color: #464f5c;
+        min-width: 80px;
+      }
+      
+      .promotion-detail-value {
+        color: #8391a7;
+        flex: 1;
+      }
+      
+      .promotion-status {
+        margin-bottom: 12px;
+      }
+      
+      .promotion-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .promotion-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .promotion-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .promotion-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .promotion-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .promotion-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Mobile news card styles */
+      .news-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+        border: 1px solid rgba(166,124,82,0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .news-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+      }
+      
+      .news-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f3f6f9;
+      }
+      
+      .news-image {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #A67C52;
+      }
+      
+      .news-info {
+        flex: 1;
+      }
+      
+      .news-title {
+        font-weight: 600;
+        color: #A67C52;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+        line-height: 1.3;
+      }
+      
+      .news-date {
+        font-size: 0.85rem;
+        color: #8391a7;
+      }
+      
+      .news-summary {
+        margin-bottom: 12px;
+        line-height: 1.5;
+        color: #464f5c;
+        font-size: 0.9rem;
+      }
+      
+      .news-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .news-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .news-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .news-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .news-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .news-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Mobile order card styles */
+      .order-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+        border: 1px solid rgba(166,124,82,0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .order-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+      }
+      
+      .order-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f3f6f9;
+      }
+      
+      .order-id {
+        font-weight: 700;
+        color: #A67C52;
+        font-size: 1.1rem;
+        background: #f3ede6;
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+      
+      .order-status {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 500;
+      }
+      
+      .order-status.pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+      
+      .order-status.confirmed {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      
+      .order-status.shipped {
+        background: #d4edda;
+        color: #155724;
+      }
+      
+      .order-status.delivered {
+        background: #d1e7dd;
+        color: #0f5132;
+      }
+      
+      .order-status.cancelled {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      
+      .order-status.pending-make {
+        background: #e2e3e5;
+        color: #383d41;
+      }
+      
+      .order-details {
+        margin-bottom: 12px;
+      }
+      
+      .order-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+      }
+      
+      .order-detail-label {
+        font-weight: 500;
+        color: #464f5c;
+        min-width: 80px;
+      }
+      
+      .order-detail-value {
+        color: #8391a7;
+        flex: 1;
+      }
+      
+      .order-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .order-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .order-action-btn.view {
+        background: #007bff;
+        color: white;
+      }
+      
+      .order-action-btn.view:hover {
+        background: #0056b3;
+      }
+      
+      .order-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .order-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .order-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .order-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Mobile chat interface styles */
+      .mobile-user-selector {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        margin-bottom: 16px;
+      }
+      
+      .mobile-user-selector .form-select {
+        border: 1px solid #A67C52;
+        border-radius: 6px;
+        font-size: 0.9rem;
+      }
+      
+      .mobile-user-selector .form-select:focus {
+        border-color: #A67C52;
+        box-shadow: 0 0 0 0.2rem rgba(166, 124, 82, 0.25);
+      }
+      
+      .mobile-chat-area {
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      
+      .mobile-chat-header {
+        background: #A67C52;
+        color: white;
+        padding: 12px 16px;
+        border-bottom: 1px solid #e9ecef;
+      }
+      
+      .mobile-chat-messages {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 16px;
+        background: #f8f9fa;
+      }
+      
+      .mobile-chat-msg {
+        margin-bottom: 12px;
+        display: flex;
+      }
+      
+      .mobile-chat-msg.user {
+        justify-content: flex-start;
+      }
+      
+      .mobile-chat-msg.admin {
+        justify-content: flex-end;
+      }
+      
+      .mobile-chat-bubble {
+        max-width: 80%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        position: relative;
+      }
+      
+      .mobile-chat-msg.user .mobile-chat-bubble {
+        background: #e9ecef;
+        color: #212529;
+      }
+      
+      .mobile-chat-msg.admin .mobile-chat-bubble {
+        background: #A67C52;
+        color: white;
+      }
+      
+      .mobile-chat-content {
+        margin-bottom: 4px;
+        line-height: 1.4;
+      }
+      
+      .mobile-chat-time {
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+      
+      .mobile-chat-input {
+        padding: 12px 16px;
+        background: white;
+        border-top: 1px solid #e9ecef;
+      }
+      
+      /* Mobile review card styles */
+      .review-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(166,124,82,0.1);
+        border: 1px solid rgba(166,124,82,0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .review-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(166,124,82,0.15);
+      }
+      
+      .review-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f3f6f9;
+      }
+      
+      .review-user {
+        font-weight: 600;
+        color: #A67C52;
+        font-size: 1.1rem;
+      }
+      
+      .review-time {
+        font-size: 0.85rem;
+        color: #8391a7;
+        margin-top: 4px;
+      }
+      
+      .review-content {
+        margin-bottom: 12px;
+        line-height: 1.5;
+        color: #464f5c;
+        font-style: italic;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .product-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .product-card-header {
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .product-image {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .product-name {
+        font-size: 1rem;
+      }
+      
+      .product-price {
+        font-size: 0.9rem;
+      }
+      
+      .product-detail-item {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      
+      .product-description {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        margin-bottom: 10px;
+      }
+      
+      .product-actions {
+        gap: 6px;
+      }
+      
+      .product-action-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      
+      .promotion-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .promotion-card-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      .promotion-code {
+        font-size: 1rem;
+        padding: 4px 8px;
+      }
+      
+      .promotion-discount {
+        font-size: 1rem;
+        padding: 4px 8px;
+      }
+      
+      .promotion-detail-item {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+      }
+      
+      .promotion-detail-label {
+        min-width: 70px;
+      }
+      
+      .promotion-actions {
+        gap: 6px;
+      }
+      
+      .promotion-action-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      
+      .message-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .message-card-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      .message-sender {
+        font-size: 1rem;
+      }
+      
+      .message-time {
+        font-size: 0.8rem;
+      }
+      
+      .message-content {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+      
+      .message-actions {
+        gap: 6px;
+      }
+      
+      .message-action-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      
+      .mobile-user-selector {
+        padding: 10px;
+      }
+      
+      .mobile-chat-header {
+        padding: 10px 12px;
+      }
+      
+      .mobile-chat-messages {
+        max-height: 250px;
+        padding: 12px;
+      }
+      
+      .mobile-chat-bubble {
+        max-width: 85%;
+        padding: 8px 10px;
+      }
+      
+      .mobile-chat-input {
+        padding: 10px 12px;
+      }
+      
+      .news-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .news-card-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      .news-image {
+        width: 70px;
+        height: 50px;
+      }
+      
+      .news-title {
+        font-size: 1rem;
+      }
+      
+      .news-date {
+        font-size: 0.8rem;
+      }
+      
+      .news-summary {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+      }
+      
+      .news-actions {
+        gap: 6px;
+      }
+      
+      .news-action-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      
+      .order-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .order-card-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      .order-id {
+        font-size: 1rem;
+        padding: 3px 6px;
+      }
+      
+      .order-status {
+        font-size: 0.8rem;
+        padding: 3px 6px;
+      }
+      
+      .order-detail-item {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+      }
+      
+      .order-detail-label {
+        min-width: 70px;
+      }
+      
+      .order-actions {
+        gap: 6px;
+      }
+      
+      .order-action-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      
+      .mobile-order-tab {
+        padding: 10px 6px;
+        min-height: 60px;
+        font-size: 0.75rem;
+      }
+      
+      .mobile-order-tab i {
+        font-size: 1rem;
+      }
+      
+      .mobile-order-tab span:first-of-type {
+        font-size: 0.7rem;
+      }
+      
+      .mobile-order-count {
+        font-size: 0.65rem;
+        padding: 1px 4px;
+      }
+      
+      .review-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .review-card-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      
+      .review-user {
+        font-size: 1rem;
+      }
+      
+      .review-time {
+        font-size: 0.8rem;
+      }
+      
+      .review-content {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+      
+      /* Mobile post detail modal - smaller screens */
+      .post-detail-modal .modal-dialog {
+        max-width: 98%;
+        margin: 5px auto;
+      }
+      
+      .post-detail-modal .modal-content {
+        max-height: 95vh;
+      }
+      
+      .post-detail-modal .modal-header {
+        padding: 10px 12px;
+      }
+      
+      .post-detail-modal .modal-title {
+        font-size: 1rem;
+      }
+      
+      .post-detail-modal .modal-body {
+        padding: 12px;
+        max-height: calc(95vh - 100px);
+      }
+      
+      .post-detail-modal .btn-close {
+        padding: 6px;
+      }
+      
+      .post-detail-modal #deletePostInModal {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+        height: auto;
+        line-height: 1.1;
+      }
+      
+      /* Post detail content optimization for mobile */
+      .post-detail-modal .post-content {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+      
+      .post-detail-modal .post-image {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+      }
+      
+      .post-detail-modal .comment-section {
+        margin-top: 16px;
+      }
+      
+      .post-detail-modal .comment-item {
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      
+      .post-detail-modal .comment-author {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #A67C52;
+      }
+      
+      .post-detail-modal .comment-text {
+        font-size: 0.85rem;
+        margin-top: 4px;
+      }
+      
+      .post-detail-modal .comment-time {
+        font-size: 0.75rem;
+        color: #8391a7;
+        margin-top: 2px;
+      }
+      
+      .post-detail-modal .comment-actions {
+        margin-top: 8px;
+      }
+      
+      .post-detail-modal .comment-action-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        margin-right: 8px;
+      }
+    }
+    
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #464f5c;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .user-email {
+      color: #8391a7;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .user-details {
+      margin-bottom: 12px;
+    }
+    
+    .user-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    
+    .user-detail-item i {
+      width: 16px;
+      color: #A67C52;
+      font-size: 0.8rem;
+    }
+    
+    .user-detail-label {
+      font-weight: 500;
+      color: #8391a7;
+      min-width: 60px;
+    }
+    
+    .user-detail-value {
+      color: #464f5c;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    
+    .user-action-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .user-action-btn.edit {
+      background: #A67C52;
+      color: white;
+    }
+    
+    .user-action-btn.edit:hover {
+      background: #8B6F47;
+      transform: scale(1.05);
+    }
+    
+    .user-action-btn.delete {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .user-action-btn.delete:hover {
+      background: #c82333;
+      transform: scale(1.05);
+    }
+    
+    .user-action-btn.view {
+      background: #17a2b8;
+      color: white;
+    }
+    
+    .user-action-btn.view:hover {
+      background: #138496;
+      transform: scale(1.05);
+    }
+    
+    @media (max-width: 576px) {
+      .user-card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .user-card-header {
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .user-avatar {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .user-name {
+        font-size: 1rem;
+      }
+      
+      .user-email {
+        font-size: 0.85rem;
+      }
+      
+      .user-detail-item {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      
+      .user-actions {
+        gap: 6px;
+      }
+      
+      .user-action-btn {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .user-card {
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .user-name {
+        font-size: 0.95rem;
+      }
+      
+      .user-email {
+        font-size: 0.8rem;
+      }
+      
+      .user-detail-item {
+        font-size: 0.8rem;
+      }
+      
+      .user-actions {
+        flex-direction: column;
+        gap: 4px;
+      }
+      
+      .user-action-btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        justify-content: center;
+      }
     }
     
     /* Sidebar */
@@ -3191,37 +4827,37 @@
     </div>
     <h6 class="text-center mb-4 user-name">Quản trị viên</h6>
     <nav class="nav flex-column">
-      <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> <span>Tổng Quan</span></a>
-      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>Quản Lý Sản Phẩm</span></a>
-      <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> <span>Quản Lý Mã Giảm Giá</span></a>
-      <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> <span>Quản Lý Đơn Hàng</span></a>
-      <a href="#messageManagement" class="nav-link" data-bs-toggle="tab">
-        <i class="fas fa-comments"></i>
-        <span>Quản lý tin nhắn</span>
-      </a>
+      <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard thống kê</span></a>
       <a href="#userManagement" class="nav-link" data-bs-toggle="tab">
         <i class="fas fa-users"></i>
-        <span>Quản lý người dùng</span>
+        <span>QL người dùng</span>
       </a>
-      <a href="#newsManagement" class="nav-link" data-bs-toggle="tab">
-        <i class="fas fa-newspaper"></i>
-        <span>Quản lý tin tức</span>
+      <a class="nav-link" href="#productManagement"><i class="fas fa-coffee"></i> <span>QL sản phẩm</span></a>
+      <a class="nav-link" href="#promotionManagement"><i class="fas fa-tags"></i> <span>QL mã giảm giá</span></a>
+      <a href="#messageManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-comments"></i>
+        <span>QL tin nhắn & đánh giá</span>
       </a>
       <a href="#postManagement" class="nav-link" data-bs-toggle="tab">
         <i class="fas fa-clipboard"></i>
-        <span>Quản lý bài đăng</span>
+        <span>QL bài đăng mạng xã hội</span>
       </a>
+      <a href="#newsManagement" class="nav-link" data-bs-toggle="tab">
+        <i class="fas fa-newspaper"></i>
+        <span>QL tin tức</span>
+      </a>
+      <a class="nav-link" href="#orderManagement"><i class="fas fa-shopping-cart"></i> <span>QL đơn hàng</span></a>
       <a href="#storyManagement" class="nav-link" data-bs-toggle="tab">
         <i class="fas fa-clock"></i>
-        <span>Quản lý tin 24h</span>
-      </a>
-      <a href="#staffManagement" class="nav-link" id="navStaffManagement" data-bs-toggle="tab">
-        <i class="fas fa-user-tie"></i>
-        <span>Quản lý nhân viên & chấnmcông</span>
+        <span>QL tin 24h</span>
       </a>
       <a href="#roleManagement" class="nav-link" id="navRoleManagement" data-bs-toggle="tab">
         <i class="fas fa-id-badge"></i>
-        <span>Quản lý chức vụ</span>
+        <span>QL chức vụ</span>
+      </a>
+      <a href="#staffManagement" class="nav-link" id="navStaffManagement" data-bs-toggle="tab">
+        <i class="fas fa-user-tie"></i>
+        <span>QL nhân viên & chấm công</span>
       </a>
 
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
@@ -3384,19 +5020,30 @@
         </div>
       </div>
     </form>
-    <table class="table table-bordered align-middle">
-      <thead>
-        <tr>
-          <th>Hình Ảnh</th>
-          <th>Sản Phẩm</th>
-          <th>Giá</th>
-          <th>Danh Mục</th>
-          <th>Mô Tả</th>
-          <th>Hành Động</th>
-        </tr>
-      </thead>
-      <tbody id="productTableBody"></tbody>
-    </table>
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>Hình Ảnh</th>
+            <th>Sản Phẩm</th>
+            <th>Giá</th>
+            <th>Danh Mục</th>
+            <th>Mô Tả</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </div>
+    
+    <!-- Mobile Card View -->
+    <div class="mobile-product-cards d-md-none" id="productCardList">
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+        <p>Đang tải...</p>
+      </div>
+    </div>
   </section>
 
   <!-- Promotion Management Section -->
@@ -3423,19 +5070,30 @@
         </div>
       </div>
     </form>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Mã</th>
-          <th>Giảm Giá (%)</th>
-          <th>Ngày Bắt Đầu</th>
-          <th>Ngày Kết Thúc</th>
-          <th>Trạng Thái</th>
-          <th>Hành Động</th>
-        </tr>
-      </thead>
-      <tbody id="promotionTableBody"></tbody>
-    </table>
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Mã</th>
+            <th>Giảm Giá (%)</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+          </tr>
+        </thead>
+        <tbody id="promotionTableBody"></tbody>
+      </table>
+    </div>
+    
+    <!-- Mobile Card View -->
+    <div class="mobile-promotion-cards d-md-none" id="promotionCardList">
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+        <p>Đang tải...</p>
+      </div>
+    </div>
   </section>
 
 
@@ -3444,8 +5102,8 @@
   <section id="orderManagement">
     <h2>Quản Lý Đơn Hàng</h2>
     <div class="mb-3 d-flex gap-2">
-      <button class="btn btn-success" id="openOrderPOS"><i class="fas fa-plus"></i> Tạo Order mới</button>
-      <button class="btn btn-secondary" id="openOrderHistory"><i class="fas fa-history"></i> Lịch sử đơn</button>
+              <button class="btn btn-success d-none d-md-inline-block" id="openOrderPOS"><i class="fas fa-plus"></i> Tạo Order mới</button>
+        <button class="btn btn-secondary d-none d-md-inline-block" id="openOrderHistory"><i class="fas fa-history"></i> Lịch sử đơn</button>
     </div>
     <div class="row mb-4">
       <div class="col-md-3">
@@ -3485,7 +5143,8 @@
         </div>
       </div>
     </div>
-    <div class="order-tabs">
+    <!-- Desktop Order Tabs -->
+    <div class="order-tabs d-none d-md-flex">
       <button class="order-tab active" data-status="all">
         Tất cả
         <span class="order-count">0</span>
@@ -3515,6 +5174,51 @@
         <span class="order-count">0</span>
       </button>
     </div>
+    
+    <!-- Mobile Order Tabs -->
+    <div class="mobile-order-tabs d-md-none">
+      <div class="mobile-tab-row">
+        <button class="mobile-order-tab active" data-status="all" onclick="switchOrderTab('all')">
+          <i class="fas fa-list"></i>
+          <span>Tất cả</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+        <button class="mobile-order-tab" data-status="pending" onclick="switchOrderTab('pending')">
+          <i class="fas fa-clock"></i>
+          <span>Chờ xác nhận</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+        <button class="mobile-order-tab" data-status="confirmed" onclick="switchOrderTab('confirmed')">
+          <i class="fas fa-cog"></i>
+          <span>Đang xử lý</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+      </div>
+      <div class="mobile-tab-row">
+        <button class="mobile-order-tab" data-status="shipped" onclick="switchOrderTab('shipped')">
+          <i class="fas fa-truck"></i>
+          <span>Đang giao</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+        <button class="mobile-order-tab" data-status="delivered" onclick="switchOrderTab('delivered')">
+          <i class="fas fa-check-circle"></i>
+          <span>Đã giao</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+        <button class="mobile-order-tab" data-status="cancelled" onclick="switchOrderTab('cancelled')">
+          <i class="fas fa-times-circle"></i>
+          <span>Đã hủy</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+      </div>
+      <div class="mobile-tab-row">
+        <button class="mobile-order-tab" data-status="pending-make" onclick="switchOrderTab('pending-make')">
+          <i class="fas fa-coffee"></i>
+          <span>Chờ pha chế</span>
+          <span class="mobile-order-count">0</span>
+        </button>
+      </div>
+    </div>
     <div class="order-filters">
       <div class="order-search flex-grow-1">
         <input type="text" id="orderSearch" class="form-control" placeholder="Nhập ID đơn hàng hoặc tên khách hàng...">
@@ -3523,7 +5227,8 @@
         <i class="fas fa-sync-alt"></i> Làm mới
       </button>
     </div>
-    <div class="table-container">
+    <!-- Desktop Table View -->
+    <div class="table-container d-none d-md-block">
       <table class="table order-table mb-0">
         <thead>
           <tr>
@@ -3539,6 +5244,14 @@
         </thead>
         <tbody id="orderTableBody"></tbody>
       </table>
+    </div>
+    
+    <!-- Mobile Card View -->
+    <div class="mobile-order-cards d-md-none" id="orderCardList">
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+        <p>Đang tải...</p>
+      </div>
     </div>
   </section>
 
@@ -3557,17 +5270,35 @@
           </div>
         </div>
       </form>
-      <div class="message-container" id="messageContainer">
+      <!-- Desktop Message View -->
+      <div class="message-container d-none d-md-block" id="messageContainer">
         <div class="text-center text-muted">Đang tải tin nhắn...</div>
+      </div>
+      
+      <!-- Mobile Message Cards -->
+      <div class="mobile-message-cards d-md-none" id="mobileMessageContainer">
+        <div class="text-center text-muted py-4">
+          <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+          <p>Đang tải tin nhắn...</p>
+        </div>
       </div>
     </div>
     <div class="row mt-4">
       <div class="col-md-12">
         <div class="card p-3">
           <h5><i class="fas fa-comments me-2"></i> Đánh Giá Từ Người Dùng</h5>
-          <ul class="list-group" id="userReviewsList">
+          <!-- Desktop Reviews View -->
+          <ul class="list-group d-none d-md-block" id="userReviewsList">
             <li class="list-group-item text-center text-muted">Đang tải đánh giá...</li>
           </ul>
+          
+          <!-- Mobile Reviews Cards -->
+          <div class="mobile-reviews-cards d-md-none" id="mobileReviewsContainer">
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+              <p>Đang tải đánh giá...</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3579,7 +5310,9 @@
     <button class="btn btn-primary mb-3" onclick="showAddUserModal()">
       <i class="fas fa-user-plus me-2"></i> Thêm người dùng
     </button>
-    <div class="table-responsive">
+    
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-md-block">
       <table class="table table-bordered table-hover align-middle">
         <thead>
           <tr>
@@ -3596,6 +5329,14 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    
+    <!-- Mobile Card View -->
+    <div class="d-md-none" id="usersCardList">
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+        <p>Đang tải...</p>
+      </div>
     </div>
   </section>
 
@@ -3956,7 +5697,8 @@
       </div>
     </div>
   </form>
-  <div class="table-responsive">
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -3969,6 +5711,14 @@
       </thead>
       <tbody id="newsTableBody"></tbody>
     </table>
+  </div>
+  
+  <!-- Mobile Card View -->
+  <div class="mobile-news-cards d-md-none" id="newsCardList">
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
   </div>
 </section>
 
@@ -4091,7 +5841,8 @@
       </button>
     </div>
   </div>
-  <div class="table-responsive">
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -4111,6 +5862,14 @@
       </tbody>
     </table>
   </div>
+  
+  <!-- Mobile Card View -->
+  <div class="mobile-stories-cards d-md-none" id="storiesCardList">
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-clock fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
+  </div>
 </section>
 
 <!-- Staff Management Section -->
@@ -4121,7 +5880,7 @@
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
         <i class="fas fa-user-plus me-2"></i> Thêm nhân viên
       </button>
-      <button type="button" class="btn btn-success" onclick="loadStaffs()">
+      <button type="button" class="btn btn-success d-none d-md-inline-block" onclick="loadStaffs()">
         <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
       </button>
     </div>
@@ -4198,7 +5957,8 @@
       </div>
     </div>
   </form>
-  <div class="table-responsive">
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
     <table class="table table-bordered table-hover align-middle">
       <thead>
         <tr>
@@ -4221,6 +5981,14 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  
+  <!-- Mobile Card View -->
+  <div class="mobile-staff-cards d-md-none" id="staffCardList">
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-users fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
   </div>
 </section>
 <!-- Add Staff Modal -->
@@ -4381,7 +6149,8 @@
       </div>
     </div>
   </form>
-  <div class="table-responsive">
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
     <table class="table table-bordered table-hover align-middle">
       <thead>
         <tr>
@@ -4398,6 +6167,14 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  
+  <!-- Mobile Card View -->
+  <div class="mobile-roles-cards d-md-none" id="roleCardList">
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-id-badge fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
   </div>
 </section>
 
@@ -4656,7 +6433,10 @@
       } else {
         console.log('User logged in:', user.email, 'UID:', user.uid);
         // Set user name
-        document.querySelector('.user-name').textContent = 'Quản trị viên';
+        const userNameElement = document.querySelector('.user-name');
+        if (userNameElement) {
+          userNameElement.textContent = 'Quản trị viên';
+        }
         // Gán biến quyền toàn cục
         window.isAdmin = true;
         window.currentUser = user;
@@ -4674,17 +6454,28 @@
     // Setup Event Listeners
     function setupEventListeners() {
       // Sidebar Toggle
-      document.getElementById('sidebarToggle').addEventListener('click', () => {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('collapsed');
-        document.querySelector('.content').style.marginLeft = sidebar.classList.contains('collapsed') ? '70px' : '260px';
-      });
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+          const sidebar = document.getElementById('sidebar');
+          const content = document.querySelector('.content');
+          if (sidebar) {
+            sidebar.classList.toggle('collapsed');
+          }
+          if (content) {
+            content.style.marginLeft = sidebar && sidebar.classList.contains('collapsed') ? '70px' : '260px';
+          }
+        });
+      }
 
       // Dark Mode Toggle
-      document.getElementById('darkModeToggle').addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-      });
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+      }
 
       // Load dark mode preference
       if (localStorage.getItem('darkMode') === 'true') {
@@ -4715,13 +6506,16 @@
       });
 
       // Order Tabs
-      document.querySelectorAll('.order-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          loadOrders();
+      const orderTabs = document.querySelectorAll('.order-tab');
+      if (orderTabs.length > 0) {
+        orderTabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            orderTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            loadOrders();
+          });
         });
-      });
+      }
 
       // Refresh Buttons
       document.getElementById('refreshData')?.addEventListener('click', loadProducts);
@@ -4894,7 +6688,10 @@
             totalProducts += Object.keys(snapshot.val()).length;
           }
         }
-        document.getElementById('totalProducts').textContent = totalProducts;
+        const totalProductsElement = document.getElementById('totalProducts');
+        if (totalProductsElement) {
+          totalProductsElement.textContent = totalProducts;
+        }
 
         const snapshot = await get(ref(db, 'orders'));
         let orders = [];
@@ -4913,22 +6710,30 @@
             }
           });
         }
-        document.getElementById('dailyRevenue').textContent = dailyRevenue.toLocaleString('vi-VN') + ' VND';
-        document.getElementById('pendingOrders').textContent = pendingOrders;
+        const dailyRevenueElement = document.getElementById('dailyRevenue');
+        if (dailyRevenueElement) {
+          dailyRevenueElement.textContent = dailyRevenue.toLocaleString('vi-VN') + ' VND';
+        }
+        const pendingOrdersElement = document.getElementById('pendingOrders');
+        if (pendingOrdersElement) {
+          pendingOrdersElement.textContent = pendingOrders;
+        }
 
         renderRevenueChart(orders);
         renderOrderStatusChart(orders);
 
         const notificationsList = document.getElementById('notificationsList');
-        notificationsList.innerHTML = '';
-        if (totalProducts === 0) {
-          notificationsList.innerHTML += '<li class="list-group-item">Chưa có sản phẩm nào. Hãy thêm sản phẩm!</li>';
-        }
-        if (pendingOrders > 0) {
-          notificationsList.innerHTML += `<li class="list-group-item">${pendingOrders} đơn hàng đang chờ xử lý.</li>`;
-        }
-        if (orders.length === 0) {
-          notificationsList.innerHTML += '<li class="list-group-item">Chưa có đơn hàng nào.</li>';
+        if (notificationsList) {
+          notificationsList.innerHTML = '';
+          if (totalProducts === 0) {
+            notificationsList.innerHTML += '<li class="list-group-item">Chưa có sản phẩm nào. Hãy thêm sản phẩm!</li>';
+          }
+          if (pendingOrders > 0) {
+            notificationsList.innerHTML += `<li class="list-group-item">${pendingOrders} đơn hàng đang chờ xử lý.</li>`;
+          }
+          if (orders.length === 0) {
+            notificationsList.innerHTML += '<li class="list-group-item">Chưa có đơn hàng nào.</li>';
+          }
         }
 
         let activePromotions = 0;
@@ -4938,7 +6743,10 @@
             activePromotions = Object.values(promoSnap.val()).filter(p => p.status === 'active').length;
           }
         } catch {}
-        document.getElementById('activePromotions').textContent = activePromotions;
+        const activePromotionsElement = document.getElementById('activePromotions');
+        if (activePromotionsElement) {
+          activePromotionsElement.textContent = activePromotions;
+        }
 
         let bestSeller = 'N/A';
         if (orders.length > 0) {
@@ -4952,10 +6760,16 @@
           const sorted = Object.entries(productSales).sort((a, b) => b[1] - a[1]);
           if (sorted.length > 0) bestSeller = sorted[0][0];
         }
-        document.getElementById('bestSeller').textContent = bestSeller;
+        const bestSellerElement = document.getElementById('bestSeller');
+        if (bestSellerElement) {
+          bestSellerElement.textContent = bestSeller;
+        }
 
         const shippingOrders = orders.filter(o => o.status === 'shipped').length;
-        document.getElementById('shippingOrders').textContent = shippingOrders;
+        const shippingOrdersElement = document.getElementById('shippingOrders');
+        if (shippingOrdersElement) {
+          shippingOrdersElement.textContent = shippingOrders;
+        }
 
         // Load story statistics
         try {
@@ -5006,11 +6820,20 @@
         // Lấy dữ liệu từ contactMessages
         const snapshot = await get(ref(db, 'contactMessages'));
         const reviewsList = document.getElementById('userReviewsList');
+        const mobileReviewsContainer = document.getElementById('mobileReviewsContainer');
+        
+        if (!reviewsList || !mobileReviewsContainer) return;
+        
+        // Clear both views
         reviewsList.innerHTML = '';
+        mobileReviewsContainer.innerHTML = '';
+        
         if (snapshot.exists()) {
           // Lấy các đánh giá, sắp xếp theo thời gian giảm dần
           const reviews = Object.values(snapshot.val())
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          
+          // Render desktop view
           reviews.slice(0, 5).forEach(review => {
             reviewsList.innerHTML += `
               <li class="list-group-item">
@@ -5020,12 +6843,44 @@
                 <small class="text-muted">${review.createdAt ? new Date(review.createdAt).toLocaleString('vi-VN') : ''}</small>
               </li>`;
           });
+          
+          // Render mobile cards
+          reviews.slice(0, 5).forEach(review => {
+            const card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = `
+              <div class="review-card-header">
+                <div class="review-user">
+                  <i class="fas fa-user-circle me-2"></i>${review.name || 'Ẩn danh'}
+                </div>
+                <div class="review-time">
+                  <i class="fas fa-clock me-1"></i>${review.createdAt ? new Date(review.createdAt).toLocaleString('vi-VN') : ''}
+                </div>
+              </div>
+              <div class="review-content">
+                "${review.message || ''}"
+              </div>
+            `;
+            mobileReviewsContainer.appendChild(card);
+          });
         } else {
           reviewsList.innerHTML = '<li class="list-group-item text-center">Chưa có đánh giá nào.</li>';
+          mobileReviewsContainer.innerHTML = `
+            <div class="text-center text-muted py-4">
+              <i class="fas fa-comments fa-2x mb-3"></i>
+              <p>Chưa có đánh giá nào.</p>
+            </div>
+          `;
         }
       } catch (error) {
         console.error('Error loading reviews:', error);
         document.getElementById('userReviewsList').innerHTML = '<li class="list-group-item text-center">Không thể tải đánh giá.</li>';
+        document.getElementById('mobileReviewsContainer').innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <p>Không thể tải đánh giá.</p>
+          </div>
+        `;
       }
     }
 
@@ -5288,18 +7143,33 @@
     // Render Products
     function renderProducts(products) {
       const tbody = document.getElementById('productTableBody');
-      if (!tbody) return;
+      const cardList = document.getElementById('productCardList');
+      
+      if (!tbody || !cardList) return;
+      
+      // Clear both views
       tbody.innerHTML = '';
+      cardList.innerHTML = '';
+      
       if (products.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có sản phẩm nào.</td></tr>';
+        cardList.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-box-open fa-2x mb-3"></i>
+            <p>Không có sản phẩm nào.</p>
+          </div>
+        `;
         return;
       }
+      
       const searchQuery = document.getElementById('productSearch')?.value.toLowerCase() || '';
       const categoryFilter = document.getElementById('productCategoryFilter')?.value || '';
       const filteredProducts = products.filter(p => {
         return p.name.toLowerCase().includes(searchQuery) &&
                (!categoryFilter || p.category === categoryFilter);
       });
+      
+      // Render table view (desktop)
       filteredProducts.forEach(product => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -5323,6 +7193,40 @@
           </td>
         `;
         tbody.appendChild(row);
+      });
+      
+      // Render card view (mobile)
+      filteredProducts.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="product-card-header">
+            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/120'">
+            <div class="product-info">
+              <div class="product-name">${product.name}</div>
+              <div class="product-id">ID: ${product.id}</div>
+              <div class="product-price">${product.price.toLocaleString('vi-VN')} VND</div>
+            </div>
+          </div>
+          <div class="product-details">
+            <div class="product-detail-item">
+              <span class="product-detail-label">Danh mục:</span>
+              <span class="product-detail-value">${product.category}</span>
+            </div>
+          </div>
+          ${product.attributes ? `
+            <div class="product-description">${product.attributes}</div>
+          ` : ''}
+          <div class="product-actions">
+            <button class="product-action-btn edit" onclick="editProduct('${product.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="product-action-btn delete" onclick="deleteProduct('${product.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        `;
+        cardList.appendChild(card);
       });
     }
 
@@ -5551,18 +7455,33 @@
     // Render Promotions
     function renderPromotions(promotions) {
       const tbody = document.getElementById('promotionTableBody');
-      if (!tbody) return;
+      const cardList = document.getElementById('promotionCardList');
+      
+      if (!tbody || !cardList) return;
+      
+      // Clear both views
       tbody.innerHTML = '';
+      cardList.innerHTML = '';
+      
       if (promotions.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không có mã giảm giá nào.</td></tr>';
+        cardList.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-tags fa-2x mb-3"></i>
+            <p>Không có mã giảm giá nào.</p>
+          </div>
+        `;
         return;
       }
+      
       const searchQuery = document.getElementById('promotionSearch')?.value.toLowerCase() || '';
       const statusFilter = document.getElementById('promotionStatusFilter')?.value || '';
       const filteredPromotions = promotions.filter(p => {
         return p.code.toLowerCase().includes(searchQuery) &&
                (!statusFilter || p.status === statusFilter);
       });
+      
+      // Render table view (desktop)
       filteredPromotions.forEach(promo => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -5583,6 +7502,43 @@
           </td>
         `;
         tbody.appendChild(row);
+      });
+      
+      // Render card view (mobile)
+      filteredPromotions.forEach(promo => {
+        const card = document.createElement('div');
+        card.className = 'promotion-card';
+        card.innerHTML = `
+          <div class="promotion-card-header">
+            <div class="promotion-code">${promo.code}</div>
+            <div class="promotion-discount">${promo.discount}%</div>
+          </div>
+          <div class="promotion-details">
+            <div class="promotion-detail-item">
+              <span class="promotion-detail-label">Ngày bắt đầu:</span>
+              <span class="promotion-detail-value">${promo.startDate}</span>
+            </div>
+            <div class="promotion-detail-item">
+              <span class="promotion-detail-label">Ngày kết thúc:</span>
+              <span class="promotion-detail-value">${promo.endDate}</span>
+            </div>
+          </div>
+          <div class="promotion-status">
+            <span class="badge ${promo.status === 'active' ? 'bg-success' : 'bg-secondary'} fs-6">
+              <i class="fas ${promo.status === 'active' ? 'fa-check-circle' : 'fa-times-circle'} me-1"></i>
+              ${promo.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+            </span>
+          </div>
+          <div class="promotion-actions">
+            <button class="promotion-action-btn edit" onclick="editPromotion('${promo.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="promotion-action-btn delete" onclick="deletePromotion('${promo.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        `;
+        cardList.appendChild(card);
       });
     }
 
@@ -5769,7 +7725,10 @@
           const data = snapshot.val();
           orders = Object.keys(data).map(key => ({ id: key, ...data[key] }));
         }
-        renderOrders(orders);
+        window.ordersList = orders; // Save to global variable
+        console.log('Loaded orders:', orders.length);
+        console.log('Order statuses:', orders.map(o => o.status));
+        window.renderOrders(orders);
         updateOrderStats(orders);
       } catch (error) {
         console.error('Error loading orders:', error);
@@ -5783,22 +7742,47 @@
     }
 
     // Render Orders
-    function renderOrders(orders) {
+    window.renderOrders = function(orders) {
       const tbody = document.getElementById('orderTableBody');
-      if (!tbody) return;
+      const cardList = document.getElementById('orderCardList');
+      
+      if (!tbody || !cardList) return;
+      
+      // Clear both views
       tbody.innerHTML = '';
+      cardList.innerHTML = '';
+      
       if (orders.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" class="text-center">Không có đơn hàng nào.</td></tr>';
+        cardList.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-shopping-cart fa-2x mb-3"></i>
+            <p>Không có đơn hàng nào.</p>
+          </div>
+        `;
         return;
       }
       const searchQuery = document.getElementById('orderSearch')?.value.toLowerCase() || '';
       const activeTab = document.querySelector('.order-tab.active')?.dataset.status || 'all';
+      console.log('Active tab status:', activeTab);
+      console.log('Search query:', searchQuery);
+      
       const filteredOrders = orders.filter(o => {
         const matchesSearch = o.id.toLowerCase().includes(searchQuery) ||
                             (o.fullName || '').toLowerCase().includes(searchQuery);
-        const matchesStatus = activeTab === 'all' || o.status === activeTab;
+        
+        // Map status to tab categories
+        let statusCategory = o.status;
+        if (o.status === 'awaiting_payment' || o.status === 'payment_failed') {
+          statusCategory = 'pending'; // Map to pending tab
+        }
+        
+        const matchesStatus = activeTab === 'all' || statusCategory === activeTab;
+        console.log(`Order ${o.id}: status=${o.status}, category=${statusCategory}, matchesStatus=${matchesStatus}`);
         return matchesSearch && matchesStatus;
       });
+      
+      console.log('Filtered orders count:', filteredOrders.length);
       filteredOrders.forEach(order => {
         const items = Array.isArray(order.items) ? order.items : [];
         const itemNames = items.map(item => item.name).join(', ');
@@ -5832,11 +7816,73 @@
             <div class="d-flex flex-column gap-1">
               <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem</button>
               <button class="btn btn-warning btn-sm" onclick="editOrder('${order.id}')"><i class="fas fa-edit"></i> Sửa</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteOrder && deleteOrder('${order.id}')"><i class="fas fa-trash"></i> Xóa</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')"><i class="fas fa-trash"></i> Xóa</button>
             </div>
           </td>
         `;
         tbody.appendChild(row);
+      });
+      
+      // Render mobile cards
+      filteredOrders.forEach(order => {
+        const items = Array.isArray(order.items) ? order.items : [];
+        const itemNames = items.map(item => item.name).join(', ');
+        const totalQuantity = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+        
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = `
+          <div class="order-card-header">
+            <div class="order-id">#${order.id}</div>
+            <div class="order-status ${order.status}">
+              ${
+                order.status === 'pending' ? 'Đang chờ' :
+                order.status === 'confirmed' ? 'Đã xác nhận' :
+                order.status === 'shipped' ? 'Đang giao' :
+                order.status === 'delivered' ? 'Đã giao' :
+                order.status === 'cancelled' ? 'Đã hủy' :
+                order.status === 'pending-make' ? 'Chờ pha chế' :
+                'Không xác định'
+              }
+            </div>
+          </div>
+          <div class="order-details">
+            <div class="order-detail-item">
+              <span class="order-detail-label">Khách hàng:</span>
+              <span class="order-detail-value">${order.fullName || 'N/A'}</span>
+            </div>
+            <div class="order-detail-item">
+              <span class="order-detail-label">Sản phẩm:</span>
+              <span class="order-detail-value">${itemNames || 'N/A'}</span>
+            </div>
+            <div class="order-detail-item">
+              <span class="order-detail-label">Số lượng:</span>
+              <span class="order-detail-value">${totalQuantity}</span>
+            </div>
+            <div class="order-detail-item">
+              <span class="order-detail-label">Tổng tiền:</span>
+              <span class="order-detail-value">${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</span>
+            </div>
+            ${order.status === 'cancelled' && order.cancelReason ? `
+              <div class="order-detail-item">
+                <span class="order-detail-label">Lý do hủy:</span>
+                <span class="order-detail-value">${order.cancelReason}</span>
+              </div>
+            ` : ''}
+          </div>
+          <div class="order-actions">
+            <button class="order-action-btn view" onclick="viewOrderDetails('${order.id}')">
+              <i class="fas fa-eye"></i> Xem
+            </button>
+            <button class="order-action-btn edit" onclick="editOrder('${order.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="order-action-btn delete" onclick="deleteOrder('${order.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        `;
+        cardList.appendChild(card);
       });
     }
 
@@ -5873,8 +7919,15 @@
         if (order.status === 'cancelled') {
           cancelledOrders++;
         }
-        if (statusCounts[order.status] !== undefined) {
-          statusCounts[order.status]++;
+        
+        // Map status to tab categories for counting
+        let statusCategory = order.status;
+        if (order.status === 'awaiting_payment' || order.status === 'payment_failed') {
+          statusCategory = 'pending';
+        }
+        
+        if (statusCounts[statusCategory] !== undefined) {
+          statusCounts[statusCategory]++;
         }
       });
 
@@ -5883,10 +7936,26 @@
       document.getElementById('completionRate').textContent = orders.length > 0 ? ((completedOrders / orders.length) * 100).toFixed(1) + '%' : '0%';
       document.getElementById('cancellationRate').textContent = orders.length > 0 ? ((cancelledOrders / orders.length) * 100).toFixed(1) + '%' : '0%';
 
+      // Update desktop tabs
+      // Update desktop tabs
       document.querySelectorAll('.order-tab').forEach(tab => {
         const status = tab.dataset.status;
         const count = statusCounts[status] || 0;
         tab.querySelector('.order-count').textContent = count;
+      });
+      
+      // Update mobile tabs
+      document.querySelectorAll('.mobile-order-tab').forEach(tab => {
+        const status = tab.dataset.status;
+        const count = statusCounts[status] || 0;
+        tab.querySelector('.mobile-order-count').textContent = count;
+      });
+      
+      // Update mobile tabs
+      document.querySelectorAll('.mobile-order-tab').forEach(tab => {
+        const status = tab.dataset.status;
+        const count = statusCounts[status] || 0;
+        tab.querySelector('.mobile-order-count').textContent = count;
       });
     }
 
@@ -6112,10 +8181,22 @@
     // Render Messages (2 cột: trái là user, phải là chatbox)
     function renderMessages(messages) {
       const container = document.getElementById('messageContainer');
-      if (!container) return;
+      const mobileContainer = document.getElementById('mobileMessageContainer');
+      
+      if (!container || !mobileContainer) return;
+      
+      // Clear both views
       container.innerHTML = '';
+      mobileContainer.innerHTML = '';
+      
       if (messages.length === 0) {
         container.innerHTML = '<div class="text-center text-muted w-100">Không có tin nhắn nào.</div>';
+        mobileContainer.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-envelope fa-2x mb-3"></i>
+            <p>Không có tin nhắn nào.</p>
+          </div>
+        `;
         return;
       }
       const searchQuery = document.getElementById('messageSearch')?.value.toLowerCase() || '';
@@ -6139,6 +8220,12 @@
 
       if (filteredConversations.length === 0) {
         container.innerHTML = '<div class="text-center text-muted w-100">Không tìm thấy cuộc trò chuyện nào.</div>';
+        mobileContainer.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-search fa-2x mb-3"></i>
+            <p>Không tìm thấy cuộc trò chuyện nào.</p>
+          </div>
+        `;
         return;
       }
 
@@ -6204,6 +8291,114 @@
       // Gắn vào container
       container.appendChild(userListDiv);
       container.appendChild(chatboxDiv);
+      
+      // Add mobile user selector
+      const mobileUserSelector = document.createElement('div');
+      mobileUserSelector.className = 'mobile-user-selector mb-3';
+      mobileUserSelector.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+          <label class="form-label mb-0 fw-bold">Chọn người dùng:</label>
+          <select class="form-select" id="mobileUserSelect">
+            ${filteredConversations.map(([sender, msgs]) => {
+              const lastMsg = msgs[msgs.length - 1];
+              const time = lastMsg ? new Date(lastMsg.timestamp).toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'}) : '';
+              return `<option value="${sender}" ${sender === selectedSender ? 'selected' : ''}>
+                ${sender} (${time})
+              </option>`;
+            }).join('')}
+          </select>
+        </div>
+      `;
+      mobileContainer.appendChild(mobileUserSelector);
+      
+      // Add event listener for mobile user select
+      const mobileSelect = document.getElementById('mobileUserSelect');
+      if (mobileSelect) {
+        mobileSelect.addEventListener('change', function() {
+          selectedSender = this.value;
+          loadMessages();
+        });
+      }
+      
+      // Add event listener for mobile quick reply form
+      setTimeout(() => {
+        const mobileForm = document.getElementById('mobileQuickReplyForm');
+        if (mobileForm) {
+          mobileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const content = document.getElementById('mobileQuickReplyInput').value.trim();
+            if (!content) return;
+            if (!db || !auth.currentUser) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Firebase chưa được khởi tạo hoặc chưa đăng nhập.',
+                showConfirmButton: true
+              });
+              return;
+            }
+            try {
+              const newMessage = {
+                sender: 'quantri1amcoffeeandcake@gmail.com',
+                senderId: auth.currentUser.uid,
+                message: content,
+                timestamp: new Date().toISOString(),
+                replyTo: selectedSender
+              };
+              await push(ref(db, 'chatMessages'), newMessage);
+              document.getElementById('mobileQuickReplyInput').value = '';
+              await loadMessages();
+              // Scroll to bottom after sending
+              setTimeout(() => {
+                const messagesContainer = document.getElementById('mobileChatMessages');
+                if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
+              }, 100);
+            } catch (error) {
+              console.error('Error sending mobile reply:', error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: error.code === 'PERMISSION_DENIED' ? 'Không có quyền gửi tin nhắn.' : `Không thể gửi tin nhắn: ${error.message}.`,
+                showConfirmButton: true
+              });
+            }
+          });
+        }
+      }, 100);
+      
+      // Add mobile chat area
+      const mobileChatArea = document.createElement('div');
+      mobileChatArea.className = 'mobile-chat-area';
+      mobileChatArea.innerHTML = `
+        <div class="mobile-chat-header">
+          <h6 class="mb-0">
+            <i class="fas fa-comments me-2"></i>
+            Chat với: <span class="text-primary">${selectedSender}</span>
+          </h6>
+        </div>
+        <div class="mobile-chat-messages" id="mobileChatMessages">
+          ${(conversations[selectedSender] || []).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)).map(m => {
+            const isAdmin = m.sender === 'quantri1amcoffeeandcake@gmail.com';
+            return `
+              <div class="mobile-chat-msg ${isAdmin ? 'admin' : 'user'}">
+                <div class="mobile-chat-bubble">
+                  <div class="mobile-chat-content">${m.message}</div>
+                  <div class="mobile-chat-time">${new Date(m.timestamp).toLocaleString('vi-VN')}</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        <div class="mobile-chat-input">
+          <form id="mobileQuickReplyForm" class="d-flex gap-2">
+            <input type="text" id="mobileQuickReplyInput" class="form-control" placeholder="Nhập tin nhắn..." maxlength="500" required>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      `;
+      mobileContainer.appendChild(mobileChatArea);
 
       // Cuộn xuống dưới cùng sau khi render
       setTimeout(() => {
@@ -6302,10 +8497,12 @@
       } catch (e) {
         // Bỏ qua lỗi
       }
-      if (document.querySelector('.nav-link[href="#orderManagement"]').classList.contains('active')) {
+      const orderNavLink = document.querySelector('.nav-link[href="#orderManagement"]');
+      if (orderNavLink && orderNavLink.classList.contains('active')) {
         loadOrders();
       }
-      if (document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active')) {
+      const dashboardNavLink = document.querySelector('.nav-link[href="#dashboard"]');
+      if (dashboardNavLink && dashboardNavLink.classList.contains('active')) {
         loadDashboardData();
       }
     });
@@ -6322,8 +8519,10 @@
               const msg = data[id];
               // Chỉ thông báo nếu là tin nhắn từ user (không phải admin)
               if (msg && msg.sender !== 'quantri1amcoffeeandcake@gmail.com') {
-                const isMsgTab = document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active');
-                const isDashboard = document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active');
+                        const msgNavLink = document.querySelector('.nav-link[href="#messageManagement"]');
+        const dashboardNavLink = document.querySelector('.nav-link[href="#dashboard"]');
+        const isMsgTab = msgNavLink && msgNavLink.classList.contains('active');
+        const isDashboard = dashboardNavLink && dashboardNavLink.classList.contains('active');
                 if (isMsgTab || isDashboard) {
                   Swal.fire({
                     toast: true,
@@ -6347,7 +8546,8 @@
         }
         window._knownMessageIds = currentIds;
       } catch (e) {}
-      if (document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active')) {
+      const msgNavLink = document.querySelector('.nav-link[href="#messageManagement"]');
+      if (msgNavLink && msgNavLink.classList.contains('active')) {
         loadMessages();
       }
     });
@@ -6363,8 +8563,10 @@
           if (newIds.length > 0) {
             newIds.forEach(id => {
               const review = data[id];
-              const isReviewTab = document.querySelector('.nav-link[href="#dashboard"]').classList.contains('active') ||
-                                  document.querySelector('.nav-link[href="#messageManagement"]').classList.contains('active');
+              const dashboardNavLink = document.querySelector('.nav-link[href="#dashboard"]');
+              const msgNavLink = document.querySelector('.nav-link[href="#messageManagement"]');
+              const isReviewTab = (dashboardNavLink && dashboardNavLink.classList.contains('active')) ||
+                                  (msgNavLink && msgNavLink.classList.contains('active'));
               if (isReviewTab) {
                 Swal.fire({
                   toast: true,
@@ -7465,7 +9667,9 @@
       if (!db) {
         console.error('Firebase database is not initialized');
         const usersList = document.getElementById('usersList');
-        usersList.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Không thể kết nối Firebase.</td></tr>`;
+        const usersCardList = document.getElementById('usersCardList');
+        if (usersList) usersList.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Không thể kết nối Firebase.</td></tr>`;
+        if (usersCardList) usersCardList.innerHTML = `<div class="text-center text-danger py-4"><i class="fas fa-exclamation-triangle fa-2x mb-3"></i><p>Không thể kết nối Firebase.</p></div>`;
         return;
       }
 
@@ -7479,53 +9683,117 @@
           console.log('Users data:', usersObj);
           
           const usersList = document.getElementById('usersList');
-          if (!usersList) {
-            console.error('usersList element not found');
+          const usersCardList = document.getElementById('usersCardList');
+          
+          if (!usersList && !usersCardList) {
+            console.error('usersList and usersCardList elements not found');
             return;
           }
 
           if (Object.keys(usersObj).length === 0) {
             console.log('No users found');
-            usersList.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Không có người dùng nào.</td></tr>`;
+            if (usersList) usersList.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Không có người dùng nào.</td></tr>`;
+            if (usersCardList) usersCardList.innerHTML = `<div class="text-center text-muted py-4"><i class="fas fa-users fa-2x mb-3"></i><p>Không có người dùng nào.</p></div>`;
             return;
           }
 
-          const usersHTML = Object.entries(usersObj).map(([id, user]) => {
-            console.log('Processing user:', id, user);
-            return `
-              <tr>
-                <td>
-                  ${
-                    user.avatarUrl
-                      ? `<img src="${user.avatarUrl}" alt="avatar" style="width:40px;height:40px;object-fit:cover;border-radius:50%;border:1px solid #eee;">`
-                      : `<i class="fas fa-user-circle" style="font-size:2em;color:#A67C52;"></i>`
-                  }
-                </td>
-                <td>${user.email || 'N/A'}</td>
-                <td>${user.name || 'N/A'}</td>
-                <td>${user.address || 'N/A'}</td>
-                <td>
-                  <button class="btn btn-warning btn-sm" onclick="editUser('${id}')"><i class="fas fa-edit"></i> Sửa</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteUser('${id}')"><i class="fas fa-trash"></i> Xóa</button>
-                </td>
-              </tr>
-            `;
-          }).join('');
+          // Desktop table view
+          if (usersList) {
+            const usersHTML = Object.entries(usersObj).map(([id, user]) => {
+              console.log('Processing user for table:', id, user);
+              return `
+                <tr>
+                  <td>
+                    <div style="width:40px;height:40px;border-radius:50%;border:2px solid #A67C52;overflow:hidden;background:#f8f9fa;display:flex;align-items:center;justify-content:center;">
+                      ${
+                        user.avatarUrl
+                          ? `<img src="${user.avatarUrl}" alt="avatar" style="width:100%;height:100%;object-fit:cover;">`
+                          : `<i class="fas fa-user-circle" style="font-size:1.5em;color:#A67C52;"></i>`
+                      }
+                    </div>
+                  </td>
+                  <td>${user.email || 'N/A'}</td>
+                  <td>${user.name || 'N/A'}</td>
+                  <td>${user.address || 'N/A'}</td>
+                  <td>
+                    <button class="btn btn-warning btn-sm" onclick="editUser('${id}')"><i class="fas fa-edit"></i> Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteUser('${id}')"><i class="fas fa-trash"></i> Xóa</button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+            usersList.innerHTML = usersHTML;
+          }
 
-          usersList.innerHTML = usersHTML;
+          // Mobile card view
+          if (usersCardList) {
+            const usersCardHTML = Object.entries(usersObj).map(([id, user]) => {
+              console.log('Processing user for card:', id, user);
+              return `
+                <div class="user-card">
+                  <div class="user-card-header">
+                    <div class="user-avatar">
+                      ${
+                        user.avatarUrl
+                          ? `<img src="${user.avatarUrl}" alt="avatar" class="user-avatar">`
+                          : `<i class="fas fa-user-circle" style="font-size:2em;color:#A67C52;width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></i>`
+                      }
+                    </div>
+                    <div class="user-info">
+                      <div class="user-name">${user.name || 'Chưa có tên'}</div>
+                      <div class="user-email">${user.email || 'Chưa có email'}</div>
+                    </div>
+                  </div>
+                  <div class="user-details">
+                    <div class="user-detail-item">
+                      <i class="fas fa-envelope"></i>
+                      <span class="user-detail-label">Email:</span>
+                      <span class="user-detail-value">${user.email || 'N/A'}</span>
+                    </div>
+                    <div class="user-detail-item">
+                      <i class="fas fa-user"></i>
+                      <span class="user-detail-label">Tên:</span>
+                      <span class="user-detail-value">${user.name || 'N/A'}</span>
+                    </div>
+                    <div class="user-detail-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span class="user-detail-label">Địa chỉ:</span>
+                      <span class="user-detail-value">${user.address || 'N/A'}</span>
+                    </div>
+                  </div>
+                  <div class="user-actions">
+                    <button class="user-action-btn edit" onclick="editUser('${id}')">
+                      <i class="fas fa-edit"></i> Sửa
+                    </button>
+                    <button class="user-action-btn delete" onclick="deleteUser('${id}')">
+                      <i class="fas fa-trash"></i> Xóa
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('');
+            usersCardList.innerHTML = usersCardHTML;
+          }
+          
           console.log('Users list updated successfully');
         })
         .catch((error) => {
           console.error('Error loading users:', error);
           const usersList = document.getElementById('usersList');
+          const usersCardList = document.getElementById('usersCardList');
+          
+          let msg = 'Không thể tải dữ liệu người dùng.';
+          if (error && error.code === 'PERMISSION_DENIED') {
+            msg += '<br>Không có quyền truy cập dữ liệu. Vui lòng kiểm tra Firebase Rules.';
+          } else if (error && error.message) {
+            msg += `<br>${error.message}`;
+          }
+          
           if (usersList) {
-            let msg = 'Không thể tải dữ liệu người dùng.';
-            if (error && error.code === 'PERMISSION_DENIED') {
-              msg += '<br>Không có quyền truy cập dữ liệu. Vui lòng kiểm tra Firebase Rules.';
-            } else if (error && error.message) {
-              msg += `<br>${error.message}`;
-            }
             usersList.innerHTML = `<tr><td colspan="5" class="text-center text-danger">${msg}</td></tr>`;
+          }
+          if (usersCardList) {
+            usersCardList.innerHTML = `<div class="text-center text-danger py-4"><i class="fas fa-exclamation-triangle fa-2x mb-3"></i><p>${msg}</p></div>`;
           }
         });
     }
@@ -7536,6 +9804,12 @@
         title: 'Thêm người dùng mới',
         html: `
           <form id="addUserForm">
+            <div class="mb-3 text-center">
+              <div class="user-avatar-preview mb-2" style="display: inline-block; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #A67C52; overflow: hidden; background: #f8f9fa;">
+                <i class="fas fa-user-circle" style="font-size: 3em; color: #A67C52; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              </div>
+              <small class="text-muted">Ảnh đại diện (tùy chọn)</small>
+            </div>
             <div class="mb-3">
               <label class="form-label">Email</label>
               <input type="email" class="form-control" id="userEmail" required>
@@ -7548,38 +9822,130 @@
               <label class="form-label">Địa chỉ</label>
               <input type="text" class="form-control" id="userAddress">
             </div>
+            <div class="mb-3">
+              <label class="form-label">Ảnh đại diện (tùy chọn)</label>
+              <input type="file" class="form-control" id="userAvatarFile" accept="image/*">
+              <div id="avatarPreview" class="avatar-preview-container mt-2" style="display: none;">
+                <img id="avatarPreviewImg" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #A67C52;">
+                <div>
+                  <small class="text-success d-block">Ảnh đã được chọn</small>
+                  <small class="text-muted">Ảnh sẽ tự động upload lên Cloudinary</small>
+                </div>
+              </div>
+              <small class="form-text text-muted">Chọn file ảnh để tự động upload lên Cloudinary</small>
+            </div>
           </form>
         `,
         showCancelButton: true,
         confirmButtonText: 'Thêm',
         cancelButtonText: 'Hủy',
+        width: window.innerWidth <= 768 ? '95%' : '500px',
         preConfirm: () => {
           const email = document.getElementById('userEmail').value;
           const name = document.getElementById('userName').value;
           const address = document.getElementById('userAddress').value;
+          const avatarFile = document.getElementById('userAvatarFile').files[0];
           if (!email || !name) {
             Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
             return false;
           }
-          return { email, name, address };
+          return { email, name, address, avatarFile };
         }
       }).then((result) => {
         if (result.isConfirmed) {
           addUser(result.value);
         }
+        
+        // Setup file input after modal is shown
+        setTimeout(() => {
+          setupAvatarFileInput();
+        }, 100);
       });
     }
     window.showAddUserModal = showAddUserModal; // <-- Thêm dòng này
 
+
+
+    // Add event listener for file input change
+    function setupAvatarFileInput() {
+      const fileInput = document.getElementById('userAvatarFile');
+      if (fileInput) {
+        fileInput.addEventListener('change', async function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            // Show preview immediately
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              const preview = document.getElementById('avatarPreview');
+              const previewImg = document.getElementById('avatarPreviewImg');
+              previewImg.src = e.target.result;
+              preview.style.display = 'flex';
+              preview.style.alignItems = 'center';
+            };
+            reader.readAsDataURL(file);
+            
+            // Auto upload to Cloudinary
+            try {
+              // Update status to uploading
+              const uploadStatus = document.querySelector('.upload-status');
+              if (uploadStatus) {
+                uploadStatus.textContent = 'Đang upload lên Cloudinary...';
+                uploadStatus.className = 'text-info upload-status';
+              }
+              
+              const imageUrl = await window.uploadToCloudinary(file);
+              window.currentAvatarUrl = imageUrl;
+              
+              // Update preview with Cloudinary URL
+              const preview = document.getElementById('avatarPreview');
+              const previewImg = document.getElementById('avatarPreviewImg');
+              previewImg.src = imageUrl;
+              
+              // Show success message
+              const uploadStatusEl = document.querySelector('.upload-status');
+              if (uploadStatusEl) {
+                uploadStatusEl.textContent = 'Upload thành công!';
+                uploadStatusEl.className = 'text-success upload-status';
+              }
+            } catch (error) {
+              console.error('Auto upload failed:', error);
+              // Show error message
+              const uploadStatusEl = document.querySelector('.upload-status');
+              if (uploadStatusEl) {
+                uploadStatusEl.textContent = 'Upload thất bại, thử lại sau';
+                uploadStatusEl.className = 'text-danger upload-status';
+              }
+            }
+          }
+        });
+      }
+    }
+
     // Add new user
     async function addUser(userData) {
       try {
+        // Handle avatar upload
+        let avatarUrl = null;
+        if (userData.avatarFile) {
+          // If file is selected, use the uploaded URL
+          avatarUrl = window.currentAvatarUrl;
+        }
+
         const userCredential = await createUserWithEmailAndPassword(auth, userData.email, 'password123');
         await set(ref(db, `users/${userCredential.user.uid}`), {
-          ...userData,
+          email: userData.email,
+          name: userData.name,
+          address: userData.address,
+          avatarUrl: avatarUrl,
           created_at: new Date().toISOString(),
           status: 'active'
         });
+        
+        // Clear stored avatar URL
+        window.currentAvatarUrl = null;
+        
+        // Reload users list
+        await loadUsers();
         
         Swal.fire({
           icon: 'success',
@@ -7589,6 +9955,7 @@
           timer: 1500
         });
       } catch (error) {
+        console.error('Error adding user:', error);
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
@@ -7606,9 +9973,19 @@
           title: 'Sửa thông tin người dùng',
           html: `
             <form id="editUserForm">
+              <div class="mb-3 text-center">
+                <div class="user-avatar-preview mb-2" style="display: inline-block; width: 80px; height: 80px; border-radius: 50%; border: 3px solid #A67C52; overflow: hidden; background: #f8f9fa;">
+                  ${
+                    user.avatarUrl
+                      ? `<img src="${user.avatarUrl}" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">`
+                      : `<i class="fas fa-user-circle" style="font-size: 3em; color: #A67C52; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>`
+                  }
+                </div>
+              </div>
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" id="userEmail" value="${user.email || ''}" required>
+                <input type="email" class="form-control" id="userEmail" value="${user.email || ''}" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
+                <small class="form-text text-muted">Email không thể thay đổi</small>
               </div>
               <div class="mb-3">
                 <label class="form-label">Họ tên</label>
@@ -7625,27 +10002,46 @@
                   <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactive</option>
                 </select>
               </div>
+              <div class="mb-3">
+                <label class="form-label">Ảnh đại diện (tùy chọn)</label>
+                <input type="file" class="form-control" id="userAvatarFile" accept="image/*">
+                                                             <div id="avatarPreview" class="avatar-preview-container mt-2" style="display: none;">
+                 <img id="avatarPreviewImg" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #A67C52;">
+                 <div>
+                   <small class="text-success d-block">Ảnh đã được chọn</small>
+                   <small class="text-muted">Ảnh sẽ tự động upload lên Cloudinary</small>
+                 </div>
+               </div>
+                <small class="form-text text-muted">Chọn file ảnh để tự động upload lên Cloudinary</small>
+              </div>
             </form>
           `,
           showCancelButton: true,
-          confirmButtonText: 'Lưu',
-          cancelButtonText: 'Hủy',
+                      confirmButtonText: 'Lưu',
+            cancelButtonText: 'Hủy',
+            width: window.innerWidth <= 768 ? '95%' : '500px',
           preConfirm: () => {
             const email = document.getElementById('userEmail').value;
             const name = document.getElementById('userName').value;
             const address = document.getElementById('userAddress').value;
             const status = document.getElementById('userStatus').value;
-            if (!email || !name) {
-              Swal.showValidationMessage('Vui lòng điền đầy đủ thông tin');
+            const avatarFile = document.getElementById('userAvatarFile').files[0];
+            if (!name) {
+              Swal.showValidationMessage('Vui lòng điền tên người dùng');
               return false;
             }
-            return { email, name, address, status };
+            return { email, name, address, status, avatarFile };
           }
         }).then((result) => {
           if (result.isConfirmed) {
             updateUser(userId, result.value);
           }
         });
+        
+        // Setup file input after modal is shown
+        setTimeout(() => {
+          setupAvatarFileInput();
+        }, 100);
       });
     }
     window.editUser = editUser; // <-- Thêm dòng này
@@ -7653,10 +10049,34 @@
     // Update user
     async function updateUser(userId, userData) {
       try {
+        // Lấy thông tin user hiện tại để giữ lại avatarUrl
+        const userRef = ref(db, `users/${userId}`);
+        const snapshot = await get(userRef);
+        const currentUser = snapshot.val() || {};
+        
+        // Handle avatar upload
+        let avatarUrl = currentUser.avatarUrl; // Keep existing avatar by default
+        if (userData.avatarFile) {
+          // If new file is uploaded, use the new URL
+          avatarUrl = window.currentAvatarUrl;
+        }
+        
+        // Cập nhật thông tin mới
         await set(ref(db, `users/${userId}`), {
-          ...userData,
+          ...currentUser, // Giữ lại tất cả thông tin cũ
+          email: userData.email,
+          name: userData.name,
+          address: userData.address,
+          status: userData.status,
+          avatarUrl: avatarUrl, // Use new or existing avatar URL
           updated_at: new Date().toISOString()
         });
+        
+        // Clear stored avatar URL
+        window.currentAvatarUrl = null;
+        
+        // Reload danh sách users
+        await loadUsers();
         
         Swal.fire({
           icon: 'success',
@@ -7666,6 +10086,7 @@
           timer: 1500
         });
       } catch (error) {
+        console.error('Error updating user:', error);
         Swal.fire({
           icon: 'error',
           title: 'Lỗi!',
@@ -7675,7 +10096,7 @@
     }
 
     // Delete user
-    async function deleteUser(userId) {
+    async function  deleteUser(userId) {
       try {
         const result = await Swal.fire({
           title: 'Xác nhận xóa',
@@ -7744,10 +10165,15 @@
     // Render News Table
     function renderNewsTable(filteredNews = null) {
       const tbody = document.getElementById('newsTableBody');
-      if (!tbody) return;
+      const cardList = document.getElementById('newsCardList');
+      
+      if (!tbody || !cardList) return;
 
       const newsToRender = filteredNews || newsList;
+      
+      // Clear both views
       tbody.innerHTML = '';
+      cardList.innerHTML = '';
 
       if (newsToRender.length === 0) {
         tbody.innerHTML = `
@@ -7761,9 +10187,17 @@
             </td>
           </tr>
         `;
+        cardList.innerHTML = `
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-search fa-2x mb-3"></i>
+            <h5>Không tìm thấy tin tức nào</h5>
+            <p>Vui lòng thử lại với từ khóa khác</p>
+          </div>
+        `;
         return;
       }
 
+      // Render desktop table
       newsToRender.forEach((news, idx) => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -7781,6 +10215,35 @@
           </td>
         `;
         tbody.appendChild(row);
+      });
+      
+      // Render mobile cards
+      newsToRender.forEach((news, idx) => {
+        const card = document.createElement('div');
+        card.className = 'news-card';
+        card.innerHTML = `
+          <div class="news-card-header">
+            <img src="${news.image}" alt="${news.alt}" class="news-image" onerror="this.src='images/default-image.png'">
+            <div class="news-info">
+              <div class="news-title">${news.title}</div>
+              <div class="news-date">
+                <i class="fas fa-calendar me-1"></i>${news.date}
+              </div>
+            </div>
+          </div>
+          <div class="news-summary">
+            ${news.summary.length > 100 ? news.summary.substring(0, 100) + '...' : news.summary}
+          </div>
+          <div class="news-actions">
+            <button class="news-action-btn edit" onclick="editNews(${idx})">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="news-action-btn delete" onclick="deleteNews(${idx})">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        `;
+        cardList.appendChild(card);
       });
     }
 
@@ -8060,27 +10523,37 @@
       });
     });
 
-    document.getElementById('newsTitle').addEventListener('change', function() {
-      const otherInput = document.getElementById('newsTitleOther');
-      if (this.value === 'other') {
-        otherInput.style.display = '';
-        otherInput.required = true;
-      } else {
-        otherInput.style.display = 'none';
-        otherInput.required = false;
-      }
-    });
+    const newsTitleElement = document.getElementById('newsTitle');
+    if (newsTitleElement) {
+      newsTitleElement.addEventListener('change', function() {
+        const otherInput = document.getElementById('newsTitleOther');
+        if (otherInput) {
+          if (this.value === 'other') {
+            otherInput.style.display = '';
+            otherInput.required = true;
+          } else {
+            otherInput.style.display = 'none';
+            otherInput.required = false;
+          }
+        }
+      });
+    }
 
-    document.getElementById('editNewsTitle').addEventListener('change', function() {
-      const otherInput = document.getElementById('editNewsTitleOther');
-      if (this.value === 'other') {
-        otherInput.style.display = '';
-        otherInput.required = true;
-      } else {
-        otherInput.style.display = 'none';
-        otherInput.required = false;
-      }
-    });
+    const editNewsTitleElement = document.getElementById('editNewsTitle');
+    if (editNewsTitleElement) {
+      editNewsTitleElement.addEventListener('change', function() {
+        const otherInput = document.getElementById('editNewsTitleOther');
+        if (otherInput) {
+          if (this.value === 'other') {
+            otherInput.style.display = '';
+            otherInput.required = true;
+          } else {
+            otherInput.style.display = 'none';
+            otherInput.required = false;
+          }
+        }
+      });
+    }
 
     async function loadDashboardStats() {
       // ... các thống kê khác ...
@@ -8092,9 +10565,15 @@
           const usersObj = usersSnap.val();
           count = Object.keys(usersObj).length;
         }
-        document.getElementById('totalUsers').textContent = count;
+        const totalUsersElement = document.getElementById('totalUsers');
+        if (totalUsersElement) {
+          totalUsersElement.textContent = count;
+        }
       } catch (e) {
-        document.getElementById('totalUsers').textContent = '0';
+        const totalUsersElement = document.getElementById('totalUsers');
+        if (totalUsersElement) {
+          totalUsersElement.textContent = '0';
+        }
       }
     }
 
@@ -8389,10 +10868,15 @@ async function loadStories() {
 // Render Stories Table
 function renderStoriesTable(filteredStories = null) {
   const tbody = document.getElementById('storiesTableBody');
-  if (!tbody) return;
+  const cardList = document.getElementById('storiesCardList');
+  
+  if (!tbody || !cardList) return;
 
   const storiesToRender = filteredStories || storiesList;
+  
+  // Clear both views
   tbody.innerHTML = '';
+  cardList.innerHTML = '';
 
   if (storiesToRender.length === 0) {
     tbody.innerHTML = `
@@ -8405,6 +10889,13 @@ function renderStoriesTable(filteredStories = null) {
           </div>
         </td>
       </tr>
+    `;
+    cardList.innerHTML = `
+      <div class="text-center text-muted py-4">
+        <i class="fas fa-clock fa-2x mb-3"></i>
+        <h5>Không có tin 24h nào</h5>
+        <p>Chưa có tin 24h nào được đăng</p>
+      </div>
     `;
     return;
   }
@@ -8461,6 +10952,57 @@ function renderStoriesTable(filteredStories = null) {
       </td>
     `;
     tbody.appendChild(row);
+  });
+  
+  // Render mobile cards
+  sortedStories.forEach((story) => {
+    const card = document.createElement('div');
+    card.className = 'story-card';
+    const storyDate = new Date(story.timestamp);
+    const isExpired = Date.now() - story.timestamp > 24 * 60 * 60 * 1000; // 24 giờ
+    
+    card.innerHTML = `
+      <div class="story-card-header">
+        <img src="${story.authorPhotoURL || 'images/default-avatar.png'}" 
+             alt="avatar" 
+             class="story-author-avatar"
+             onerror="this.src='images/default-avatar.png'">
+        <div class="story-author-info">
+          <div class="story-author-name">${story.authorName || 'Ẩn danh'}</div>
+          <div class="story-author-id">${story.authorId || ''}</div>
+        </div>
+        <span class="story-status ${isExpired ? 'expired' : 'active'}">
+          ${isExpired ? 'Hết hạn' : 'Còn hiệu lực'}
+        </span>
+      </div>
+      
+      <div class="story-content">
+        ${story.text || 'Không có nội dung'}
+      </div>
+      
+      ${story.image ? `
+        <img src="${story.image}" 
+             alt="story image" 
+             class="story-image"
+             onclick="showStoryImage('${story.image}')"
+             onerror="this.src='images/default-image.png'">
+      ` : ''}
+      
+      <div class="story-time">
+        <i class="fas fa-clock me-1"></i>
+        ${storyDate.toLocaleDateString('vi-VN')} - ${storyDate.toLocaleTimeString('vi-VN')}
+      </div>
+      
+      <div class="story-actions">
+        <button class="story-action-btn view" onclick="viewStoryDetail('${story.id}')">
+          <i class="fas fa-eye"></i> Xem
+        </button>
+        <button class="story-action-btn delete" onclick="deleteStory('${story.id}')">
+          <i class="fas fa-trash"></i> Xóa
+        </button>
+      </div>
+    `;
+    cardList.appendChild(card);
   });
 }
 
@@ -8862,14 +11404,36 @@ document.getElementById('editNewsImageFile')?.addEventListener('change', async f
 window.loadRoles = async function() {
   if (!db) return;
   const tbody = document.getElementById('roleList');
+  const cardList = document.getElementById('roleCardList');
+  
+  if (!tbody || !cardList) return;
+  
+  // Clear both views
   tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Đang tải...</td></tr>';
+  cardList.innerHTML = `
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-id-badge fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
+  `;
+  
   try {
     const snap = await get(ref(db, 'roles'));
     if (!snap.exists()) {
       tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Chưa có chức vụ nào.</td></tr>';
+      cardList.innerHTML = `
+        <div class="text-center text-muted py-4">
+          <i class="fas fa-id-badge fa-2x mb-3"></i>
+          <h5>Chưa có chức vụ nào</h5>
+          <p>Hãy thêm chức vụ đầu tiên</p>
+        </div>
+      `;
       return;
     }
+    
     const roles = Object.entries(snap.val()).map(([id, r]) => ({ id, ...r }));
+    
+    // Render desktop table
     tbody.innerHTML = roles.map(role => `
       <tr>
         <td>${role.name || ''}</td>
@@ -8882,8 +11446,49 @@ window.loadRoles = async function() {
         </td>
       </tr>
     `).join('');
+    
+    // Render mobile cards
+    cardList.innerHTML = roles.map(role => `
+      <div class="role-card">
+        <div class="role-card-header">
+          <h6 class="role-name">${role.name || 'Chưa có tên'}</h6>
+          <div class="role-actions">
+            <button class="role-action-btn edit" onclick="showEditRoleModal('${role.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button class="role-action-btn delete" onclick="deleteRole('${role.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        </div>
+        <div class="role-details">
+          <div class="role-detail-item">
+            <div class="role-detail-label">Mô tả</div>
+            <div class="role-detail-value">${role.description || 'Chưa có mô tả'}</div>
+          </div>
+          <div class="role-detail-item">
+            <div class="role-detail-label">Quyền hạn</div>
+            <div class="role-detail-value">${role.permissions || 'Chưa có quyền hạn'}</div>
+          </div>
+          <div class="role-detail-item">
+            <div class="role-detail-label">Lương cơ bản</div>
+            <div class="role-detail-value role-salary">
+              ${role.baseSalary ? Number(role.baseSalary).toLocaleString('vi-VN') + ' đ/tháng' : 'Chưa có lương'}
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
   } catch (e) {
     tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Lỗi tải dữ liệu!</td></tr>';
+    cardList.innerHTML = `
+      <div class="text-center text-danger py-4">
+        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+        <h5>Lỗi tải dữ liệu!</h5>
+        <p>Vui lòng thử lại sau</p>
+      </div>
+    `;
   }
 }
 
@@ -9026,12 +11631,21 @@ window.loadStaffs = async function() {
   }
   
   const tbody = document.getElementById('staffList');
-  if (!tbody) {
-    console.error('Staff list table body not found');
+  const cardList = document.getElementById('staffCardList');
+  
+  if (!tbody || !cardList) {
+    console.error('Staff list table body or card list not found');
     return;
   }
   
-      tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted">Đang tải...</td></tr>';
+  // Clear both views
+  tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted">Đang tải...</td></tr>';
+  cardList.innerHTML = `
+    <div class="text-center text-muted py-4">
+      <i class="fas fa-users fa-2x mb-3"></i>
+      <p>Đang tải...</p>
+    </div>
+  `;
   
   try {
     console.log('Loading staff data...');
@@ -9506,6 +12120,7 @@ window.loadStaffs = async function() {
       }
     }
     
+    // Render desktop table
     tbody.innerHTML = staffsWithStats.map(staff => `
       <tr>
         <td><img src="${staff.avatarUrl || 'https://i.pravatar.cc/60?u=' + staff.email}" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"></td>
@@ -9529,6 +12144,71 @@ window.loadStaffs = async function() {
         </td>
       </tr>
     `).join('');
+    
+    // Render mobile cards
+    cardList.innerHTML = staffsWithStats.map(staff => `
+      <div class="staff-card">
+        <div class="staff-card-header">
+          <img src="${staff.avatarUrl || 'https://i.pravatar.cc/60?u=' + staff.email}" 
+               alt="avatar" 
+               class="staff-avatar"
+               onerror="this.src='https://i.pravatar.cc/60?u=default'">
+          <div class="staff-info">
+            <div class="staff-name">${staff.name || 'Chưa có tên'}</div>
+            <div class="staff-email">${staff.email || 'Chưa có email'}</div>
+            <div class="staff-role">${staff.role || 'Chưa có chức vụ'}</div>
+          </div>
+          <span class="staff-status ${staff.status === 'active' ? 'active' : 'inactive'}">
+            ${staff.status === 'active' ? 'Đang làm' : 'Nghỉ việc'}
+          </span>
+        </div>
+        
+        <div class="staff-details">
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Số điện thoại</div>
+            <div class="staff-detail-value">${staff.phone || 'Chưa có'}</div>
+          </div>
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Địa chỉ</div>
+            <div class="staff-detail-value">${staff.address || 'Chưa có'}</div>
+          </div>
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Ngày vào làm</div>
+            <div class="staff-detail-value">${staff.startDate ? new Date(staff.startDate).toLocaleDateString('vi-VN') : 'Chưa có'}</div>
+          </div>
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Lương cơ bản</div>
+            <div class="staff-detail-value staff-salary">
+              ${staff.baseSalary ? Number(staff.baseSalary).toLocaleString('vi-VN') + ' đ/tháng' : 'Chưa có lương'}
+            </div>
+          </div>
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Ngày công</div>
+            <div class="staff-detail-value">
+              <span class="badge ${staff.workingDays >= 28 ? 'bg-primary' : 'bg-success'}">${staff.workingDays}</span>
+            </div>
+          </div>
+          <div class="staff-detail-item">
+            <div class="staff-detail-label">Giờ làm việc</div>
+            <div class="staff-detail-value staff-working-hours">
+              ${Math.round(staff.totalWorkingHours || 0).toFixed(1)} giờ
+            </div>
+          </div>
+        </div>
+        
+        <div class="staff-actions">
+          <button class="staff-action-btn view" onclick="showStaffDetails('${staff.id}')">
+            <i class="fas fa-eye"></i> Xem
+          </button>
+          <button class="staff-action-btn edit" onclick="showEditStaffModal('${staff.id}')">
+            <i class="fas fa-edit"></i> Sửa
+          </button>
+          <button class="staff-action-btn delete" onclick="deleteStaff('${staff.id}')">
+            <i class="fas fa-trash"></i> Xóa
+          </button>
+        </div>
+      </div>
+    `).join('');
   } catch (e) {
     console.error('Lỗi load staffs:', e);
     console.error('Chi tiết lỗi:', {
@@ -9537,6 +12217,13 @@ window.loadStaffs = async function() {
       name: e.name
     });
     tbody.innerHTML = '<tr><td colspan="11" class="text-center text-danger">Lỗi tải dữ liệu! Vui lòng kiểm tra console để biết chi tiết.</td></tr>';
+    cardList.innerHTML = `
+      <div class="text-center text-danger py-4">
+        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+        <h5>Lỗi tải dữ liệu!</h5>
+        <p>Vui lòng kiểm tra console để biết chi tiết</p>
+      </div>
+    `;
   }
 }
 
@@ -10103,7 +12790,7 @@ window.showStaffDetails = async function(id) {
             </div>
             
                          <!-- Lịch chấm công -->
-             <div class="col-md-6 mb-4">
+             <div class="col-md-6 mb-4 d-none d-md-block">
                <div class="card h-100 border-0 shadow-sm">
                  <div class="card-header bg-success text-white">
                    <h6 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Lịch chấm công gần đây</h6>
@@ -10849,9 +13536,1118 @@ document.addEventListener('DOMContentLoaded', function() {
       color: inherit !important;
       text-shadow: none !important;
     }
+    
+    /* Extra small device user card optimizations */
+    @media (max-width: 360px) {
+      .user-card {
+        padding: 8px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+      }
+      
+      .user-card-header {
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      
+      .user-avatar {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .user-name {
+        font-size: 0.9rem;
+      }
+      
+      .user-email {
+        font-size: 0.75rem;
+      }
+      
+      .user-detail-item {
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+      }
+      
+      .user-detail-label {
+        min-width: 50px;
+      }
+      
+      .user-actions {
+        flex-direction: column;
+        gap: 3px;
+      }
+      
+      .user-action-btn {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+        justify-content: center;
+      }
+    }
+    
+    /* Fix mobile content alignment */
+    @media (max-width: 992px) {
+      .content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 20px 12px !important;
+      }
+      
+      /* Ensure content is centered on mobile */
+      .content > * {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Fix product management mobile layout */
+      #productManagement {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      #productManagement h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #productManagement .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Center search form on mobile */
+      #productSearchForm {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      #productSearchForm .row {
+        margin: 0;
+      }
+      
+      #productSearchForm .col-md-6,
+      #productSearchForm .col-md-4,
+      #productSearchForm .col-md-2 {
+        padding: 0 5px;
+        margin-bottom: 10px;
+      }
+      
+      /* Center mobile product cards */
+      .mobile-product-cards {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+      
+      .product-card {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Center mobile promotion cards */
+      .mobile-promotion-cards {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+      
+      .promotion-card {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Fix promotion management mobile layout */
+      #promotionManagement {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      #promotionManagement h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #promotionManagement .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Center mobile message and reviews cards */
+      .mobile-message-cards,
+      .mobile-reviews-cards {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+      
+      .review-card {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Fix message management mobile layout */
+      #messageManagement {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      #messageManagement h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #messageManagement .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Center mobile news cards */
+      .mobile-news-cards {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+      
+      .news-card {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Fix news management mobile layout */
+      #newsManagement {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      #newsManagement h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #newsManagement .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Center mobile order cards */
+      .mobile-order-cards {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+      }
+      
+      .order-card {
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Fix order management mobile layout */
+      #orderManagement {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      #orderManagement h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      #orderManagement .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      /* Mobile order tabs optimization */
+      #orderManagement .order-tabs {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      
+      #orderManagement .order-tab {
+        flex: 1;
+        min-width: 120px;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+      
+      /* Mobile order filters optimization */
+      #orderManagement .order-filters {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      
+      #orderManagement .order-search {
+        width: 100%;
+      }
+      
+      #orderManagement #orderSearch {
+        width: 100%;
+      }
+      
+      #orderManagement #refreshOrders {
+        width: 100%;
+      }
+      
+      /* Mobile order tabs styles */
+      .mobile-order-tabs {
+        margin-bottom: 16px;
+      }
+      
+      .mobile-tab-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      
+      .mobile-order-tab {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 8px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        background: #fff;
+        color: #6c757d;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 70px;
+        justify-content: center;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      
+      .mobile-order-tab:hover {
+        background: #f8f9fa;
+        border-color: #A67C52;
+      }
+      
+      .mobile-order-tab.active {
+        background: #A67C52;
+        color: white;
+        border-color: #A67C52;
+      }
+      
+      .mobile-order-tab i {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+      }
+      
+      .mobile-order-tab span:first-of-type {
+        font-size: 0.75rem;
+        text-align: center;
+        line-height: 1.2;
+      }
+      
+      .mobile-order-count {
+        background: rgba(255, 255, 255, 0.2);
+        color: inherit;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+      }
+      
+      .mobile-order-tab.active .mobile-order-count {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      
+      /* Mobile Stories Cards */
+      .mobile-stories-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 8px;
+      }
+      
+      .story-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      
+      .story-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .story-author-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e9ecef;
+      }
+      
+      .story-author-info {
+        flex: 1;
+      }
+      
+      .story-author-name {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 2px;
+      }
+      
+      .story-author-id {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+      
+      .story-status {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      
+      .story-status.active {
+        background: #d4edda;
+        color: #155724;
+      }
+      
+      .story-status.expired {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      
+      .story-content {
+        margin-bottom: 12px;
+        line-height: 1.5;
+        color: #333;
+        font-size: 0.9rem;
+      }
+      
+      .story-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        cursor: pointer;
+      }
+      
+      .story-time {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 12px;
+      }
+      
+      .story-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .story-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .story-action-btn.view {
+        background: #17a2b8;
+        color: white;
+      }
+      
+      .story-action-btn.view:hover {
+        background: #138496;
+      }
+      
+      .story-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .story-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Hide/show mobile stories cards */
+      .mobile-stories-cards.d-md-none {
+        display: flex !important;
+      }
+      
+      .table-responsive.d-none.d-md-block {
+        display: none !important;
+      }
+      
+      /* Responsive search form for stories */
+      #storySearch {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+      
+      #refreshStories {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+      
+      /* Center and sizing for mobile stories */
+      #storyManagement {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px 12px;
+      }
+      
+      .mobile-stories-cards {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      /* Mobile Roles Cards */
+      .mobile-roles-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 8px;
+      }
+      
+      .role-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      
+      .role-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      
+      .role-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #333;
+        margin: 0;
+      }
+      
+      .role-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .role-action-btn {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      
+      .role-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .role-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .role-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .role-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      .role-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .role-detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      
+      .role-detail-label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .role-detail-value {
+        font-size: 0.9rem;
+        color: #333;
+        line-height: 1.4;
+      }
+      
+      .role-salary {
+        font-weight: 600;
+        color: #28a745;
+        font-size: 1rem;
+      }
+      
+      /* Hide/show mobile roles cards */
+      .mobile-roles-cards.d-md-none {
+        display: flex !important;
+      }
+      
+      .table-responsive.d-none.d-md-block {
+        display: none !important;
+      }
+      
+      /* Responsive search form for roles */
+      #roleSearch {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+      
+      #roleSearchForm .btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+      
+      /* Center and sizing for mobile roles */
+      #roleManagement {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px 12px;
+      }
+      
+      .mobile-roles-cards {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      /* Mobile Staff Cards */
+      .mobile-staff-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 8px;
+      }
+      
+      .staff-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      
+      .staff-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .staff-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e9ecef;
+      }
+      
+      .staff-info {
+        flex: 1;
+      }
+      
+      .staff-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 4px;
+      }
+      
+      .staff-email {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 2px;
+      }
+      
+      .staff-role {
+        font-size: 0.8rem;
+        color: #17a2b8;
+        font-weight: 500;
+      }
+      
+      .staff-status {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      
+      .staff-status.active {
+        background: #d4edda;
+        color: #155724;
+      }
+      
+      .staff-status.inactive {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      
+      .staff-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      
+      .staff-detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f8f9fa;
+      }
+      
+      .staff-detail-item:last-child {
+        border-bottom: none;
+      }
+      
+      .staff-detail-label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .staff-detail-value {
+        font-size: 0.9rem;
+        color: #333;
+        text-align: right;
+        font-weight: 500;
+      }
+      
+      .staff-salary {
+        color: #28a745;
+        font-weight: 600;
+      }
+      
+      .staff-working-hours {
+        color: #17a2b8;
+        font-weight: 600;
+      }
+      
+      .staff-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .staff-action-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .staff-action-btn.view {
+        background: #17a2b8;
+        color: white;
+      }
+      
+      .staff-action-btn.view:hover {
+        background: #138496;
+      }
+      
+      .staff-action-btn.edit {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .staff-action-btn.edit:hover {
+        background: #e0a800;
+      }
+      
+      .staff-action-btn.delete {
+        background: #dc3545;
+        color: white;
+      }
+      
+      .staff-action-btn.delete:hover {
+        background: #c82333;
+      }
+      
+      /* Hide/show mobile staff cards */
+      .mobile-staff-cards.d-md-none {
+        display: flex !important;
+      }
+      
+      .table-responsive.d-none.d-md-block {
+        display: none !important;
+      }
+      
+      /* Responsive search form for staff */
+      #staffSearch {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+      
+      #staffSearchForm .btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+      
+      /* Responsive buttons for staff management */
+      #staffManagement .btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+      
+      /* Responsive stats cards */
+      #staffManagement .col-md-3 {
+        margin-bottom: 12px;
+      }
+      
+      #staffManagement .card {
+        font-size: 0.9rem;
+      }
+      
+      #staffManagement .card h3 {
+        font-size: 1.5rem;
+      }
+      
+      #staffManagement .card h6 {
+        font-size: 0.8rem;
+      }
+      
+      /* Center and sizing for mobile staff */
+      #staffManagement {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px 12px;
+      }
+      
+      .mobile-staff-cards {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      /* Mobile post detail modal optimization */
+      .post-detail-modal .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+      }
+      
+      .post-detail-modal .modal-content {
+        border-radius: 12px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      
+      .post-detail-modal .modal-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e9ecef;
+      }
+      
+      .post-detail-modal .modal-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      
+      .post-detail-modal .modal-body {
+        padding: 16px;
+        max-height: calc(90vh - 120px);
+        overflow-y: auto;
+      }
+      
+      .post-detail-modal .btn-close {
+        padding: 8px;
+        margin: 0;
+      }
+      
+      .post-detail-modal #deletePostInModal {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        height: auto;
+        line-height: 1.2;
+      }
+    }
   `;
   document.head.appendChild(style);
 });
+
+// Mobile chat functions
+function selectMobileUser(sender) {
+  selectedSender = sender;
+  // Update the select dropdown
+  const select = document.getElementById('mobileUserSelect');
+  if (select) {
+    select.value = sender;
+  }
+  // Re-render messages to update chat area
+  loadMessages();
+}
+
+function openMobileChat(sender) {
+  selectMobileUser(sender);
+  // Scroll to chat area
+  const chatArea = document.querySelector('.mobile-chat-area');
+  if (chatArea) {
+    chatArea.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function deleteConversation(sender) {
+  Swal.fire({
+    title: 'Xác nhận xóa',
+    text: `Bạn có chắc muốn xóa cuộc trò chuyện với ${sender}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        // Get all messages for this sender
+        const snapshot = await get(ref(db, 'chatMessages'));
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const messagesToDelete = Object.keys(data).filter(key => {
+            const msg = data[key];
+            return msg.sender === sender || msg.replyTo === sender;
+          });
+          
+          // Delete each message
+          for (const msgId of messagesToDelete) {
+            await remove(ref(db, `chatMessages/${msgId}`));
+          }
+          
+          await loadMessages();
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: 'Đã xóa cuộc trò chuyện.',
+            timer: 1500
+          });
+        }
+      } catch (error) {
+        console.error('Error deleting conversation:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Không thể xóa cuộc trò chuyện.'
+        });
+      }
+    }
+  });
+}
+
+// Add event listeners for order tabs
+document.addEventListener('DOMContentLoaded', function() {
+  // Desktop order tabs
+  document.querySelectorAll('.order-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      // Remove active class from all tabs
+      document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mobile-order-tab').forEach(t => t.classList.remove('active'));
+      
+      // Add active class to clicked tab
+      this.classList.add('active');
+      
+      // Find corresponding mobile tab and activate it
+      const status = this.dataset.status;
+      const mobileTab = document.querySelector(`.mobile-order-tab[data-status="${status}"]`);
+      if (mobileTab) {
+        mobileTab.classList.add('active');
+      }
+      
+      // Re-render orders
+      if (window.ordersList) {
+        window.renderOrders(window.ordersList);
+      }
+    });
+  });
+  
+  // Mobile order tabs
+  document.querySelectorAll('.mobile-order-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      // Remove active class from all tabs
+      document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mobile-order-tab').forEach(t => t.classList.remove('active'));
+      
+      // Add active class to clicked tab
+      this.classList.add('active');
+      
+      // Find corresponding desktop tab and activate it
+      const status = this.dataset.status;
+      const desktopTab = document.querySelector(`.order-tab[data-status="${status}"]`);
+      if (desktopTab) {
+        desktopTab.classList.add('active');
+      }
+      
+      // Re-render orders
+      if (window.ordersList) {
+        window.renderOrders(window.ordersList);
+      }
+    });
+  });
+});
+
+// Delete Order function
+window.deleteOrder = async function(orderId) {
+  Swal.fire({
+    title: 'Xác nhận xóa',
+    text: `Bạn có chắc muốn xóa đơn hàng #${orderId}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await remove(ref(db, `orders/${orderId}`));
+        await loadOrders();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: 'Đã xóa đơn hàng.',
+          timer: 1500
+        });
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Không thể xóa đơn hàng.'
+        });
+      }
+    }
+  });
+};
+
+// Switch order tab function
+window.switchOrderTab = function(status) {
+  console.log('Switching to tab:', status);
+  
+  // Remove active class from all tabs
+  document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mobile-order-tab').forEach(t => t.classList.remove('active'));
+  
+  // Add active class to clicked tab
+  const desktopTab = document.querySelector(`.order-tab[data-status="${status}"]`);
+  const mobileTab = document.querySelector(`.mobile-order-tab[data-status="${status}"]`);
+  
+  if (desktopTab) {
+    desktopTab.classList.add('active');
+  }
+  if (mobileTab) {
+    mobileTab.classList.add('active');
+  }
+  
+  // Re-render orders with the new filter
+  if (window.ordersList) {
+    console.log('Re-rendering orders with status:', status);
+    console.log('Total orders:', window.ordersList.length);
+    
+    // Filter orders based on status
+    let filteredOrders = window.ordersList;
+    if (status !== 'all') {
+      filteredOrders = window.ordersList.filter(order => order.status === status);
+    }
+    
+    console.log('Filtered orders:', filteredOrders.length);
+    window.renderOrders(window.ordersList); // Pass all orders, renderOrders will filter based on active tab
+  }
+};
+
+// Ensure event listeners work after page load
+setTimeout(() => {
+  // Desktop order tabs
+  document.querySelectorAll('.order-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const status = this.dataset.status;
+      switchOrderTab(status);
+    });
+  });
+  
+  // Mobile order tabs - add event listeners directly
+  document.querySelectorAll('.mobile-order-tab').forEach(tab => {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const status = this.dataset.status;
+      console.log('Mobile tab clicked:', status);
+      switchOrderTab(status);
+    });
+  });
+  
+  // Also add touch events for mobile
+  document.querySelectorAll('.mobile-order-tab').forEach(tab => {
+    tab.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      const status = this.dataset.status;
+      console.log('Mobile tab touched:', status);
+      switchOrderTab(status);
+    });
+  });
+}, 1000);
 </script>
 
 </body>
