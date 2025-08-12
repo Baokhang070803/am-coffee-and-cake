@@ -98,7 +98,6 @@ Table TraLoiBinhLuan {
   maTacGia varchar
   noiDung varchar
   thoiGian datetime
-  trangThai varchar
 }
 Ref: TraLoiBinhLuan.maBinhLuan > BinhLuan.maBinhLuan
 Ref: TraLoiBinhLuan.maTacGia > NguoiDung.maNguoiDung

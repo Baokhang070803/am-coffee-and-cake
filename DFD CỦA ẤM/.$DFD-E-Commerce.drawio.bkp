@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6" pages="3">
   <diagram id="context" name="Context Diagram">
-    <mxGraphModel dx="983" dy="603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1188" dy="729" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,7 +20,7 @@
           <mxGeometry x="800" y="110" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="vnpay" value="VNPAY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="780" y="510" width="100" height="50" as="geometry" />
+          <mxGeometry x="800" y="520" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="flow1" value="Đăng ký/Đăng nhập" style="endArrow=classic;html=1;fontSize=10;" parent="1" source="customer" target="system" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -468,13 +468,13 @@
           <mxGeometry x="320" y="560" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="d4_3" value="D4: Đơn hàng" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
-          <mxGeometry x="600" y="560" width="100" height="30" as="geometry" />
+          <mxGeometry x="600" y="550" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="d5_3" value="D5: Khuyến mãi" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
-          <mxGeometry x="760" y="560" width="100" height="30" as="geometry" />
+          <mxGeometry x="760" y="550" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="d7_3" value="D6: Thống kê" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
-          <mxGeometry x="1110" y="560" width="100" height="30" as="geometry" />
+          <mxGeometry x="1110" y="550" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="flow51" value="Yêu cầu đặt hàng" style="endArrow=classic;html=1;fontSize=10;" parent="1" source="customer3" target="p41" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
