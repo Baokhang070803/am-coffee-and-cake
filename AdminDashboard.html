@@ -4859,6 +4859,18 @@
         <i class="fas fa-user-tie"></i>
         <span>QL nhân viên & chấm công</span>
       </a>
+      <a href="#supplierManagement" class="nav-link" id="navSupplierManagement" data-bs-toggle="tab">
+        <i class="fas fa-truck"></i>
+        <span>QL nhà cung cấp</span>
+      </a>
+      <a href="#inventoryManagement" class="nav-link" id="navInventoryManagement" data-bs-toggle="tab">
+        <i class="fas fa-calculator"></i>
+        <span>QL chi phí sản phẩm</span>
+      </a>
+      <a href="#materialManagement" class="nav-link" id="navMaterialManagement" data-bs-toggle="tab">
+        <i class="fas fa-box-open"></i>
+        <span>QL nguyên liệu</span>
+      </a>
 
       <a class="nav-link" id="logout" href="#"><i class="fas fa-sign-out-alt"></i> <span>Đăng Xuất</span></a>
     </nav>
@@ -6260,12 +6272,274 @@
 </div>
 
 
-
-
-
-  <div class="footer">
-    <p>Copyright © 2025. Thiết kế bởi <a href="#">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+<!-- Supplier Management Section -->
+<section id="supplierManagement" class="content-section">
+  <h2>Quản Lý Nhà Cung Cấp</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+        <i class="fas fa-plus me-2"></i> Thêm nhà cung cấp
+      </button>
+      <button type="button" class="btn btn-success d-none d-md-inline-block" onclick="loadSuppliers()">
+        <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-warning" onclick="exportSupplierReport()">
+        <i class="fas fa-file-excel me-2"></i> Xuất Excel
+      </button>
+    </div>
   </div>
+
+  <!-- Thống kê tổng quan -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng nhà cung cấp</h6>
+          <h3 id="totalSupplierCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Đang hoạt động</h6>
+          <h3 id="activeSupplierCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng đơn hàng</h6>
+          <h3 id="totalSupplierOrders">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng giá trị</h6>
+          <h3 id="totalSupplierValue">0 đ</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form tìm kiếm -->
+  <form id="supplierSearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <input type="text" id="supplierSearch" class="form-control" placeholder="Tìm kiếm nhà cung cấp...">
+      </div>
+      <div class="col-md-2">
+        <select id="supplierStatusFilter" class="form-select">
+          <option value="">Tất cả trạng thái</option>
+          <option value="active">Đang hoạt động</option>
+          <option value="inactive">Không hoạt động</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-bordered table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Mã NCC</th>
+          <th>Tên nhà cung cấp</th>
+          <th>Liên hệ</th>
+          <th>Địa chỉ</th>
+          <th>Sản phẩm cung cấp</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="supplierTableBody">
+        <tr>
+          <td colspan="7" class="text-center">Đang tải...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="d-md-none">
+    <div id="supplierMobileCards">
+      <div class="text-center">
+        <p>Đang tải...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Supplier Modal -->
+<div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSupplierModalLabel">Thêm Nhà Cung Cấp Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addSupplierForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierCode" class="form-label">Mã nhà cung cấp <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="supplierCode" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierName" class="form-label">Tên nhà cung cấp <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="supplierName" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierContact" class="form-label">Người liên hệ <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="supplierContact" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierPhone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="supplierPhone" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="supplierEmail">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="supplierAddress" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="supplierAddress" rows="3" required></textarea>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierProducts" class="form-label">Sản phẩm cung cấp</label>
+                <textarea class="form-control" id="supplierProducts" rows="3" placeholder="Mô tả các sản phẩm cung cấp..."></textarea>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="supplierStatus" class="form-label">Trạng thái</label>
+                <select class="form-select" id="supplierStatus">
+                  <option value="active">Đang hoạt động</option>
+                  <option value="inactive">Không hoạt động</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="supplierNotes" class="form-label">Ghi chú</label>
+            <textarea class="form-control" id="supplierNotes" rows="3" placeholder="Thông tin bổ sung..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="saveSupplier()">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Supplier Modal -->
+<div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editSupplierModalLabel">Chỉnh Sửa Nhà Cung Cấp</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editSupplierForm">
+          <input type="hidden" id="editSupplierId">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierCode" class="form-label">Mã nhà cung cấp <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editSupplierCode" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierName" class="form-label">Tên nhà cung cấp <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editSupplierName" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierContact" class="form-label">Người liên hệ <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editSupplierContact" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierPhone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="editSupplierPhone" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="editSupplierEmail">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="editSupplierAddress" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="editSupplierAddress" rows="3" required></textarea>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierProducts" class="form-label">Sản phẩm cung cấp</label>
+                <textarea class="form-control" id="editSupplierProducts" rows="3" placeholder="Mô tả các sản phẩm cung cấp..."></textarea>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editSupplierStatus" class="form-label">Trạng thái</label>
+                <select class="form-select" id="editSupplierStatus">
+                  <option value="active">Đang hoạt động</option>
+                  <option value="inactive">Không hoạt động</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="editSupplierNotes" class="form-label">Ghi chú</label>
+            <textarea class="form-control" id="editSupplierNotes" rows="3" placeholder="Thông tin bổ sung..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="updateSupplier()">Cập nhật</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Nút chuyển đổi chế độ sáng/tối -->
   <div class="dark-mode-toggle" id="darkModeToggle" title="Chuyển đổi chế độ sáng/tối">
     <i class="fas fa-moon"></i>
@@ -6324,6 +6598,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getDatabase, ref, get, set, update, remove, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
     // Firebase Config
     const firebaseConfig = {
@@ -6338,11 +6613,12 @@
     };
 
     // Initialize Firebase
-    let app, auth, db;
+    let app, auth, db, storage;
     try {
       app = initializeApp(firebaseConfig);
       auth = getAuth(app);
       db = getDatabase(app);
+      storage = getStorage(app);
       // Thêm các biến Firebase ra window để các script module khác dùng được
       window.db = db;
       window.ref = ref;
@@ -6350,6 +6626,11 @@
       window.set = set;
       window.push = push;
       window.remove = remove;
+      window.update = update;
+      window.storage = storage;
+      window.storageRef = storageRef;
+      window.uploadBytes = uploadBytes;
+      window.getDownloadURL = getDownloadURL;
       console.log('Firebase initialized successfully');
     } catch (error) {
       console.error('Error initializing Firebase:', error);
@@ -6547,6 +6828,7 @@
       
       sections.forEach(section => {
         section.classList.remove('active-section');
+        section.style.display = 'none';
       });
       
       navLinks.forEach(link => {
@@ -6557,6 +6839,7 @@
       const targetLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
       
       if (targetSection && targetLink) {
+        targetSection.style.display = 'block';
         setTimeout(() => {
           targetSection.classList.add('active-section');
         }, 50);
@@ -6598,6 +6881,15 @@
             break;
           case 'roleManagement':
             loadRoles();
+            break;
+          case 'supplierManagement':
+            loadSuppliers();
+            break;
+          case 'inventoryManagement':
+            loadInventory();
+            break;
+          case 'materialManagement':
+            loadMaterials();
             break;
 
 
@@ -14648,6 +14940,3780 @@ setTimeout(() => {
     });
   });
 }, 1000);
+</script>
+
+
+
+<script>
+// Supplier Management Functions
+let suppliersList = [];
+
+// Load suppliers from Firebase
+async function loadSuppliers() {
+  try {
+    const suppliersRef = ref(db, 'suppliers');
+    const snapshot = await get(suppliersRef);
+    
+    if (snapshot.exists()) {
+      suppliersList = [];
+      snapshot.forEach((childSnapshot) => {
+        suppliersList.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    } else {
+      suppliersList = [];
+    }
+    
+    renderSuppliers();
+    updateSupplierStats();
+  } catch (error) {
+    console.error('Error loading suppliers:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể tải danh sách nhà cung cấp.'
+    });
+  }
+}
+
+// Render suppliers to table and mobile cards
+function renderSuppliers() {
+  // Desktop table
+  const tableBody = document.getElementById('supplierTableBody');
+  if (suppliersList.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không có dữ liệu</td></tr>';
+    return;
+  }
+  
+  tableBody.innerHTML = suppliersList.map(supplier => `
+    <tr>
+      <td><strong>${supplier.code || 'N/A'}</strong></td>
+      <td>
+        <div>
+          <strong>${supplier.name}</strong>
+          ${supplier.notes ? `<br><small class="text-muted">${supplier.notes}</small>` : ''}
+        </div>
+      </td>
+      <td>
+        <div>
+          <strong>${supplier.contact}</strong><br>
+          <small>📞 ${supplier.phone}</small>
+          ${supplier.email ? `<br><small>📧 ${supplier.email}</small>` : ''}
+        </div>
+      </td>
+      <td>${supplier.address}</td>
+      <td>${supplier.products || 'N/A'}</td>
+      <td>
+        <span class="badge ${supplier.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+          ${supplier.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
+        </span>
+      </td>
+      <td>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editSupplier('${supplier.id}')">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSupplier('${supplier.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  
+  // Mobile cards
+  const mobileCards = document.getElementById('supplierMobileCards');
+  if (suppliersList.length === 0) {
+    mobileCards.innerHTML = '<div class="text-center"><p>Không có dữ liệu</p></div>';
+    return;
+  }
+  
+  mobileCards.innerHTML = suppliersList.map(supplier => `
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h6 class="card-title mb-1">${supplier.name}</h6>
+            <small class="text-muted">Mã: ${supplier.code || 'N/A'}</small>
+          </div>
+          <span class="badge ${supplier.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+            ${supplier.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+          </span>
+        </div>
+        <div class="mb-2">
+          <strong>Liên hệ:</strong> ${supplier.contact}<br>
+          <strong>Điện thoại:</strong> ${supplier.phone}<br>
+          ${supplier.email ? `<strong>Email:</strong> ${supplier.email}<br>` : ''}
+          <strong>Địa chỉ:</strong> ${supplier.address}
+        </div>
+        ${supplier.products ? `<div class="mb-2"><strong>Sản phẩm:</strong> ${supplier.products}</div>` : ''}
+        ${supplier.notes ? `<div class="mb-2"><strong>Ghi chú:</strong> ${supplier.notes}</div>` : ''}
+        <div class="btn-group w-100" role="group">
+          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editSupplier('${supplier.id}')">
+            <i class="fas fa-edit"></i> Sửa
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSupplier('${supplier.id}')">
+            <i class="fas fa-trash"></i> Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Update supplier statistics
+function updateSupplierStats() {
+  const totalCount = suppliersList.length;
+  const activeCount = suppliersList.filter(s => s.status === 'active').length;
+  
+  document.getElementById('totalSupplierCount').textContent = totalCount;
+  document.getElementById('activeSupplierCount').textContent = activeCount;
+  document.getElementById('totalSupplierOrders').textContent = '0'; // Placeholder
+  document.getElementById('totalSupplierValue').textContent = '0 đ'; // Placeholder
+}
+
+// Save new supplier
+async function saveSupplier() {
+  const form = document.getElementById('addSupplierForm');
+  const formData = new FormData(form);
+  
+  const supplierData = {
+    code: document.getElementById('supplierCode').value.trim(),
+    name: document.getElementById('supplierName').value.trim(),
+    contact: document.getElementById('supplierContact').value.trim(),
+    phone: document.getElementById('supplierPhone').value.trim(),
+    email: document.getElementById('supplierEmail').value.trim() || null,
+    address: document.getElementById('supplierAddress').value.trim(),
+    products: document.getElementById('supplierProducts').value.trim() || null,
+    status: document.getElementById('supplierStatus').value,
+    notes: document.getElementById('supplierNotes').value.trim() || null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Validation
+  if (!supplierData.code || !supplierData.name || !supplierData.contact || !supplierData.phone || !supplierData.address) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const suppliersRef = ref(db, 'suppliers');
+    const newSupplierRef = push(suppliersRef);
+    await set(newSupplierRef, supplierData);
+    
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addSupplierModal'));
+    modal.hide();
+    form.reset();
+    
+    // Reload suppliers
+    await loadSuppliers();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã thêm nhà cung cấp mới.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error saving supplier:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể thêm nhà cung cấp.'
+    });
+  }
+}
+
+// Edit supplier
+function editSupplier(supplierId) {
+  const supplier = suppliersList.find(s => s.id === supplierId);
+  if (!supplier) return;
+  
+  // Populate edit form
+  document.getElementById('editSupplierId').value = supplier.id;
+  document.getElementById('editSupplierCode').value = supplier.code || '';
+  document.getElementById('editSupplierName').value = supplier.name || '';
+  document.getElementById('editSupplierContact').value = supplier.contact || '';
+  document.getElementById('editSupplierPhone').value = supplier.phone || '';
+  document.getElementById('editSupplierEmail').value = supplier.email || '';
+  document.getElementById('editSupplierAddress').value = supplier.address || '';
+  document.getElementById('editSupplierProducts').value = supplier.products || '';
+  document.getElementById('editSupplierStatus').value = supplier.status || 'active';
+  document.getElementById('editSupplierNotes').value = supplier.notes || '';
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('editSupplierModal'));
+  modal.show();
+}
+
+// Update supplier
+async function updateSupplier() {
+  const supplierId = document.getElementById('editSupplierId').value;
+  const supplier = suppliersList.find(s => s.id === supplierId);
+  if (!supplier) return;
+  
+  const updatedData = {
+    code: document.getElementById('editSupplierCode').value.trim(),
+    name: document.getElementById('editSupplierName').value.trim(),
+    contact: document.getElementById('editSupplierContact').value.trim(),
+    phone: document.getElementById('editSupplierPhone').value.trim(),
+    email: document.getElementById('editSupplierEmail').value.trim() || null,
+    address: document.getElementById('editSupplierAddress').value.trim(),
+    products: document.getElementById('editSupplierProducts').value.trim() || null,
+    status: document.getElementById('editSupplierStatus').value,
+    notes: document.getElementById('editSupplierNotes').value.trim() || null,
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Validation
+  if (!updatedData.code || !updatedData.name || !updatedData.contact || !updatedData.phone || !updatedData.address) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const supplierRef = ref(db, `suppliers/${supplierId}`);
+    await update(supplierRef, updatedData);
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editSupplierModal'));
+    modal.hide();
+    
+    // Reload suppliers
+    await loadSuppliers();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã cập nhật thông tin nhà cung cấp.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error updating supplier:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể cập nhật nhà cung cấp.'
+    });
+  }
+}
+
+// Delete supplier
+async function deleteSupplier(supplierId) {
+  const supplier = suppliersList.find(s => s.id === supplierId);
+  if (!supplier) return;
+  
+  const result = await Swal.fire({
+    title: 'Xác nhận xóa',
+    text: `Bạn có chắc muốn xóa nhà cung cấp "${supplier.name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+  
+  if (result.isConfirmed) {
+    try {
+      await remove(ref(db, `suppliers/${supplierId}`));
+      await loadSuppliers();
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công!',
+        text: 'Đã xóa nhà cung cấp.',
+        timer: 1500
+      });
+    } catch (error) {
+      console.error('Error deleting supplier:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể xóa nhà cung cấp.'
+      });
+    }
+  }
+}
+
+// Export supplier report
+function exportSupplierReport() {
+  if (suppliersList.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Thông báo',
+      text: 'Không có dữ liệu để xuất báo cáo.'
+    });
+    return;
+  }
+  
+  // Create CSV content
+  const headers = ['Mã NCC', 'Tên nhà cung cấp', 'Người liên hệ', 'Điện thoại', 'Email', 'Địa chỉ', 'Sản phẩm', 'Trạng thái', 'Ghi chú'];
+  const csvContent = [
+    headers.join(','),
+    ...suppliersList.map(supplier => [
+      supplier.code || '',
+      supplier.name || '',
+      supplier.contact || '',
+      supplier.phone || '',
+      supplier.email || '',
+      supplier.address || '',
+      supplier.products || '',
+      supplier.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động',
+      supplier.notes || ''
+    ].join(','))
+  ].join('\n');
+  
+  // Download CSV file
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `nha_cung_cap_${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Search suppliers
+document.getElementById('supplierSearchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const searchTerm = document.getElementById('supplierSearch').value.toLowerCase();
+  const statusFilter = document.getElementById('supplierStatusFilter').value;
+  
+  let filteredSuppliers = suppliersList;
+  
+  if (searchTerm) {
+    filteredSuppliers = filteredSuppliers.filter(supplier => 
+      supplier.name.toLowerCase().includes(searchTerm) ||
+      supplier.code.toLowerCase().includes(searchTerm) ||
+      supplier.contact.toLowerCase().includes(searchTerm) ||
+      supplier.phone.includes(searchTerm) ||
+      (supplier.email && supplier.email.toLowerCase().includes(searchTerm))
+    );
+  }
+  
+  if (statusFilter) {
+    filteredSuppliers = filteredSuppliers.filter(supplier => supplier.status === statusFilter);
+  }
+  
+  // Temporarily replace suppliersList for rendering
+  const originalList = suppliersList;
+  suppliersList = filteredSuppliers;
+  renderSuppliers();
+  suppliersList = originalList;
+});
+
+// Initialize supplier management when section is shown
+document.addEventListener('DOMContentLoaded', function() {
+  // Load suppliers when supplier management tab is clicked
+  const supplierTab = document.getElementById('navSupplierManagement');
+  if (supplierTab) {
+    supplierTab.addEventListener('click', function() {
+      loadSuppliers();
+    });
+  }
+});
+
+// Add CSS for supplier management
+const supplierCSS = `
+  /* Supplier Management Styles */
+  #supplierManagement .table img {
+    transition: transform 0.2s ease;
+  }
+  
+  #supplierManagement .table img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(166,124,82,0.2);
+  }
+  
+  #supplierManagement .badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  #supplierManagement .btn-group .btn {
+    margin: 0 2px;
+  }
+  
+  #supplierManagement .table td {
+    vertical-align: middle;
+  }
+  
+  /* Supplier Management Stats Cards - Custom Colors */
+  #supplierManagement .card.bg-primary {
+    background: linear-gradient(135deg, #A67C52, #8B6F47) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+  }
+  
+  #supplierManagement .card.bg-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  }
+  
+  #supplierManagement .card.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+  }
+  
+  #supplierManagement .card.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  }
+  
+  #supplierManagement .card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+  }
+  
+  #supplierManagement .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  #supplierManagement .card-body {
+    padding: 1.5rem;
+  }
+  
+  #supplierManagement .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+  
+  #supplierManagement .card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  #supplierManagement .card small {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+  
+  /* Supplier status indicators */
+  .supplier-status-active {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+  }
+  
+  .supplier-status-inactive {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    color: white;
+  }
+  
+  /* Mobile supplier cards */
+  .mobile-supplier-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 8px;
+  }
+  
+  .supplier-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .supplier-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  
+  .supplier-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+  }
+  
+  .supplier-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .supplier-action-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .supplier-action-btn.edit {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .supplier-action-btn.edit:hover {
+    background: #e0a800;
+  }
+  
+  .supplier-action-btn.delete {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .supplier-action-btn.delete:hover {
+    background: #c82333;
+  }
+  
+  /* Ensure all content sections are hidden by default */
+  .content-section {
+    display: none !important;
+  }
+  
+  .content-section.active-section {
+    display: block !important;
+  }
+  
+  /* Inventory Management Stats Cards - Custom Colors */
+  #inventoryManagement .card.bg-primary {
+    background: linear-gradient(135deg, #A67C52, #8B6F47) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+  }
+  
+  #inventoryManagement .card.bg-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  }
+  
+  #inventoryManagement .card.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  }
+  
+  #inventoryManagement .card.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  }
+  
+  #inventoryManagement .card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+  }
+  
+  #inventoryManagement .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  #inventoryManagement .card-body {
+    padding: 1.5rem;
+  }
+  
+  #inventoryManagement .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+  
+  #inventoryManagement .card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  #inventoryManagement .card small {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+  
+  /* Material Management Stats Cards - Custom Colors */
+  #materialManagement .card.bg-primary {
+    background: linear-gradient(135deg, #A67C52, #8B6F47) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+  }
+  
+  #materialManagement .card.bg-success {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  }
+  
+  #materialManagement .card.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  }
+  
+  #materialManagement .card.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  }
+  
+  #materialManagement .card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+  }
+  
+  #materialManagement .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  #materialManagement .card-body {
+    padding: 1.5rem;
+  }
+  
+  #materialManagement .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+  
+  #materialManagement .card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  #materialManagement .card small {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+`;
+
+// Inject CSS
+const style = document.createElement('style');
+style.textContent = supplierCSS;
+document.head.appendChild(style);
+
+// Inventory Management Section
+const inventorySection = `
+<section id="inventoryManagement" class="content-section" style="display: none;">
+  <h2>Quản Lý Chi Phí Sản Phẩm</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+        <i class="fas fa-plus me-2"></i> Thêm sản phẩm mới
+      </button>
+      <button type="button" class="btn btn-success d-none d-md-inline-block" onclick="loadInventory()">
+        <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-warning" onclick="exportInventoryReport()">
+        <i class="fas fa-file-excel me-2"></i> Xuất Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Thống kê tổng quan -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng sản phẩm</h6>
+          <h3 id="totalInventoryCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-danger text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng chi phí</h6>
+          <h3 id="totalCostCount">0 đ</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng doanh thu</h6>
+          <h3 id="totalRevenueCount">0 đ</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Lợi nhuận TB</h6>
+          <h3 id="avgProfitCount">0%</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form tìm kiếm -->
+  <form id="inventorySearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-3">
+        <input type="text" id="inventorySearch" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+      </div>
+      <div class="col-md-2">
+        <select id="inventoryCategoryFilter" class="form-select">
+          <option value="">Tất cả danh mục</option>
+          <option value="drinks">Đồ uống</option>
+          <option value="cakes">Bánh</option>
+          <option value="toppings">Topping</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select id="inventoryProfitFilter" class="form-select">
+          <option value="">Tất cả mức lợi nhuận</option>
+          <option value="high">Lợi nhuận cao (>50%)</option>
+          <option value="medium">Lợi nhuận trung bình (20-50%)</option>
+          <option value="low">Lợi nhuận thấp (<20%)</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-bordered table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Hình ảnh</th>
+          <th>Tên sản phẩm</th>
+          <th>Danh mục</th>
+          <th>Chi phí nguyên liệu</th>
+                          <th>Phí bao bì</th>
+          <th>Chi phí vận hành</th>
+          <th>Tổng chi phí</th>
+          <th>Giá bán</th>
+          <th>Lợi nhuận</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="inventoryTableBody">
+        <tr>
+          <td colspan="10" class="text-center">Đang tải...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="d-md-none">
+    <div id="inventoryMobileCards">
+      <div class="text-center">
+        <p>Đang tải...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Inventory Modal -->
+<div class="modal fade" id="addInventoryModal" tabindex="-1" aria-labelledby="addInventoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addInventoryModalLabel">
+          <i class="fas fa-plus me-2"></i>Thêm sản phẩm mới
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addInventoryForm">
+          <!-- Chọn sản phẩm từ Firebase -->
+          <div class="mb-3">
+            <label for="inventoryProductSelect" class="form-label">Chọn sản phẩm <span class="text-danger">*</span></label>
+            <select class="form-select" id="inventoryProductSelect" onchange="loadProductDetails()" required>
+              <option value="">-- Chọn sản phẩm từ danh sách --</option>
+            </select>
+            <small class="text-muted">Chọn sản phẩm để tự động điền thông tin cơ bản</small>
+          </div>
+
+          <!-- Thông tin cơ bản -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="inventoryProductName" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="inventoryProductName" placeholder="Nhập tên sản phẩm" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="inventoryCategory" class="form-label">Danh mục <span class="text-danger">*</span></label>
+                <select class="form-select" id="inventoryCategory" required>
+                  <option value="">-- Chọn danh mục --</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chi phí và giá -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="inventoryLaborCost" class="form-label">Phí bao bì (VNĐ)</label>
+                <input type="number" class="form-control" id="inventoryLaborCost" min="0" value="0">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="inventoryOperatingCost" class="form-label">Chi phí vận hành (VNĐ)</label>
+                <input type="number" class="form-control" id="inventoryOperatingCost" min="0" value="0">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="inventorySellingPrice" class="form-label">Giá bán (VNĐ) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="inventorySellingPrice" min="0" value="0" required>
+          </div>
+            </div>
+          </div>
+
+          <!-- Nguyên liệu sử dụng -->
+              <div class="mb-3">
+            <label class="form-label">Nguyên liệu sử dụng</label>
+            <div id="ingredientsContainer">
+              <div class="row ingredient-row mb-2">
+                <div class="col-md-4">
+                  <select class="form-select ingredient-select" onchange="calculateTotalCost()">
+                    <option value="">-- Chọn nguyên liệu --</option>
+                  </select>
+              </div>
+                <div class="col-md-2">
+                  <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" onchange="calculateTotalCost()">
+            </div>
+                <div class="col-md-2">
+                  <select class="form-select ingredient-unit">
+                    <option value="g">gram (g)</option>
+                    <option value="kg">kilogram (kg)</option>
+                    <option value="ml">milliliter (ml)</option>
+                    <option value="l">liter (l)</option>
+                    <option value="pcs">cái (pcs)</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <span class="ingredient-cost">0 đ</span>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-success btn-sm" onclick="addIngredientRow()">
+              <i class="fas fa-plus"></i> Thêm nguyên liệu
+            </button>
+            <div class="mt-2">
+              <strong>Tổng chi phí nguyên liệu: <span id="totalIngredientCost">0 đ</span></strong>
+            </div>
+          </div>
+
+          <!-- Hình ảnh sản phẩm -->
+              <div class="mb-3">
+            <label for="inventoryImage" class="form-label">Ảnh sản phẩm</label>
+            <div class="d-flex align-items-center gap-3">
+              <div class="flex-grow-1">
+                <input type="file" class="form-control" id="inventoryImage" accept="image/*" onchange="previewInventoryImage(this)">
+                <small class="text-muted">Ảnh sẽ tự động lấy từ sản phẩm đã chọn, hoặc upload ảnh mới lên Cloudinary</small>
+              </div>
+              <div id="inventoryImagePreview" class="d-none" style="width: 100px; height: 100px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="inventoryImagePreviewImg" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          </div>
+
+          <!-- Ghi chú -->
+          <div class="mb-3">
+            <label for="inventoryDescription" class="form-label">Ghi chú</label>
+            <textarea class="form-control" id="inventoryDescription" rows="3" placeholder="Ghi chú về sản phẩm..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-success" onclick="saveInventory()">
+          <i class="fas fa-save me-2"></i>Lưu sản phẩm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Inventory Modal -->
+<div class="modal fade" id="editInventoryModal" tabindex="-1" aria-labelledby="editInventoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editInventoryModalLabel">
+          <i class="fas fa-edit me-2"></i>Chỉnh sửa sản phẩm
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editInventoryForm">
+          <input type="hidden" id="editInventoryId">
+          <!-- Chọn sản phẩm từ Firebase -->
+          <div class="mb-3">
+            <label for="editInventoryProductSelect" class="form-label">Chọn sản phẩm <span class="text-danger">*</span></label>
+            <select class="form-select" id="editInventoryProductSelect" onchange="loadEditProductDetails()" required>
+              <option value="">-- Chọn sản phẩm từ danh sách --</option>
+            </select>
+            <small class="text-muted">Chọn sản phẩm để tự động điền thông tin cơ bản</small>
+          </div>
+
+          <!-- Thông tin cơ bản -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editInventoryProductName" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editInventoryProductName" placeholder="Nhập tên sản phẩm" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editInventoryCategory" class="form-label">Danh mục <span class="text-danger">*</span></label>
+                <select class="form-select" id="editInventoryCategory" required>
+                  <option value="">-- Chọn danh mục --</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chi phí và giá -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editInventoryLaborCost" class="form-label">Phí bao bì (VNĐ)</label>
+                <input type="number" class="form-control" id="editInventoryLaborCost" min="0" value="0">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editInventoryOperatingCost" class="form-label">Chi phí vận hành (VNĐ)</label>
+                <input type="number" class="form-control" id="editInventoryOperatingCost" min="0" value="0">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editInventorySellingPrice" class="form-label">Giá bán (VNĐ) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="editInventorySellingPrice" min="0" value="0" required>
+          </div>
+            </div>
+          </div>
+
+          <!-- Nguyên liệu sử dụng -->
+              <div class="mb-3">
+            <label class="form-label">Nguyên liệu sử dụng</label>
+            <div id="editIngredientsContainer">
+              <div class="row ingredient-row mb-2">
+                <div class="col-md-4">
+                  <select class="form-select ingredient-select" onchange="calculateEditTotalCost()">
+                    <option value="">-- Chọn nguyên liệu --</option>
+                  </select>
+              </div>
+                <div class="col-md-2">
+                  <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" onchange="calculateEditTotalCost()">
+            </div>
+                <div class="col-md-2">
+                  <select class="form-select ingredient-unit">
+                    <option value="g">gram (g)</option>
+                    <option value="kg">kilogram (kg)</option>
+                    <option value="ml">milliliter (ml)</option>
+                    <option value="l">liter (l)</option>
+                    <option value="pcs">cái (pcs)</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <span class="ingredient-cost">0 đ</span>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-success btn-sm" onclick="addEditIngredientRow()">
+              <i class="fas fa-plus"></i> Thêm nguyên liệu
+            </button>
+            <div class="mt-2">
+              <strong>Tổng chi phí nguyên liệu: <span id="editTotalIngredientCost">0 đ</span></strong>
+            </div>
+          </div>
+
+          <!-- Hình ảnh sản phẩm -->
+              <div class="mb-3">
+            <label for="editInventoryImage" class="form-label">Ảnh sản phẩm</label>
+            <div class="d-flex align-items-center gap-3">
+              <div class="flex-grow-1">
+                <input type="file" class="form-control" id="editInventoryImage" accept="image/*" onchange="previewEditInventoryImage(this)">
+                <small class="text-muted">Ảnh sẽ tự động lấy từ sản phẩm đã chọn, hoặc upload ảnh mới lên Cloudinary</small>
+              </div>
+              <div id="editInventoryImagePreview" class="d-none" style="width: 100px; height: 100px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="editInventoryImagePreviewImg" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          </div>
+
+          <!-- Ghi chú -->
+          <div class="mb-3">
+            <label for="editInventoryDescription" class="form-label">Ghi chú</label>
+            <textarea class="form-control" id="editInventoryDescription" rows="3" placeholder="Ghi chú về sản phẩm..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-success" onclick="updateInventory()">
+          <i class="fas fa-save me-2"></i>Cập nhật sản phẩm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stock Adjustment Modal -->
+<div class="modal fade" id="stockAdjustmentModal" tabindex="-1" aria-labelledby="stockAdjustmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stockAdjustmentModalLabel">Điều Chỉnh Tồn Kho</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="stockAdjustmentForm">
+          <input type="hidden" id="adjustmentInventoryId">
+          <div class="mb-3">
+            <label for="adjustmentType" class="form-label">Loại điều chỉnh <span class="text-danger">*</span></label>
+            <select class="form-select" id="adjustmentType" required>
+              <option value="">Chọn loại</option>
+              <option value="add">Thêm vào kho</option>
+              <option value="remove">Xuất kho</option>
+              <option value="adjust">Điều chỉnh trực tiếp</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="adjustmentQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="adjustmentQuantity" min="0" required>
+          </div>
+          <div class="mb-3">
+            <label for="adjustmentReason" class="form-label">Lý do điều chỉnh</label>
+            <textarea class="form-control" id="adjustmentReason" rows="3" placeholder="Ghi chú lý do điều chỉnh..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="processStockAdjustment()">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+// Insert inventory section into the content area
+const contentArea = document.querySelector('.content');
+if (contentArea) {
+  contentArea.insertAdjacentHTML('beforeend', inventorySection);
+  
+
+}
+
+// Material Management Section
+const materialSection = `
+<section id="materialManagement" class="content-section" style="display: none;">
+  <h2>Quản Lý Nguyên Liệu</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMaterialModal">
+        <i class="fas fa-plus me-2"></i> Thêm nguyên liệu
+      </button>
+      <button type="button" class="btn btn-success d-none d-md-inline-block" onclick="loadMaterials()">
+        <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-warning" onclick="exportMaterialReport()">
+        <i class="fas fa-file-excel me-2"></i> Xuất Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Thống kê tổng quan -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Tổng nguyên liệu</h6>
+          <h3 id="totalMaterialCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Đủ nguyên liệu</h6>
+          <h3 id="sufficientMaterialCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Sắp hết</h6>
+          <h3 id="lowMaterialCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-danger text-white h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h6 class="card-title">Hết nguyên liệu</h6>
+          <h3 id="outOfMaterialCount">0</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form tìm kiếm -->
+  <form id="materialSearchForm" class="mb-3">
+    <div class="row">
+      <div class="col-md-3">
+        <input type="text" id="materialSearch" class="form-control" placeholder="Tìm kiếm nguyên liệu...">
+      </div>
+      <div class="col-md-2">
+        <select id="materialCategoryFilter" class="form-select">
+          <option value="">Tất cả loại</option>
+          <option value="coffee">Cà phê</option>
+          <option value="milk">Sữa</option>
+          <option value="sugar">Đường</option>
+          <option value="flour">Bột</option>
+          <option value="fruit">Trái cây</option>
+          <option value="other">Khác</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select id="materialStatusFilter" class="form-select">
+          <option value="">Tất cả trạng thái</option>
+          <option value="sufficient">Đủ</option>
+          <option value="low">Sắp hết</option>
+          <option value="out">Hết</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Desktop Table View -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-bordered table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Hình ảnh</th>
+          <th>Tên nguyên liệu</th>
+          <th>Loại</th>
+          <th>Số lượng tồn kho</th>
+          <th>Đơn vị</th>
+          <th>Đơn giá</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="materialTableBody">
+        <tr>
+          <td colspan="8" class="text-center">Đang tải...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="d-md-none">
+    <div id="materialMobileCards">
+      <div class="text-center">
+        <p>Đang tải...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Material Modal -->
+<div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMaterialModalLabel">Thêm Nguyên Liệu Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addMaterialForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="materialName" class="form-label">Tên nguyên liệu <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="materialName" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="materialCategory" class="form-label">Loại nguyên liệu <span class="text-danger">*</span></label>
+                <select class="form-select" id="materialCategory" required>
+                  <option value="">Chọn loại</option>
+                  <option value="coffee">Cà phê</option>
+                  <option value="milk">Sữa</option>
+                  <option value="sugar">Đường</option>
+                  <option value="flour">Bột</option>
+                  <option value="fruit">Trái cây</option>
+                  <option value="other">Khác</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="materialQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="materialQuantity" min="0" step="0.01" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="materialUnit" class="form-label">Đơn vị <span class="text-danger">*</span></label>
+                <select class="form-select" id="materialUnit" required>
+                  <option value="">Chọn đơn vị</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="l">Lít (l)</option>
+                  <option value="ml">Milliliter (ml)</option>
+                  <option value="pcs">Cái (pcs)</option>
+                  <option value="pack">Gói (pack)</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="materialPrice" class="form-label">Đơn giá (VNĐ) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="materialPrice" min="0" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="materialMinStock" class="form-label">Số lượng tối thiểu</label>
+                <input type="number" class="form-control" id="materialMinStock" min="0" step="0.01" value="1">
+                <small class="text-muted">Cảnh báo khi số lượng xuống dưới mức này</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="materialSupplier" class="form-label">Nhà cung cấp</label>
+                <select class="form-select" id="materialSupplier">
+                  <option value="">Chọn nhà cung cấp...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="materialDescription" class="form-label">Mô tả</label>
+            <textarea class="form-control" id="materialDescription" rows="3" placeholder="Mô tả nguyên liệu, xuất xứ, đặc điểm..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="materialImage" class="form-label">Hình ảnh nguyên liệu</label>
+            <div class="d-flex align-items-center gap-3">
+              <div class="flex-grow-1">
+                <input type="file" class="form-control" id="materialImage" accept="image/*" onchange="previewMaterialImage(this, 'materialImagePreview')">
+                <small class="text-muted">Chọn file ảnh (JPG, PNG, GIF) - Tối đa 2MB. Ảnh sẽ tự động upload lên Cloudinary</small>
+              </div>
+              <div id="materialImagePreview" class="d-none" style="width: 100px; height: 100px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="materialImagePreviewImg" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="saveMaterial()">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Material Modal -->
+<div class="modal fade" id="editMaterialModal" tabindex="-1" aria-labelledby="editMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMaterialModalLabel">Chỉnh Sửa Nguyên Liệu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editMaterialForm">
+          <input type="hidden" id="editMaterialId">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editMaterialName" class="form-label">Tên nguyên liệu <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editMaterialName" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editMaterialCategory" class="form-label">Loại nguyên liệu <span class="text-danger">*</span></label>
+                <select class="form-select" id="editMaterialCategory" required>
+                  <option value="">Chọn loại</option>
+                  <option value="coffee">Cà phê</option>
+                  <option value="milk">Sữa</option>
+                  <option value="sugar">Đường</option>
+                  <option value="flour">Bột</option>
+                  <option value="fruit">Trái cây</option>
+                  <option value="other">Khác</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editMaterialQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="editMaterialQuantity" min="0" step="0.01" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editMaterialUnit" class="form-label">Đơn vị <span class="text-danger">*</span></label>
+                <select class="form-select" id="editMaterialUnit" required>
+                  <option value="">Chọn đơn vị</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="l">Lít (l)</option>
+                  <option value="ml">Milliliter (ml)</option>
+                  <option value="pcs">Cái (pcs)</option>
+                  <option value="pack">Gói (pack)</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="editMaterialPrice" class="form-label">Đơn giá (VNĐ) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="editMaterialPrice" min="0" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editMaterialMinStock" class="form-label">Số lượng tối thiểu</label>
+                <input type="number" class="form-control" id="editMaterialMinStock" min="0" step="0.01">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="editMaterialSupplier" class="form-label">Nhà cung cấp</label>
+                <select class="form-select" id="editMaterialSupplier">
+                  <option value="">Chọn nhà cung cấp...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="editMaterialDescription" class="form-label">Mô tả</label>
+            <textarea class="form-control" id="editMaterialDescription" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="editMaterialImage" class="form-label">Hình ảnh nguyên liệu</label>
+            <div class="d-flex align-items-center gap-3">
+              <div class="flex-grow-1">
+                <input type="file" class="form-control" id="editMaterialImage" accept="image/*" onchange="previewMaterialImage(this, 'editMaterialImagePreview')">
+                <small class="text-muted">Chọn file ảnh (JPG, PNG, GIF) - Tối đa 2MB. Ảnh sẽ tự động upload lên Cloudinary</small>
+              </div>
+              <div id="editMaterialImagePreview" class="d-none" style="width: 100px; height: 100px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="editMaterialImagePreviewImg" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="updateMaterial()">Cập nhật</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Material Adjustment Modal -->
+<div class="modal fade" id="materialAdjustmentModal" tabindex="-1" aria-labelledby="materialAdjustmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="materialAdjustmentModalLabel">Điều Chỉnh Nguyên Liệu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="materialAdjustmentForm">
+          <input type="hidden" id="adjustmentMaterialId">
+          <div class="mb-3">
+            <label for="materialAdjustmentType" class="form-label">Loại điều chỉnh <span class="text-danger">*</span></label>
+            <select class="form-select" id="materialAdjustmentType" required>
+              <option value="">Chọn loại</option>
+              <option value="add">Nhập nguyên liệu</option>
+              <option value="remove">Xuất nguyên liệu</option>
+              <option value="adjust">Điều chỉnh trực tiếp</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="materialAdjustmentQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="materialAdjustmentQuantity" min="0" step="0.01" required>
+          </div>
+          <div class="mb-3">
+            <label for="materialAdjustmentReason" class="form-label">Lý do điều chỉnh</label>
+            <textarea class="form-control" id="materialAdjustmentReason" rows="3" placeholder="Ghi chú lý do điều chỉnh..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="processMaterialAdjustment()">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+// Insert material section into the content area
+if (contentArea) {
+  contentArea.insertAdjacentHTML('beforeend', materialSection);
+}
+
+// Inventory Management Functions
+let inventoryList = [];
+
+// Load inventory from Firebase
+async function loadInventory() {
+  try {
+    const inventoryRef = ref(db, 'inventory');
+    const snapshot = await get(inventoryRef);
+    
+    if (snapshot.exists()) {
+      inventoryList = [];
+      snapshot.forEach((childSnapshot) => {
+        inventoryList.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    } else {
+      inventoryList = [];
+    }
+    
+    renderInventory();
+    updateInventoryStats();
+  } catch (error) {
+    console.error('Error loading inventory:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể tải danh sách chi phí sản phẩm.'
+    });
+  }
+}
+
+
+
+// Render inventory to table and mobile cards
+function renderInventory() {
+  // Desktop table
+  const tableBody = document.getElementById('inventoryTableBody');
+  if (inventoryList.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="10" class="text-center">Không có dữ liệu</td></tr>';
+    return;
+  }
+  
+  tableBody.innerHTML = inventoryList.map(item => {
+    const totalCost = calculateProductTotalCost(item);
+    const profit = item.sellingPrice - totalCost;
+    const profitPercentage = item.sellingPrice > 0 ? ((profit / item.sellingPrice) * 100).toFixed(1) : 0;
+    const profitClass = getProfitClass(profitPercentage);
+    
+    return `
+      <tr>
+        <td>
+          <img src="${item.image || 'images/default-product.jpg'}" alt="${item.productName}" 
+               style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" 
+               onerror="this.src='images/default-product.jpg'">
+        </td>
+        <td>
+          <div>
+            <strong>${item.productName}</strong>
+            ${item.description ? `<br><small class="text-muted">${item.description}</small>` : ''}
+          </div>
+        </td>
+        <td>
+          <span class="badge bg-info">${getCategoryText(item.category)}</span>
+        </td>
+        <td>
+          <strong>${(item.ingredientCost || 0).toLocaleString('vi-VN')} đ</strong>
+        </td>
+        <td>
+          <strong>${(item.laborCost || 0).toLocaleString('vi-VN')} đ</strong>
+        </td>
+        <td>
+          <strong>${(item.operatingCost || 0).toLocaleString('vi-VN')} đ</strong>
+        </td>
+        <td>
+          <strong>${totalCost.toLocaleString('vi-VN')} đ</strong>
+        </td>
+        <td>
+          <strong>${(item.sellingPrice || 0).toLocaleString('vi-VN')} đ</strong>
+        </td>
+        <td>
+          <span class="badge ${profitClass}">${profitPercentage}%</span>
+          <br><small class="text-muted">${profit.toLocaleString('vi-VN')} đ</small>
+        </td>
+        <td>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editInventory('${item.id}')">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-info" onclick="viewProductDetails('${item.id}')">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteInventory('${item.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+  
+  // Mobile cards
+  const mobileCards = document.getElementById('inventoryMobileCards');
+  if (inventoryList.length === 0) {
+    mobileCards.innerHTML = '<div class="text-center"><p>Không có dữ liệu</p></div>';
+    return;
+  }
+  
+  mobileCards.innerHTML = inventoryList.map(item => {
+    const totalCost = calculateProductTotalCost(item);
+    const profit = item.sellingPrice - totalCost;
+    const profitPercentage = item.sellingPrice > 0 ? ((profit / item.sellingPrice) * 100).toFixed(1) : 0;
+    const profitClass = getProfitClass(profitPercentage);
+    
+    return `
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            <img src="${item.image || 'images/default-product.jpg'}" alt="${item.productName}" 
+                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 12px;" 
+                 onerror="this.src='images/default-product.jpg'">
+            <div class="flex-grow-1">
+              <h6 class="card-title mb-1">${item.productName}</h6>
+              <span class="badge bg-info">${getCategoryText(item.category)}</span>
+            </div>
+            <span class="badge ${profitClass}">${profitPercentage}%</span>
+          </div>
+          <div class="mb-2">
+            <strong>Chi phí nguyên liệu:</strong> ${(item.ingredientCost || 0).toLocaleString('vi-VN')} đ<br>
+            <strong>Phí bao bì:</strong> ${(item.laborCost || 0).toLocaleString('vi-VN')} đ<br>
+            <strong>Chi phí vận hành:</strong> ${(item.operatingCost || 0).toLocaleString('vi-VN')} đ<br>
+            <strong>Tổng chi phí:</strong> ${totalCost.toLocaleString('vi-VN')} đ<br>
+            <strong>Giá bán:</strong> ${(item.sellingPrice || 0).toLocaleString('vi-VN')} đ<br>
+            <strong>Lợi nhuận:</strong> ${profit.toLocaleString('vi-VN')} đ (${profitPercentage}%)
+          </div>
+          <div class="btn-group w-100" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editInventory('${item.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-info" onclick="viewProductDetails('${item.id}')">
+              <i class="fas fa-eye"></i> Chi tiết
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteInventory('${item.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Helper functions
+function getInventoryStatus(quantity, minStock) {
+  if (quantity <= 0) return 'out_of_stock';
+  if (minStock && quantity <= minStock) return 'low_stock';
+  return 'in_stock';
+}
+
+function getStatusClass(status) {
+  switch (status) {
+    case 'in_stock': return 'bg-success';
+    case 'low_stock': return 'bg-warning';
+    case 'out_of_stock': return 'bg-danger';
+    default: return 'bg-secondary';
+  }
+}
+
+function getStatusText(status) {
+  switch (status) {
+    case 'in_stock': return 'Còn hàng';
+    case 'low_stock': return 'Sắp hết hàng';
+    case 'out_of_stock': return 'Hết hàng';
+    default: return 'Không xác định';
+  }
+}
+
+function getCategoryText(category) {
+  switch (category) {
+    case 'drinks': return 'Đồ uống';
+    case 'cakes': return 'Bánh';
+    case 'toppings': return 'Topping';
+    default: return category;
+  }
+}
+
+// Calculate total cost for a product
+function calculateProductTotalCost(item) {
+  const ingredientCost = item.ingredientCost || 0;
+  const laborCost = item.laborCost || 0;
+  const operatingCost = item.operatingCost || 0;
+  return ingredientCost + laborCost + operatingCost;
+}
+
+// Get profit class based on percentage
+function getProfitClass(profitPercentage) {
+  const percentage = parseFloat(profitPercentage);
+  if (percentage >= 50) return 'bg-success';
+  if (percentage >= 20) return 'bg-warning';
+  if (percentage >= 0) return 'bg-info';
+  return 'bg-danger';
+}
+
+// Add ingredient row to form
+async function addIngredientRow() {
+  const container = document.getElementById('ingredientsContainer');
+  const newRow = document.createElement('div');
+  newRow.className = 'row ingredient-row mb-2';
+  newRow.innerHTML = `
+    <div class="col-md-4">
+      <select class="form-select ingredient-select" onchange="calculateTotalCost()">
+        <option value="">-- Chọn nguyên liệu --</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" onchange="calculateTotalCost()">
+    </div>
+    <div class="col-md-2">
+      <select class="form-select ingredient-unit">
+        <option value="g">gram (g)</option>
+        <option value="kg">kilogram (kg)</option>
+        <option value="ml">milliliter (ml)</option>
+        <option value="l">liter (l)</option>
+        <option value="pcs">cái (pcs)</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <span class="ingredient-cost">0 đ</span>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  `;
+  
+  container.appendChild(newRow);
+  await populateIngredientOptions();
+  setupRemoveIngredientButtons();
+}
+
+// Add ingredient row to edit form
+async function addEditIngredientRow() {
+  const container = document.getElementById('editIngredientsContainer');
+  const newRow = document.createElement('div');
+  newRow.className = 'row ingredient-row mb-2';
+  newRow.innerHTML = `
+    <div class="col-md-4">
+      <select class="form-select ingredient-select" onchange="calculateEditTotalCost()">
+        <option value="">-- Chọn nguyên liệu --</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" onchange="calculateEditTotalCost()">
+    </div>
+    <div class="col-md-2">
+      <select class="form-select ingredient-unit">
+        <option value="g">gram (g)</option>
+        <option value="kg">kilogram (kg)</option>
+        <option value="ml">milliliter (ml)</option>
+        <option value="l">liter (l)</option>
+        <option value="pcs">cái (pcs)</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <span class="ingredient-cost">0 đ</span>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  `;
+  
+  container.appendChild(newRow);
+  await populateIngredientOptions();
+  setupRemoveIngredientButtons();
+}
+
+// Helper function to calculate ingredient cost with unit conversion
+function calculateIngredientCost(material, quantity, ingredientUnit) {
+  let unitPrice = material.price || 0;
+  
+  // Convert unit price based on ingredient unit
+  if (material.unit === 'kg' && ingredientUnit === 'g') {
+    unitPrice = unitPrice / 1000; // Convert kg price to g price
+  } else if (material.unit === 'l' && ingredientUnit === 'ml') {
+    unitPrice = unitPrice / 1000; // Convert l price to ml price
+  }
+  
+  const cost = unitPrice * parseFloat(quantity);
+  console.log(`Material: ${material.name}, Price: ${material.price} đ/${material.unit}, Quantity: ${quantity} ${ingredientUnit}, Unit Price: ${unitPrice} đ/${ingredientUnit}, Cost: ${cost} đ`);
+  
+  return cost;
+}
+
+// Calculate total cost for add form
+async function calculateTotalCost() {
+  try {
+    // Load materials from Firebase
+    const materialsRef = ref(db, 'materials');
+    const snapshot = await get(materialsRef);
+    
+    let materials = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        materials.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    }
+    
+    let totalCost = 0;
+    const rows = document.querySelectorAll('#ingredientsContainer .ingredient-row');
+    
+    rows.forEach(row => {
+      const select = row.querySelector('.ingredient-select');
+      const quantity = row.querySelector('.ingredient-quantity');
+      const costSpan = row.querySelector('.ingredient-cost');
+      
+      if (select.value && quantity.value) {
+        const material = materials.find(m => m.id === select.value);
+        if (material) {
+          const ingredientUnit = row.querySelector('.ingredient-unit').value;
+          const cost = calculateIngredientCost(material, quantity.value, ingredientUnit);
+          costSpan.textContent = cost.toLocaleString('vi-VN') + ' đ';
+          totalCost += cost;
+        }
+      }
+    });
+    
+    document.getElementById('totalIngredientCost').textContent = totalCost.toLocaleString('vi-VN') + ' đ';
+  } catch (error) {
+    console.error('Error calculating total cost:', error);
+  }
+}
+
+// Calculate total cost for edit form
+async function calculateEditTotalCost() {
+  try {
+    // Load materials from Firebase
+    const materialsRef = ref(db, 'materials');
+    const snapshot = await get(materialsRef);
+    
+    let materials = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        materials.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    }
+    
+    let totalCost = 0;
+    const rows = document.querySelectorAll('#editIngredientsContainer .ingredient-row');
+    
+    rows.forEach(row => {
+      const select = row.querySelector('.ingredient-select');
+      const quantity = row.querySelector('.ingredient-quantity');
+      const costSpan = row.querySelector('.ingredient-cost');
+      
+      if (select.value && quantity.value) {
+        const material = materials.find(m => m.id === select.value);
+        if (material) {
+          const ingredientUnit = row.querySelector('.ingredient-unit').value;
+          const cost = calculateIngredientCost(material, quantity.value, ingredientUnit);
+          costSpan.textContent = cost.toLocaleString('vi-VN') + ' đ';
+          totalCost += cost;
+        }
+      }
+    });
+    
+    document.getElementById('editTotalIngredientCost').textContent = totalCost.toLocaleString('vi-VN') + ' đ';
+  } catch (error) {
+    console.error('Error calculating edit total cost:', error);
+  }
+}
+
+// Populate product options from Firebase products
+async function populateProductOptions() {
+  try {
+    console.log('Populating product options...');
+    // Load products from Firebase
+    const productsRef = ref(db, 'products');
+    const snapshot = await get(productsRef);
+    
+    let allProducts = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((categorySnapshot) => {
+        const category = categorySnapshot.key;
+        categorySnapshot.forEach((productSnapshot) => {
+          allProducts.push({
+            id: productSnapshot.key,
+            category: category,
+            ...productSnapshot.val()
+          });
+        });
+      });
+    }
+    
+    console.log('Loaded products:', allProducts);
+    
+    // Update both add and edit product dropdowns
+    const productDropdowns = ['inventoryProductSelect', 'editInventoryProductSelect'];
+    
+    productDropdowns.forEach(dropdownId => {
+      const productDropdown = document.getElementById(dropdownId);
+      if (productDropdown) {
+        // Clear existing options except the first one
+        const firstOption = productDropdown.querySelector('option[value=""]');
+        productDropdown.innerHTML = '';
+        if (firstOption) {
+          productDropdown.appendChild(firstOption);
+        }
+        
+        // Add product options grouped by category
+        allProducts.forEach(product => {
+          const option = document.createElement('option');
+          option.value = JSON.stringify(product);
+          option.textContent = `${product.name} (${getCategoryText(product.category)}) - ${product.price?.toLocaleString('vi-VN')} đ`;
+          productDropdown.appendChild(option);
+        });
+      }
+    });
+    
+    console.log('Finished populating product options');
+  } catch (error) {
+    console.error('Error loading products for dropdown options:', error);
+  }
+}
+
+// Load product details when product is selected
+function loadProductDetails() {
+  const productSelect = document.getElementById('inventoryProductSelect');
+  const productNameInput = document.getElementById('inventoryProductName');
+  const categorySelect = document.getElementById('inventoryCategory');
+  const sellingPriceInput = document.getElementById('inventorySellingPrice');
+  const imagePreview = document.getElementById('inventoryImagePreview');
+  const imagePreviewImg = document.getElementById('inventoryImagePreviewImg');
+  
+  if (productSelect.value) {
+    try {
+      const product = JSON.parse(productSelect.value);
+      
+      // Auto-fill form fields
+      productNameInput.value = product.name || '';
+      categorySelect.value = product.category || '';
+      sellingPriceInput.value = product.price || 0;
+      
+      // Load product image if available
+      if (product.image) {
+        imagePreviewImg.src = product.image;
+        imagePreview.classList.remove('d-none');
+        console.log('Loaded product image:', product.image);
+      } else {
+        imagePreview.classList.add('d-none');
+      }
+      
+      console.log('Loaded product details:', product);
+    } catch (error) {
+      console.error('Error parsing product data:', error);
+    }
+  } else {
+    // Clear form fields if no product selected
+    productNameInput.value = '';
+    categorySelect.value = '';
+    sellingPriceInput.value = 0;
+    imagePreview.classList.add('d-none');
+  }
+}
+
+// Load product details for edit form when product is selected
+function loadEditProductDetails() {
+  const productSelect = document.getElementById('editInventoryProductSelect');
+  const productNameInput = document.getElementById('editInventoryProductName');
+  const categorySelect = document.getElementById('editInventoryCategory');
+  const sellingPriceInput = document.getElementById('editInventorySellingPrice');
+  const imagePreview = document.getElementById('editInventoryImagePreview');
+  const imagePreviewImg = document.getElementById('editInventoryImagePreviewImg');
+  
+  if (productSelect.value) {
+    try {
+      const product = JSON.parse(productSelect.value);
+      
+      // Auto-fill form fields
+      productNameInput.value = product.name || '';
+      categorySelect.value = product.category || '';
+      sellingPriceInput.value = product.price || 0;
+      
+      // Load product image if available
+      if (product.image) {
+        imagePreviewImg.src = product.image;
+        imagePreview.classList.remove('d-none');
+        console.log('Loaded edit product image:', product.image);
+      } else {
+        imagePreview.classList.add('d-none');
+      }
+      
+      console.log('Loaded edit product details:', product);
+    } catch (error) {
+      console.error('Error parsing edit product data:', error);
+    }
+  } else {
+    // Clear form fields if no product selected
+    productNameInput.value = '';
+    categorySelect.value = '';
+    sellingPriceInput.value = 0;
+    imagePreview.classList.add('d-none');
+  }
+}
+
+// Populate category options from Firebase products
+async function populateCategoryOptions() {
+  try {
+    console.log('Populating category options...');
+    // Load products from Firebase
+    const productsRef = ref(db, 'products');
+    const snapshot = await get(productsRef);
+    
+    let categories = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        categories.push(childSnapshot.key);
+      });
+    }
+    
+    console.log('Loaded categories:', categories);
+    
+    // Update both add and edit category dropdowns
+    const categoryDropdowns = ['inventoryCategory', 'editInventoryCategory'];
+    
+    categoryDropdowns.forEach(dropdownId => {
+      const dropdown = document.getElementById(dropdownId);
+      if (dropdown) {
+        // Clear existing options except the first one
+        const firstOption = dropdown.querySelector('option[value=""]');
+        dropdown.innerHTML = '';
+        if (firstOption) {
+          dropdown.appendChild(firstOption);
+        }
+        
+        // Add category options with Vietnamese names
+        categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = getCategoryText(category);
+          dropdown.appendChild(option);
+        });
+      }
+    });
+    
+    console.log('Finished populating category options');
+  } catch (error) {
+    console.error('Error loading categories for dropdown options:', error);
+    // Fallback to default options if there's an error
+    const categoryDropdowns = ['inventoryCategory', 'editInventoryCategory'];
+    categoryDropdowns.forEach(dropdownId => {
+      const dropdown = document.getElementById(dropdownId);
+      if (dropdown && dropdown.options.length <= 1) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Không thể tải danh mục';
+        option.disabled = true;
+        dropdown.appendChild(option);
+      }
+    });
+  }
+}
+
+// Populate ingredient options
+async function populateIngredientOptions() {
+  try {
+    console.log('Populating ingredient options...');
+    // Load materials from Firebase
+    const materialsRef = ref(db, 'materials');
+    const snapshot = await get(materialsRef);
+    
+    let materials = [];
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        materials.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    }
+    
+    console.log('Loaded materials:', materials);
+    
+    const selects = document.querySelectorAll('.ingredient-select');
+    console.log('Found selects:', selects.length);
+    
+    selects.forEach(select => {
+      // Clear existing options except the first one
+      const firstOption = select.querySelector('option[value=""]');
+      select.innerHTML = '';
+      if (firstOption) {
+        select.appendChild(firstOption);
+      }
+      
+      // Add material options
+      materials.forEach(material => {
+        const option = document.createElement('option');
+        option.value = material.id;
+        option.textContent = `${material.name} (${material.price?.toLocaleString('vi-VN')} đ/${getUnitText(material.unit)})`;
+        select.appendChild(option);
+      });
+    });
+    
+    console.log('Finished populating ingredient options');
+  } catch (error) {
+    console.error('Error loading materials for ingredient options:', error);
+    // Fallback to empty options if there's an error
+    const selects = document.querySelectorAll('.ingredient-select');
+    selects.forEach(select => {
+      if (select.options.length <= 1) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Không thể tải danh sách nguyên liệu';
+        option.disabled = true;
+        select.appendChild(option);
+      }
+    });
+  }
+}
+
+// Setup remove ingredient buttons
+function setupRemoveIngredientButtons() {
+  document.querySelectorAll('.remove-ingredient').forEach(button => {
+    button.onclick = function() {
+      this.closest('.ingredient-row').remove();
+      calculateTotalCost();
+      calculateEditTotalCost();
+    };
+  });
+}
+
+// Preview inventory image
+function previewInventoryImage(input) {
+  const file = input.files[0];
+  const preview = document.getElementById('inventoryImagePreview');
+  const previewImg = document.getElementById('inventoryImagePreviewImg');
+  
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'File ảnh quá lớn. Vui lòng chọn file nhỏ hơn 2MB.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    if (!file.type.startsWith('image/')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Vui lòng chọn file ảnh hợp lệ.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.classList.add('d-none');
+  }
+}
+
+// Preview edit inventory image
+function previewEditInventoryImage(input) {
+  const file = input.files[0];
+  const preview = document.getElementById('editInventoryImagePreview');
+  const previewImg = document.getElementById('editInventoryImagePreviewImg');
+  
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'File ảnh quá lớn. Vui lòng chọn file nhỏ hơn 2MB.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    if (!file.type.startsWith('image/')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Vui lòng chọn file ảnh hợp lệ.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.classList.add('d-none');
+  }
+}
+
+// View product details
+function viewProductDetails(productId) {
+  const item = inventoryList.find(i => i.id === productId);
+  if (!item) return;
+  
+  const totalCost = calculateProductTotalCost(item);
+  const profit = item.sellingPrice - totalCost;
+  const profitPercentage = item.sellingPrice > 0 ? ((profit / item.sellingPrice) * 100).toFixed(1) : 0;
+  
+  Swal.fire({
+    title: item.productName,
+    html: `
+      <div class="text-start">
+        <p><strong>Danh mục:</strong> ${getCategoryText(item.category)}</p>
+        <p><strong>Chi phí nguyên liệu:</strong> ${(item.ingredientCost || 0).toLocaleString('vi-VN')} đ</p>
+        <p><strong>Phí bao bì:</strong> ${(item.laborCost || 0).toLocaleString('vi-VN')} đ</p>
+        <p><strong>Chi phí vận hành:</strong> ${(item.operatingCost || 0).toLocaleString('vi-VN')} đ</p>
+        <p><strong>Tổng chi phí:</strong> ${totalCost.toLocaleString('vi-VN')} đ</p>
+        <p><strong>Giá bán:</strong> ${(item.sellingPrice || 0).toLocaleString('vi-VN')} đ</p>
+        <p><strong>Lợi nhuận:</strong> ${profit.toLocaleString('vi-VN')} đ (${profitPercentage}%)</p>
+        ${item.description ? `<p><strong>Ghi chú:</strong> ${item.description}</p>` : ''}
+      </div>
+    `,
+    icon: 'info',
+    confirmButtonText: 'Đóng'
+  });
+}
+
+// Update inventory statistics
+function updateInventoryStats() {
+  const totalCount = inventoryList.length;
+  let totalCost = 0;
+  let totalRevenue = 0;
+  let totalProfit = 0;
+  
+  inventoryList.forEach(item => {
+    const itemTotalCost = calculateProductTotalCost(item);
+    totalCost += itemTotalCost;
+    totalRevenue += (item.sellingPrice || 0);
+    totalProfit += ((item.sellingPrice || 0) - itemTotalCost);
+  });
+  
+  const avgProfitPercentage = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0;
+  
+  document.getElementById('totalInventoryCount').textContent = totalCount;
+  document.getElementById('totalCostCount').textContent = totalCost.toLocaleString('vi-VN') + ' đ';
+  document.getElementById('totalRevenueCount').textContent = totalRevenue.toLocaleString('vi-VN') + ' đ';
+  document.getElementById('avgProfitCount').textContent = avgProfitPercentage + '%';
+}
+
+// Save new inventory item
+async function saveInventory() {
+  // Calculate ingredient cost
+  let ingredientCost = 0;
+  const ingredientRows = document.querySelectorAll('#ingredientsContainer .ingredient-row');
+  const ingredients = [];
+  
+  // Load materials from Firebase for calculation
+  const materialsRef = ref(db, 'materials');
+  const snapshot = await get(materialsRef);
+  
+  let materials = [];
+  if (snapshot.exists()) {
+    snapshot.forEach((childSnapshot) => {
+      materials.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
+  }
+  
+  ingredientRows.forEach(row => {
+    const select = row.querySelector('.ingredient-select');
+    const quantity = row.querySelector('.ingredient-quantity');
+    const unit = row.querySelector('.ingredient-unit');
+    
+    if (select.value && quantity.value) {
+      const material = materials.find(m => m.id === select.value);
+      if (material) {
+        const cost = calculateIngredientCost(material, quantity.value, unit.value);
+        ingredientCost += cost;
+        ingredients.push({
+          materialId: select.value,
+          materialName: material.name,
+          quantity: parseFloat(quantity.value),
+          unit: unit.value,
+          cost: cost
+        });
+      }
+    }
+  });
+
+  const inventoryData = {
+    productName: document.getElementById('inventoryProductName').value.trim(),
+    category: document.getElementById('inventoryCategory').value,
+    laborCost: parseInt(document.getElementById('inventoryLaborCost').value) || 0,
+    operatingCost: parseInt(document.getElementById('inventoryOperatingCost').value) || 0,
+    sellingPrice: parseInt(document.getElementById('inventorySellingPrice').value) || 0,
+    ingredientCost: ingredientCost,
+    ingredients: ingredients,
+    description: document.getElementById('inventoryDescription').value.trim() || null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Handle image - use product image if selected, or upload new image
+  const productSelect = document.getElementById('inventoryProductSelect');
+  const imageFile = document.getElementById('inventoryImage').files[0];
+  
+  if (productSelect.value && !imageFile) {
+    // Use image from selected product
+    try {
+      const product = JSON.parse(productSelect.value);
+      if (product.image) {
+        inventoryData.image = product.image;
+        console.log('Using product image:', product.image);
+      }
+    } catch (error) {
+      console.error('Error getting product image:', error);
+    }
+  } else if (imageFile) {
+    // Upload new image
+    try {
+      Swal.fire({
+        title: 'Đang upload ảnh...',
+        text: 'Vui lòng chờ trong giây lát',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
+      inventoryData.image = await uploadInventoryImage(imageFile);
+      Swal.close();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể upload ảnh lên Cloudinary. Vui lòng thử lại.'
+      });
+      return;
+    }
+  }
+  
+  // Validation
+  if (!inventoryData.productName || !inventoryData.category || !inventoryData.sellingPrice) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const inventoryRef = ref(db, 'inventory');
+    const newInventoryRef = push(inventoryRef);
+    await set(newInventoryRef, inventoryData);
+    
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addInventoryModal'));
+    modal.hide();
+    document.getElementById('addInventoryForm').reset();
+    
+    // Reset image preview
+    document.getElementById('inventoryImagePreview').classList.add('d-none');
+    document.getElementById('inventoryImagePreviewImg').src = '';
+    
+    // Clear ingredients container
+    document.getElementById('ingredientsContainer').innerHTML = `
+      <div class="row ingredient-row mb-2">
+        <div class="col-md-4">
+          <select class="form-select ingredient-select" onchange="calculateTotalCost()">
+            <option value="">-- Chọn nguyên liệu --</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" onchange="calculateTotalCost()">
+        </div>
+        <div class="col-md-2">
+          <select class="form-select ingredient-unit">
+            <option value="g">gram (g)</option>
+            <option value="kg">kilogram (kg)</option>
+            <option value="ml">milliliter (ml)</option>
+            <option value="l">liter (l)</option>
+            <option value="pcs">cái (pcs)</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <span class="ingredient-cost">0 đ</span>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Reload inventory
+    await loadInventory();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã thêm sản phẩm mới.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error saving inventory:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể thêm sản phẩm.'
+    });
+  }
+}
+
+// Upload inventory image to Cloudinary
+async function uploadInventoryImage(file) {
+  try {
+    const imageUrl = await window.uploadToCloudinary(file);
+    return imageUrl;
+  } catch (error) {
+    console.error('Error uploading image to Cloudinary:', error);
+    throw error;
+  }
+}
+
+// Edit inventory
+async function editInventory(inventoryId) {
+  console.log('Editing inventory item:', inventoryId);
+  const item = inventoryList.find(i => i.id === inventoryId);
+  if (!item) {
+    console.error('Item not found:', inventoryId);
+    return;
+  }
+  console.log('Found item for edit:', item);
+  
+  // Populate edit form
+  document.getElementById('editInventoryId').value = item.id;
+  document.getElementById('editInventoryProductName').value = item.productName || '';
+  document.getElementById('editInventoryLaborCost').value = item.laborCost || 0;
+  document.getElementById('editInventoryOperatingCost').value = item.operatingCost || 0;
+  document.getElementById('editInventorySellingPrice').value = item.sellingPrice || 0;
+  document.getElementById('editInventoryDescription').value = item.description || '';
+  
+  console.log('Setting category value:', item.category);
+  
+  // Try to find matching product from products node and populate product select
+  try {
+    const productsRef = ref(db, 'products');
+    const snapshot = await get(productsRef);
+    
+    if (snapshot.exists()) {
+      let foundProduct = null;
+      snapshot.forEach((categorySnapshot) => {
+        const category = categorySnapshot.key;
+        categorySnapshot.forEach((productSnapshot) => {
+          const product = {
+            id: productSnapshot.key,
+            category: category,
+            ...productSnapshot.val()
+          };
+          console.log(`Checking product: ${product.name} (${category}) vs ${item.productName} (${item.category})`);
+          // Match by name and category
+          if (product.name === item.productName && product.category === item.category) {
+            foundProduct = product;
+            console.log('Found matching product:', foundProduct);
+          }
+        });
+      });
+      
+      if (foundProduct) {
+        const productSelect = document.getElementById('editInventoryProductSelect');
+        console.log('Product select element:', productSelect);
+        console.log('Available options:', productSelect.options.length);
+        
+        // Find the option with matching product
+        for (let i = 0; i < productSelect.options.length; i++) {
+          const option = productSelect.options[i];
+          if (option.value && option.value !== '') {
+            try {
+              const optionProduct = JSON.parse(option.value);
+              if (optionProduct.name === foundProduct.name && optionProduct.category === foundProduct.category) {
+                productSelect.value = option.value;
+                console.log('Set product select value:', option.value);
+                break;
+              }
+            } catch (e) {
+              console.error('Error parsing option value:', e);
+            }
+          }
+        }
+      } else {
+        console.log('No matching product found for:', item.productName, item.category);
+      }
+    }
+  } catch (error) {
+    console.error('Error finding matching product for edit:', error);
+  }
+  
+  // Show current image if exists
+  const preview = document.getElementById('editInventoryImagePreview');
+  const previewImg = document.getElementById('editInventoryImagePreviewImg');
+  
+  // Try to find matching product image first, then fallback to saved image
+  try {
+    const productsRef = ref(db, 'products');
+    const snapshot = await get(productsRef);
+    
+    if (snapshot.exists()) {
+      let foundProductImage = null;
+      snapshot.forEach((categorySnapshot) => {
+        const category = categorySnapshot.key;
+        categorySnapshot.forEach((productSnapshot) => {
+          const product = productSnapshot.val();
+          // Match by name and category
+          if (product.name === item.productName && category === item.category) {
+            foundProductImage = product.image;
+          }
+        });
+      });
+      
+      if (foundProductImage) {
+        previewImg.src = foundProductImage;
+        preview.classList.remove('d-none');
+        console.log('Using product image for edit:', foundProductImage);
+      } else if (item.image) {
+        previewImg.src = item.image;
+        preview.classList.remove('d-none');
+        console.log('Using saved image for edit:', item.image);
+      } else {
+        preview.classList.add('d-none');
+      }
+    }
+  } catch (error) {
+    console.error('Error loading image for edit:', error);
+    // Fallback to saved image
+    if (item.image) {
+      previewImg.src = item.image;
+      preview.classList.remove('d-none');
+    } else {
+      preview.classList.add('d-none');
+    }
+  }
+  
+  // Populate ingredients
+  const container = document.getElementById('editIngredientsContainer');
+  container.innerHTML = '';
+  
+  if (item.ingredients && item.ingredients.length > 0) {
+    item.ingredients.forEach(ingredient => {
+      const row = document.createElement('div');
+      row.className = 'row ingredient-row mb-2';
+      row.innerHTML = `
+        <div class="col-md-4">
+          <select class="form-select ingredient-select" onchange="calculateEditTotalCost()">
+            <option value="">-- Chọn nguyên liệu --</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control ingredient-quantity" placeholder="Số lượng" min="0" step="0.01" value="${ingredient.quantity}" onchange="calculateEditTotalCost()">
+        </div>
+        <div class="col-md-2">
+          <select class="form-select ingredient-unit">
+            <option value="g" ${ingredient.unit === 'g' ? 'selected' : ''}>gram (g)</option>
+            <option value="kg" ${ingredient.unit === 'kg' ? 'selected' : ''}>kilogram (kg)</option>
+            <option value="ml" ${ingredient.unit === 'ml' ? 'selected' : ''}>milliliter (ml)</option>
+            <option value="l" ${ingredient.unit === 'l' ? 'selected' : ''}>liter (l)</option>
+            <option value="pcs" ${ingredient.unit === 'pcs' ? 'selected' : ''}>cái (pcs)</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <span class="ingredient-cost">${ingredient.cost.toLocaleString('vi-VN')} đ</span>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger btn-sm remove-ingredient">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  } else {
+    // Add empty row
+    addEditIngredientRow();
+  }
+  
+  // Populate ingredient options and set selected values
+  await populateIngredientOptions();
+  await populateCategoryOptions(); // Ensure category dropdown is populated
+  setupRemoveIngredientButtons();
+  
+  // Set selected ingredients and category after a short delay to ensure dropdowns are populated
+  setTimeout(() => {
+    // Set category value
+    const categorySelect = document.getElementById('editInventoryCategory');
+    if (categorySelect && item.category) {
+      categorySelect.value = item.category;
+      console.log('Set category select value:', item.category);
+    }
+    
+    // Set selected ingredients
+    const selects = container.querySelectorAll('.ingredient-select');
+    selects.forEach((select, index) => {
+      if (item.ingredients && item.ingredients[index]) {
+        select.value = item.ingredients[index].materialId;
+      }
+    });
+    calculateEditTotalCost();
+  }, 100);
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('editInventoryModal'));
+  modal.show();
+}
+
+// Update inventory
+async function updateInventory() {
+  const inventoryId = document.getElementById('editInventoryId').value;
+  const item = inventoryList.find(i => i.id === inventoryId);
+  if (!item) return;
+  
+  // Calculate ingredient cost
+  let ingredientCost = 0;
+  const ingredientRows = document.querySelectorAll('#editIngredientsContainer .ingredient-row');
+  const ingredients = [];
+  
+  // Load materials from Firebase for calculation
+  const materialsRef = ref(db, 'materials');
+  const snapshot = await get(materialsRef);
+  
+  let materials = [];
+  if (snapshot.exists()) {
+    snapshot.forEach((childSnapshot) => {
+      materials.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
+  }
+  
+  ingredientRows.forEach(row => {
+    const select = row.querySelector('.ingredient-select');
+    const quantity = row.querySelector('.ingredient-quantity');
+    const unit = row.querySelector('.ingredient-unit');
+    
+    if (select.value && quantity.value) {
+      const material = materials.find(m => m.id === select.value);
+      if (material) {
+        const cost = calculateIngredientCost(material, quantity.value, unit.value);
+        ingredientCost += cost;
+        ingredients.push({
+          materialId: select.value,
+          materialName: material.name,
+          quantity: parseFloat(quantity.value),
+          unit: unit.value,
+          cost: cost
+        });
+      }
+    }
+  });
+  
+  const updatedData = {
+    productName: document.getElementById('editInventoryProductName').value.trim(),
+    category: document.getElementById('editInventoryCategory').value,
+    laborCost: parseInt(document.getElementById('editInventoryLaborCost').value) || 0,
+    operatingCost: parseInt(document.getElementById('editInventoryOperatingCost').value) || 0,
+    sellingPrice: parseInt(document.getElementById('editInventorySellingPrice').value) || 0,
+    ingredientCost: ingredientCost,
+    ingredients: ingredients,
+    description: document.getElementById('editInventoryDescription').value.trim() || null,
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Handle image - use product image if selected, or upload new image
+  const productSelect = document.getElementById('editInventoryProductSelect');
+  const imageFile = document.getElementById('editInventoryImage').files[0];
+  
+  if (productSelect.value && !imageFile) {
+    // Use image from selected product
+    try {
+      const product = JSON.parse(productSelect.value);
+      if (product.image) {
+        updatedData.image = product.image;
+        console.log('Using edit product image:', product.image);
+      }
+    } catch (error) {
+      console.error('Error getting edit product image:', error);
+    }
+  } else if (imageFile) {
+    // Upload new image
+    try {
+      Swal.fire({
+        title: 'Đang upload ảnh...',
+        text: 'Vui lòng chờ trong giây lát',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
+      updatedData.image = await uploadInventoryImage(imageFile);
+      Swal.close();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể upload ảnh lên Cloudinary. Vui lòng thử lại.'
+      });
+      return;
+    }
+  }
+  
+  // Validation
+  if (!updatedData.productName || !updatedData.category || !updatedData.sellingPrice) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const inventoryRef = ref(db, `inventory/${inventoryId}`);
+    await update(inventoryRef, updatedData);
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editInventoryModal'));
+    modal.hide();
+    
+    // Reload inventory
+    await loadInventory();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã cập nhật thông tin sản phẩm.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error updating inventory:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể cập nhật sản phẩm.'
+    });
+  }
+}
+
+// Delete inventory
+async function deleteInventory(inventoryId) {
+  const item = inventoryList.find(i => i.id === inventoryId);
+  if (!item) return;
+  
+  const result = await Swal.fire({
+    title: 'Xác nhận xóa',
+    text: `Bạn có chắc muốn xóa sản phẩm "${item.productName}" khỏi kho?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+  
+  if (result.isConfirmed) {
+    try {
+      await remove(ref(db, `inventory/${inventoryId}`));
+      await loadInventory();
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công!',
+        text: 'Đã xóa sản phẩm khỏi kho.',
+        timer: 1500
+      });
+    } catch (error) {
+      console.error('Error deleting inventory:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể xóa sản phẩm.'
+      });
+    }
+  }
+}
+
+// Adjust stock
+function adjustStock(inventoryId) {
+  const item = inventoryList.find(i => i.id === inventoryId);
+  if (!item) return;
+  
+  document.getElementById('adjustmentInventoryId').value = inventoryId;
+  document.getElementById('adjustmentQuantity').value = '';
+  document.getElementById('adjustmentReason').value = '';
+  
+  const modal = new bootstrap.Modal(document.getElementById('stockAdjustmentModal'));
+  modal.show();
+}
+
+// Process stock adjustment
+async function processStockAdjustment() {
+  const inventoryId = document.getElementById('adjustmentInventoryId').value;
+  const adjustmentType = document.getElementById('adjustmentType').value;
+  const adjustmentQuantity = parseInt(document.getElementById('adjustmentQuantity').value) || 0;
+  const adjustmentReason = document.getElementById('adjustmentReason').value.trim();
+  
+  const item = inventoryList.find(i => i.id === inventoryId);
+  if (!item) return;
+  
+  if (!adjustmentType || adjustmentQuantity <= 0) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng chọn loại điều chỉnh và nhập số lượng hợp lệ.'
+    });
+    return;
+  }
+  
+  let newQuantity = item.quantity;
+  switch (adjustmentType) {
+    case 'add':
+      newQuantity += adjustmentQuantity;
+      break;
+    case 'remove':
+      if (adjustmentQuantity > item.quantity) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Số lượng xuất kho không được lớn hơn số lượng hiện có.'
+        });
+        return;
+      }
+      newQuantity -= adjustmentQuantity;
+      break;
+    case 'adjust':
+      newQuantity = adjustmentQuantity;
+      break;
+  }
+  
+  try {
+    const inventoryRef = ref(db, `inventory/${inventoryId}`);
+    await update(inventoryRef, {
+      quantity: newQuantity,
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Log adjustment
+    const adjustmentLog = {
+      inventoryId: inventoryId,
+      productName: item.productName,
+      adjustmentType: adjustmentType,
+      oldQuantity: item.quantity,
+      newQuantity: newQuantity,
+      adjustmentQuantity: adjustmentQuantity,
+      reason: adjustmentReason || 'Không có lý do',
+      adjustedBy: 'admin', // TODO: Get current user
+      adjustedAt: new Date().toISOString()
+    };
+    
+    const logRef = ref(db, 'inventory_adjustments');
+    await push(logRef, adjustmentLog);
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('stockAdjustmentModal'));
+    modal.hide();
+    
+    // Reload inventory
+    await loadInventory();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã điều chỉnh tồn kho.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error adjusting stock:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể điều chỉnh tồn kho.'
+    });
+  }
+}
+
+// Export inventory report
+function exportInventoryReport() {
+  if (inventoryList.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Thông báo',
+      text: 'Không có dữ liệu để xuất báo cáo.'
+    });
+    return;
+  }
+  
+  // Create CSV content
+      const headers = ['Tên sản phẩm', 'Danh mục', 'Chi phí nguyên liệu', 'Phí bao bì', 'Chi phí vận hành', 'Tổng chi phí', 'Giá bán', 'Lợi nhuận', 'Tỷ lệ lợi nhuận', 'Ghi chú'];
+  const csvContent = [
+    headers.join(','),
+    ...inventoryList.map(item => {
+      const totalCost = calculateProductTotalCost(item);
+      const profit = item.sellingPrice - totalCost;
+      const profitPercentage = item.sellingPrice > 0 ? ((profit / item.sellingPrice) * 100).toFixed(1) : 0;
+      
+      return [
+        item.productName || '',
+        getCategoryText(item.category) || '',
+        item.ingredientCost || 0,
+        item.laborCost || 0,
+        item.operatingCost || 0,
+        totalCost,
+        item.sellingPrice || 0,
+        profit,
+        profitPercentage + '%',
+        item.description || ''
+      ].join(',');
+    })
+  ].join('\n');
+  
+  // Download CSV file
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `chi_phi_san_pham_${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Search inventory
+document.getElementById('inventorySearchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const searchTerm = document.getElementById('inventorySearch').value.toLowerCase();
+  const categoryFilter = document.getElementById('inventoryCategoryFilter').value;
+  const profitFilter = document.getElementById('inventoryProfitFilter').value;
+  
+  let filteredInventory = inventoryList;
+  
+  if (searchTerm) {
+    filteredInventory = filteredInventory.filter(item => 
+      item.productName.toLowerCase().includes(searchTerm) ||
+      (item.description && item.description.toLowerCase().includes(searchTerm))
+    );
+  }
+  
+  if (categoryFilter) {
+    filteredInventory = filteredInventory.filter(item => item.category === categoryFilter);
+  }
+  
+  if (profitFilter) {
+    filteredInventory = filteredInventory.filter(item => {
+      const totalCost = calculateProductTotalCost(item);
+      const profit = item.sellingPrice - totalCost;
+      const profitPercentage = item.sellingPrice > 0 ? ((profit / item.sellingPrice) * 100) : 0;
+      
+      switch (profitFilter) {
+        case 'high': return profitPercentage > 50;
+        case 'medium': return profitPercentage >= 20 && profitPercentage <= 50;
+        case 'low': return profitPercentage < 20;
+        default: return true;
+      }
+    });
+  }
+  
+  // Temporarily replace inventoryList for rendering
+  const originalList = inventoryList;
+  inventoryList = filteredInventory;
+  renderInventory();
+  inventoryList = originalList;
+});
+
+// Initialize inventory management when section is shown
+document.addEventListener('DOMContentLoaded', function() {
+  // Load inventory when inventory management tab is clicked
+  const inventoryTab = document.getElementById('navInventoryManagement');
+  if (inventoryTab) {
+    inventoryTab.addEventListener('click', function() {
+      loadInventory();
+    });
+  }
+  
+  // Load materials when material management tab is clicked
+  const materialTab = document.getElementById('navMaterialManagement');
+  if (materialTab) {
+    materialTab.addEventListener('click', function() {
+      loadSuppliersForMaterials();
+      loadMaterials();
+    });
+  }
+  
+  // Load materials when add inventory modal is opened
+  const addInventoryModal = document.getElementById('addInventoryModal');
+  if (addInventoryModal) {
+    addInventoryModal.addEventListener('show.bs.modal', function() {
+      populateIngredientOptions();
+      populateCategoryOptions();
+      populateProductOptions();
+    });
+  }
+  
+  // Load materials when edit inventory modal is opened
+  const editInventoryModal = document.getElementById('editInventoryModal');
+  if (editInventoryModal) {
+    editInventoryModal.addEventListener('show.bs.modal', function() {
+      populateIngredientOptions();
+      populateCategoryOptions();
+      populateProductOptions();
+    });
+  }
+});
+
+// Material Management Functions
+let materialsList = [];
+let materialSuppliersList = [];
+
+// Load suppliers from Firebase
+async function loadSuppliersForMaterials() {
+  try {
+    const suppliersRef = ref(db, 'suppliers');
+    const snapshot = await get(suppliersRef);
+    
+    if (snapshot.exists()) {
+      materialSuppliersList = [];
+      snapshot.forEach((childSnapshot) => {
+        const supplier = childSnapshot.val();
+        if (supplier.status === 'active') {
+          materialSuppliersList.push({
+            id: childSnapshot.key,
+            ...supplier
+          });
+        }
+      });
+    } else {
+      materialSuppliersList = [];
+    }
+    
+    // Update supplier dropdowns
+    updateSupplierDropdowns();
+  } catch (error) {
+    console.error('Error loading suppliers:', error);
+  }
+}
+
+// Update supplier dropdowns
+function updateSupplierDropdowns() {
+  const supplierDropdowns = [
+    'materialSupplier',
+    'editMaterialSupplier'
+  ];
+  
+  supplierDropdowns.forEach(dropdownId => {
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+      // Clear existing options except the first one
+      dropdown.innerHTML = '<option value="">Chọn nhà cung cấp...</option>';
+      
+      // Add supplier options
+      materialSuppliersList.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.name;
+        option.textContent = `${supplier.name} (${supplier.code})`;
+        dropdown.appendChild(option);
+      });
+    }
+  });
+}
+
+// Load materials from Firebase
+async function loadMaterials() {
+  try {
+    const materialsRef = ref(db, 'materials');
+    const snapshot = await get(materialsRef);
+    
+    if (snapshot.exists()) {
+      materialsList = [];
+      snapshot.forEach((childSnapshot) => {
+        materialsList.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+    } else {
+      materialsList = [];
+    }
+    
+    renderMaterials();
+    updateMaterialStats();
+  } catch (error) {
+    console.error('Error loading materials:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể tải danh sách nguyên liệu.'
+    });
+  }
+}
+
+
+
+// Render materials to table and mobile cards
+function renderMaterials() {
+  // Desktop table
+  const tableBody = document.getElementById('materialTableBody');
+  if (materialsList.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không có dữ liệu</td></tr>';
+    return;
+  }
+  
+  tableBody.innerHTML = materialsList.map(material => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    const statusClass = getMaterialStatusClass(status);
+    const statusText = getMaterialStatusText(status);
+    
+    return `
+      <tr>
+        <td>
+          <img src="${material.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yNSAxNUMyMC41ODE3IDE1IDE3IDE4LjU4MTcgMTcgMjNDMTcgMjcuNDE4MyAyMC41ODE3IDMxIDI1IDMxQzI5LjQxODMgMzEgMzMgMjcuNDE4MyAzMyAyM0MzMyAxOC41ODE3IDI5LjQxODMgMTUgMjUgMTVaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0xMCA0MEg0MEM0Mi43NjE0IDQwIDQ1IDM3Ljc2MTQgNDUgMzVWMjVDNDUgMjIuMjM4NiA0Mi43NjE0IDIwIDQwIDIwSDM1TDMwIDE1SDIwTDE1IDIwSDEwQzcuMjM4NTggMjAgNSAyMi4yMzg2IDUgMjVWMzVDNSAzNy43NjE0IDcuMjM4NT4gNDAgMTAgNDBaIiBmaWxsPSIjQ0NDIi8+Cjwvc3ZnPgo='}" alt="${material.name}" 
+               style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" 
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yNSAxNUMyMC41ODE3IDE1IDE3IDE4LjU4MTcgMTcgMjNDMTcgMjcuNDE4MyAyMC41ODE3IDMxIDI1IDMxQzI5LjQxODMgMzEgMzMgMjcuNDE4MyAzMyAyM0MzMyAxOC41ODE3IDI5LjQxODMgMTUgMjUgMTVaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0xMCA0MEg0MEM0Mi43NjE0IDQwIDQ1IDM3Ljc2MTQgNDUgMzVWMjVDNDUgMjIuMjM4NiA0Mi43NjE0IDIwIDQwIDIwSDM1TDMwIDE1SDIwTDE1IDIwSDEwQzcuMjM4NTggMjAgNSAyMi4yMzg2IDUgMjVWMzVDNSAzNy43NjE0IDcuMjM4NT4gNDAgMTAgNDBaIiBmaWxsPSIjQ0NDIi8+Cjwvc3ZnPgo='">
+        </td>
+        <td>
+          <div>
+            <strong>${material.name}</strong>
+            ${material.description ? `<br><small class="text-muted">${material.description}</small>` : ''}
+          </div>
+        </td>
+        <td>
+          <span class="badge bg-info">${getMaterialCategoryText(material.category)}</span>
+        </td>
+        <td>
+          <strong>${material.quantity} ${getUnitText(material.unit)}</strong>
+          ${material.minStock ? `<br><small class="text-muted">Tối thiểu: ${material.minStock}</small>` : ''}
+        </td>
+        <td>
+          <span class="badge bg-secondary">${getUnitText(material.unit)}</span>
+        </td>
+        <td>
+          <strong>${material.price ? material.price.toLocaleString('vi-VN') : '0'} đ</strong>
+        </td>
+        <td>
+          <span class="badge ${statusClass}">${statusText}</span>
+        </td>
+        <td>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editMaterial('${material.id}')">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-warning" onclick="adjustMaterial('${material.id}')">
+              <i class="fas fa-boxes"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteMaterial('${material.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+  
+  // Mobile cards
+  const mobileCards = document.getElementById('materialMobileCards');
+  if (materialsList.length === 0) {
+    mobileCards.innerHTML = '<div class="text-center"><p>Không có dữ liệu</p></div>';
+    return;
+  }
+  
+  mobileCards.innerHTML = materialsList.map(material => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    const statusClass = getMaterialStatusClass(status);
+    const statusText = getMaterialStatusText(status);
+    
+    return `
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            <img src="${material.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0zMCAxOEMyNC40NzcgMTggMjAgMjIuNDc3IDIwIDI4QzIwIDMzLjUyMyAyNC40NzcgMzggMzAgMzhDMzUuNTIzIDM4IDQwIDMzLjUyMyA0MCAyOEM0MCAyMi40NzcgMzUuNTIzIDE4IDMwIDE4WiIgZmlsbD0iI0NDQyIvPgo8cGF0aCBkPSJNMTIgNDhINDhDNTIuNDE4MyA0OCA1NiA0NC40MTgzIDU2IDQwVjMwQzU2IDI1LjU4MTcgNTIuNDE4MyAyMiA0OCAyMkg0MkwzNiAxOEgyNEwxOCAyMkgxMkM3LjU4MTcyIDIyIDQgMjUuNTgxNyA0IDMwVjQwQzQgNDQuNDE4MyA3LjU4MTcyIDQ4IDEyIDQ4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K'}" alt="${material.name}" 
+                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 12px;" 
+                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0zMCAxOEMyNC40NzcgMTggMjAgMjIuNDc3IDIwIDI4QzIwIDMzLjUyMyAyNC40NzcgMzggMzAgMzhDMzUuNTIzIDM4IDQwIDMzLjUyMyA0MCAyOEM0MCAyMi40NzcgMzUuNTIzIDE4IDMwIDE4WiIgZmlsbD0iI0NDQyIvPgo8cGF0aCBkPSJNMTIgNDhINDhDNTIuNDE4MyA0OCA1NiA0NC40MTgzIDU2IDQwVjMwQzU2IDI1LjU4MTcgNTIuNDE4MyAyMiA0OCAyMkg0MkwzNiAxOEgyNEwxOCAyMkgxMkM3LjU4MTcyIDIyIDQgMjUuNTgxNyA0IDMwVjQwQzQgNDQuNDE4MyA3LjU4MTcyIDQ4IDEyIDQ4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K'">
+            <div class="flex-grow-1">
+              <h6 class="card-title mb-1">${material.name}</h6>
+              <span class="badge bg-info">${getMaterialCategoryText(material.category)}</span>
+            </div>
+            <span class="badge ${statusClass}">${statusText}</span>
+          </div>
+          <div class="mb-2">
+            <strong>Số lượng:</strong> ${material.quantity} ${getUnitText(material.unit)}<br>
+            <strong>Đơn giá:</strong> ${material.price ? material.price.toLocaleString('vi-VN') : '0'} đ<br>
+            ${material.minStock ? `<strong>Tối thiểu:</strong> ${material.minStock} ${getUnitText(material.unit)}<br>` : ''}
+            ${material.supplier ? `<strong>Nhà cung cấp:</strong> ${material.supplier}<br>` : ''}
+            ${material.description ? `<strong>Mô tả:</strong> ${material.description}` : ''}
+          </div>
+          <div class="btn-group w-100" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editMaterial('${material.id}')">
+              <i class="fas fa-edit"></i> Sửa
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-warning" onclick="adjustMaterial('${material.id}')">
+              <i class="fas fa-boxes"></i> Điều chỉnh
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteMaterial('${material.id}')">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Helper functions for materials
+function getMaterialStatus(quantity, minStock) {
+  if (quantity <= 0) return 'out';
+  if (minStock && quantity <= minStock) return 'low';
+  return 'sufficient';
+}
+
+function getMaterialStatusClass(status) {
+  switch (status) {
+    case 'sufficient': return 'bg-success';
+    case 'low': return 'bg-warning';
+    case 'out': return 'bg-danger';
+    default: return 'bg-secondary';
+  }
+}
+
+function getMaterialStatusText(status) {
+  switch (status) {
+    case 'sufficient': return 'Đủ';
+    case 'low': return 'Sắp hết';
+    case 'out': return 'Hết';
+    default: return 'Không xác định';
+  }
+}
+
+function getMaterialCategoryText(category) {
+  switch (category) {
+    case 'coffee': return 'Cà phê';
+    case 'milk': return 'Sữa';
+    case 'sugar': return 'Đường';
+    case 'flour': return 'Bột';
+    case 'fruit': return 'Trái cây';
+    case 'other': return 'Khác';
+    default: return category;
+  }
+}
+
+function getUnitText(unit) {
+  switch (unit) {
+    case 'kg': return 'kg';
+    case 'g': return 'g';
+    case 'l': return 'l';
+    case 'ml': return 'ml';
+    case 'pcs': return 'cái';
+    case 'pack': return 'gói';
+    default: return unit;
+  }
+}
+
+// Update material statistics
+function updateMaterialStats() {
+  const totalCount = materialsList.length;
+  let sufficientCount = 0;
+  let lowCount = 0;
+  let outCount = 0;
+  
+  materialsList.forEach(material => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    switch (status) {
+      case 'sufficient': sufficientCount++; break;
+      case 'low': lowCount++; break;
+      case 'out': outCount++; break;
+    }
+  });
+  
+  document.getElementById('totalMaterialCount').textContent = totalCount;
+  document.getElementById('sufficientMaterialCount').textContent = sufficientCount;
+  document.getElementById('lowMaterialCount').textContent = lowCount;
+  document.getElementById('outOfMaterialCount').textContent = outCount;
+}
+
+// Load suppliers when add material modal is opened
+document.addEventListener('DOMContentLoaded', function() {
+  const addMaterialModal = document.getElementById('addMaterialModal');
+  if (addMaterialModal) {
+    addMaterialModal.addEventListener('show.bs.modal', function() {
+      loadSuppliersForMaterials();
+    });
+  }
+  
+  const editMaterialModal = document.getElementById('editMaterialModal');
+  if (editMaterialModal) {
+    editMaterialModal.addEventListener('show.bs.modal', function() {
+      loadSuppliersForMaterials();
+    });
+  }
+});
+
+// Save new material
+async function saveMaterial() {
+  const materialData = {
+    name: document.getElementById('materialName').value.trim(),
+    category: document.getElementById('materialCategory').value,
+    quantity: parseFloat(document.getElementById('materialQuantity').value) || 0,
+    unit: document.getElementById('materialUnit').value,
+    price: parseInt(document.getElementById('materialPrice').value) || 0,
+    minStock: parseFloat(document.getElementById('materialMinStock').value) || 0,
+    supplier: document.getElementById('materialSupplier').value.trim() || null,
+    description: document.getElementById('materialDescription').value.trim() || null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Handle image upload
+  const imageFile = document.getElementById('materialImage').files[0];
+  if (imageFile) {
+    try {
+      // Hiển thị thông báo loading khi upload ảnh
+      Swal.fire({
+        title: 'Đang upload ảnh...',
+        text: 'Vui lòng chờ trong giây lát',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
+      materialData.image = await uploadMaterialImage(imageFile);
+      
+      // Đóng thông báo loading
+      Swal.close();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể upload ảnh lên Cloudinary. Vui lòng thử lại.'
+      });
+      return;
+    }
+  }
+  
+  // Validation
+  if (!materialData.name || !materialData.category || !materialData.unit) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const materialsRef = ref(db, 'materials');
+    const newMaterialRef = push(materialsRef);
+    await set(newMaterialRef, materialData);
+    
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addMaterialModal'));
+    modal.hide();
+    document.getElementById('addMaterialForm').reset();
+    
+    // Reset image preview
+    document.getElementById('materialImagePreview').classList.add('d-none');
+    document.getElementById('materialImagePreviewImg').src = '';
+    
+    // Reload materials
+    await loadMaterials();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã thêm nguyên liệu mới.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error saving material:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể thêm nguyên liệu.'
+    });
+  }
+}
+
+// Edit material
+function editMaterial(materialId) {
+  const material = materialsList.find(m => m.id === materialId);
+  if (!material) return;
+  
+  // Populate edit form
+  document.getElementById('editMaterialId').value = material.id;
+  document.getElementById('editMaterialName').value = material.name || '';
+  document.getElementById('editMaterialCategory').value = material.category || '';
+  document.getElementById('editMaterialQuantity').value = material.quantity || 0;
+  document.getElementById('editMaterialUnit').value = material.unit || '';
+  document.getElementById('editMaterialPrice').value = material.price || 0;
+  document.getElementById('editMaterialMinStock').value = material.minStock || 0;
+  document.getElementById('editMaterialSupplier').value = material.supplier || '';
+  document.getElementById('editMaterialDescription').value = material.description || '';
+  
+  // Show current image if exists
+  const preview = document.getElementById('editMaterialImagePreview');
+  const previewImg = document.getElementById('editMaterialImagePreviewImg');
+  if (material.image) {
+    previewImg.src = material.image;
+    preview.classList.remove('d-none');
+  } else {
+    preview.classList.add('d-none');
+  }
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('editMaterialModal'));
+  modal.show();
+}
+
+// Update material
+async function updateMaterial() {
+  const materialId = document.getElementById('editMaterialId').value;
+  const material = materialsList.find(m => m.id === materialId);
+  if (!material) return;
+  
+  const updatedData = {
+    name: document.getElementById('editMaterialName').value.trim(),
+    category: document.getElementById('editMaterialCategory').value,
+    quantity: parseFloat(document.getElementById('editMaterialQuantity').value) || 0,
+    unit: document.getElementById('editMaterialUnit').value,
+    price: parseInt(document.getElementById('editMaterialPrice').value) || 0,
+    minStock: parseFloat(document.getElementById('editMaterialMinStock').value) || 0,
+    supplier: document.getElementById('editMaterialSupplier').value.trim() || null,
+    description: document.getElementById('editMaterialDescription').value.trim() || null,
+    updatedAt: new Date().toISOString()
+  };
+  
+  // Handle image upload if new image is selected
+  const imageFile = document.getElementById('editMaterialImage').files[0];
+  if (imageFile) {
+    try {
+      // Hiển thị thông báo loading khi upload ảnh
+      Swal.fire({
+        title: 'Đang upload ảnh...',
+        text: 'Vui lòng chờ trong giây lát',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
+      updatedData.image = await uploadMaterialImage(imageFile);
+      
+      // Đóng thông báo loading
+      Swal.close();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể upload ảnh lên Cloudinary. Vui lòng thử lại.'
+      });
+      return;
+    }
+  }
+  
+  // Validation
+  if (!updatedData.name || !updatedData.category || !updatedData.unit) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng điền đầy đủ thông tin bắt buộc.'
+    });
+    return;
+  }
+  
+  try {
+    const materialRef = ref(db, `materials/${materialId}`);
+    await update(materialRef, updatedData);
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editMaterialModal'));
+    modal.hide();
+    
+    // Reload materials
+    await loadMaterials();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã cập nhật thông tin nguyên liệu.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error updating material:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể cập nhật nguyên liệu.'
+    });
+  }
+}
+
+// Delete material
+async function deleteMaterial(materialId) {
+  const material = materialsList.find(m => m.id === materialId);
+  if (!material) return;
+  
+  const result = await Swal.fire({
+    title: 'Xác nhận xóa',
+    text: `Bạn có chắc muốn xóa nguyên liệu "${material.name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+  
+  if (result.isConfirmed) {
+    try {
+      await remove(ref(db, `materials/${materialId}`));
+      await loadMaterials();
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công!',
+        text: 'Đã xóa nguyên liệu.',
+        timer: 1500
+      });
+    } catch (error) {
+      console.error('Error deleting material:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Không thể xóa nguyên liệu.'
+      });
+    }
+  }
+}
+
+// Adjust material
+function adjustMaterial(materialId) {
+  const material = materialsList.find(m => m.id === materialId);
+  if (!material) return;
+  
+  document.getElementById('adjustmentMaterialId').value = materialId;
+  document.getElementById('materialAdjustmentQuantity').value = '';
+  document.getElementById('materialAdjustmentReason').value = '';
+  
+  const modal = new bootstrap.Modal(document.getElementById('materialAdjustmentModal'));
+  modal.show();
+}
+
+// Process material adjustment
+async function processMaterialAdjustment() {
+  const materialId = document.getElementById('adjustmentMaterialId').value;
+  const adjustmentType = document.getElementById('materialAdjustmentType').value;
+  const adjustmentQuantity = parseFloat(document.getElementById('materialAdjustmentQuantity').value) || 0;
+  const adjustmentReason = document.getElementById('materialAdjustmentReason').value.trim();
+  
+  const material = materialsList.find(m => m.id === materialId);
+  if (!material) return;
+  
+  if (!adjustmentType || adjustmentQuantity <= 0) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Vui lòng chọn loại điều chỉnh và nhập số lượng hợp lệ.'
+    });
+    return;
+  }
+  
+  let newQuantity = material.quantity;
+  switch (adjustmentType) {
+    case 'add':
+      newQuantity += adjustmentQuantity;
+      break;
+    case 'remove':
+      if (adjustmentQuantity > material.quantity) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi!',
+          text: 'Số lượng xuất không được lớn hơn số lượng hiện có.'
+        });
+        return;
+      }
+      newQuantity -= adjustmentQuantity;
+      break;
+    case 'adjust':
+      newQuantity = adjustmentQuantity;
+      break;
+  }
+  
+  try {
+    const materialRef = ref(db, `materials/${materialId}`);
+    await update(materialRef, {
+      quantity: newQuantity,
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Log adjustment
+    const adjustmentLog = {
+      materialId: materialId,
+      materialName: material.name,
+      adjustmentType: adjustmentType,
+      oldQuantity: material.quantity,
+      newQuantity: newQuantity,
+      adjustmentQuantity: adjustmentQuantity,
+      reason: adjustmentReason || 'Không có lý do',
+      adjustedBy: 'admin', // TODO: Get current user
+      adjustedAt: new Date().toISOString()
+    };
+    
+    const logRef = ref(db, 'material_adjustments');
+    await push(logRef, adjustmentLog);
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('materialAdjustmentModal'));
+    modal.hide();
+    
+    // Reload materials
+    await loadMaterials();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Đã điều chỉnh nguyên liệu.',
+      timer: 1500
+    });
+  } catch (error) {
+    console.error('Error adjusting material:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể điều chỉnh nguyên liệu.'
+    });
+  }
+}
+
+// Export material report
+function exportMaterialReport() {
+  if (materialsList.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Thông báo',
+      text: 'Không có dữ liệu để xuất báo cáo.'
+    });
+    return;
+  }
+  
+  // Create CSV content
+  const headers = ['Tên nguyên liệu', 'Loại', 'Số lượng', 'Đơn vị', 'Đơn giá', 'Tổng giá trị', 'Trạng thái', 'Nhà cung cấp', 'Mô tả'];
+  const csvContent = [
+    headers.join(','),
+    ...materialsList.map(material => {
+      const status = getMaterialStatus(material.quantity, material.minStock);
+      const statusText = getMaterialStatusText(status);
+      const totalValue = (material.quantity || 0) * (material.price || 0);
+      
+      return [
+        material.name || '',
+        getMaterialCategoryText(material.category) || '',
+        material.quantity || 0,
+        getUnitText(material.unit) || '',
+        material.price || 0,
+        totalValue,
+        statusText,
+        material.supplier || '',
+        material.description || ''
+      ].join(',');
+    })
+  ].join('\n');
+  
+  // Download CSV file
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `nguyen_lieu_${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Image preview function
+function previewMaterialImage(input, previewId) {
+  const file = input.files[0];
+  const preview = document.getElementById(previewId);
+  const previewImg = document.getElementById(previewId + 'Img');
+  
+  if (file) {
+    // Validate file size (2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'File ảnh quá lớn. Vui lòng chọn file nhỏ hơn 2MB.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi!',
+        text: 'Vui lòng chọn file ảnh hợp lệ.'
+      });
+      input.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.classList.add('d-none');
+  }
+}
+
+// Upload image to Cloudinary
+async function uploadMaterialImage(file) {
+  try {
+    // Sử dụng hàm uploadToCloudinary đã có sẵn
+    const imageUrl = await window.uploadToCloudinary(file);
+    return imageUrl;
+  } catch (error) {
+    console.error('Error uploading image to Cloudinary:', error);
+    throw error;
+  }
+}
+
+// Search materials
+document.getElementById('materialSearchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const searchTerm = document.getElementById('materialSearch').value.toLowerCase();
+  const categoryFilter = document.getElementById('materialCategoryFilter').value;
+  const statusFilter = document.getElementById('materialStatusFilter').value;
+  
+  let filteredMaterials = materialsList;
+  
+  if (searchTerm) {
+    filteredMaterials = filteredMaterials.filter(material => 
+      material.name.toLowerCase().includes(searchTerm) ||
+      (material.description && material.description.toLowerCase().includes(searchTerm)) ||
+      (material.supplier && material.supplier.toLowerCase().includes(searchTerm))
+    );
+  }
+  
+  if (categoryFilter) {
+    filteredMaterials = filteredMaterials.filter(material => material.category === categoryFilter);
+  }
+  
+  if (statusFilter) {
+    filteredMaterials = filteredMaterials.filter(material => {
+      const status = getMaterialStatus(material.quantity, material.minStock);
+      return status === statusFilter;
+    });
+  }
+  
+  // Temporarily replace materialsList for rendering
+  const originalList = materialsList;
+  materialsList = filteredMaterials;
+  renderMaterials();
+  materialsList = originalList;
+});
+
+// Add footer to the bottom of the page
+document.addEventListener('DOMContentLoaded', function() {
+  const footerHTML = `
+    <div class="footer" style="margin-top: 50px; padding: 20px; text-align: center; color: #666; border-top: 1px solid #eee; position: relative; bottom: 0; width: 100%;">
+      <p>Copyright © 2025. Thiết kế bởi <a href="#" style="color: #A67C52; text-decoration: none;">Ấm - Coffee and Cake</a>. Bản quyền thuộc về chúng tôi.</p>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', footerHTML);
+});
 </script>
 
 </body>
