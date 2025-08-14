@@ -6284,11 +6284,7 @@
         <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
       </button>
     </div>
-    <div>
-      <button type="button" class="btn btn-warning" onclick="exportSupplierReport()">
-        <i class="fas fa-file-excel me-2"></i> Xuất Excel
-      </button>
-    </div>
+   
   </div>
 
   <!-- Thống kê tổng quan -->
@@ -8409,10 +8405,19 @@
         return;
       }
       const id = document.getElementById('editOrderId').value;
+  const newStatus = document.getElementById('editOrderStatus').value;
+  
       try {
         await update(ref(db, `orders/${id}`), {
-          status: document.getElementById('editOrderStatus').value
-        });
+      status: newStatus,
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Nếu trạng thái mới là "delivered", trừ nguyên liệu
+    if (newStatus === 'delivered') {
+      await deductMaterialsFromDeliveredOrder(id);
+    }
+    
         await loadOrders();
         await loadDashboardData();
         bootstrap.Modal.getInstance(document.getElementById('editOrderModal')).hide();
@@ -12557,6 +12562,10 @@ window.showEditStaffModal = async function(id) {
   const snap = await get(ref(db, 'staffs/' + id));
   if (!snap.exists()) return Swal.fire('Không tìm thấy nhân viên!','','error');
   const staff = snap.val();
+  
+  // Load roles first, then populate form
+  await loadRolesToSelect('editStaffRole');
+  
   document.getElementById('editStaffId').value = id;
   document.getElementById('editStaffEmail').value = staff.email || '';
   document.getElementById('editStaffName').value = staff.name || '';
@@ -13498,6 +13507,10 @@ document.getElementById('editStaffRole')?.addEventListener('change', () => updat
 async function loadRolesToSelect(selectId) {
   const select = document.getElementById(selectId);
   if (!select) return;
+  
+  // Store current value if exists
+  const currentValue = select.value;
+  
   select.innerHTML = '<option value="">-- Chọn chức vụ --</option>';
   try {
     const snap = await get(ref(db, 'roles'));
@@ -13509,6 +13522,11 @@ async function loadRolesToSelect(selectId) {
       opt.textContent = role.name;
       select.appendChild(opt);
     });
+    
+    // Restore value if it was set before
+    if (currentValue) {
+      select.value = currentValue;
+    }
   } catch (e) {
     // Có thể báo lỗi nếu cần
   }
@@ -15628,11 +15646,7 @@ const inventorySection = `
         <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
       </button>
     </div>
-    <div>
-      <button type="button" class="btn btn-warning" onclick="exportInventoryReport()">
-        <i class="fas fa-file-excel me-2"></i> Xuất Excel
-      </button>
-    </div>
+    
   </div>
 
   <!-- Thống kê tổng quan -->
@@ -16210,12 +16224,8 @@ const materialSection = `
                 <label for="materialUnit" class="form-label">Đơn vị <span class="text-danger">*</span></label>
                 <select class="form-select" id="materialUnit" required>
                   <option value="">Chọn đơn vị</option>
-                  <option value="kg">Kilogram (kg)</option>
                   <option value="g">Gram (g)</option>
-                  <option value="l">Lít (l)</option>
                   <option value="ml">Milliliter (ml)</option>
-                  <option value="pcs">Cái (pcs)</option>
-                  <option value="pack">Gói (pack)</option>
                 </select>
               </div>
             </div>
@@ -16314,12 +16324,8 @@ const materialSection = `
                 <label for="editMaterialUnit" class="form-label">Đơn vị <span class="text-danger">*</span></label>
                 <select class="form-select" id="editMaterialUnit" required>
                   <option value="">Chọn đơn vị</option>
-                  <option value="kg">Kilogram (kg)</option>
                   <option value="g">Gram (g)</option>
-                  <option value="l">Lít (l)</option>
                   <option value="ml">Milliliter (ml)</option>
-                  <option value="pcs">Cái (pcs)</option>
-                  <option value="pack">Gói (pack)</option>
                 </select>
               </div>
             </div>
@@ -17992,6 +17998,9 @@ function updateSupplierDropdowns() {
   supplierDropdowns.forEach(dropdownId => {
     const dropdown = document.getElementById(dropdownId);
     if (dropdown) {
+      // Store current value before clearing
+      const currentValue = dropdown.value;
+      
       // Clear existing options except the first one
       dropdown.innerHTML = '<option value="">Chọn nhà cung cấp...</option>';
       
@@ -18002,6 +18011,11 @@ function updateSupplierDropdowns() {
         option.textContent = `${supplier.name} (${supplier.code})`;
         dropdown.appendChild(option);
       });
+      
+      // Restore the previous value if it exists in the new options
+      if (currentValue && materialSuppliersList.some(supplier => supplier.name === currentValue)) {
+        dropdown.value = currentValue;
+      }
     }
   });
 }
@@ -18229,8 +18243,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const editMaterialModal = document.getElementById('editMaterialModal');
   if (editMaterialModal) {
-    editMaterialModal.addEventListener('show.bs.modal', function() {
-      loadSuppliersForMaterials();
+    editMaterialModal.addEventListener('show.bs.modal', async function() {
+      await loadSuppliersForMaterials();
     });
   }
 });
@@ -18322,9 +18336,12 @@ async function saveMaterial() {
 }
 
 // Edit material
-function editMaterial(materialId) {
+async function editMaterial(materialId) {
   const material = materialsList.find(m => m.id === materialId);
   if (!material) return;
+  
+  // Load suppliers first to ensure dropdown is populated
+  await loadSuppliersForMaterials();
   
   // Populate edit form
   document.getElementById('editMaterialId').value = material.id;
@@ -18572,9 +18589,36 @@ async function processMaterialAdjustment() {
   }
 }
 
-// Export material report
+// Export material report with professional format
 function exportMaterialReport() {
-  if (materialsList.length === 0) {
+  // Get current filtered materials (what's being displayed)
+  const searchTerm = document.getElementById('materialSearch').value.toLowerCase();
+  const categoryFilter = document.getElementById('materialCategoryFilter').value;
+  const statusFilter = document.getElementById('materialStatusFilter').value;
+  
+  let materialsToExport = materialsList;
+  
+  // Apply the same filters as the search form
+  if (searchTerm) {
+    materialsToExport = materialsToExport.filter(material => 
+      material.name.toLowerCase().includes(searchTerm) ||
+      (material.description && material.description.toLowerCase().includes(searchTerm)) ||
+      (material.supplier && material.supplier.toLowerCase().includes(searchTerm))
+    );
+  }
+  
+  if (categoryFilter) {
+    materialsToExport = materialsToExport.filter(material => material.category === categoryFilter);
+  }
+  
+  if (statusFilter) {
+    materialsToExport = materialsToExport.filter(material => {
+      const status = getMaterialStatus(material.quantity, material.minStock);
+      return status === statusFilter;
+    });
+  }
+  
+  if (materialsToExport.length === 0) {
     Swal.fire({
       icon: 'warning',
       title: 'Thông báo',
@@ -18583,39 +18627,136 @@ function exportMaterialReport() {
     return;
   }
   
-  // Create CSV content
-  const headers = ['Tên nguyên liệu', 'Loại', 'Số lượng', 'Đơn vị', 'Đơn giá', 'Tổng giá trị', 'Trạng thái', 'Nhà cung cấp', 'Mô tả'];
-  const csvContent = [
-    headers.join(','),
-    ...materialsList.map(material => {
-      const status = getMaterialStatus(material.quantity, material.minStock);
-      const statusText = getMaterialStatusText(status);
-      const totalValue = (material.quantity || 0) * (material.price || 0);
-      
-      return [
-        material.name || '',
-        getMaterialCategoryText(material.category) || '',
-        material.quantity || 0,
-        getUnitText(material.unit) || '',
-        material.price || 0,
-        totalValue,
-        statusText,
-        material.supplier || '',
-        material.description || ''
-      ].join(',');
-    })
-  ].join('\n');
+  // Calculate summary statistics
+  const totalValue = materialsToExport.reduce((sum, material) => {
+    return sum + ((material.quantity || 0) * (material.price || 0));
+  }, 0);
+  
+  const lowStockCount = materialsToExport.filter(material => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    return status === 'low';
+  }).length;
+  
+  const outOfStockCount = materialsToExport.filter(material => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    return status === 'out';
+  }).length;
+  
+  // Create professional CSV content
+  const currentDate = new Date().toLocaleDateString('vi-VN');
+  const currentTime = new Date().toLocaleTimeString('vi-VN');
+  
+  const csvLines = [];
+  
+  // Header section
+  csvLines.push('BÁO CÁO QUẢN LÝ NGUYÊN LIỆU');
+  csvLines.push('');
+  csvLines.push(`Công ty: Ấm - Coffee and Cake`);
+  csvLines.push(`Ngày xuất báo cáo: ${currentDate} ${currentTime}`);
+  csvLines.push(`Tổng số nguyên liệu: ${materialsToExport.length}`);
+  csvLines.push(`Tổng giá trị tồn kho: ${totalValue.toLocaleString('vi-VN')} VNĐ`);
+  csvLines.push(`Sắp hết hàng: ${lowStockCount} nguyên liệu`);
+  csvLines.push(`Hết hàng: ${outOfStockCount} nguyên liệu`);
+  csvLines.push('');
+  
+  // Filter information
+  if (searchTerm || categoryFilter || statusFilter) {
+    csvLines.push('BỘ LỌC ÁP DỤNG:');
+    if (searchTerm) csvLines.push(`- Từ khóa tìm kiếm: "${searchTerm}"`);
+    if (categoryFilter) csvLines.push(`- Loại nguyên liệu: "${getMaterialCategoryText(categoryFilter)}"`);
+    if (statusFilter) csvLines.push(`- Trạng thái: "${getMaterialStatusText(statusFilter)}"`);
+    csvLines.push('');
+  }
+  
+  // Table header
+  csvLines.push('STT,Tên nguyên liệu,Loại nguyên liệu,Số lượng tồn kho,Đơn vị,Đơn giá (VNĐ),Tổng giá trị (VNĐ),Trạng thái,Nhà cung cấp,Mức tối thiểu,Ghi chú');
+  
+  // Table data
+  materialsToExport.forEach((material, index) => {
+    const status = getMaterialStatus(material.quantity, material.minStock);
+    const statusText = getMaterialStatusText(status);
+    const totalValue = (material.quantity || 0) * (material.price || 0);
+    
+    // Add warning note for low/out of stock
+    let note = '';
+    if (status === 'out') {
+      note = 'CẦN NHẬP HÀNG NGAY';
+    } else if (status === 'low') {
+      note = 'CẦN CHUẨN BỊ NHẬP HÀNG';
+    }
+    
+    csvLines.push([
+      index + 1,
+      `"${material.name || ''}"`,
+      `"${getMaterialCategoryText(material.category) || ''}"`,
+      material.quantity || 0,
+      `"${getUnitText(material.unit) || ''}"`,
+      (material.price || 0).toLocaleString('vi-VN'),
+      totalValue.toLocaleString('vi-VN'),
+      `"${statusText}"`,
+      `"${material.supplier || ''}"`,
+      material.minStock || 0,
+      `"${note}"`
+    ].join(','));
+  });
+  
+  // Summary section
+  csvLines.push('');
+  csvLines.push('TỔNG KẾT:');
+  csvLines.push(`- Tổng số nguyên liệu: ${materialsToExport.length}`);
+  csvLines.push(`- Tổng giá trị tồn kho: ${totalValue.toLocaleString('vi-VN')} VNĐ`);
+  csvLines.push(`- Nguyên liệu đủ hàng: ${materialsToExport.length - lowStockCount - outOfStockCount}`);
+  csvLines.push(`- Nguyên liệu sắp hết: ${lowStockCount}`);
+  csvLines.push(`- Nguyên liệu hết hàng: ${outOfStockCount}`);
+  csvLines.push('');
+  csvLines.push('Lưu ý: Báo cáo này được tạo tự động từ hệ thống quản lý nguyên liệu.');
+  csvLines.push('Vui lòng kiểm tra và cập nhật thông tin thường xuyên để đảm bảo hoạt động kinh doanh hiệu quả.');
+  
+  // Add BOM for proper UTF-8 encoding
+  const BOM = '\uFEFF';
+  const csvContent = BOM + csvLines.join('\n');
   
   // Download CSV file
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
-  link.setAttribute('download', `nguyen_lieu_${new Date().toISOString().split('T')[0]}.csv`);
+  
+  // Create professional filename
+  const dateStr = new Date().toISOString().split('T')[0];
+  const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
+  let filename = `Bao_Cao_Nguyen_Lieu_${dateStr}_${timeStr}`;
+  if (searchTerm || categoryFilter || statusFilter) {
+    filename += '_Filtered';
+  }
+  link.setAttribute('download', `${filename}.csv`);
+  
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  
+  // Show professional success message
+  Swal.fire({
+    icon: 'success',
+    title: 'Xuất báo cáo thành công!',
+    html: `
+      <div style="text-align: left;">
+        <p><strong>Thông tin báo cáo:</strong></p>
+        <ul style="margin: 10px 0; padding-left: 20px;">
+          <li>Tổng số nguyên liệu: <strong>${materialsToExport.length}</strong></li>
+          <li>Tổng giá trị: <strong>${totalValue.toLocaleString('vi-VN')} VNĐ</strong></li>
+          <li>Sắp hết hàng: <strong>${lowStockCount}</strong> nguyên liệu</li>
+          <li>Hết hàng: <strong>${outOfStockCount}</strong> nguyên liệu</li>
+        </ul>
+        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+          File đã được tải về với tên: <br><strong>${filename}.csv</strong>
+        </p>
+      </div>
+    `,
+    confirmButtonText: 'Đóng',
+    confirmButtonColor: '#28a745'
+  });
 }
 
 // Image preview function
@@ -18713,7 +18854,531 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   `;
   document.body.insertAdjacentHTML('beforeend', footerHTML);
-});
+  
+  // Kiểm tra đơn hàng đã giao khi load trang
+  setTimeout(() => {
+    checkAndDeductMaterialsForDeliveredOrders();
+  }, 2000);
+}); 
+
+// Hàm chuyển đổi đơn vị
+function convertUnit(quantity, fromUnit, toUnit) {
+  // Chuyển về đơn vị cơ bản trước
+  let baseQuantity = quantity;
+  
+  // Chuyển đổi từ đơn vị gốc về đơn vị cơ bản
+  switch (fromUnit) {
+    case 'g':
+      baseQuantity = quantity / 1000; // g -> kg
+      break;
+    case 'ml':
+      baseQuantity = quantity / 1000; // ml -> l
+      break;
+    case 'kg':
+    case 'l':
+      baseQuantity = quantity; // Đã là đơn vị cơ bản
+      break;
+    default:
+      baseQuantity = quantity; // Không đổi
+  }
+  
+  // Chuyển từ đơn vị cơ bản về đơn vị đích
+  switch (toUnit) {
+    case 'g':
+      return baseQuantity * 1000; // kg -> g
+    case 'ml':
+      return baseQuantity * 1000; // l -> ml
+    case 'kg':
+    case 'l':
+      return baseQuantity; // Đã là đơn vị cơ bản
+    default:
+      return baseQuantity; // Không đổi
+  }
+}
+
+// Hàm trừ nguyên liệu khi đơn hàng đã giao - ĐÃ SỬA ĐƠN VỊ
+async function deductMaterialsFromDeliveredOrder(orderId) {
+  try {
+    console.log('Starting material deduction for order:', orderId);
+    
+    // Lấy thông tin đơn hàng
+    const orderRef = ref(db, `orders/${orderId}`);
+    const orderSnapshot = await get(orderRef);
+    
+    if (!orderSnapshot.exists()) {
+      console.error('Order not found:', orderId);
+      return;
+    }
+    
+    const order = orderSnapshot.val();
+    
+    // Kiểm tra trạng thái đơn hàng
+    if (order.status !== 'delivered') {
+      console.log('Order is not delivered yet:', order.status);
+      return;
+    }
+    
+    // Kiểm tra xem đã trừ nguyên liệu chưa
+    if (order.materialsDeducted) {
+      console.log('Materials already deducted for order:', orderId);
+      return;
+    }
+    
+    // Lấy danh sách inventory để tìm nguyên liệu
+    const inventoryRef = ref(db, 'inventory');
+    const inventorySnapshot = await get(inventoryRef);
+    
+    if (!inventorySnapshot.exists()) {
+      console.error('No inventory data found');
+      return;
+    }
+    
+    const inventory = {};
+    inventorySnapshot.forEach((childSnapshot) => {
+      inventory[childSnapshot.key] = childSnapshot.val();
+    });
+    
+    // Lấy danh sách materials hiện tại
+    const materialsRef = ref(db, 'materials');
+    const materialsSnapshot = await get(materialsRef);
+    
+    if (!materialsSnapshot.exists()) {
+      console.error('No materials data found');
+      return;
+    }
+    
+    const materials = {};
+    materialsSnapshot.forEach((childSnapshot) => {
+      materials[childSnapshot.key] = {
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      };
+    });
+    
+    // Tính toán nguyên liệu cần trừ
+    const materialsToDeduct = {};
+    let hasValidItems = false;
+    let skippedItems = [];
+    
+    order.items.forEach(item => {
+      console.log('Processing item:', item.name, 'Quantity:', item.quantity);
+      
+      // Bỏ qua "Unknown Product"
+      if (item.name === 'Unknown Product') {
+        console.log('Skipping Unknown Product');
+        skippedItems.push(item.name);
+        return;
+      }
+      
+      // Tìm sản phẩm trong inventory
+      const inventoryItem = Object.values(inventory).find(inv => 
+        inv.productName === item.name
+      );
+      
+      if (inventoryItem && inventoryItem.ingredients) {
+        hasValidItems = true;
+        console.log('Found inventory item:', inventoryItem.productName);
+        
+        inventoryItem.ingredients.forEach(ingredient => {
+          const materialId = ingredient.materialId;
+          const material = materials[materialId];
+          
+          if (material) {
+            // Chuyển đổi đơn vị từ inventory sang materials
+            const quantityNeeded = convertUnit(
+              ingredient.quantity * item.quantity, 
+              ingredient.unit, 
+              material.unit
+            );
+            
+            if (materialsToDeduct[materialId]) {
+              materialsToDeduct[materialId] += quantityNeeded;
+            } else {
+              materialsToDeduct[materialId] = quantityNeeded;
+            }
+            
+            console.log(`Need ${ingredient.quantity * item.quantity} ${ingredient.unit} of ${ingredient.materialName} = ${quantityNeeded} ${material.unit}`);
+          }
+        });
+      } else {
+        console.log('No inventory item found for:', item.name);
+        skippedItems.push(item.name);
+      }
+    });
+    
+    if (!hasValidItems) {
+      console.log('No valid inventory items found for order:', orderId);
+      // Vẫn đánh dấu đã xử lý để không chạy lại
+      await update(orderRef, {
+        materialsDeducted: true,
+        materialsDeductedAt: new Date().toISOString(),
+        materialsDeductionNote: 'Không có sản phẩm hợp lệ để trừ nguyên liệu'
+      });
+      return;
+    }
+    
+    // Trừ nguyên liệu từ kho
+    const updatePromises = [];
+    const deductionLogs = [];
+    
+    for (const [materialId, quantityToDeduct] of Object.entries(materialsToDeduct)) {
+      const material = materials[materialId];
+      
+      if (material) {
+        const newQuantity = Math.max(0, material.quantity - quantityToDeduct);
+        
+        // Cập nhật số lượng nguyên liệu
+        const materialRef = ref(db, `materials/${materialId}`);
+        updatePromises.push(
+          update(materialRef, {
+            quantity: newQuantity,
+            updatedAt: new Date().toISOString()
+          })
+        );
+        
+        // Log việc trừ nguyên liệu
+        const deductionLog = {
+          orderId: orderId,
+          materialId: materialId,
+          materialName: material.name,
+          quantityDeducted: quantityToDeduct,
+          oldQuantity: material.quantity,
+          newQuantity: newQuantity,
+          unit: material.unit,
+          deductedAt: new Date().toISOString(),
+          reason: `Đơn hàng ${orderId} đã giao`
+        };
+        
+        deductionLogs.push(deductionLog);
+        
+        console.log(`Deducted ${quantityToDeduct} ${material.unit} of ${material.name}`);
+      }
+    }
+    
+    // Thực hiện tất cả cập nhật
+    await Promise.all(updatePromises);
+    
+    // Lưu logs
+    const logRef = ref(db, 'material_deductions');
+    for (const log of deductionLogs) {
+      await push(logRef, log);
+    }
+    
+    // Cập nhật trạng thái đơn hàng để đánh dấu đã trừ nguyên liệu
+    const updateData = {
+      materialsDeducted: true,
+      materialsDeductedAt: new Date().toISOString()
+    };
+    
+    // Thêm ghi chú nếu có sản phẩm bị bỏ qua
+    if (skippedItems.length > 0) {
+      updateData.materialsDeductionNote = `Đã bỏ qua: ${skippedItems.join(', ')}`;
+    }
+    
+    await update(orderRef, updateData);
+    
+    console.log('Successfully deducted materials for order:', orderId);
+    
+    // Hiển thị thông báo thành công
+    let message = `Đã trừ nguyên liệu cho đơn hàng ${orderId}`;
+    if (skippedItems.length > 0) {
+      message += `. Đã bỏ qua: ${skippedItems.join(', ')}`;
+    }
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Trừ nguyên liệu thành công!',
+      text: message,
+      timer: 3000
+    });
+    
+  } catch (error) {
+    console.error('Error deducting materials:', error);
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể trừ nguyên liệu. Vui lòng thử lại.'
+    });
+  }
+} 
+
+
+// Hàm trừ nguyên liệu khi đơn hàng đã giao - ĐÃ SỬA
+async function deductMaterialsFromDeliveredOrder(orderId) {
+  try {
+    console.log('Starting material deduction for order:', orderId);
+    
+    // Lấy thông tin đơn hàng
+    const orderRef = ref(db, `orders/${orderId}`);
+    const orderSnapshot = await get(orderRef);
+    
+    if (!orderSnapshot.exists()) {
+      console.error('Order not found:', orderId);
+      return;
+    }
+    
+    const order = orderSnapshot.val();
+    
+    // Kiểm tra trạng thái đơn hàng
+    if (order.status !== 'delivered') {
+      console.log('Order is not delivered yet:', order.status);
+      return;
+    }
+    
+    // Kiểm tra xem đã trừ nguyên liệu chưa
+    if (order.materialsDeducted) {
+      console.log('Materials already deducted for order:', orderId);
+      return;
+    }
+    
+    // Lấy danh sách inventory để tìm nguyên liệu
+    const inventoryRef = ref(db, 'inventory');
+    const inventorySnapshot = await get(inventoryRef);
+    
+    if (!inventorySnapshot.exists()) {
+      console.error('No inventory data found');
+      return;
+    }
+    
+    const inventory = {};
+    inventorySnapshot.forEach((childSnapshot) => {
+      inventory[childSnapshot.key] = childSnapshot.val();
+    });
+    
+    // Lấy danh sách materials hiện tại
+    const materialsRef = ref(db, 'materials');
+    const materialsSnapshot = await get(materialsRef);
+    
+    if (!materialsSnapshot.exists()) {
+      console.error('No materials data found');
+      return;
+    }
+    
+    const materials = {};
+    materialsSnapshot.forEach((childSnapshot) => {
+      materials[childSnapshot.key] = {
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      };
+    });
+    
+    // Tính toán nguyên liệu cần trừ
+    const materialsToDeduct = {};
+    let hasValidItems = false;
+    let skippedItems = [];
+    
+    order.items.forEach(item => {
+      console.log('Processing item:', item.name, 'Quantity:', item.quantity);
+      
+      // Bỏ qua "Unknown Product"
+      if (item.name === 'Unknown Product') {
+        console.log('Skipping Unknown Product');
+        skippedItems.push(item.name);
+        return;
+      }
+      
+      // Tìm sản phẩm trong inventory
+      const inventoryItem = Object.values(inventory).find(inv => 
+        inv.productName === item.name
+      );
+      
+      if (inventoryItem && inventoryItem.ingredients) {
+        hasValidItems = true;
+        console.log('Found inventory item:', inventoryItem.productName);
+        
+        inventoryItem.ingredients.forEach(ingredient => {
+          const materialId = ingredient.materialId;
+          const quantityNeeded = ingredient.quantity * item.quantity;
+          
+          if (materialsToDeduct[materialId]) {
+            materialsToDeduct[materialId] += quantityNeeded;
+          } else {
+            materialsToDeduct[materialId] = quantityNeeded;
+          }
+          
+          console.log(`Need ${quantityNeeded} ${ingredient.unit} of ${ingredient.materialName}`);
+        });
+      } else {
+        console.log('No inventory item found for:', item.name);
+        skippedItems.push(item.name);
+      }
+    });
+    
+    if (!hasValidItems) {
+      console.log('No valid inventory items found for order:', orderId);
+      // Vẫn đánh dấu đã xử lý để không chạy lại
+      await update(orderRef, {
+        materialsDeducted: true,
+        materialsDeductedAt: new Date().toISOString(),
+        materialsDeductionNote: 'Không có sản phẩm hợp lệ để trừ nguyên liệu'
+      });
+      return;
+    }
+    
+    // Trừ nguyên liệu từ kho
+    const updatePromises = [];
+    const deductionLogs = [];
+    
+    for (const [materialId, quantityToDeduct] of Object.entries(materialsToDeduct)) {
+      const material = materials[materialId];
+      
+      if (material) {
+        const newQuantity = Math.max(0, material.quantity - quantityToDeduct);
+        
+        // Cập nhật số lượng nguyên liệu
+        const materialRef = ref(db, `materials/${materialId}`);
+        updatePromises.push(
+          update(materialRef, {
+            quantity: newQuantity,
+            updatedAt: new Date().toISOString()
+          })
+        );
+        
+        // Log việc trừ nguyên liệu
+        const deductionLog = {
+          orderId: orderId,
+          materialId: materialId,
+          materialName: material.name,
+          quantityDeducted: quantityToDeduct,
+          oldQuantity: material.quantity,
+          newQuantity: newQuantity,
+          unit: material.unit,
+          deductedAt: new Date().toISOString(),
+          reason: `Đơn hàng ${orderId} đã giao`
+        };
+        
+        deductionLogs.push(deductionLog);
+        
+        console.log(`Deducted ${quantityToDeduct} ${material.unit} of ${material.name}`);
+      }
+    }
+    
+    // Thực hiện tất cả cập nhật
+    await Promise.all(updatePromises);
+    
+    // Lưu logs
+    const logRef = ref(db, 'material_deductions');
+    for (const log of deductionLogs) {
+      await push(logRef, log);
+    }
+    
+    // Cập nhật trạng thái đơn hàng để đánh dấu đã trừ nguyên liệu
+    const updateData = {
+      materialsDeducted: true,
+      materialsDeductedAt: new Date().toISOString()
+    };
+    
+    // Thêm ghi chú nếu có sản phẩm bị bỏ qua
+    if (skippedItems.length > 0) {
+      updateData.materialsDeductionNote = `Đã bỏ qua: ${skippedItems.join(', ')}`;
+    }
+    
+    await update(orderRef, updateData);
+    
+    console.log('Successfully deducted materials for order:', orderId);
+    
+    // Hiển thị thông báo thành công
+    let message = `Đã trừ nguyên liệu cho đơn hàng ${orderId}`;
+    if (skippedItems.length > 0) {
+      message += `. Đã bỏ qua: ${skippedItems.join(', ')}`;
+    }
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Trừ nguyên liệu thành công!',
+      text: message,
+      timer: 3000
+    });
+    
+  } catch (error) {
+    console.error('Error deducting materials:', error);
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể trừ nguyên liệu. Vui lòng thử lại.'
+    });
+  }
+}
+
+// Hàm kiểm tra và trừ nguyên liệu cho tất cả đơn hàng đã giao
+async function checkAndDeductMaterialsForDeliveredOrders() {
+  try {
+    console.log('Checking for delivered orders to process...');
+    
+    const ordersRef = ref(db, 'orders');
+    const ordersSnapshot = await get(ordersRef);
+    
+    if (!ordersSnapshot.exists()) {
+      console.log('No orders found');
+      return;
+    }
+    
+    const ordersToProcess = [];
+    
+    ordersSnapshot.forEach((childSnapshot) => {
+      const order = childSnapshot.val();
+      
+      // Chỉ xử lý đơn hàng đã giao và chưa trừ nguyên liệu
+      if (order.status === 'delivered' && !order.materialsDeducted) {
+        ordersToProcess.push(childSnapshot.key);
+      }
+    });
+    
+    console.log(`Found ${ordersToProcess.length} delivered orders to process`);
+    
+    if (ordersToProcess.length > 0) {
+      // Hiển thị thông báo đang xử lý
+      Swal.fire({
+        title: 'Đang xử lý...',
+        text: `Đang trừ nguyên liệu cho ${ordersToProcess.length} đơn hàng đã giao`,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
+      // Xử lý từng đơn hàng
+      for (const orderId of ordersToProcess) {
+        await deductMaterialsFromDeliveredOrder(orderId);
+        // Delay nhỏ để tránh quá tải
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      Swal.close();
+      
+      // Thông báo hoàn thành
+      Swal.fire({
+        icon: 'success',
+        title: 'Hoàn thành!',
+        text: `Đã xử lý ${ordersToProcess.length} đơn hàng đã giao`,
+        timer: 2000
+      });
+    }
+    
+  } catch (error) {
+    console.error('Error processing delivered orders:', error);
+    Swal.close();
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể xử lý đơn hàng đã giao.'
+    });
+  }
+}
+
+// Hàm thủ công trừ nguyên liệu cho đơn hàng cụ thể (có thể gọi từ console)
+window.manualDeductMaterials = async function(orderId) {
+  await deductMaterialsFromDeliveredOrder(orderId);
+};
+
+// Hàm kiểm tra lại tất cả đơn hàng đã giao (có thể gọi từ console)
+window.checkAllDeliveredOrders = async function() {
+  await checkAndDeductMaterialsForDeliveredOrders();
+}; 
+
 </script>
 
 </body>
