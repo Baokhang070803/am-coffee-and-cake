@@ -143,6 +143,18 @@
       "time": "2025-08-14T05:41:11.807Z",
       "type": "checkout",
       "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
+    },
+    "-OXiqS2S_wWAc_D09bRc": {
+      "date": "16/8/2025",
+      "email": "baokhangml99@gmail.com",
+      "location": {
+        "latitude": 10.0815461,
+        "longitude": 105.7850137
+      },
+      "status": "ontime",
+      "time": "2025-08-15T17:49:22.067Z",
+      "type": "checkin",
+      "uid": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3"
     }
   },
   "chatMessages": {
@@ -255,6 +267,25 @@
       "sender": "quantri1amcoffeeandcake@gmail.com",
       "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
       "timestamp": "2025-08-11T14:10:34.330Z"
+    },
+    "-OXijS8AX8eGzg7mOlGO": {
+      "message": "?",
+      "sender": "clone30",
+      "senderId": "ksLeAIExbxc80AyLrnhUnkN0c672",
+      "timestamp": "2025-08-15T17:18:52.366Z"
+    },
+    "-OXir7p36KszT53F8WNZ": {
+      "message": "chào",
+      "sender": "Võ Trần Hoàng Bảo Khang ",
+      "senderId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+      "timestamp": "2025-08-15T17:52:26.322Z"
+    },
+    "-OXirK3i-AzBx2GRAcOW": {
+      "message": "chào",
+      "replyTo": "Võ Trần Hoàng Bảo Khang ",
+      "sender": "quantri1amcoffeeandcake@gmail.com",
+      "senderId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3",
+      "timestamp": "2025-08-15T17:53:16.468Z"
     }
   },
   "contactMessages": {
@@ -271,6 +302,20 @@
       "message": "1234",
       "name": "Nguyễn Trọng Quí",
       "phone": "0867642855"
+    },
+    "-OXijKi9wnzUz90afOTW": {
+      "createdAt": "2025-08-15T17:18:21.965Z",
+      "email": "baokhangml99@gmail.com",
+      "message": "aaaa",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
+    },
+    "-OXirMiMwTGI3mOCg52g": {
+      "createdAt": "2025-08-15T17:53:27.333Z",
+      "email": "baokhangml99@gmail.com",
+      "message": "hi",
+      "name": "Võ Trần Hoàng Bảo Khang",
+      "phone": "0795858581"
     }
   },
   "conversationMeta": {
@@ -291,12 +336,12 @@
       "updatedAt": 1754894766846
     },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_dovlU9vGCIfzWiqYRjXcOYXHFLv1": {
-      "lastMessage": "Tủm Tủm Tủm",
+      "lastMessage": "[Đã gửi ảnh]",
       "members": {
         "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": true,
         "dovlU9vGCIfzWiqYRjXcOYXHFLv1": true
       },
-      "updatedAt": 1754995772539
+      "updatedAt": 1755282435839
     },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_jjdXoKbp0fUa1E5neR1DN6pQ4f62": {
       "lastMessage": "à",
@@ -308,31 +353,271 @@
     }
   },
   "inventory": {
-    "-OXcYqnjtSEDjXZ-4Wfw": {
-      "category": "cakes",
-      "createdAt": "2025-08-14T12:30:27.694Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245710/ijkqq1q0ivqaimjcwmea.avif",
-      "ingredientCost": 15085,
+    "-OXYKivqE8SoYIIRt8r8": {
+      "category": "drinks",
+      "createdAt": "2025-08-13T12:10:40.798Z",
+      "description": "Cà phê đen đá",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245287/e4ayfuk3m5h0oiuayelz.avif",
+      "ingredientCost": 4375,
       "ingredients": [
         {
-          "cost": 85,
-          "materialId": "-OXcOezv8mJliKhTIrBb",
-          "materialName": "Bột mì",
+          "cost": 375,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 15,
+          "unit": "g"
+        },
+        {
+          "cost": 4000,
+          "materialId": "-OXYHn-LiGUefKBBxnEe",
+          "materialName": "Cà phê hạt",
+          "quantity": 20,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 5000,
+      "productName": "Cà Phê Đen Đá",
+      "sellingPrice": 32000,
+      "updatedAt": "2025-08-14T05:10:03.852Z"
+    },
+    "-OXZn_iJhZPFVepDR4sy": {
+      "category": "drinks",
+      "createdAt": "2025-08-13T19:00:44.274Z",
+      "description": "Cappuccino đá NGON LẮM",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+      "ingredientCost": 13500,
+      "ingredients": [
+        {
+          "cost": 500,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 20,
+          "unit": "g"
+        },
+        {
+          "cost": 5000,
+          "materialId": "-OXX5mLN49R-7Vqod4TF",
+          "materialName": "Sữa tươi",
+          "quantity": 100,
+          "unit": "ml"
+        },
+        {
+          "cost": 8000,
+          "materialId": "-OXYHn-LiGUefKBBxnEe",
+          "materialName": "Cà phê hạt",
+          "quantity": 40,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 5000,
+      "productName": "Cappuccino đá",
+      "sellingPrice": 55000,
+      "updatedAt": "2025-08-14T10:42:25.182Z"
+    },
+    "-OXcUuyMq3v6RLhuiFv2": {
+      "category": "drinks",
+      "createdAt": "2025-08-14T12:13:16.182Z",
+      "image": "https://i0.wp.com/90scoffee.vn/wp-content/uploads/2024/08/ca-phe-latte-1.jpeg?fit=2560%2C1707&ssl=1",
+      "ingredientCost": 20250,
+      "ingredients": [
+        {
+          "cost": 500,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 20,
+          "unit": "g"
+        },
+        {
+          "cost": 13750,
+          "materialId": "-OXX5mLN49R-7Vqod4TF",
+          "materialName": "Sữa tươi",
+          "quantity": 275,
+          "unit": "ml"
+        },
+        {
+          "cost": 6000,
+          "materialId": "-OXYHn-LiGUefKBBxnEe",
+          "materialName": "Cà phê hạt",
+          "quantity": 30,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 5000,
+      "productName": "Latte nóng",
+      "sellingPrice": 59000,
+      "updatedAt": "2025-08-14T13:01:36.841Z"
+    },
+    "-OXcVyTEJlHeIOyEILDK": {
+      "category": "drinks",
+      "createdAt": "2025-08-14T12:17:52.653Z",
+      "image": "https://vinbarista.com/uploads/editer/images/blogs/espresso-la-gi.jpg",
+      "ingredientCost": 1000,
+      "ingredients": [
+        {
+          "cost": 1000,
+          "materialId": "-OXYHn-LiGUefKBBxnEe",
+          "materialName": "Cà phê hạt",
+          "quantity": 5,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 4000,
+      "productName": "espresso",
+      "sellingPrice": 30000,
+      "updatedAt": "2025-08-14T13:01:53.862Z"
+    },
+    "-OXcWJkCtGun2mRcRpj8": {
+      "category": "drinks",
+      "createdAt": "2025-08-14T12:19:23.916Z",
+      "image": "https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg?uid=R62207786&ga=GA1.1.635552943.1743728016&semt=ais_hybrid&w=740",
+      "ingredientCost": 2875,
+      "ingredients": [
+        {
+          "cost": 2000,
+          "materialId": "-OXYHn-LiGUefKBBxnEe",
+          "materialName": "Cà phê hạt",
+          "quantity": 10,
+          "unit": "g"
+        },
+        {
+          "cost": 125,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
           "quantity": 5,
           "unit": "g"
         },
         {
-          "cost": 9000,
-          "materialId": "-OXcPmm9X3Zv29TdNwwU",
-          "materialName": "Men nở",
-          "quantity": 3,
+          "cost": 750,
+          "materialId": "-OXX5mLN49R-7Vqod4TF",
+          "materialName": "Sữa tươi",
+          "quantity": 15,
+          "unit": "ml"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 5000,
+      "productName": "Cappuccino",
+      "sellingPrice": 45000,
+      "updatedAt": "2025-08-14T13:02:13.838Z"
+    },
+    "-OXcWjc_zJ6PnuEa21Sr": {
+      "category": "cakes",
+      "createdAt": "2025-08-14T12:21:14.019Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245547/ml31tioce2ynn2k22rfk.avif",
+      "ingredientCost": 5125,
+      "ingredients": [
+        {
+          "cost": 3000,
+          "materialId": "-OXcOezv8mJliKhTIrBb",
+          "materialName": "Bột mì",
+          "quantity": 20,
           "unit": "g"
         },
         {
-          "cost": 6000,
+          "cost": 1000,
           "materialId": "-OXcPFnYiMajNnTir-Sr",
           "materialName": "Trứng",
+          "quantity": 1,
+          "unit": "pcs"
+        },
+        {
+          "cost": 750,
+          "materialId": "-OXX5mLN49R-7Vqod4TF",
+          "materialName": "Sữa tươi",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "cost": 375,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 15,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 4000,
+      "productName": "Bánh bông lan",
+      "sellingPrice": 30000,
+      "updatedAt": "2025-08-14T13:03:30.507Z"
+    },
+    "-OXcYJ1WR1HozxpF36K3": {
+      "category": "cakes",
+      "createdAt": "2025-08-14T12:28:05.279Z",
+      "image": "https://img.freepik.com/free-photo/sweet-berry-cheesecake-slice-with-whipped-cream-indulgence-generated-by-ai_188544-31798.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
+      "ingredientCost": 14875,
+      "ingredients": [
+        {
+          "cost": 2250,
+          "materialId": "-OXcOezv8mJliKhTIrBb",
+          "materialName": "Bột mì",
+          "quantity": 15,
+          "unit": "g"
+        },
+        {
+          "cost": 10000,
+          "materialId": "-OXcPVHw0zBrCNrkwUX_",
+          "materialName": "Phô mai kem",
+          "quantity": 10,
+          "unit": "g"
+        },
+        {
+          "cost": 1000,
+          "materialId": "-OXcPFnYiMajNnTir-Sr",
+          "materialName": "Trứng",
+          "quantity": 1,
+          "unit": "pcs"
+        },
+        {
+          "cost": 375,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 15,
+          "unit": "g"
+        },
+        {
+          "cost": 1250,
+          "materialId": "-OXX5mLN49R-7Vqod4TF",
+          "materialName": "Sữa tươi",
+          "quantity": 25,
+          "unit": "ml"
+        }
+      ],
+      "laborCost": 1000,
+      "operatingCost": 4000,
+      "productName": "Red velvet",
+      "sellingPrice": 55000,
+      "updatedAt": "2025-08-14T13:05:13.767Z"
+    },
+    "-OXcYqnjtSEDjXZ-4Wfw": {
+      "category": "cakes",
+      "createdAt": "2025-08-14T12:30:27.694Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245710/ijkqq1q0ivqaimjcwmea.avif",
+      "ingredientCost": 4002,
+      "ingredients": [
+        {
+          "cost": 3000,
+          "materialId": "-OXcOezv8mJliKhTIrBb",
+          "materialName": "Bột mì",
+          "quantity": 15,
+          "unit": "g"
+        },
+        {
+          "cost": 2,
+          "materialId": "-OXcPmm9X3Zv29TdNwwU",
+          "materialName": "Men nở",
           "quantity": 2,
+          "unit": "g"
+        },
+        {
+          "cost": 1000,
+          "materialId": "-OXcPFnYiMajNnTir-Sr",
+          "materialName": "Trứng",
+          "quantity": 1,
           "unit": "pcs"
         }
       ],
@@ -340,7 +625,155 @@
       "operatingCost": 5000,
       "productName": "Bánh Mì",
       "sellingPrice": 25000,
-      "updatedAt": "2025-08-14T12:38:36.169Z"
+      "updatedAt": "2025-08-14T13:12:26.018Z"
+    },
+    "-OXcaC_1O17PCUvrh0EV": {
+      "category": "cakes",
+      "createdAt": "2025-08-14T12:40:45.249Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245721/rv1a8bzbvirolvvthwfz.avif",
+      "ingredientCost": 5000,
+      "ingredients": [
+        {
+          "cost": 1500,
+          "materialId": "-OXcPVHw0zBrCNrkwUX_",
+          "materialName": "Phô mai kem",
+          "quantity": 30,
+          "unit": "g"
+        },
+        {
+          "cost": 500,
+          "materialId": "-OXV75RR7PkejjhbKN0d",
+          "materialName": "Đường cát trắng",
+          "quantity": 20,
+          "unit": "g"
+        },
+        {
+          "cost": 3000,
+          "materialId": "-OXcPFnYiMajNnTir-Sr",
+          "materialName": "Trứng",
+          "quantity": 1,
+          "unit": "pcs"
+        }
+      ],
+      "laborCost": 1500,
+      "operatingCost": 5000,
+      "productName": "Cheesecake",
+      "sellingPrice": 60000,
+      "updatedAt": "2025-08-14T12:40:45.249Z"
+    },
+    "-OXccvRI7ITKN2B5ay6C": {
+      "category": "cakes",
+      "createdAt": "2025-08-14T12:52:37.306Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245786/uhfv5owfpxhptid68kli.avif",
+      "ingredientCost": 4200,
+      "ingredients": [
+        {
+          "cost": 3000,
+          "materialId": "-OXcQuK0sltk8Fg0rOrP",
+          "materialName": "Socola",
+          "quantity": 1,
+          "unit": "g"
+        },
+        {
+          "cost": 1000,
+          "materialId": "-OXcPVHw0zBrCNrkwUX_",
+          "materialName": "Phô mai kem",
+          "quantity": 1,
+          "unit": "g"
+        },
+        {
+          "cost": 200,
+          "materialId": "-OXcOezv8mJliKhTIrBb",
+          "materialName": "Bột mì",
+          "quantity": 1,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 1000,
+      "operatingCost": 4000,
+      "productName": "Mousse cake",
+      "sellingPrice": 35000,
+      "updatedAt": "2025-08-14T13:10:47.216Z"
+    },
+    "-OXchedlD5iCAzr2BcvV": {
+      "category": "toppings",
+      "createdAt": "2025-08-14T13:13:19.255Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245795/xw5khkwkzxpep7gigxwr.avif",
+      "ingredientCost": 10,
+      "ingredients": [
+        {
+          "cost": 10,
+          "materialId": "-OXcPVHw0zBrCNrkwUX_",
+          "materialName": "Phô mai kem",
+          "quantity": 1,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 0,
+      "operatingCost": 1000,
+      "productName": "Phô Mai",
+      "sellingPrice": 10000,
+      "updatedAt": "2025-08-14T13:34:03.335Z"
+    },
+    "-OXcmAlL3gMMYPq8mKxL": {
+      "category": "toppings",
+      "createdAt": "2025-08-14T13:33:03.454Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245806/mzayg2utpus5crz5gb5d.avif",
+      "ingredientCost": 3,
+      "ingredients": [
+        {
+          "cost": 3,
+          "materialId": "-OXcQuK0sltk8Fg0rOrP",
+          "materialName": "Socola",
+          "quantity": 1,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 0,
+      "operatingCost": 1000,
+      "productName": "Socola",
+      "sellingPrice": 15000,
+      "updatedAt": "2025-08-14T13:33:19.895Z"
+    },
+    "-OXcmLLi8PDm94JOBR7W": {
+      "category": "toppings",
+      "createdAt": "2025-08-14T13:33:46.806Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245841/vli5rmbypbsvah1bkhbs.avif",
+      "ingredientCost": 70,
+      "ingredients": [
+        {
+          "cost": 70,
+          "materialId": "-OXcRMFBVTzSinchqjY8",
+          "materialName": "Trái cây tươi",
+          "quantity": 1,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 0,
+      "operatingCost": 1000,
+      "productName": "Trái Cây",
+      "sellingPrice": 12000,
+      "updatedAt": "2025-08-14T13:33:46.806Z"
+    },
+    "-OXcmSzzFNadRljeVHYC": {
+      "category": "toppings",
+      "createdAt": "2025-08-14T13:34:18.119Z",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245833/twin8bx4ep9ez1ho97ht.avif",
+      "ingredientCost": 10,
+      "ingredients": [
+        {
+          "cost": 10,
+          "materialId": "-OXcPVHw0zBrCNrkwUX_",
+          "materialName": "Phô mai kem",
+          "quantity": 1,
+          "unit": "g"
+        }
+      ],
+      "laborCost": 0,
+      "operatingCost": 1000,
+      "productName": "Kem",
+      "sellingPrice": 12000,
+      "updatedAt": "2025-08-14T13:34:37.157Z"
     }
   },
   "leaveRequests": {
@@ -529,9 +962,8 @@
       "name": "Đường cát trắng",
       "price": 25000,
       "quantity": 10,
-      "supplier": "Công ty TNHH Thực Phẩm Minh Long",
-      "unit": "kg",
-      "updatedAt": "2025-08-14T10:41:01.327Z"
+      "unit": "g",
+      "updatedAt": "2025-08-15T19:36:01.142Z"
     },
     "-OXX5mLN49R-7Vqod4TF": {
       "category": "milk",
@@ -562,97 +994,98 @@
     "-OXcOezv8mJliKhTIrBb": {
       "category": "flour",
       "createdAt": "2025-08-14T11:45:57.880Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755173138/dpdnkghkq0hnyp9hvkl3.jpg",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755175427/hq7umlnlink6lhqseujr.jpg",
       "minStock": 5,
       "name": "Bột mì",
-      "price": 17000,
-      "quantity": 10,
+      "price": 200000,
+      "quantity": 15,
       "supplier": "Công ty TNHH Nguyên Liệu Bánh Ngọt SweetieCake",
       "unit": "kg",
-      "updatedAt": "2025-08-14T12:05:37.486Z"
+      "updatedAt": "2025-08-14T13:10:00.118Z"
     },
     "-OXcPFnYiMajNnTir-Sr": {
       "category": "other",
       "createdAt": "2025-08-14T11:48:32.738Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755173203/ocnnfooszrmf6kpoelav.webp",
-      "minStock": 5,
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755175681/orx6hadio8alhfgxnxpo.webp",
+      "minStock": 1,
       "name": "Trứng",
-      "price": 3000,
-      "quantity": 100,
+      "price": 1000,
+      "quantity": 30,
       "supplier": "Công ty TNHH Nguyên Liệu Bánh Ngọt SweetieCake",
       "unit": "pcs",
-      "updatedAt": "2025-08-14T12:06:42.043Z"
+      "updatedAt": "2025-08-14T13:03:22.081Z"
     },
     "-OXcPVHw0zBrCNrkwUX_": {
       "category": "other",
       "createdAt": "2025-08-14T11:49:36.187Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755172971/acieucxvkwlri4n2sti4.avif",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755176183/qnhlkyduegzzhnnuc3la.avif",
       "minStock": 5,
       "name": "Phô mai kem",
-      "price": 50000,
-      "quantity": 30,
+      "price": 10000,
+      "quantity": 50,
       "supplier": "Công ty Thực Phẩm Cao Cấp MilkChoco",
       "unit": "kg",
-      "updatedAt": "2025-08-14T12:02:50.143Z"
+      "updatedAt": "2025-08-14T13:31:55.361Z"
     },
     "-OXcPmm9X3Zv29TdNwwU": {
       "category": "other",
       "createdAt": "2025-08-14T11:50:51.913Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755175105/gcplpvvqwfuywgmfsq7z.webp",
-      "minStock": 5,
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755176108/oyppjdkugqsjdxfljjnm.webp",
+      "minStock": 1,
       "name": "Men nở",
-      "price": 3000,
-      "quantity": 500,
+      "price": 1000,
+      "quantity": 50,
       "supplier": "Công ty TNHH Nguyên Liệu Bánh Ngọt SweetieCake",
-      "unit": "g",
-      "updatedAt": "2025-08-14T12:38:22.349Z"
+      "unit": "kg",
+      "updatedAt": "2025-08-14T13:32:08.906Z"
     },
     "-OXcQGsg568dC4qCnKs7": {
       "category": "other",
       "createdAt": "2025-08-14T11:52:59.307Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755172774/hz3xogkzslr1vabdzyn5.avif",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755175517/rmbzblqujpesg5fkyzwu.avif",
       "minStock": 5,
       "name": "Kem tươi",
-      "price": 23000,
+      "price": 3000,
       "quantity": 500,
-      "unit": "g",
-      "updatedAt": "2025-08-14T11:59:32.913Z"
+      "supplier": "Công ty TNHH Nguyên Liệu Bánh Ngọt SweetieCake",
+      "unit": "kg",
+      "updatedAt": "2025-08-14T13:08:58.292Z"
     },
     "-OXcQuK0sltk8Fg0rOrP": {
       "category": "other",
       "createdAt": "2025-08-14T11:55:44.960Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755172757/jqwskt9joqyq3fh8phhs.avif",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755176052/sagut0ywkpby12hdhmju.avif",
       "minStock": 5,
       "name": "Socola",
-      "price": 150000,
-      "quantity": 5000,
+      "price": 3000,
+      "quantity": 50,
       "supplier": "Công ty Thực Phẩm Cao Cấp MilkChoco",
-      "unit": "g",
-      "updatedAt": "2025-08-14T11:59:16.260Z"
+      "unit": "kg",
+      "updatedAt": "2025-08-14T13:32:31.657Z"
     },
     "-OXcR7rUBPDNY_smTtRE": {
       "category": "other",
       "createdAt": "2025-08-14T11:56:44.510Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755172721/dgaz89plo30u5mlqzgbd.avif",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755176074/so5i2gjbn6wiqffok9mw.avif",
       "minStock": 5,
       "name": "Mật ong",
-      "price": 170000,
-      "quantity": 7000,
+      "price": 50000,
+      "quantity": 50,
       "supplier": "Công ty Thực Phẩm Cao Cấp MilkChoco",
-      "unit": "ml",
-      "updatedAt": "2025-08-14T11:58:40.646Z"
+      "unit": "l",
+      "updatedAt": "2025-08-14T13:08:37.613Z"
     },
     "-OXcRMFBVTzSinchqjY8": {
       "category": "fruit",
       "createdAt": "2025-08-14T11:57:43.435Z",
-      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755172707/nuq3wuekciabyentt6yp.avif",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755176095/epx3oykm9m4drccr0tba.avif",
       "minStock": 3,
       "name": "Trái cây tươi",
-      "price": 30000,
+      "price": 70000,
       "quantity": 7,
       "supplier": "Nông trại Trái Cây Bình Thủy",
       "unit": "kg",
-      "updatedAt": "2025-08-14T11:58:25.066Z"
+      "updatedAt": "2025-08-14T13:32:42.642Z"
     }
   },
   "messages": {
@@ -1308,6 +1741,47 @@
         "sender": "dovlU9vGCIfzWiqYRjXcOYXHFLv1",
         "text": "Tủm Tủm Tủm",
         "timestamp": 1754995772460
+      },
+      "-OXipoxUVXFAj_TmbQ2t": {
+        "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755280002/tmvgfvg9zqezfjnapzt1.jpg",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "",
+        "timestamp": 1755280001962
+      },
+      "-OXippy8P6NPjwuT9mdA": {
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "?",
+        "timestamp": 1755280006915
+      },
+      "-OXipqS4cHidL3RfSf8I": {
+        "callType": "voice",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1755280008895,
+        "type": "call"
+      },
+      "-OXipqvpkOK7990n1iDz": {
+        "callType": "video",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "status": "started",
+        "timestamp": 1755280010862,
+        "type": "call"
+      },
+      "-OXiyy3RFYTMlRSEvt-O": {
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "?",
+        "timestamp": 1755282399372
+      },
+      "-OXiz3zVuLT0ZCCv2ZZp": {
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "?",
+        "timestamp": 1755282427728
+      },
+      "-OXiz5wxxoXkSb-i5fMz": {
+        "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755282434/kdi9k71a3s8tiotf4ixu.jpg",
+        "sender": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "text": "",
+        "timestamp": 1755282432801
       }
     },
     "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3_jjdXoKbp0fUa1E5neR1DN6pQ4f62": {
@@ -1724,6 +2198,13 @@
       },
       "paymentMethod": "vnpay",
       "paymentStatus": "paid",
+      "review": {
+        "comment": "Tuyệt vời",
+        "createdAt": "2025-08-15T18:15:56.160Z",
+        "rating": 5,
+        "userId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+        "userName": "Võ Trần Hoàng Bảo Khang "
+      },
       "shippingFee": 0,
       "shippingInfo": {
         "address": "Cái Vồn, Bình Minh, Vĩnh Long 2",
@@ -1909,6 +2390,386 @@
       "subtotal": 87000,
       "time": "17:55:52",
       "userId": "Nt4988nd2wNiGy1kUHZ1UFLCtxH3"
+    },
+    "-OXcn86nywvpxW152xHk": {
+      "billingInfo": {
+        "address": "Chưa cập nhật",
+        "email": "sieuhoangkhang@gmail.com",
+        "fullName": "Khang Siêu ",
+        "phone": ""
+      },
+      "confirmedAt": "2025-08-14T13:38:00.253Z",
+      "couponCode": "BACKTOSCHOOL",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-14T13:37:14.722Z",
+      "customerInfo": {
+        "address": "Chưa cập nhật",
+        "email": "sieuhoangkhang@gmail.com",
+        "fullName": "Khang Siêu ",
+        "name": "Khang Siêu ",
+        "phone": ""
+      },
+      "date": "14/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 67600,
+      "fullName": "Khang Siêu ",
+      "grandTotal": 608400,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 3
+        },
+        {
+          "image": "https://i0.wp.com/90scoffee.vn/wp-content/uploads/2024/08/ca-phe-latte-1.jpeg?fit=2560%2C1707&ssl=1",
+          "name": "Latte nóng",
+          "price": 59000,
+          "productId": "drinks-item14",
+          "quantity": 4
+        },
+        {
+          "image": "https://img.freepik.com/free-photo/sweet-berry-cheesecake-slice-with-whipped-cream-indulgence-generated-by-ai_188544-31798.jpg?ga=GA1.1.303703892.1749897246&semt=ais_hybrid&w=740",
+          "name": "Red velvet",
+          "price": 55000,
+          "productId": "cakes-item2",
+          "quantity": 3
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245710/ijkqq1q0ivqaimjcwmea.avif",
+          "name": "Bánh Mì",
+          "price": 25000,
+          "productId": "cakes-item3",
+          "quantity": 2
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245721/rv1a8bzbvirolvvthwfz.avif",
+          "name": "Cheesecake",
+          "price": 60000,
+          "productId": "cakes-item4",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentDetails": {
+        "amount": 608400,
+        "payDate": "14/08/2025 20:39:04",
+        "responseCode": "00",
+        "transactionNo": "15131324",
+        "vnp_TxnRef": "XW152XHK"
+      },
+      "paymentMethod": "vnpay",
+      "paymentStatus": "paid",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "Chưa cập nhật",
+        "receiverName": "Khang Siêu ",
+        "receiverPhone": ""
+      },
+      "status": "confirmed",
+      "subtotal": 676000,
+      "time": "20:37:14",
+      "updatedAt": "2025-08-14T13:38:00.253Z",
+      "userId": "dovlU9vGCIfzWiqYRjXcOYXHFLv1"
+    },
+    "-OXcnZ6UMd__Jw5EuKof": {
+      "billingInfo": {
+        "address": "Chưa cập nhật",
+        "email": "sieuhoangkhang@gmail.com",
+        "fullName": "Khang Siêu ",
+        "phone": ""
+      },
+      "confirmedAt": "2025-08-14T13:39:29.637Z",
+      "couponCode": "BACKTOSCHOOL",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-14T13:39:05.294Z",
+      "customerInfo": {
+        "address": "Chưa cập nhật",
+        "email": "sieuhoangkhang@gmail.com",
+        "fullName": "Khang Siêu ",
+        "name": "Khang Siêu ",
+        "phone": ""
+      },
+      "date": "14/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 12200,
+      "fullName": "Khang Siêu ",
+      "grandTotal": 109800,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 2
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245841/vli5rmbypbsvah1bkhbs.avif",
+          "name": "Trái Cây",
+          "price": 12000,
+          "productId": "toppings-item5",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentDetails": {
+        "amount": 109800,
+        "payDate": "14/08/2025 20:40:35",
+        "responseCode": "00",
+        "transactionNo": "15131330",
+        "vnp_TxnRef": "JW5EUKOF"
+      },
+      "paymentMethod": "vnpay",
+      "paymentStatus": "paid",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "Chưa cập nhật",
+        "receiverName": "Khang Siêu ",
+        "receiverPhone": ""
+      },
+      "status": "confirmed",
+      "subtotal": 122000,
+      "time": "20:39:05",
+      "updatedAt": "2025-08-14T13:39:29.637Z",
+      "userId": "dovlU9vGCIfzWiqYRjXcOYXHFLv1"
+    },
+    "-OXilkUyaUepg3lgvi1v": {
+      "billingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "phone": "0795858581"
+      },
+      "couponCode": "BACKTOSCHOOL",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-15T17:28:55.922Z",
+      "customerInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "name": "clone30",
+        "phone": "0795858581"
+      },
+      "date": "16/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 8700,
+      "fullName": "clone30",
+      "grandTotal": 78300,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245287/e4ayfuk3m5h0oiuayelz.avif",
+          "name": "Cà Phê Đen Đá",
+          "price": 32000,
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentMethod": "cod",
+      "paymentStatus": "not_required",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "receiverName": "clone30",
+        "receiverPhone": "0795858581"
+      },
+      "status": "pending",
+      "subtotal": 87000,
+      "time": "00:28:55",
+      "userId": "ksLeAIExbxc80AyLrnhUnkN0c672"
+    },
+    "-OXim-qHz3onYzAU_Lu9": {
+      "billingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "phone": "0795858581"
+      },
+      "couponCode": "",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-15T17:30:02.882Z",
+      "customerInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "name": "clone30",
+        "phone": "0795858581"
+      },
+      "date": "16/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 0,
+      "fullName": "clone30",
+      "grandTotal": 87000,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245287/e4ayfuk3m5h0oiuayelz.avif",
+          "name": "Cà Phê Đen Đá",
+          "price": 32000,
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentDetails": {
+        "errorMessage": "Thanh toán thất bại",
+        "failedAt": "2025-08-15T17:31:07.455Z",
+        "responseCode": "24",
+        "vnp_TxnRef": "YZAU_LU9"
+      },
+      "paymentMethod": "vnpay",
+      "paymentStatus": "failed",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "receiverName": "clone30",
+        "receiverPhone": "0795858581"
+      },
+      "status": "payment_failed",
+      "subtotal": 87000,
+      "time": "00:30:02",
+      "updatedAt": "2025-08-15T17:31:07.455Z",
+      "userId": "ksLeAIExbxc80AyLrnhUnkN0c672"
+    },
+    "-OXimLsa3eo0KAHaIQdv": {
+      "billingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "phone": "0795858581"
+      },
+      "couponCode": "",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-15T17:31:33.541Z",
+      "customerInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "name": "clone30",
+        "phone": "0795858581"
+      },
+      "date": "16/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 0,
+      "fullName": "clone30",
+      "grandTotal": 87000,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245287/e4ayfuk3m5h0oiuayelz.avif",
+          "name": "Cà Phê Đen Đá",
+          "price": 32000,
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentMethod": "cod",
+      "paymentStatus": "not_required",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "receiverName": "clone30",
+        "receiverPhone": "0795858581"
+      },
+      "status": "pending",
+      "subtotal": 87000,
+      "time": "00:31:33",
+      "userId": "ksLeAIExbxc80AyLrnhUnkN0c672"
+    },
+    "-OXimUkh6IWkxPnlNXBy": {
+      "billingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "phone": "0795858581"
+      },
+      "confirmedAt": "2025-08-15T17:33:22.042Z",
+      "couponCode": "BACKTOSCHOOL",
+      "couponDiscount": 0,
+      "couponType": "",
+      "createdAt": "2025-08-15T17:32:09.560Z",
+      "customerInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "email": "clone30khangzzz@gmail.com",
+        "fullName": "clone30",
+        "name": "clone30",
+        "phone": "0795858581"
+      },
+      "date": "16/8/2025",
+      "deliveryMethod": "standard",
+      "discountAmount": 14600,
+      "fullName": "clone30",
+      "grandTotal": 131400,
+      "items": [
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245287/e4ayfuk3m5h0oiuayelz.avif",
+          "name": "Cà Phê Đen Đá",
+          "price": 32000,
+          "productId": "drinks-item1",
+          "quantity": 1
+        },
+        {
+          "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1752245304/an0ee8wbbslhkmrtwhaw.jpg",
+          "name": "Cappuccino đá",
+          "price": 55000,
+          "productId": "drinks-item10",
+          "quantity": 1
+        },
+        {
+          "image": "https://i0.wp.com/90scoffee.vn/wp-content/uploads/2024/08/ca-phe-latte-1.jpeg?fit=2560%2C1707&ssl=1",
+          "name": "Latte nóng",
+          "price": 59000,
+          "productId": "drinks-item14",
+          "quantity": 1
+        }
+      ],
+      "orderNote": "",
+      "paymentDetails": {
+        "amount": 131400,
+        "payDate": "16/08/2025 00:34:25",
+        "responseCode": "00",
+        "transactionNo": "15133094",
+        "vnp_TxnRef": "XPNLNXBY"
+      },
+      "paymentMethod": "vnpay",
+      "paymentStatus": "paid",
+      "shippingFee": 0,
+      "shippingInfo": {
+        "address": "127, cái vồn bình minh vĩnh long ",
+        "receiverName": "clone30",
+        "receiverPhone": "0795858581"
+      },
+      "status": "confirmed",
+      "subtotal": 146000,
+      "time": "00:32:09",
+      "updatedAt": "2025-08-15T17:33:22.042Z",
+      "userId": "ksLeAIExbxc80AyLrnhUnkN0c672"
     }
   },
   "overtimeRequests": {
@@ -1962,6 +2823,30 @@
     }
   },
   "payment_results": {
+    "0": {
+      "paymentInfo": {
+        "amount": 87000,
+        "responseCode": "24",
+        "responseMessage": "Giao dịch không thành công do: Khách hàng hủy giao dịch"
+      },
+      "resultType": "failed",
+      "timestamps": {
+        "createdAt": "2025-08-15T17:31:07.458Z",
+        "day": 16,
+        "month": 8,
+        "year": 2025
+      },
+      "transactionId": "0",
+      "txnRef": "YZAU_LU9",
+      "vnpayData": {
+        "amount": "8700000",
+        "bankCode": "VNPAY",
+        "payDate": "20250816003115",
+        "responseCode": "24",
+        "transactionNo": "0",
+        "txnRef": "YZAU_LU9"
+      }
+    },
     "15069725": {
       "orderInfo": {
         "customerName": "Võ Trần Hoàng Bảo Khang ",
@@ -2458,6 +3343,96 @@
         "responseCode": "00",
         "transactionNo": "15130765",
         "txnRef": "QFU-VNGR"
+      }
+    },
+    "15131324": {
+      "orderInfo": {
+        "customerName": "Khang Siêu ",
+        "orderKey": "-OXcn86nywvpxW152xHk",
+        "totalAmount": 608400
+      },
+      "orderKey": "-OXcn86nywvpxW152xHk",
+      "paymentInfo": {
+        "amount": 608400,
+        "responseCode": "00",
+        "responseMessage": "Giao dịch thành công"
+      },
+      "resultType": "success",
+      "timestamps": {
+        "createdAt": "2025-08-14T13:38:00.254Z",
+        "day": 14,
+        "month": 8,
+        "year": 2025
+      },
+      "transactionId": "15131324",
+      "txnRef": "XW152XHK",
+      "vnpayData": {
+        "amount": "60840000",
+        "bankCode": "NCB",
+        "payDate": "20250814203904",
+        "responseCode": "00",
+        "transactionNo": "15131324",
+        "txnRef": "XW152XHK"
+      }
+    },
+    "15131330": {
+      "orderInfo": {
+        "customerName": "Khang Siêu ",
+        "orderKey": "-OXcnZ6UMd__Jw5EuKof",
+        "totalAmount": 109800
+      },
+      "orderKey": "-OXcnZ6UMd__Jw5EuKof",
+      "paymentInfo": {
+        "amount": 109800,
+        "responseCode": "00",
+        "responseMessage": "Giao dịch thành công"
+      },
+      "resultType": "success",
+      "timestamps": {
+        "createdAt": "2025-08-14T13:39:29.637Z",
+        "day": 14,
+        "month": 8,
+        "year": 2025
+      },
+      "transactionId": "15131330",
+      "txnRef": "JW5EUKOF",
+      "vnpayData": {
+        "amount": "10980000",
+        "bankCode": "NCB",
+        "payDate": "20250814204035",
+        "responseCode": "00",
+        "transactionNo": "15131330",
+        "txnRef": "JW5EUKOF"
+      }
+    },
+    "15133094": {
+      "orderInfo": {
+        "customerName": "clone30",
+        "orderKey": "-OXimUkh6IWkxPnlNXBy",
+        "totalAmount": 131400
+      },
+      "orderKey": "-OXimUkh6IWkxPnlNXBy",
+      "paymentInfo": {
+        "amount": 131400,
+        "responseCode": "00",
+        "responseMessage": "Giao dịch thành công"
+      },
+      "resultType": "success",
+      "timestamps": {
+        "createdAt": "2025-08-15T17:33:22.043Z",
+        "day": 16,
+        "month": 8,
+        "year": 2025
+      },
+      "transactionId": "15133094",
+      "txnRef": "XPNLNXBY",
+      "vnpayData": {
+        "amount": "13140000",
+        "bankCode": "NCB",
+        "payDate": "20250816003425",
+        "responseCode": "00",
+        "transactionNo": "15133094",
+        "txnRef": "XPNLNXBY"
       }
     }
   },
@@ -2970,6 +3945,122 @@
           "transactionNo": "15130765",
           "txnRef": "QFU-VNGR"
         }
+      },
+      "15131324": {
+        "orderInfo": {
+          "customerName": "Khang Siêu ",
+          "orderKey": "-OXcn86nywvpxW152xHk",
+          "totalAmount": 608400
+        },
+        "orderKey": "-OXcn86nywvpxW152xHk",
+        "paymentInfo": {
+          "amount": 608400,
+          "responseCode": "00",
+          "responseMessage": "Giao dịch thành công"
+        },
+        "resultType": "success",
+        "timestamps": {
+          "createdAt": "2025-08-14T13:38:00.254Z",
+          "day": 14,
+          "month": 8,
+          "year": 2025
+        },
+        "transactionId": "15131324",
+        "txnRef": "XW152XHK",
+        "vnpayData": {
+          "amount": "60840000",
+          "bankCode": "NCB",
+          "payDate": "20250814203904",
+          "responseCode": "00",
+          "transactionNo": "15131324",
+          "txnRef": "XW152XHK"
+        }
+      },
+      "15131330": {
+        "orderInfo": {
+          "customerName": "Khang Siêu ",
+          "orderKey": "-OXcnZ6UMd__Jw5EuKof",
+          "totalAmount": 109800
+        },
+        "orderKey": "-OXcnZ6UMd__Jw5EuKof",
+        "paymentInfo": {
+          "amount": 109800,
+          "responseCode": "00",
+          "responseMessage": "Giao dịch thành công"
+        },
+        "resultType": "success",
+        "timestamps": {
+          "createdAt": "2025-08-14T13:39:29.637Z",
+          "day": 14,
+          "month": 8,
+          "year": 2025
+        },
+        "transactionId": "15131330",
+        "txnRef": "JW5EUKOF",
+        "vnpayData": {
+          "amount": "10980000",
+          "bankCode": "NCB",
+          "payDate": "20250814204035",
+          "responseCode": "00",
+          "transactionNo": "15131330",
+          "txnRef": "JW5EUKOF"
+        }
+      }
+    },
+    "2025-08-16": {
+      "0": {
+        "paymentInfo": {
+          "amount": 87000,
+          "responseCode": "24",
+          "responseMessage": "Giao dịch không thành công do: Khách hàng hủy giao dịch"
+        },
+        "resultType": "failed",
+        "timestamps": {
+          "createdAt": "2025-08-15T17:31:07.458Z",
+          "day": 16,
+          "month": 8,
+          "year": 2025
+        },
+        "transactionId": "0",
+        "txnRef": "YZAU_LU9",
+        "vnpayData": {
+          "amount": "8700000",
+          "bankCode": "VNPAY",
+          "payDate": "20250816003115",
+          "responseCode": "24",
+          "transactionNo": "0",
+          "txnRef": "YZAU_LU9"
+        }
+      },
+      "15133094": {
+        "orderInfo": {
+          "customerName": "clone30",
+          "orderKey": "-OXimUkh6IWkxPnlNXBy",
+          "totalAmount": 131400
+        },
+        "orderKey": "-OXimUkh6IWkxPnlNXBy",
+        "paymentInfo": {
+          "amount": 131400,
+          "responseCode": "00",
+          "responseMessage": "Giao dịch thành công"
+        },
+        "resultType": "success",
+        "timestamps": {
+          "createdAt": "2025-08-15T17:33:22.043Z",
+          "day": 16,
+          "month": 8,
+          "year": 2025
+        },
+        "transactionId": "15133094",
+        "txnRef": "XPNLNXBY",
+        "vnpayData": {
+          "amount": "13140000",
+          "bankCode": "NCB",
+          "payDate": "20250816003425",
+          "responseCode": "00",
+          "transactionNo": "15133094",
+          "txnRef": "XPNLNXBY"
+        }
       }
     }
   },
@@ -3143,6 +4234,36 @@
           "resultType": "success",
           "timestamp": "2025-08-14T08:16:41.222Z",
           "transactionId": "15130765"
+        },
+        "-OXcnJFW0Yhh4lc0ZTiR": {
+          "amount": 608400,
+          "date": "2025-08-14",
+          "resultType": "success",
+          "timestamp": "2025-08-14T13:38:00.346Z",
+          "transactionId": "15131324"
+        },
+        "-OXcne3lsxsmDYY55Gf5": {
+          "amount": 109800,
+          "date": "2025-08-14",
+          "resultType": "success",
+          "timestamp": "2025-08-14T13:39:29.720Z",
+          "transactionId": "15131330"
+        }
+      },
+      "2025-08-15": {
+        "-OXimFfpCmRAxPs-Dw-J": {
+          "amount": 87000,
+          "date": "2025-08-15",
+          "resultType": "failed",
+          "timestamp": "2025-08-15T17:31:07.814Z",
+          "transactionId": "0"
+        },
+        "-OXimlUhmbGTEMB_DsMJ": {
+          "amount": 131400,
+          "date": "2025-08-15",
+          "resultType": "success",
+          "timestamp": "2025-08-15T17:33:22.166Z",
+          "transactionId": "15133094"
         }
       }
     }
@@ -3529,6 +4650,46 @@
       "emoji": "😏",
       "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755143418/hntfzixwa5p30u4d0lxj.jpg",
       "timestamp": 1755143421142
+    },
+    "-OXiozGEZVlm25QByLtA": {
+      "authorEmail": "baokhangml99@gmail.com",
+      "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+      "authorName": "Võ Trần Hoàng Bảo Khang ",
+      "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+      "authorProfileUpdatedAt": 1755279782880,
+      "comments": {
+        "-OXip25l9p-BZMtqy6xW": {
+          "authorEmail": "baokhangml99@gmail.com",
+          "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+          "authorName": "Võ Trần Hoàng Bảo Khang ",
+          "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+          "authorProfileUpdatedAt": 1755279798594,
+          "replies": {
+            "-OXipQdd-3dwKY5M1_4v": {
+              "authorEmail": "baokhangml99@gmail.com",
+              "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+              "authorName": "Võ Trần Hoàng Bảo Khang ",
+              "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+              "authorProfileUpdatedAt": 1755279899130,
+              "text": "hi cậu hehe",
+              "timestamp": 1755279899130
+            }
+          },
+          "text": "?",
+          "timestamp": 1755279798767
+        }
+      },
+      "content": "Nhờ cao cao điểm nhao thầy🤣",
+      "emoji": "🤣",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755279767/qgtg60zra6jr4fwtizl5.jpg",
+      "likes": {
+        "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3": {
+          "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+          "authorName": "Võ Trần Hoàng Bảo Khang ",
+          "timestamp": 1755279796731
+        }
+      },
+      "timestamp": 1755279783054
     }
   },
   "products": {
@@ -3729,7 +4890,7 @@
   "staffs": {
     "-OWOxSERg9MsyUbEZmEE": {
       "address": "cần thơ thơ thơ",
-      "avatarUrl": "",
+      "avatarUrl": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755183196/jycukxgat90rtlfbgnhq.jpg",
       "baseSalary": "10000000",
       "email": "ntho0124@gmail.com",
       "name": "Anh Thơ",
@@ -3855,6 +5016,14 @@
       "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755143393/eoeo6zjhkd3yajcxly6l.jpg",
       "text": "=)))",
       "timestamp": 1755143398079
+    },
+    "-OXiok3MYR2I_p3UZJmf": {
+      "authorId": "Uj3jqxIOFSUo9Bj1Ey2UzU3XGMB3",
+      "authorName": "Võ Trần Hoàng Bảo Khang ",
+      "authorPhotoURL": "https://lh3.googleusercontent.com/a/ACg8ocKlezw9VikR05i2gTxLL6Eq7FE0Fz01pkUvTqHWV8yX1onRqUWe=s96-c",
+      "image": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755279712/m2om2cdalcvpvjpzpnrd.jpg",
+      "text": "hehe chào thầy nha",
+      "timestamp": 1755279720615
     }
   },
   "suppliers": {
@@ -3971,11 +5140,11 @@
       },
       "memberCard": {
         "barcode": "28595",
-        "lastUpdate": "2025-08-11T06:31:58.647Z",
+        "lastUpdate": "2025-08-15T18:15:58.380Z",
         "nextRank": "Bạc",
-        "nextRankInfo": "Còn 3880 điểm để lên hạng Bạc",
+        "nextRankInfo": "Còn 9450 điểm để lên hạng Bạc",
         "nextRankPoint": 10000,
-        "points": 6120,
+        "points": 550,
         "rank": "Đồng",
         "rankClass": "rank-bronze"
       },
@@ -4050,6 +5219,24 @@
       "phone": "0338484557",
       "status": "active",
       "updated_at": "2025-08-13T19:11:32.717Z"
+    },
+    "ksLeAIExbxc80AyLrnhUnkN0c672": {
+      "address": "127, cái vồn bình minh vĩnh long ",
+      "avatarUrl": "https://res.cloudinary.com/dfdsj2ena/image/upload/v1755278249/tjbpxtuo8rtgqnietwew.jpg",
+      "barcode": "46489",
+      "email": "clone30khangzzz@gmail.com",
+      "memberCard": {
+        "barcode": "46489",
+        "lastUpdate": "2025-08-15T17:34:24.570Z",
+        "nextRank": "Bạc",
+        "nextRankInfo": "Còn 7816 điểm để lên hạng Bạc",
+        "nextRankPoint": 10000,
+        "points": 2184,
+        "rank": "Đồng",
+        "rankClass": "rank-bronze"
+      },
+      "name": "clone30",
+      "phone": "0795858581"
     },
     "tXtQMunTghgl8NnrxiOidRmZNYe2": {
       "address": "Cà mau",
@@ -4164,6 +5351,12 @@
       "orderKey": "-OXKfaepbLb3IiJ3YvOx",
       "status": "pending"
     },
+    "JW5EUKOF": {
+      "amount": 109800,
+      "createdAt": "2025-08-14T13:39:05.683Z",
+      "orderKey": "-OXcnZ6UMd__Jw5EuKof",
+      "status": "pending"
+    },
     "K3NGBSS1": {
       "amount": 153000,
       "createdAt": "2025-08-11T00:00:48.251Z",
@@ -4222,6 +5415,24 @@
       "amount": 367200,
       "createdAt": "2025-07-19T10:12:39.355Z",
       "orderKey": "-OVX9yAeBwL-XmG4fK1v",
+      "status": "pending"
+    },
+    "XPNLNXBY": {
+      "amount": 131400,
+      "createdAt": "2025-08-15T17:32:09.981Z",
+      "orderKey": "-OXimUkh6IWkxPnlNXBy",
+      "status": "pending"
+    },
+    "XW152XHK": {
+      "amount": 608400,
+      "createdAt": "2025-08-14T13:37:15.199Z",
+      "orderKey": "-OXcn86nywvpxW152xHk",
+      "status": "pending"
+    },
+    "YZAU_LU9": {
+      "amount": 87000,
+      "createdAt": "2025-08-15T17:30:03.405Z",
+      "orderKey": "-OXim-qHz3onYzAU_Lu9",
       "status": "pending"
     },
     "ZPIJPHUE": {

@@ -5116,6 +5116,9 @@
     <div class="mb-3 d-flex gap-2">
               <button class="btn btn-success d-none d-md-inline-block" id="openOrderPOS"><i class="fas fa-plus"></i> Tạo Order mới</button>
         <button class="btn btn-secondary d-none d-md-inline-block" id="openOrderHistory"><i class="fas fa-history"></i> Lịch sử đơn</button>
+        <button class="btn btn-warning d-none d-md-inline-block" onclick="debugMaterials()"><i class="fas fa-bug"></i> Debug Nguyên liệu</button>
+        <button class="btn btn-info d-none d-md-inline-block" onclick="checkAllDeliveredOrders()"><i class="fas fa-sync"></i> Trừ nguyên liệu</button>
+        <button class="btn btn-danger d-none d-md-inline-block" onclick="testDeductOrder('ORDER_ID_HERE')"><i class="fas fa-vial"></i> Test Trừ</button>
     </div>
     <div class="row mb-4">
       <div class="col-md-3">
@@ -8101,6 +8104,14 @@
           <td>${(order.grandTotal || 0).toLocaleString('vi-VN')} VND</td>
           <td>${order.status === 'cancelled' ? (order.cancelReason || '') : ''}</td>
           <td>
+            ${order.status === 'delivered' ? 
+              `<div class="mb-1">
+                <small class="badge ${order.materialsDeducted ? 'bg-success' : 'bg-warning'}">
+                  <i class="fas ${order.materialsDeducted ? 'fa-check' : 'fa-exclamation-triangle'}"></i>
+                  ${order.materialsDeducted ? 'Đã trừ NL' : 'Chưa trừ NL'}
+                </small>
+              </div>` : ''
+            }
             <div class="d-flex flex-column gap-1">
               <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')"><i class="fas fa-eye"></i> Xem</button>
               <button class="btn btn-warning btn-sm" onclick="editOrder('${order.id}')"><i class="fas fa-edit"></i> Sửa</button>
@@ -8155,6 +8166,17 @@
               <div class="order-detail-item">
                 <span class="order-detail-label">Lý do hủy:</span>
                 <span class="order-detail-value">${order.cancelReason}</span>
+              </div>
+            ` : ''}
+            ${order.status === 'delivered' ? `
+              <div class="order-detail-item">
+                <span class="order-detail-label">Trừ nguyên liệu:</span>
+                <span class="order-detail-value">
+                  <span class="badge ${order.materialsDeducted ? 'bg-success' : 'bg-warning'}">
+                    <i class="fas ${order.materialsDeducted ? 'fa-check' : 'fa-exclamation-triangle'}"></i>
+                    ${order.materialsDeducted ? 'Đã trừ' : 'Chưa trừ'}
+                  </span>
+                </span>
               </div>
             ` : ''}
           </div>
@@ -16074,8 +16096,17 @@ const materialSection = `
       </button>
     </div>
     <div>
-      <button type="button" class="btn btn-warning" onclick="exportMaterialReport()">
+      <button type="button" class="btn btn-warning me-2" onclick="exportMaterialReport()">
         <i class="fas fa-file-excel me-2"></i> Xuất Excel
+      </button>
+      <button type="button" class="btn btn-info me-2" onclick="viewDeductionHistory()">
+        <i class="fas fa-eye me-2"></i> Xem lịch sử
+      </button>
+      <button type="button" class="btn btn-success me-2" onclick="exportDeductionHistory()">
+        <i class="fas fa-download me-2"></i> Xuất lịch sử
+      </button>
+      <button type="button" class="btn btn-danger" onclick="forceRedeductAllOrders()">
+        <i class="fas fa-redo me-2"></i> Trừ lại tất cả
       </button>
     </div>
   </div>
@@ -18091,8 +18122,8 @@ function renderMaterials() {
           <span class="badge bg-info">${getMaterialCategoryText(material.category)}</span>
         </td>
         <td>
-          <strong>${material.quantity} ${getUnitText(material.unit)}</strong>
-          ${material.minStock ? `<br><small class="text-muted">Tối thiểu: ${material.minStock}</small>` : ''}
+          <strong>${formatQuantity(material.quantity, material.unit)}</strong>
+          ${material.minStock ? `<br><small class="text-muted">Tối thiểu: ${formatQuantity(material.minStock, material.unit)}</small>` : ''}
         </td>
         <td>
           <span class="badge bg-secondary">${getUnitText(material.unit)}</span>
@@ -18146,9 +18177,9 @@ function renderMaterials() {
             <span class="badge ${statusClass}">${statusText}</span>
           </div>
           <div class="mb-2">
-            <strong>Số lượng:</strong> ${material.quantity} ${getUnitText(material.unit)}<br>
+            <strong>Số lượng:</strong> ${formatQuantity(material.quantity, material.unit)}<br>
             <strong>Đơn giá:</strong> ${material.price ? material.price.toLocaleString('vi-VN') : '0'} đ<br>
-            ${material.minStock ? `<strong>Tối thiểu:</strong> ${material.minStock} ${getUnitText(material.unit)}<br>` : ''}
+            ${material.minStock ? `<strong>Tối thiểu:</strong> ${formatQuantity(material.minStock, material.unit)}<br>` : ''}
             ${material.supplier ? `<strong>Nhà cung cấp:</strong> ${material.supplier}<br>` : ''}
             ${material.description ? `<strong>Mô tả:</strong> ${material.description}` : ''}
           </div>
@@ -18657,27 +18688,27 @@ function exportMaterialReport() {
   const csvLines = [];
   
   // Header section
-  csvLines.push('BÁO CÁO QUẢN LÝ NGUYÊN LIỆU');
+  csvLines.push('BAO CAO QUAN LY NGUYEN LIEU');
   csvLines.push('');
-  csvLines.push(`Công ty: Ấm - Coffee and Cake`);
-  csvLines.push(`Ngày xuất báo cáo: ${currentDate} ${currentTime}`);
-  csvLines.push(`Tổng số nguyên liệu: ${materialsToExport.length}`);
-  csvLines.push(`Tổng giá trị tồn kho: ${totalValue.toLocaleString('vi-VN')} VNĐ`);
-  csvLines.push(`Sắp hết hàng: ${lowStockCount} nguyên liệu`);
-  csvLines.push(`Hết hàng: ${outOfStockCount} nguyên liệu`);
+  csvLines.push(`Cong ty: Am - Coffee and Cake`);
+  csvLines.push(`Ngay xuat bao cao: ${currentDate} ${currentTime}`);
+  csvLines.push(`Tong so nguyen lieu: ${materialsToExport.length}`);
+  csvLines.push(`Tong gia tri ton kho: ${totalValue.toLocaleString('vi-VN')} VND`);
+  csvLines.push(`Sap het hang: ${lowStockCount} nguyen lieu`);
+  csvLines.push(`Het hang: ${outOfStockCount} nguyen lieu`);
   csvLines.push('');
   
   // Filter information
   if (searchTerm || categoryFilter || statusFilter) {
-    csvLines.push('BỘ LỌC ÁP DỤNG:');
-    if (searchTerm) csvLines.push(`- Từ khóa tìm kiếm: "${searchTerm}"`);
-    if (categoryFilter) csvLines.push(`- Loại nguyên liệu: "${getMaterialCategoryText(categoryFilter)}"`);
-    if (statusFilter) csvLines.push(`- Trạng thái: "${getMaterialStatusText(statusFilter)}"`);
+    csvLines.push('BO LOC AP DUNG:');
+    if (searchTerm) csvLines.push(`- Tu khoa tim kiem: "${searchTerm}"`);
+    if (categoryFilter) csvLines.push(`- Loai nguyen lieu: "${getMaterialCategoryText(categoryFilter)}"`);
+    if (statusFilter) csvLines.push(`- Trang thai: "${getMaterialStatusText(statusFilter)}"`);
     csvLines.push('');
   }
   
   // Table header
-  csvLines.push('STT,Tên nguyên liệu,Loại nguyên liệu,Số lượng tồn kho,Đơn vị,Đơn giá (VNĐ),Tổng giá trị (VNĐ),Trạng thái,Nhà cung cấp,Mức tối thiểu,Ghi chú');
+  csvLines.push('STT,Ten nguyen lieu,Loai nguyen lieu,So luong ton kho,Don vi,Don gia (VND),Tong gia tri (VND),Trang thai,Nha cung cap,Muc toi thieu,Ghi chu');
   
   // Table data
   materialsToExport.forEach((material, index) => {
@@ -18688,9 +18719,9 @@ function exportMaterialReport() {
     // Add warning note for low/out of stock
     let note = '';
     if (status === 'out') {
-      note = 'CẦN NHẬP HÀNG NGAY';
+      note = 'CAN NHAP HANG NGAY';
     } else if (status === 'low') {
-      note = 'CẦN CHUẨN BỊ NHẬP HÀNG';
+      note = 'CAN CHUAN BI NHAP HANG';
     }
     
     csvLines.push([
@@ -18710,15 +18741,15 @@ function exportMaterialReport() {
   
   // Summary section
   csvLines.push('');
-  csvLines.push('TỔNG KẾT:');
-  csvLines.push(`- Tổng số nguyên liệu: ${materialsToExport.length}`);
-  csvLines.push(`- Tổng giá trị tồn kho: ${totalValue.toLocaleString('vi-VN')} VNĐ`);
-  csvLines.push(`- Nguyên liệu đủ hàng: ${materialsToExport.length - lowStockCount - outOfStockCount}`);
-  csvLines.push(`- Nguyên liệu sắp hết: ${lowStockCount}`);
-  csvLines.push(`- Nguyên liệu hết hàng: ${outOfStockCount}`);
+  csvLines.push('TONG KET:');
+  csvLines.push(`- Tong so nguyen lieu: ${materialsToExport.length}`);
+  csvLines.push(`- Tong gia tri ton kho: ${totalValue.toLocaleString('vi-VN')} VND`);
+  csvLines.push(`- Nguyen lieu du hang: ${materialsToExport.length - lowStockCount - outOfStockCount}`);
+  csvLines.push(`- Nguyen lieu sap het: ${lowStockCount}`);
+  csvLines.push(`- Nguyen lieu het hang: ${outOfStockCount}`);
   csvLines.push('');
-  csvLines.push('Lưu ý: Báo cáo này được tạo tự động từ hệ thống quản lý nguyên liệu.');
-  csvLines.push('Vui lòng kiểm tra và cập nhật thông tin thường xuyên để đảm bảo hoạt động kinh doanh hiệu quả.');
+  csvLines.push('Luu y: Bao cao nay duoc tao tu dong tu he thong quan ly nguyen lieu.');
+  csvLines.push('Vui long kiem tra va cap nhat thong tin thuong xuyen de dam bao hoat dong kinh doanh hieu qua.');
   
   // Add BOM for proper UTF-8 encoding
   const BOM = '\uFEFF';
@@ -18871,6 +18902,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Hàm chuyển đổi đơn vị
 function convertUnit(quantity, fromUnit, toUnit) {
+  // Nếu đơn vị giống nhau, không cần chuyển đổi
+  if (fromUnit === toUnit) {
+    return quantity;
+  }
+  
+  console.log(`Converting ${quantity} ${fromUnit} to ${toUnit}`);
+  
   // Chuyển về đơn vị cơ bản trước
   let baseQuantity = quantity;
   
@@ -18886,22 +18924,57 @@ function convertUnit(quantity, fromUnit, toUnit) {
     case 'l':
       baseQuantity = quantity; // Đã là đơn vị cơ bản
       break;
+    case 'pcs':
+    case 'pack':
+      baseQuantity = quantity; // Đơn vị đếm, không chuyển đổi
+      break;
     default:
       baseQuantity = quantity; // Không đổi
   }
   
   // Chuyển từ đơn vị cơ bản về đơn vị đích
+  let result;
   switch (toUnit) {
     case 'g':
-      return baseQuantity * 1000; // kg -> g
+      result = baseQuantity * 1000; // kg -> g
+      break;
     case 'ml':
-      return baseQuantity * 1000; // l -> ml
+      result = baseQuantity * 1000; // l -> ml
+      break;
     case 'kg':
     case 'l':
-      return baseQuantity; // Đã là đơn vị cơ bản
+      result = baseQuantity; // Đã là đơn vị cơ bản
+      break;
+    case 'pcs':
+    case 'pack':
+      result = baseQuantity; // Đơn vị đếm, không chuyển đổi
+      break;
     default:
-      return baseQuantity; // Không đổi
+      result = baseQuantity; // Không đổi
   }
+  
+  console.log(`Converted: ${quantity} ${fromUnit} = ${result} ${toUnit}`);
+  return result;
+}
+
+// Hàm format số lượng hiển thị
+function formatQuantity(quantity, unit) {
+  if (quantity === null || quantity === undefined) {
+    return '0 ' + getUnitText(unit);
+  }
+  
+  let formattedQuantity;
+  
+  // Format số lượng theo đơn vị
+  if (unit === 'g' || unit === 'ml') {
+    formattedQuantity = Math.round(quantity * 100) / 100; // Làm tròn 2 chữ số thập phân
+  } else if (unit === 'kg' || unit === 'l') {
+    formattedQuantity = Math.round(quantity * 1000) / 1000; // Làm tròn 3 chữ số thập phân
+  } else {
+    formattedQuantity = Math.round(quantity); // Làm tròn số nguyên cho pcs, pack
+  }
+  
+  return formattedQuantity + ' ' + getUnitText(unit);
 }
 
 // Hàm trừ nguyên liệu khi đơn hàng đã giao - ĐÃ SỬA ĐƠN VỊ
@@ -18978,10 +19051,23 @@ async function deductMaterialsFromDeliveredOrder(orderId) {
         return;
       }
       
-      // Tìm sản phẩm trong inventory
+      // Tìm sản phẩm trong inventory (không phân biệt chữ hoa/thường)
       const inventoryItem = Object.values(inventory).find(inv => 
-        inv.productName === item.name
+        inv.productName.toLowerCase().trim() === item.name.toLowerCase().trim()
       );
+      
+      // Nếu không tìm thấy, thử tìm kiếm linh hoạt hơn
+      if (!inventoryItem) {
+        const flexibleMatch = Object.values(inventory).find(inv => 
+          inv.productName.toLowerCase().includes(item.name.toLowerCase()) ||
+          item.name.toLowerCase().includes(inv.productName.toLowerCase())
+        );
+        
+        if (flexibleMatch) {
+          console.log(`Found flexible match: "${flexibleMatch.productName}" for "${item.name}"`);
+          inventoryItem = flexibleMatch;
+        }
+      }
       
       if (inventoryItem && inventoryItem.ingredients) {
         hasValidItems = true;
@@ -19005,7 +19091,7 @@ async function deductMaterialsFromDeliveredOrder(orderId) {
               materialsToDeduct[materialId] = quantityNeeded;
             }
             
-            console.log(`Need ${ingredient.quantity * item.quantity} ${ingredient.unit} of ${ingredient.materialName} = ${quantityNeeded} ${material.unit}`);
+            console.log(`Need ${ingredient.quantity * item.quantity} ${ingredient.unit} of ${ingredient.materialName} = ${quantityNeeded} ${material.unit} (Current stock: ${material.quantity} ${material.unit})`);
           }
         });
       } else {
@@ -19033,206 +19119,17 @@ async function deductMaterialsFromDeliveredOrder(orderId) {
       const material = materials[materialId];
       
       if (material) {
-        const newQuantity = Math.max(0, material.quantity - quantityToDeduct);
+        // Làm tròn số lượng theo đơn vị
+        let newQuantity = Math.max(0, material.quantity - quantityToDeduct);
         
-        // Cập nhật số lượng nguyên liệu
-        const materialRef = ref(db, `materials/${materialId}`);
-        updatePromises.push(
-          update(materialRef, {
-            quantity: newQuantity,
-            updatedAt: new Date().toISOString()
-          })
-        );
-        
-        // Log việc trừ nguyên liệu
-        const deductionLog = {
-          orderId: orderId,
-          materialId: materialId,
-          materialName: material.name,
-          quantityDeducted: quantityToDeduct,
-          oldQuantity: material.quantity,
-          newQuantity: newQuantity,
-          unit: material.unit,
-          deductedAt: new Date().toISOString(),
-          reason: `Đơn hàng ${orderId} đã giao`
-        };
-        
-        deductionLogs.push(deductionLog);
-        
-        console.log(`Deducted ${quantityToDeduct} ${material.unit} of ${material.name}`);
-      }
-    }
-    
-    // Thực hiện tất cả cập nhật
-    await Promise.all(updatePromises);
-    
-    // Lưu logs
-    const logRef = ref(db, 'material_deductions');
-    for (const log of deductionLogs) {
-      await push(logRef, log);
-    }
-    
-    // Cập nhật trạng thái đơn hàng để đánh dấu đã trừ nguyên liệu
-    const updateData = {
-      materialsDeducted: true,
-      materialsDeductedAt: new Date().toISOString()
-    };
-    
-    // Thêm ghi chú nếu có sản phẩm bị bỏ qua
-    if (skippedItems.length > 0) {
-      updateData.materialsDeductionNote = `Đã bỏ qua: ${skippedItems.join(', ')}`;
-    }
-    
-    await update(orderRef, updateData);
-    
-    console.log('Successfully deducted materials for order:', orderId);
-    
-    // Hiển thị thông báo thành công
-    let message = `Đã trừ nguyên liệu cho đơn hàng ${orderId}`;
-    if (skippedItems.length > 0) {
-      message += `. Đã bỏ qua: ${skippedItems.join(', ')}`;
-    }
-    
-    Swal.fire({
-      icon: 'success',
-      title: 'Trừ nguyên liệu thành công!',
-      text: message,
-      timer: 3000
-    });
-    
-  } catch (error) {
-    console.error('Error deducting materials:', error);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Lỗi!',
-      text: 'Không thể trừ nguyên liệu. Vui lòng thử lại.'
-    });
-  }
-} 
-
-
-// Hàm trừ nguyên liệu khi đơn hàng đã giao - ĐÃ SỬA
-async function deductMaterialsFromDeliveredOrder(orderId) {
-  try {
-    console.log('Starting material deduction for order:', orderId);
-    
-    // Lấy thông tin đơn hàng
-    const orderRef = ref(db, `orders/${orderId}`);
-    const orderSnapshot = await get(orderRef);
-    
-    if (!orderSnapshot.exists()) {
-      console.error('Order not found:', orderId);
-      return;
-    }
-    
-    const order = orderSnapshot.val();
-    
-    // Kiểm tra trạng thái đơn hàng
-    if (order.status !== 'delivered') {
-      console.log('Order is not delivered yet:', order.status);
-      return;
-    }
-    
-    // Kiểm tra xem đã trừ nguyên liệu chưa
-    if (order.materialsDeducted) {
-      console.log('Materials already deducted for order:', orderId);
-      return;
-    }
-    
-    // Lấy danh sách inventory để tìm nguyên liệu
-    const inventoryRef = ref(db, 'inventory');
-    const inventorySnapshot = await get(inventoryRef);
-    
-    if (!inventorySnapshot.exists()) {
-      console.error('No inventory data found');
-      return;
-    }
-    
-    const inventory = {};
-    inventorySnapshot.forEach((childSnapshot) => {
-      inventory[childSnapshot.key] = childSnapshot.val();
-    });
-    
-    // Lấy danh sách materials hiện tại
-    const materialsRef = ref(db, 'materials');
-    const materialsSnapshot = await get(materialsRef);
-    
-    if (!materialsSnapshot.exists()) {
-      console.error('No materials data found');
-      return;
-    }
-    
-    const materials = {};
-    materialsSnapshot.forEach((childSnapshot) => {
-      materials[childSnapshot.key] = {
-        id: childSnapshot.key,
-        ...childSnapshot.val()
-      };
-    });
-    
-    // Tính toán nguyên liệu cần trừ
-    const materialsToDeduct = {};
-    let hasValidItems = false;
-    let skippedItems = [];
-    
-    order.items.forEach(item => {
-      console.log('Processing item:', item.name, 'Quantity:', item.quantity);
-      
-      // Bỏ qua "Unknown Product"
-      if (item.name === 'Unknown Product') {
-        console.log('Skipping Unknown Product');
-        skippedItems.push(item.name);
-        return;
-      }
-      
-      // Tìm sản phẩm trong inventory
-      const inventoryItem = Object.values(inventory).find(inv => 
-        inv.productName === item.name
-      );
-      
-      if (inventoryItem && inventoryItem.ingredients) {
-        hasValidItems = true;
-        console.log('Found inventory item:', inventoryItem.productName);
-        
-        inventoryItem.ingredients.forEach(ingredient => {
-          const materialId = ingredient.materialId;
-          const quantityNeeded = ingredient.quantity * item.quantity;
-          
-          if (materialsToDeduct[materialId]) {
-            materialsToDeduct[materialId] += quantityNeeded;
+        // Làm tròn số lượng theo đơn vị
+        if (material.unit === 'g' || material.unit === 'ml') {
+          newQuantity = Math.round(newQuantity * 100) / 100; // Làm tròn 2 chữ số thập phân
+        } else if (material.unit === 'kg' || material.unit === 'l') {
+          newQuantity = Math.round(newQuantity * 1000) / 1000; // Làm tròn 3 chữ số thập phân
           } else {
-            materialsToDeduct[materialId] = quantityNeeded;
-          }
-          
-          console.log(`Need ${quantityNeeded} ${ingredient.unit} of ${ingredient.materialName}`);
-        });
-      } else {
-        console.log('No inventory item found for:', item.name);
-        skippedItems.push(item.name);
-      }
-    });
-    
-    if (!hasValidItems) {
-      console.log('No valid inventory items found for order:', orderId);
-      // Vẫn đánh dấu đã xử lý để không chạy lại
-      await update(orderRef, {
-        materialsDeducted: true,
-        materialsDeductedAt: new Date().toISOString(),
-        materialsDeductionNote: 'Không có sản phẩm hợp lệ để trừ nguyên liệu'
-      });
-      return;
-    }
-    
-    // Trừ nguyên liệu từ kho
-    const updatePromises = [];
-    const deductionLogs = [];
-    
-    for (const [materialId, quantityToDeduct] of Object.entries(materialsToDeduct)) {
-      const material = materials[materialId];
-      
-      if (material) {
-        const newQuantity = Math.max(0, material.quantity - quantityToDeduct);
+          newQuantity = Math.round(newQuantity); // Làm tròn số nguyên cho pcs, pack
+        }
         
         // Cập nhật số lượng nguyên liệu
         const materialRef = ref(db, `materials/${materialId}`);
@@ -19285,6 +19182,12 @@ async function deductMaterialsFromDeliveredOrder(orderId) {
     await update(orderRef, updateData);
     
     console.log('Successfully deducted materials for order:', orderId);
+    
+    // Refresh dữ liệu materials nếu đang ở trang quản lý nguyên liệu
+    if (document.getElementById('materialManagement') && 
+        document.getElementById('materialManagement').style.display !== 'none') {
+      await loadMaterials();
+    }
     
     // Hiển thị thông báo thành công
     let message = `Đã trừ nguyên liệu cho đơn hàng ${orderId}`;
@@ -19386,6 +19289,575 @@ window.manualDeductMaterials = async function(orderId) {
 window.checkAllDeliveredOrders = async function() {
   await checkAndDeductMaterialsForDeliveredOrders();
 }; 
+
+// Hàm test trừ nguyên liệu cho đơn hàng cụ thể
+window.testDeductOrder = async function(orderId) {
+  console.log('=== TESTING MATERIAL DEDUCTION ===');
+  console.log('Order ID:', orderId);
+  
+  try {
+    // Lấy thông tin đơn hàng
+    const orderRef = ref(db, `orders/${orderId}`);
+    const orderSnapshot = await get(orderRef);
+    
+    if (!orderSnapshot.exists()) {
+      console.error('Order not found:', orderId);
+      return;
+    }
+    
+    const order = orderSnapshot.val();
+    console.log('Order status:', order.status);
+    console.log('Materials deducted:', order.materialsDeducted);
+    console.log('Order items:', order.items);
+    
+    // Lấy inventory
+    const inventoryRef = ref(db, 'inventory');
+    const inventorySnapshot = await get(inventoryRef);
+    const inventory = {};
+    inventorySnapshot.forEach((childSnapshot) => {
+      inventory[childSnapshot.key] = childSnapshot.val();
+    });
+    
+    // Lấy materials
+    const materialsRef = ref(db, 'materials');
+    const materialsSnapshot = await get(materialsRef);
+    const materials = {};
+    materialsSnapshot.forEach((childSnapshot) => {
+      materials[childSnapshot.key] = {
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      };
+    });
+    
+    // Test tính toán nguyên liệu cần trừ
+    console.log('=== CALCULATING MATERIALS NEEDED ===');
+    order.items.forEach(item => {
+      console.log(`Processing item: ${item.name} (Quantity: ${item.quantity})`);
+      
+      // Tìm sản phẩm trong inventory (không phân biệt chữ hoa/thường)
+      let inventoryItem = Object.values(inventory).find(inv => 
+        inv.productName.toLowerCase().trim() === item.name.toLowerCase().trim()
+      );
+      
+      // Nếu không tìm thấy, thử tìm kiếm linh hoạt hơn
+      if (!inventoryItem) {
+        const flexibleMatch = Object.values(inventory).find(inv => 
+          inv.productName.toLowerCase().includes(item.name.toLowerCase()) ||
+          item.name.toLowerCase().includes(inv.productName.toLowerCase())
+        );
+        
+        if (flexibleMatch) {
+          console.log(`Found flexible match: "${flexibleMatch.productName}" for "${item.name}"`);
+          inventoryItem = flexibleMatch;
+        }
+      }
+      
+      if (inventoryItem && inventoryItem.ingredients) {
+        console.log(`Found inventory item: ${inventoryItem.productName}`);
+        
+        inventoryItem.ingredients.forEach(ingredient => {
+          const materialId = ingredient.materialId;
+          const material = materials[materialId];
+          
+          if (material) {
+            const quantityNeeded = convertUnit(
+              ingredient.quantity * item.quantity, 
+              ingredient.unit, 
+              material.unit
+            );
+            
+            console.log(`  ${ingredient.materialName}: ${ingredient.quantity * item.quantity} ${ingredient.unit} → ${quantityNeeded} ${material.unit}`);
+            console.log(`  Current stock: ${material.quantity} ${material.unit}`);
+            console.log(`  After deduction: ${Math.max(0, material.quantity - quantityNeeded)} ${material.unit}`);
+          }
+        });
+      } else {
+        console.log(`No inventory item found for: ${item.name}`);
+        console.log('Available inventory items:');
+        Object.values(inventory).forEach(inv => {
+          console.log(`  - "${inv.productName}"`);
+        });
+      }
+    });
+    
+  } catch (error) {
+    console.error('Error testing deduction:', error);
+  }
+};
+
+// Hàm debug để kiểm tra dữ liệu nguyên liệu
+window.debugMaterials = async function() {
+  try {
+    const materialsRef = ref(db, 'materials');
+    const materialsSnapshot = await get(materialsRef);
+    
+    if (!materialsSnapshot.exists()) {
+      console.log('Không có dữ liệu nguyên liệu');
+      return;
+    }
+    
+    console.log('=== DEBUG MATERIALS ===');
+    materialsSnapshot.forEach((childSnapshot) => {
+      const material = childSnapshot.val();
+      console.log(`${material.name}: ${material.quantity} ${material.unit}`);
+    });
+    
+    // Kiểm tra đơn hàng đã giao
+    const ordersRef = ref(db, 'orders');
+    const ordersSnapshot = await get(ordersRef);
+    
+    console.log('=== DELIVERED ORDERS ===');
+    let deliveredCount = 0;
+    let deductedCount = 0;
+    let notDeductedCount = 0;
+    
+    ordersSnapshot.forEach((childSnapshot) => {
+      const order = childSnapshot.val();
+      if (order.status === 'delivered') {
+        deliveredCount++;
+        const deducted = order.materialsDeducted === true;
+        const deductedAt = order.materialsDeductedAt || 'N/A';
+        
+        console.log(`Order ${childSnapshot.key}:`);
+        console.log(`  - Status: ${order.status}`);
+        console.log(`  - Materials Deducted: ${deducted}`);
+        console.log(`  - Deducted At: ${deductedAt}`);
+        console.log(`  - Items: ${order.items ? order.items.length : 0} items`);
+        
+        if (deducted) {
+          deductedCount++;
+        } else {
+          notDeductedCount++;
+          console.log(`  ⚠️  CHƯA TRỪ NGUYÊN LIỆU!`);
+          // Hiển thị chi tiết sản phẩm trong đơn hàng chưa trừ
+          if (order.items) {
+            console.log(`  - Products in order:`);
+            order.items.forEach(item => {
+              console.log(`    * "${item.name}" (Qty: ${item.quantity})`);
+            });
+          }
+        }
+        console.log('---');
+      }
+    });
+    
+    console.log(`📊 TỔNG KẾT:`);
+    console.log(`  - Tổng đơn hàng đã giao: ${deliveredCount}`);
+    console.log(`  - Đã trừ nguyên liệu: ${deductedCount}`);
+    console.log(`  - Chưa trừ nguyên liệu: ${notDeductedCount}`);
+    
+    // Kiểm tra inventory
+    const inventoryRef = ref(db, 'inventory');
+    const inventorySnapshot = await get(inventoryRef);
+    
+    console.log('=== INVENTORY PRODUCTS ===');
+    if (inventorySnapshot.exists()) {
+      inventorySnapshot.forEach((childSnapshot) => {
+        const product = childSnapshot.val();
+        console.log(`"${product.productName}" (${product.category})`);
+      });
+    }
+    
+    // Kiểm tra bảng material_deductions
+    const deductionsRef = ref(db, 'material_deductions');
+    const deductionsSnapshot = await get(deductionsRef);
+    
+    console.log('=== MATERIAL DEDUCTIONS LOG ===');
+    if (deductionsSnapshot.exists()) {
+      let totalDeductions = 0;
+      deductionsSnapshot.forEach((childSnapshot) => {
+        const deduction = childSnapshot.val();
+        totalDeductions++;
+        console.log(`Deduction ${childSnapshot.key}:`);
+        console.log(`  - Order: ${deduction.orderId}`);
+        console.log(`  - Material: ${deduction.materialName}`);
+        console.log(`  - Quantity: ${deduction.quantityDeducted} ${deduction.unit}`);
+        console.log(`  - Old: ${deduction.oldQuantity} → New: ${deduction.newQuantity}`);
+        console.log(`  - Time: ${deduction.deductedAt}`);
+      });
+      console.log(`Tổng số lần trừ nguyên liệu: ${totalDeductions}`);
+    } else {
+      console.log('Không có bản ghi trừ nguyên liệu nào');
+    }
+    
+    // Test chuyển đổi đơn vị
+    console.log('=== TEST UNIT CONVERSION ===');
+    console.log('40g to kg:', convertUnit(40, 'g', 'kg'));
+    console.log('100ml to l:', convertUnit(100, 'ml', 'l'));
+    console.log('15g to g:', convertUnit(15, 'g', 'g'));
+    
+  } catch (error) {
+    console.error('Error debugging materials:', error);
+  }
+};
+
+// Hàm xem lịch sử trừ nguyên liệu
+window.viewDeductionHistory = async function() {
+  try {
+    console.log('Loading deduction history...');
+    
+    // Hiển thị loading
+    Swal.fire({
+      title: 'Đang tải dữ liệu...',
+      text: 'Vui lòng chờ trong giây lát',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+    
+    // Lấy dữ liệu lịch sử trừ nguyên liệu
+    const deductionsRef = ref(db, 'material_deductions');
+    const deductionsSnapshot = await get(deductionsRef);
+    
+    if (!deductionsSnapshot.exists()) {
+      Swal.close();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Không có dữ liệu',
+        text: 'Không có lịch sử trừ nguyên liệu.'
+      });
+      return;
+    }
+    
+    const deductions = [];
+    deductionsSnapshot.forEach((childSnapshot) => {
+      deductions.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
+    
+    // Sắp xếp theo thời gian mới nhất
+    deductions.sort((a, b) => new Date(b.deductedAt) - new Date(a.deductedAt));
+    
+    Swal.close();
+    
+    // Tạo nội dung modal
+    let modalContent = `
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-sm table-bordered">
+          <thead class="table-dark sticky-top">
+            <tr>
+              <th>Thời gian</th>
+              <th>Mã đơn hàng</th>
+              <th>Nguyên liệu</th>
+              <th>Số lượng trừ</th>
+              <th>Số lượng cũ → mới</th>
+              <th>Đơn vị</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+    
+    deductions.slice(0, 20).forEach(deduction => {
+      const deductedAt = new Date(deduction.deductedAt);
+      const formattedDate = deductedAt.toLocaleString('vi-VN');
+      
+      modalContent += `
+        <tr>
+          <td><small>${formattedDate}</small></td>
+          <td><span class="badge bg-primary">#${deduction.orderId}</span></td>
+          <td><strong>${deduction.materialName}</strong></td>
+          <td><span class="text-danger fw-bold">-${deduction.quantityDeducted}</span></td>
+          <td>${deduction.oldQuantity} → ${deduction.newQuantity}</td>
+          <td>${deduction.unit}</td>
+        </tr>
+      `;
+    });
+    
+    modalContent += `
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-3">
+        <small class="text-muted">
+          Hiển thị ${Math.min(20, deductions.length)} / ${deductions.length} bản ghi gần nhất.
+          ${deductions.length > 20 ? 'Nhấn "Xuất lịch sử" để xem tất cả.' : ''}
+        </small>
+      </div>
+    `;
+    
+    Swal.fire({
+      title: 'Lịch sử trừ nguyên liệu',
+      html: modalContent,
+      width: '90%',
+      confirmButtonText: 'Đóng',
+      showCancelButton: true,
+      cancelButtonText: 'Xuất Excel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.cancel) {
+        exportDeductionHistory();
+      }
+    });
+    
+  } catch (error) {
+    console.error('Error loading deduction history:', error);
+    Swal.close();
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể tải lịch sử trừ nguyên liệu.'
+    });
+  }
+};
+
+// Hàm trừ lại nguyên liệu cho tất cả đơn hàng đã giao
+window.forceRedeductAllOrders = async function() {
+  try {
+    // Xác nhận trước khi thực hiện
+    const result = await Swal.fire({
+      title: 'Xác nhận trừ lại nguyên liệu',
+      text: 'Hành động này sẽ trừ lại nguyên liệu cho TẤT CẢ đơn hàng đã giao. Bạn có chắc chắn?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Có, trừ lại!',
+      cancelButtonText: 'Hủy'
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    console.log('Starting force re-deduction for all delivered orders...');
+    
+    // Hiển thị loading
+    Swal.fire({
+      title: 'Đang xử lý...',
+      text: 'Vui lòng chờ trong giây lát',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+    
+    // Lấy tất cả đơn hàng đã giao
+    const ordersRef = ref(db, 'orders');
+    const ordersSnapshot = await get(ordersRef);
+    
+    if (!ordersSnapshot.exists()) {
+      Swal.close();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Không có đơn hàng',
+        text: 'Không tìm thấy đơn hàng nào.'
+      });
+      return;
+    }
+    
+    const deliveredOrders = [];
+    ordersSnapshot.forEach((childSnapshot) => {
+      const order = childSnapshot.val();
+      if (order.status === 'delivered') {
+        deliveredOrders.push({
+          id: childSnapshot.key,
+          ...order
+        });
+      }
+    });
+    
+    console.log(`Found ${deliveredOrders.length} delivered orders`);
+    
+    if (deliveredOrders.length === 0) {
+      Swal.close();
+      Swal.fire({
+        icon: 'info',
+        title: 'Không có đơn hàng đã giao',
+        text: 'Không có đơn hàng nào ở trạng thái "đã giao".'
+      });
+      return;
+    }
+    
+    // Reset trạng thái materialsDeducted cho tất cả đơn hàng đã giao
+    const resetPromises = deliveredOrders.map(order => {
+      const orderRef = ref(db, `orders/${order.id}`);
+      return update(orderRef, {
+        materialsDeducted: false,
+        materialsDeductedAt: null,
+        materialsDeductionNote: null
+      });
+    });
+    
+    await Promise.all(resetPromises);
+    console.log('Reset materialsDeducted status for all delivered orders');
+    
+    // Chạy lại hàm trừ nguyên liệu
+    await checkAndDeductMaterialsForDeliveredOrders();
+    
+    Swal.close();
+    
+    // Thông báo thành công
+    Swal.fire({
+      icon: 'success',
+      title: 'Hoàn thành!',
+      text: `Đã trừ lại nguyên liệu cho ${deliveredOrders.length} đơn hàng đã giao.`,
+      timer: 3000
+    });
+    
+  } catch (error) {
+    console.error('Error force re-deducting materials:', error);
+    Swal.close();
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể trừ lại nguyên liệu. Vui lòng thử lại.'
+    });
+  }
+};
+
+// Hàm xuất lịch sử trừ nguyên liệu
+window.exportDeductionHistory = async function() {
+  try {
+    console.log('Exporting deduction history...');
+    
+    // Hiển thị loading
+    Swal.fire({
+      title: 'Đang xuất báo cáo...',
+      text: 'Vui lòng chờ trong giây lát',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+    
+    // Lấy dữ liệu lịch sử trừ nguyên liệu
+    const deductionsRef = ref(db, 'material_deductions');
+    const deductionsSnapshot = await get(deductionsRef);
+    
+    if (!deductionsSnapshot.exists()) {
+      Swal.close();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Không có dữ liệu',
+        text: 'Không có lịch sử trừ nguyên liệu để xuất.'
+      });
+      return;
+    }
+    
+    const deductions = [];
+    deductionsSnapshot.forEach((childSnapshot) => {
+      deductions.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
+    
+    // Sắp xếp theo thời gian mới nhất
+    deductions.sort((a, b) => new Date(b.deductedAt) - new Date(a.deductedAt));
+    
+    // Tạo nội dung CSV với encoding UTF-8 BOM
+    let csvContent = '\uFEFF'; // UTF-8 BOM để Excel hiển thị đúng tiếng Việt
+    csvContent += 'BAO CAO LICH SU TRU NGUYEN LIEU\n\n';
+    csvContent += 'Thong tin bao cao:\n';
+    csvContent += `Ngay xuat bao cao: ${new Date().toLocaleString('vi-VN')}\n`;
+    csvContent += `Tong so lan tru: ${deductions.length}\n`;
+    csvContent += `Thoi gian tu: ${deductions.length > 0 ? new Date(deductions[deductions.length - 1].deductedAt).toLocaleDateString('vi-VN') : 'N/A'}\n`;
+    csvContent += `Thoi gian den: ${deductions.length > 0 ? new Date(deductions[0].deductedAt).toLocaleDateString('vi-VN') : 'N/A'}\n\n`;
+    
+    // Header của bảng
+    csvContent += 'Thoi gian,Ma don hang,Nguyen lieu,So luong tru,So luong cu,So luong moi,Don vi,Ly do\n';
+    
+    // Dữ liệu
+    deductions.forEach(deduction => {
+      const deductedAt = new Date(deduction.deductedAt);
+      const formattedDate = deductedAt.toLocaleString('vi-VN');
+      
+      // Làm tròn số lượng để tránh lỗi số thập phân dài
+      const quantityDeducted = Math.round(deduction.quantityDeducted * 1000) / 1000;
+      const oldQuantity = Math.round(deduction.oldQuantity * 1000) / 1000;
+      const newQuantity = Math.round(deduction.newQuantity * 1000) / 1000;
+      
+      csvContent += `"${formattedDate}","${deduction.orderId}","${deduction.materialName}","${quantityDeducted}","${oldQuantity}","${newQuantity}","${deduction.unit}","${deduction.reason || 'Don hang da giao'}"\n`;
+    });
+    
+    // Thống kê theo nguyên liệu
+    csvContent += '\n\nTHONG KE THEO NGUYEN LIEU:\n';
+    csvContent += 'Ten nguyen lieu,Tong so lan tru,Tong so luong tru,Don vi\n';
+    
+    const materialStats = {};
+    deductions.forEach(deduction => {
+      if (!materialStats[deduction.materialName]) {
+        materialStats[deduction.materialName] = {
+          count: 0,
+          totalQuantity: 0,
+          unit: deduction.unit
+        };
+      }
+      materialStats[deduction.materialName].count++;
+      materialStats[deduction.materialName].totalQuantity += deduction.quantityDeducted;
+    });
+    
+    Object.entries(materialStats).forEach(([materialName, stats]) => {
+      const totalQuantity = Math.round(stats.totalQuantity * 1000) / 1000;
+      csvContent += `"${materialName}","${stats.count}","${totalQuantity}","${stats.unit}"\n`;
+    });
+    
+    // Thống kê theo ngày
+    csvContent += '\n\nTHONG KE THEO NGAY:\n';
+    csvContent += 'Ngay,So lan tru,Tong so luong tru\n';
+    
+    const dateStats = {};
+    deductions.forEach(deduction => {
+      const date = new Date(deduction.deductedAt).toLocaleDateString('vi-VN');
+      if (!dateStats[date]) {
+        dateStats[date] = {
+          count: 0,
+          totalQuantity: 0
+        };
+      }
+      dateStats[date].count++;
+      dateStats[date].totalQuantity += deduction.quantityDeducted;
+    });
+    
+    Object.entries(dateStats).forEach(([date, stats]) => {
+      const totalQuantity = Math.round(stats.totalQuantity * 1000) / 1000;
+      csvContent += `"${date}","${stats.count}","${totalQuantity}"\n`;
+    });
+    
+    // Ghi chú
+    csvContent += '\n\nGhi chu:\n';
+    csvContent += '- Bao cao nay duoc tao tu dong tu he thong quan ly nguyen lieu.\n';
+    csvContent += '- So luong tru duoc tinh theo don vi cua nguyen lieu.\n';
+    csvContent += '- Thoi gian duoc hien thi theo mui gio Viet Nam.\n';
+    csvContent += '- Ly do tru mac dinh la "Don hang da giao" neu khong co thong tin khac.\n';
+    
+    // Tạo và tải file với encoding UTF-8
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `lich_su_tru_nguyen_lieu_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    Swal.close();
+    
+    // Thông báo thành công
+    Swal.fire({
+      icon: 'success',
+      title: 'Xuất báo cáo thành công!',
+      text: `Đã xuất ${deductions.length} bản ghi lịch sử trừ nguyên liệu.`,
+      timer: 3000
+    });
+    
+  } catch (error) {
+    console.error('Error exporting deduction history:', error);
+    Swal.close();
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi!',
+      text: 'Không thể xuất lịch sử trừ nguyên liệu. Vui lòng thử lại.'
+    });
+  }
+};
 
 </script>
 
