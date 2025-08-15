@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
   <diagram name="Trang-1" id="NJdqUDWQDzrSFKdWu22e">
-    <mxGraphModel dx="4860" dy="2419" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3432" dy="1752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -233,7 +233,8 @@
         <mxCell id="qz_xOZnj7ETuoZbYlm7h-294" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.509;entryY=0;entryDx=0;entryDy=0;strokeColor=light-dark(#a85f27, #ededed);entryPerimeter=0;" parent="1" target="qz_xOZnj7ETuoZbYlm7h-162" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="-1970" y="-30" />
+              <mxPoint x="-2110" />
+              <mxPoint x="-1970" />
               <mxPoint x="-1970" y="-880" />
               <mxPoint x="-337" y="-880" />
             </Array>
@@ -375,11 +376,31 @@
         <mxCell id="qz_xOZnj7ETuoZbYlm7h-54" value="Quản lý tin 24h (story/tin nhanh)" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" parent="1" vertex="1">
           <mxGeometry x="-1829.8" y="-310" width="237.49999999999997" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="VFCWbbfBN5t1d1uByxeI-1" value="Quản lý chi phí sản phẩm" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+        <mxCell id="VFCWbbfBN5t1d1uByxeI-1" value="Quản lý chi phí sản phẩm" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" parent="1" vertex="1">
           <mxGeometry x="-1830" y="-130" width="237.49999999999997" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="VFCWbbfBN5t1d1uByxeI-2" value="Quản lý nguyên liệu" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+        <mxCell id="VFCWbbfBN5t1d1uByxeI-2" value="Quản lý nguyên liệu" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" parent="1" vertex="1">
           <mxGeometry x="-1829.8" y="-70" width="237.49999999999997" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SReoIWUGQF4dLOXv9ow1-1" value="Chính sách" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=0;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="-805" y="550" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SReoIWUGQF4dLOXv9ow1-2" value="Hiển thị chính sách giao hàng, phương thức đổi trả, bảo mật và hỗ trợ khách hàng" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="-805" y="627.5" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="SReoIWUGQF4dLOXv9ow1-3" value="Hiển thị câu hỏi thường gặp" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=0;fontSize=14;labelBorderColor=none;labelBackgroundColor=none;textShadow=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="-805" y="697.5" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="SReoIWUGQF4dLOXv9ow1-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=light-dark(#a85f27, #ededed);entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="SReoIWUGQF4dLOXv9ow1-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-1970" />
+              <mxPoint x="-1970" y="500" />
+              <mxPoint x="-670" y="500" />
+            </Array>
+            <mxPoint x="-2010" as="sourcePoint" />
+            <mxPoint x="-910" y="530" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

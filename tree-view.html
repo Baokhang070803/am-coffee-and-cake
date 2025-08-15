@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cây Thư Mục Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .tree-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tree-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .tree {
+            list-style: none;
+        }
+
+        .tree ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .tree li {
+            position: relative;
+            padding: 8px 0;
+            border-left: 1px solid #ddd;
+        }
+
+        .tree li:before {
+            content: "├─";
+            position: absolute;
+            left: -1px;
+            color: #666;
+        }
+
+        .tree li:last-child:before {
+            content: "└─";
+        }
+
+        .tree li:last-child {
+            border-left: none;
+        }
+
+        .tree li:not(:last-child):after {
+            content: "";
+            position: absolute;
+            left: -1px;
+            top: 20px;
+            bottom: 0;
+            width: 1px;
+            background: #ddd;
+        }
+
+        .folder {
+            color: #2c5aa0;
+            font-weight: bold;
+        }
+
+        .file {
+            color: #333;
+        }
+
+        .comment {
+            color: #888;
+            font-style: italic;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tree-container">
+        <h1 class="tree-title">🌳 Cây Thư Mục Database</h1>
+        
+        <ul class="tree">
+            <li>
+                <span class="folder">📁 nguoiDung</span>
+                <span class="comment">(users)</span>
+                <ul>
+                    <li><span class="file">📄 theThanhVien</span> <span class="comment">(thẻ thành viên)</span></li>
+                    <li><span class="file">📄 banBe</span> <span class="comment">(bạn bè)</span></li>
+                    <li><span class="file">📄 loiMoiKetBan</span> <span class="comment">(lời mời kết bạn)</span></li>
+                    <li><span class="file">📄 nhatKy</span> <span class="comment">(nhật ký hoạt động)</span></li>
+                </ul>
+            </li>
+            
+            <li>
+                <span class="folder">📁 sanPham</span>
+                <span class="comment">(products)</span>
+                <ul>
+                    <li><span class="file">📄 banh</span> <span class="comment">(cakes)</span></li>
+                    <li><span class="file">📄 doUong</span> <span class="comment">(drinks)</span></li>
+                    <li><span class="file">📄 topping</span> <span class="comment">(toppings)</span></li>
+                </ul>
+            </li>
+            
+            <li><span class="file">📄 danhMuc</span> <span class="comment">(danh mục sản phẩm)</span></li>
+            
+            <li>
+                <span class="folder">📁 donHang</span>
+                <span class="comment">(orders)</span>
+                <ul>
+                    <li><span class="file">📄 chiTietDonHang</span> <span class="comment">(mục hàng trong đơn)</span></li>
+                    <li><span class="file">📄 danhGiaDonHang</span> <span class="comment">(đánh giá đơn hàng)</span></li>
+                </ul>
+            </li>
+            
+            <li><span class="file">📄 khuyenMai</span> <span class="comment">(khuyến mãi)</span></li>
+            
+            <li>
+                <span class="folder">📁 baiDang</span>
+                <span class="comment">(bài đăng)</span>
+                <ul>
+                    <li>
+                        <span class="folder">📁 binhLuan</span>
+                        <span class="comment">(bình luận)</span>
+                        <ul>
+                            <li><span class="file">📄 traLoiBinhLuan</span> <span class="comment">(trả lời bình luận)</span></li>
+                            <li><span class="file">📄 thichBinhLuan</span> <span class="comment">(lượt thích bình luận)</span></li>
+                        </ul>
+                    </li>
+                    <li><span class="file">📄 thichBaiDang</span> <span class="comment">(lượt thích bài đăng)</span></li>
+                </ul>
+            </li>
+            
+            <li><span class="file">📄 dangTin24Gio</span> <span class="comment">(tin 24h / story)</span></li>
+            
+            <li>
+                <span class="folder">📁 cuocTroChuyen</span>
+                <span class="comment">(hội thoại)</span>
+                <ul>
+                    <li><span class="file">📄 thanhVienTroChuyen</span> <span class="comment">(thành viên hội thoại)</span></li>
+                    <li><span class="file">📄 tinNhan</span> <span class="comment">(tin nhắn)</span></li>
+                </ul>
+            </li>
+            
+            <li><span class="file">📄 cuocGoi</span> <span class="comment">(cuộc gọi)</span></li>
+            <li><span class="file">📄 tinNhanHoTro</span> <span class="comment">(tin nhắn hỗ trợ)</span></li>
+            <li><span class="file">📄 tinNhanLienHe</span> <span class="comment">(tin nhắn liên hệ)</span></li>
+            <li><span class="file">📄 tinTuc</span> <span class="comment">(tin tức)</span></li>
+            
+            <li>
+                <span class="folder">📁 nhanVien</span>
+                <span class="comment">(staffs)</span>
+                <ul>
+                    <li><span class="file">📄 chucVu</span> <span class="comment">(chức vụ)</span></li>
+                    <li><span class="file">📄 chamCong</span> <span class="comment">(chấm công)</span></li>
+                    <li><span class="file">📄 donNghiPhep</span> <span class="comment">(đơn nghỉ phép)</span></li>
+                    <li><span class="file">📄 donTangCa</span> <span class="comment">(đơn tăng ca)</span></li>
+                </ul>
+            </li>
+            
+            <li><span class="file">📄 vaiTro</span> <span class="comment">(roles)</span></li>
+            <li><span class="file">📄 ketQuaThanhToan</span> <span class="comment">(payment results)</span></li>
+            <li><span class="file">📄 thongKeThanhToan</span> <span class="comment">(payment statistics)</span></li>
+            <li><span class="file">📄 giaoDichVNPay</span> <span class="comment">(VNPay transactions)</span></li>
+            <li><span class="file">📄 nhaCungCap</span> <span class="comment">(suppliers)</span></li>
+            <li><span class="file">📄 nguyenLieu</span> <span class="comment">(materials)</span></li>
+            <li><span class="file">📄 khauTruNguyenLieu</span> <span class="comment">(material deductions)</span></li>
+            <li><span class="file">📄 khoHang</span> <span class="comment">(inventory)</span></li>
+        </ul>
+    </div>
+</body>
+</html> 

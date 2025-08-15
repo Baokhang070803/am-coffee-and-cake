@@ -2251,3 +2251,268 @@ StatsPage -> Employee: Hiển thị biểu đồ và số liệu thống kê
 @enduml
 ```
 - **Lưu ý:** Sử dụng [PlantUML](https://plantuml.com/sequence-diagram) để render sơ đồ này.
+
+
+
+UC043: Quản lý nhà cung cấp
+Actor: Admin
+Mô tả: Quản lý thông tin nhà cung cấp nguyên liệu và dịch vụ
+Precondition: Đã đăng nhập với quyền admin
+Main Flow:
+Xem danh sách nhà cung cấp
+Thêm nhà cung cấp mới
+Cập nhật thông tin nhà cung cấp
+Xem lịch sử giao dịch
+Đánh giá hiệu suất nhà cung cấp
+Quản lý hợp đồng
+Postcondition: Thông tin nhà cung cấp được cập nhật
+Exception: Thông tin không hợp lệ, nhà cung cấp không tồn tại
+UC044: Quản lý chi phí sản phẩm
+Actor: Admin
+Mô tả: Tính toán và quản lý chi phí sản xuất cho từng sản phẩm
+Precondition: Đã đăng nhập với quyền admin
+Main Flow:
+Xem danh sách chi phí sản phẩm
+Tính toán chi phí nguyên liệu
+Tính toán chi phí nhân công
+Tính toán chi phí vận hành
+Phân tích lợi nhuận gộp
+Cập nhật giá bán
+Postcondition: Chi phí sản phẩm được cập nhật
+Exception: Dữ liệu không chính xác, lỗi tính toán
+UC045: Quản lý kho nguyên liệu
+Actor: Admin
+Mô tả: Quản lý tồn kho và nhập/xuất nguyên liệu
+Precondition: Đã đăng nhập với quyền admin
+Main Flow:
+Xem tồn kho nguyên liệu
+Nhập nguyên liệu mới
+Xuất nguyên liệu cho sản xuất
+Kiểm kê định kỳ
+Cảnh báo hết hàng
+Báo cáo tồn kho
+Postcondition: Kho nguyên liệu được cập nhật
+Exception: Số lượng không đủ, lỗi nhập liệu
+UC046: Quản lý đơn hàng nguyên liệu
+Actor: Admin
+Mô tả: Tạo và quản lý đơn hàng mua nguyên liệu
+Precondition: Đã đăng nhập với quyền admin
+Main Flow:
+Tạo đơn hàng mua nguyên liệu
+Chọn nhà cung cấp
+Xác nhận đơn hàng
+Theo dõi trạng thái giao hàng
+Nhận hàng và kiểm tra
+Thanh toán cho nhà cung cấp
+Postcondition: Đơn hàng nguyên liệu được xử lý
+Exception: Nhà cung cấp không khả dụng, hàng không đạt chất lượng
+UC047: Phân tích chi phí và lợi nhuận
+Actor: Admin
+Mô tả: Phân tích chi tiết chi phí và lợi nhuận của doanh nghiệp
+Precondition: Đã đăng nhập với quyền admin
+Main Flow:
+Xem báo cáo chi phí tổng hợp
+Phân tích chi phí theo thời gian
+So sánh chi phí thực tế vs dự toán
+Phân tích lợi nhuận theo sản phẩm
+Đánh giá hiệu quả sử dụng nguyên liệu
+Đề xuất tối ưu hóa chi phí
+Postcondition: Báo cáo phân tích được tạo
+Exception: Dữ liệu không đầy đủ, lỗi tính toán
+
+
+
+Sequence Diagram UC043: Quản lý nhà cung cấp
+
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "Supplier Management Page" as SupplierPage
+participant "Firebase Database" as FirebaseDB
+
+Admin -> SupplierPage: Truy cập quản lý nhà cung cấp
+SupplierPage -> FirebaseDB: Lấy danh sách nhà cung cấp
+FirebaseDB -> SupplierPage: Trả về danh sách nhà cung cấp
+
+alt Thêm nhà cung cấp mới
+    Admin -> SupplierPage: Nhập thông tin nhà cung cấp mới
+    SupplierPage -> FirebaseDB: Lưu thông tin nhà cung cấp
+    FirebaseDB -> SupplierPage: Xác nhận lưu thành công
+else Cập nhật thông tin
+    Admin -> SupplierPage: Chỉnh sửa thông tin nhà cung cấp
+    SupplierPage -> FirebaseDB: Cập nhật thông tin
+    FirebaseDB -> SupplierPage: Xác nhận cập nhật
+else Xem lịch sử giao dịch
+    Admin -> SupplierPage: Chọn nhà cung cấp
+    SupplierPage -> FirebaseDB: Lấy lịch sử giao dịch
+    FirebaseDB -> SupplierPage: Trả về lịch sử giao dịch
+end
+
+SupplierPage -> Admin: Hiển thị kết quả quản lý nhà cung cấp
+@enduml
+
+
+Sequence Diagram UC044: Quản lý chi phí sản phẩm
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "Product Cost Management Page" as CostPage
+participant "Firebase Database" as FirebaseDB
+participant "Cost Calculator" as Calculator
+
+Admin -> CostPage: Truy cập quản lý chi phí sản phẩm
+CostPage -> FirebaseDB: Lấy danh sách sản phẩm và chi phí
+FirebaseDB -> CostPage: Trả về dữ liệu sản phẩm
+
+Admin -> CostPage: Chọn sản phẩm cần tính chi phí
+CostPage -> Calculator: Tính toán chi phí nguyên liệu
+Calculator -> FirebaseDB: Lấy thông tin nguyên liệu và giá
+FirebaseDB -> Calculator: Trả về dữ liệu nguyên liệu
+Calculator -> CostPage: Trả về chi phí nguyên liệu
+
+CostPage -> Calculator: Tính toán chi phí nhân công
+Calculator -> FirebaseDB: Lấy thông tin nhân công
+FirebaseDB -> Calculator: Trả về dữ liệu nhân công
+Calculator -> CostPage: Trả về chi phí nhân công
+
+CostPage -> Calculator: Tính toán chi phí vận hành
+Calculator -> CostPage: Trả về chi phí vận hành
+
+CostPage -> Calculator: Tính tổng chi phí và lợi nhuận gộp
+Calculator -> CostPage: Trả về kết quả phân tích
+
+CostPage -> FirebaseDB: Lưu thông tin chi phí cập nhật
+FirebaseDB -> CostPage: Xác nhận lưu thành công
+CostPage -> Admin: Hiển thị báo cáo chi phí sản phẩm
+@enduml
+
+
+Sequence Diagram UC045: Quản lý kho nguyên liệu
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "Inventory Management Page" as InventoryPage
+participant "Firebase Database" as FirebaseDB
+participant "Alert System" as Alert
+
+Admin -> InventoryPage: Truy cập quản lý kho nguyên liệu
+InventoryPage -> FirebaseDB: Lấy thông tin tồn kho
+FirebaseDB -> InventoryPage: Trả về dữ liệu tồn kho
+
+alt Nhập nguyên liệu
+    Admin -> InventoryPage: Nhập thông tin nguyên liệu mới
+    InventoryPage -> FirebaseDB: Cập nhật tồn kho
+    FirebaseDB -> InventoryPage: Xác nhận cập nhật
+else Xuất nguyên liệu
+    Admin -> InventoryPage: Xuất nguyên liệu cho sản xuất
+    InventoryPage -> FirebaseDB: Giảm số lượng tồn kho
+    FirebaseDB -> InventoryPage: Xác nhận xuất kho
+else Kiểm kê
+    Admin -> InventoryPage: Thực hiện kiểm kê
+    InventoryPage -> FirebaseDB: So sánh tồn kho thực tế
+    FirebaseDB -> InventoryPage: Trả về kết quả kiểm kê
+end
+
+InventoryPage -> Alert: Kiểm tra cảnh báo hết hàng
+Alert -> FirebaseDB: Kiểm tra mức tồn kho tối thiểu
+alt Có nguyên liệu sắp hết
+    Alert -> InventoryPage: Gửi cảnh báo
+    InventoryPage -> Admin: Hiển thị cảnh báo hết hàng
+end
+
+InventoryPage -> Admin: Hiển thị báo cáo tồn kho
+@enduml
+
+
+Sequence Diagram UC047: Phân tích chi phí và lợi nhuận
+@startuml
+skinparam sequence {
+    ArrowColor #8d6748
+    ActorBorderColor #8d6748
+    LifeLineBorderColor #8d6748
+    LifeLineBackgroundColor #e7d3c6
+    ParticipantBorderColor #8d6748
+    ParticipantBackgroundColor #e7d3c6
+    BoxBorderColor #8d6748
+    BoxBackgroundColor #f5eee6
+    NoteBackgroundColor #e7d3c6
+    NoteBorderColor #8d6748
+    AltBackgroundColor #f5eee6
+    AltBorderColor #8d6748
+}
+actor Admin
+participant "Cost Analysis Page" as AnalysisPage
+participant "Firebase Database" as FirebaseDB
+participant "Analytics Engine" as Analytics
+
+Admin -> AnalysisPage: Truy cập phân tích chi phí và lợi nhuận
+AnalysisPage -> FirebaseDB: Lấy dữ liệu chi phí tổng hợp
+FirebaseDB -> AnalysisPage: Trả về dữ liệu chi phí
+
+Admin -> AnalysisPage: Chọn khoảng thời gian phân tích
+AnalysisPage -> Analytics: Phân tích chi phí theo thời gian
+Analytics -> FirebaseDB: Lấy dữ liệu chi phí theo thời gian
+FirebaseDB -> Analytics: Trả về dữ liệu
+Analytics -> AnalysisPage: Trả về kết quả phân tích
+
+AnalysisPage -> Analytics: So sánh chi phí thực tế vs dự toán
+Analytics -> FirebaseDB: Lấy dữ liệu dự toán
+FirebaseDB -> Analytics: Trả về dữ liệu dự toán
+Analytics -> AnalysisPage: Trả về kết quả so sánh
+
+AnalysisPage -> Analytics: Phân tích lợi nhuận theo sản phẩm
+Analytics -> FirebaseDB: Lấy dữ liệu doanh thu và chi phí
+FirebaseDB -> Analytics: Trả về dữ liệu
+Analytics -> AnalysisPage: Trả về phân tích lợi nhuận
+
+AnalysisPage -> Analytics: Đánh giá hiệu quả sử dụng nguyên liệu
+Analytics -> FirebaseDB: Lấy dữ liệu sử dụng nguyên liệu
+FirebaseDB -> Analytics: Trả về dữ liệu
+Analytics -> AnalysisPage: Trả về đánh giá hiệu quả
+
+AnalysisPage -> Analytics: Tạo đề xuất tối ưu hóa
+Analytics -> AnalysisPage: Trả về đề xuất tối ưu hóa
+
+AnalysisPage -> FirebaseDB: Lưu báo cáo phân tích
+FirebaseDB -> AnalysisPage: Xác nhận lưu báo cáo
+AnalysisPage -> Admin: Hiển thị báo cáo phân tích chi tiết
+@enduml
